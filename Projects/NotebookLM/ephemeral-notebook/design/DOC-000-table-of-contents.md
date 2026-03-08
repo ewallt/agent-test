@@ -1,0 +1,111 @@
+NotebookLM JSON Generation System - Table of Contents
+Purpose: This system enables Claude to automatically generate NotebookLM request JSONs from user-provided topics, handling everything from topic classification to multi-notebook series design.
+
+Core Documents
+DOC-001: JSON Specification Reference
+Status: Exists (from earlier conversation)
+Purpose: Complete field-by-field reference for the NotebookLM JSON request format
+Contents: Required fields, optional fields, defaults, examples
+
+DOC-002: Topic Classification Framework
+Status: To be created
+Purpose: How to analyze and categorize topics across multiple dimensions
+Contents:
+
+Scope assessment (narrow/medium/large)
+Domain identification (history, science, psychology, etc.)
+Structural type (narrative, conceptual, debate, technical)
+Source availability assessment
+Complexity indicators
+DOC-003: Design Pattern - Single Notebook Topics
+Status: To be created
+Purpose: How to handle topics that fit in one notebook (3-5 videos)
+Contents:
+
+Recognition criteria
+Focus angle selection strategies
+Guidance formulation patterns
+Examples: availability heuristic, specific historical events, single concepts
+DOC-004: Design Pattern - Large Scope Multi-Notebook Series
+Status: In progress — sub-patterns defined as implemented
+Purpose: How to decompose large topics into multiple coordinated notebooks
+
+DOC-004-A: Isomorphic Item Series
+Status: Active (first implementation: Major Battles of WW2)
+Purpose: Collection of isomorphic items (same category, same lens) grouped into notebooks by a natural organizing principle. One video per item. Notebooks are peers — no hierarchy.
+Examples: Major battles of WW2 (by theater), States of the Union (by region)
+DOC-005: Design Pattern - Debate/Multiple Perspectives
+Status: To be created
+Purpose: Topics with significant controversy or multiple valid interpretations
+Contents:
+
+When to use this pattern
+How to balance perspectives
+Structuring comparative analysis
+Examples: theological debates, contested historical interpretations, scientific controversies
+DOC-006: Design Pattern - Deep Dive Technical
+Status: To be created
+Purpose: Detailed exploration of how specific systems/mechanisms work
+Contents:
+
+Conceptual vs. practical emphasis
+Appropriate technical depth
+Examples: physics of refrigeration, neural network architectures, economic systems
+DOC-007: Variable Selection Heuristics
+Status: To be created
+Purpose: Decision rules for setting each JSON parameter based on topic characteristics
+Contents:
+
+Video count determination
+Depth vs. breadth decisions
+Audience level inference
+Guidance string generation
+When to specify vs. omit optional fields
+DOC-008: User Preference Learning
+Status: To be created
+Purpose: Patterns observed from Tom's topic requests and feedback
+Contents:
+
+Preferred video counts by topic type
+Style preferences (conceptual over practical how-to)
+Domain-specific patterns
+Evolving as more examples accumulate
+DOC-009: Quality Control Checklist
+Status: To be created
+Purpose: Pre-generation validation before outputting JSONs
+Contents:
+
+Topic clarity verification
+Searchability assessment (will NotebookLM find good sources?)
+Coherence check (do focus angles make sense together?)
+Completeness check (did I omit something important?)
+DOC-010: Interaction Protocol
+Status: To be created
+Purpose: How Claude should interact with Tom when generating JSONs
+Contents:
+
+Minimal friction workflow
+When to ask clarifying questions vs. proceed
+How to present multi-notebook proposals
+Confirmation patterns
+Meta Documents
+DOC-011: System Evolution Notes
+Status: To be created
+Purpose: Track what we learn as we build notebooks, inform document updates
+Contents:
+
+Successful patterns
+Failed approaches
+Edge cases discovered
+Document revision log
+DOC-012: Worked Examples Repository
+Status: To be created
+Purpose: Catalog of actual topics → JSONs with annotations
+Contents:
+
+Single notebook examples
+Multi-notebook series examples
+Each example shows: topic, classification, pattern used, resulting JSON(s), outcome
+Next Step: Select one document to flesh out completely.
+
+Recommendation: Start with either DOC-002 (Topic Classification Framework) or DOC-004 (Large Scope Multi-Notebook Series) using WW2 as the worked example.

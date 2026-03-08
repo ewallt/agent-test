@@ -1,0 +1,22 @@
+key: ww2-eastern-front
+topic: Major Battles of WW2 — Eastern Front
+title: WW2 Battles: Eastern Front
+pattern: 004-A
+research: yes
+guidance: |
+  Three battles, one video each. Apply the same lens to all three:
+  why the battle was important, what was unique about it, surprising facts
+  people might not know, and how it shifted the arc of the war.
+
+  Battle of Stalingrad (1942-43): The turning point of the Eastern Front. Urban
+  warfare at its most brutal, the Soviet encirclement of the German 6th Army,
+  Paulus's surrender. Why Stalingrad is considered the single most decisive battle
+  of WW2 by many historians.
+
+  Battle of Kursk (1943): The largest tank battle in history. Germany's last major
+  offensive on the Eastern Front, the Soviet intelligence advantage, and why the
+  Wehrmacht never recovered. The battle that gave the Soviets permanent initiative.
+
+  Operation Bagration (1944): The massive Soviet summer offensive that destroyed
+  Army Group Centre — largely unknown in the West despite being larger in scope
+  than D-Day. Why it succeeded so completely, and its decisive role in ending the war.

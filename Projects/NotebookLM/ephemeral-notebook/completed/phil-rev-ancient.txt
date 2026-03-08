@@ -1,0 +1,13 @@
+key: phil-rev-ancient
+topic: Philosophical Revolutions — Ancient
+title: Philosophical Revolutions: Ancient
+pattern: 003
+videos: 3
+research: yes
+copied-text: no
+guidance: |
+  Three founding figures of Western philosophy. Each video applies the same lens:
+  what view was overturned, the key argument, the resistance it faced, the lasting impact.
+  Video 1: Socrates — philosophy as relentless questioning; the examined life vs. received wisdom and tradition
+  Video 2: Plato — the world of Forms; appearance vs. reality, knowledge vs. opinion, the philosopher-king
+  Video 3: Aristotle — grounding philosophy in the observable world; logic, categories, and empiricism as a counter to Plato

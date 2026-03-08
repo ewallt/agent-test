@@ -1,0 +1,5 @@
+key: godel-incompleteness
+topic: Gödel's Incompleteness Theorems — The Proof and Its Companion
+pattern: 003
+videos: 3
+guidance: Three videos: (1) Historical context — Vienna, the Hilbert program, the dream of a complete formal system for mathematics. (2) The First Incompleteness Theorem — Gödel numbering, self-reference, the unprovable statement. Keep conceptual, not technical. (3) The Second Incompleteness Theorem — a system cannot prove its own consistency, and why that's even more striking than the first result.

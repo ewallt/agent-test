@@ -1,0 +1,45 @@
+ Based on recent research and post-mortems from production agentic workflows, the phenomenon you are experiencing is formally recognized as "Agent Drift"—the progressive degradation of an agent's behavior, decision quality, and instruction adherence over extended interactions. When agents operate in 20–40 minute sessions, their context window becomes saturated, leading them to rely on internalized language priors rather than active reference documents.
+
+For a file-based CLI environment using Claude, relying on a monolithic upfront prompt is an anti-pattern. Here are actionable design recommendations to enforce reliable instruction-following, state verification, and logging.
+
+1. Instruction Architecture: Progressive Disclosure
+Loading all instructions at the start guarantees context dilution. Instead, adopt a "Just-in-Time" (JIT) instruction architecture utilizing progressive disclosure.
+
+Lean Root Instructions: Your primary configuration file (e.g., CLAUDE.md or AGENTS.md) should be ruthlessly minimized. It should only contain the agent's core persona, critical negative constraints (e.g., "Never commit secrets"), and a "table of contents" pointing to other files.
+
+Skill-Based Routing: Move domain-specific rules into separate markdown files (e.g., docs/TYPESCRIPT_RULES.md or skills/database_migration.md). Instruct the agent: "For database tasks, read skills/database_migration.md first.".
+
+Code over Explanations: Include concrete, copy-pasteable shell commands with flags (e.g., pytest -v) and exact code examples rather than describing expectations in paragraphs.
+
+2. Checklist and Verification Patterns
+To prevent the agent from assuming continuity or skipping steps, the file system itself must act as a rigid state machine.
+
+The Consumable Task Pattern: Maintain a central task_plan.md using a Read-Decide-Act-Update cycle. Require the agent to explicitly move tasks from an "Active" section to a "Consumed" section only after it appends evidence of completion (e.g., command output or a passing test).
+
+Explicit Draft → Audit Loops: Structure workflows so that execution and verification are distinct steps. After generating code or executing a shell sequence, force the agent into an "Audit" state where it must visually inspect diffs or run a verification command before proceeding.
+
+Startup Health Checks: Before the agent begins the next step on its checklist, enforce a rule where it must run a basic health check (like a test suite or build command) to prove the previous step didn't silently break the environment.
+
+3. Memory and Context Management
+A fundamental lesson from production agents is that context is not memory. As the context window fills with shell outputs, the agent's attention on its core instructions degrades.
+
+Session Checkpointing: For tasks spanning 20–40 minutes, enforce a "one-feature-per-session" limit. If a task requires more time, instruct the agent to stop, generate a structured post-mortem.md or handoff.md detailing current state and next steps, and then terminate. You can then resume a fresh session seeded only with that handoff document.
+
+Git as Memory: Map agent actions to Git commits. Treating the Git log as the agent's immutable memory trail allows you to clear the active context window without losing the history of what has actually been accomplished.
+
+Context Compaction: Instruct the agent to aggressively clear old, raw shell outputs from its working context once a step is verified, replacing them with a one-sentence summary of the result.
+
+4. Intervention and Error Logging
+Agents often fail silently, ignoring skipped tool calls or hiding errors in conversational text. To enforce real-time logging:
+
+Structured Output Contracts: Relying on markdown text for logs is brittle. Force the agent to emit state updates and error logs in strict JSON format at the end of every step. This allows you to programmatically parse the log and trigger a hard halt if an error flag is raised.
+
+The "Spawn and Wait" Rule: If human intervention or a long-running process is required, define a strict "Stop and Wait" instruction. The agent must log the required intervention and explicitly halt execution, rather than hallucinating a continuation.
+
+5. Practical Implementations & Lessons Learned
+While programmatic frameworks like LangGraph manage this via graph-based checkpointing and deterministic state objects 
+, file-based systems require strict constraints.
+
+Constraints over Roles: Post-mortems reveal that giving an agent a detailed "persona" (e.g., "You are an expert developer") does not improve reliability. Strict, mechanistic constraints (e.g., "You must output a JSON validation block before running the next script") are what keep an agent on the rails.
+
+End-to-End Verification: A common failure is an agent marking a task complete because a unit test passed, even though the application as a whole is broken. Require the agent to perform end-to-end checks (e.g., actually starting the server and hitting the endpoint via curl) as its final verification step.

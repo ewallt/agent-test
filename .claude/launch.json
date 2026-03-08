@@ -1,0 +1,13 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "model-collapse",
+      "runtimeExecutable": "C:/Program Files/nodejs/node.exe",
+      "runtimeArgs": [
+        "C:/Users/tomew/Documents/agent-test/start-studio.js"
+      ],
+      "port": 3000
+    }
+  ]
+}

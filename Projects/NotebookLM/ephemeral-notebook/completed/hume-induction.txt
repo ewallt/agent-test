@@ -1,0 +1,4 @@
+topic: Hume's Problem of Induction
+pattern: 003
+videos: 1
+guidance: Focus on the problem itself — why no amount of observed evidence logically justifies a universal claim — and why it remains genuinely unsolved. Touch on Popper's falsificationism as a response and why many philosophers find it insufficient.

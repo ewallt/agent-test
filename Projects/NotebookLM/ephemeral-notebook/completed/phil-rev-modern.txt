@@ -1,0 +1,13 @@
+key: phil-rev-modern
+topic: Philosophical Revolutions — Modern
+title: Philosophical Revolutions: Modern
+pattern: 003
+videos: 3
+research: yes
+copied-text: no
+guidance: |
+  Three radical modern philosophers. Each video applies the same lens:
+  what view was overturned, the key argument, the resistance it faced, the lasting impact.
+  Video 1: Nietzsche — the death of God and the revaluation of all values; the collapse of the moral framework that held Western civilization together
+  Video 2: Wittgenstein — language as the limit of thought; what we can't say we must pass over in silence; the dissolution of traditional philosophy
+  Video 3: Popper — falsifiability and the demarcation of science from pseudo-science; how we actually know what we know

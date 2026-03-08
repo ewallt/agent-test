@@ -1,0 +1,27 @@
+key: ww2-pacific
+topic: Major Battles of WW2 — Pacific
+title: WW2 Battles: Pacific
+pattern: 004-A
+research: yes
+guidance: |
+  Four battles, one video each. Apply the same lens to all four:
+  why the battle was important, what was unique about it, surprising facts
+  people might not know, and how it shifted the arc of the war.
+
+  Pearl Harbor (1941): The attack that brought the US into the war. Japanese
+  strategic miscalculation, the missing aircraft carriers, and the debate over
+  what Roosevelt knew. Why the attack ultimately doomed Japan despite its tactical success.
+
+  Battle of Midway (1942): The decisive turning point of the Pacific war. American
+  code-breaking, the role of chance, the destruction of Japan's carrier fleet in
+  five minutes. How a numerically inferior force won the most consequential naval
+  battle in history.
+
+  The Philippines — Fall and Recapture (1941-42 / 1944-45): Cover both halves as
+  one story. The fall: Bataan, the Death March, MacArthur's escape and promise.
+  The return: Leyte Gulf (the largest naval battle ever fought), the liberation,
+  and what MacArthur's vow meant for the conduct of the Pacific war.
+
+  Battle of Okinawa (1945): The last major island battle before the planned invasion
+  of Japan. Kamikaze attacks at their peak, the highest US casualties of any Pacific
+  battle, the mass civilian deaths. How Okinawa shaped the decision to use the atomic bomb.

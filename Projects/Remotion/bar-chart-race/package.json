@@ -1,0 +1,24 @@
+{
+  "name": "bar-chart-race",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "remotion studio",
+    "render": "remotion render AiMmlu out/ai-mmlu.mp4",
+    "build": "tsx scripts/build.ts",
+    "test": "vitest run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/cli": "^4.0.434",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.434"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.3",
+    "vitest": "^3.0.8"
+  }
+}

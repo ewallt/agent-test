@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Popular Skills Notes</title>
+  <style>
+    :root {
+      --bg: #f7f7f8;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #4b5563;
+      --border: #e5e7eb;
+      --accent: #2563eb;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .wrap {
+      max-width: 860px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      margin-bottom: 24px;
+    }
+    h1, h2 {
+      line-height: 1.25;
+      margin-top: 0;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 1.45rem;
+      margin-bottom: 14px;
+      color: var(--accent);
+    }
+    p {
+      margin: 0 0 16px;
+    }
+    ul {
+      margin: 0 0 18px 22px;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    .muted {
+      color: var(--muted);
+    }
+    code {
+      background: #f3f4f6;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Popular Skills Notes</h1>
+      <p class="muted">A quick reference on highly installed development skills and one especially useful session-management skill.</p>
+    </div>
+
+    <div class="card">
+      <h2>Vercel React Best Practices</h2>
+      <p><strong>Vercel React Best Practices</strong> is the second most popular skill on the global leaderboard, with an impressive <strong>196.2K verified installations</strong>.</p>
+      <p>Based on installation metrics from the skills.sh registry, other highly popular skills include:</p>
+      <ul>
+        <li><strong>Vercel Web Design Guidelines</strong> — 151.9K installs globally.</li>
+        <li><strong>Remotion Video Creation</strong> — 127.3K installs, ranking fourth globally.</li>
+        <li><strong>Anthropic Frontend Design</strong> — 126.3K installs, ranking fifth globally.</li>
+        <li><strong>Anthropic Skill Creator</strong> — 63.7K installs.</li>
+        <li><strong>Superpowers (Brainstorming module)</strong> — 41.7K installs.</li>
+        <li><strong>Anthropic Document Skills (PDF)</strong> — 29.3K installs for the PDF extraction skill alone.</li>
+        <li><strong>Supabase Postgres Best Practices</strong> — 28.8K installs.</li>
+        <li><strong>Superpowers (Systematic Debugging module)</strong> — 23.2K installs.</li>
+      </ul>
+      <p>The pattern is clear: developers strongly favor skills that standardize frontend design, reduce repetitive deployment work, and enforce framework-specific best practices.</p>
+    </div>
+
+    <div class="card">
+      <h2>Task Wrap-Up Orchestrator</h2>
+      <p>There is a skill designed specifically to prevent context loss at the end of a coding session: the <strong>Task Wrap-Up Orchestrator</strong>, often called <strong>Task Wrap-Up</strong>.</p>
+      <p>Its purpose is to act as an automated end-of-session checklist. Instead of leaving the session scattered across terminal history and unstaged files, it helps close things out in a disciplined way.</p>
+      <ul>
+        <li><strong>Cognitive review and memory</strong> — It reviews the session history to identify lessons learned and recurring mistakes made by the AI.</li>
+        <li><strong>Persistent documentation</strong> — It updates memory files such as <code>CLAUDE.md</code> so future sessions preserve architectural decisions and avoid repeating the same errors.</li>
+        <li><strong>Repository management</strong> — It checks local file changes, catches uncommitted work, generates standardized Git commits, and pushes the changes.</li>
+      </ul>
+      <p>This turns the AI from a stateless assistant into more of a continuous collaborator that can build compounding knowledge over time.</p>
+      <p>Install command:</p>
+      <p><code>npx skills add charon-fan/agent-playbook --skill wrap-up</code></p>
+    </div>
+  </div>
+</body>
+</html>

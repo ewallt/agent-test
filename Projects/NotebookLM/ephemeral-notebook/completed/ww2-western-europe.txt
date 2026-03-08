@@ -1,0 +1,19 @@
+key: ww2-western-europe
+topic: Major Battles of WW2 — Western Europe
+title: WW2 Battles: Western Europe
+pattern: 004-A
+research: yes
+guidance: |
+  Three battles, one video each. Apply the same lens to all three:
+  why the battle was important, what was unique about it, surprising facts
+  people might not know, and how it shifted the arc of the war.
+
+  Battle of France (1940): The stunning speed of the German victory; the Maginot
+  Line failure; Dunkirk as a near-catastrophe turned myth. Why did France fall so fast?
+
+  D-Day (1944): The largest amphibious invasion in history. Deception operations
+  (Operation Fortitude), near-failure at Omaha Beach, what could have gone differently.
+
+  Battle of the Bulge (1944-45): Hitler's last major offensive in the West. The
+  surprise, the siege of Bastogne, Patton's relief march. Why it nearly worked and
+  why it ultimately sealed Germany's fate.

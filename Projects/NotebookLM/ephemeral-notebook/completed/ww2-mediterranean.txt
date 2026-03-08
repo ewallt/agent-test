@@ -1,0 +1,21 @@
+key: ww2-mediterranean
+topic: Major Battles of WW2 — Mediterranean
+title: WW2 Battles: Mediterranean
+pattern: 004-A
+research: yes
+guidance: |
+  Three battles, one video each. Apply the same lens to all three:
+  why the battle was important, what was unique about it, surprising facts
+  people might not know, and how it shifted the arc of the war.
+
+  North Africa (1940-43): The Desert War — Rommel's brilliance, Montgomery at
+  El Alamein, and why control of North Africa mattered strategically. The turning
+  point that opened the door to Southern Europe.
+
+  Battle of Sicily (1943): Operation Husky — the largest amphibious assault before
+  D-Day. The Allied rivalry between Patton and Montgomery, the role of deception
+  (Operation Mincemeat), and how Sicily led directly to Mussolini's fall.
+
+  Battle of Greece (1940-41): Greece's unexpected resistance to the Italian invasion,
+  then the swift German conquest. Churchill's costly decision to defend Greece,
+  and the debate over whether it delayed Operation Barbarossa.

@@ -1,0 +1,370 @@
+{
+  "theme": "darkChalk",
+  "scenes": [
+    {
+      "id": "t2-title-001",
+      "type": "title",
+      "durationInFrames": 90,
+      "title": "The History of Writing",
+      "subtitle": "From cave walls to keyboard",
+      "doodles": [
+        {
+          "asset": "star",
+          "x": 140,
+          "y": 90,
+          "scale": 1.3,
+          "color": "#f39c12",
+          "revealStart": 25,
+          "revealEnd": 55
+        },
+        {
+          "asset": "circle",
+          "x": 1680,
+          "y": 880,
+          "scale": 1.0,
+          "color": "#e74c3c",
+          "revealStart": 40,
+          "revealEnd": 70
+        },
+        {
+          "asset": "star",
+          "x": 1750,
+          "y": 120,
+          "scale": 0.8,
+          "color": "#2ecc71",
+          "revealStart": 50,
+          "revealEnd": 80
+        }
+      ]
+    },
+    {
+      "id": "t2-step-001",
+      "type": "stepReveal",
+      "transition": { "type": "fade", "durationInFrames": 20 },
+      "durationInFrames": 150,
+      "title": "Writing did not appear overnight",
+      "body": [
+        "35,000 BCE — cave paintings mark the first symbolic thought",
+        "3400 BCE — Sumerian cuneiform emerges in Mesopotamia",
+        "3200 BCE — Egyptian hieroglyphics develop independently",
+        "1050 BCE — the Phoenician alphabet reduces symbols to 22 characters",
+        "800 BCE — Greeks add vowels, creating the template for all Western scripts"
+      ],
+      "doodles": [
+        {
+          "asset": "arrow",
+          "x": 1620,
+          "y": 460,
+          "scale": 1.4,
+          "color": "#f39c12",
+          "revealStart": 80,
+          "revealEnd": 110
+        }
+      ]
+    },
+    {
+      "id": "t2-diagram-001",
+      "type": "diagramBuild",
+      "transition": { "type": "slide", "durationInFrames": 20, "direction": "from-right" },
+      "durationInFrames": 120,
+      "title": "Pictograph → Symbol → Letter",
+      "doodles": [
+        {
+          "asset": "circle",
+          "x": 200,
+          "y": 350,
+          "scale": 2.5,
+          "color": "#f39c12",
+          "revealStart": 15,
+          "revealEnd": 45
+        },
+        {
+          "asset": "arrow",
+          "x": 520,
+          "y": 480,
+          "scale": 2.0,
+          "color": "#e8e4d8",
+          "revealStart": 40,
+          "revealEnd": 65
+        },
+        {
+          "asset": "bracket",
+          "x": 800,
+          "y": 300,
+          "scale": 2.2,
+          "color": "#f39c12",
+          "revealStart": 60,
+          "revealEnd": 90
+        },
+        {
+          "asset": "arrow",
+          "x": 1120,
+          "y": 480,
+          "scale": 2.0,
+          "color": "#e8e4d8",
+          "revealStart": 80,
+          "revealEnd": 105
+        },
+        {
+          "asset": "check",
+          "x": 1430,
+          "y": 380,
+          "scale": 2.0,
+          "color": "#2ecc71",
+          "revealStart": 95,
+          "revealEnd": 118
+        }
+      ]
+    },
+    {
+      "id": "t2-compare-001",
+      "type": "compare",
+      "transition": { "type": "wipe", "durationInFrames": 20, "direction": "from-right" },
+      "durationInFrames": 120,
+      "title": "Logographic vs. Alphabetic Systems",
+      "left": {
+        "heading": "Logographic",
+        "items": [
+          "One symbol = one word or idea",
+          "Thousands of characters to learn",
+          "Rich visual meaning",
+          "Chinese, Japanese kanji, Egyptian"
+        ]
+      },
+      "right": {
+        "heading": "Alphabetic",
+        "items": [
+          "One symbol = one sound",
+          "20–30 characters master the system",
+          "Highly compressible and portable",
+          "Greek, Latin, Arabic, Cyrillic"
+        ]
+      },
+      "doodles": [
+        {
+          "asset": "bracket",
+          "x": 100,
+          "y": 880,
+          "scale": 1.0,
+          "color": "#f39c12",
+          "revealStart": 55,
+          "revealEnd": 80
+        }
+      ]
+    },
+    {
+      "id": "t2-step-002",
+      "type": "stepReveal",
+      "transition": { "type": "slide", "durationInFrames": 20, "direction": "from-left" },
+      "durationInFrames": 140,
+      "title": "The medium changed everything",
+      "body": [
+        "Clay tablets — durable but heavy; cuneiform pressed with a reed stylus",
+        "Papyrus — lightweight; enabled Egypt to export knowledge across the Mediterranean",
+        "Parchment — replaced papyrus when Egypt cut off supply; bound into the first codex books",
+        "Paper — invented in China 105 CE, reached Europe by 1100 CE via the Silk Road",
+        "Moveable type — Gutenberg, 1440; books dropped in price by 98% within 50 years"
+      ],
+      "doodles": [
+        {
+          "asset": "star",
+          "x": 1680,
+          "y": 300,
+          "scale": 1.1,
+          "color": "#f39c12",
+          "revealStart": 70,
+          "revealEnd": 100
+        },
+        {
+          "asset": "arrow",
+          "x": 1660,
+          "y": 680,
+          "scale": 1.2,
+          "color": "#e8e4d8",
+          "revealStart": 110,
+          "revealEnd": 138
+        }
+      ]
+    },
+    {
+      "id": "t2-diagram-002",
+      "type": "diagramBuild",
+      "transition": { "type": "flip", "durationInFrames": 25 },
+      "durationInFrames": 120,
+      "title": "How Gutenberg's Press Worked",
+      "doodles": [
+        {
+          "asset": "bracket",
+          "x": 180,
+          "y": 250,
+          "scale": 2.5,
+          "color": "#f39c12",
+          "revealStart": 12,
+          "revealEnd": 40
+        },
+        {
+          "asset": "arrow",
+          "x": 560,
+          "y": 480,
+          "scale": 2.2,
+          "color": "#e8e4d8",
+          "revealStart": 35,
+          "revealEnd": 65
+        },
+        {
+          "asset": "circle",
+          "x": 920,
+          "y": 360,
+          "scale": 2.8,
+          "color": "#e74c3c",
+          "revealStart": 58,
+          "revealEnd": 88
+        },
+        {
+          "asset": "arrow",
+          "x": 1260,
+          "y": 480,
+          "scale": 2.2,
+          "color": "#e8e4d8",
+          "revealStart": 78,
+          "revealEnd": 105
+        },
+        {
+          "asset": "check",
+          "x": 1580,
+          "y": 380,
+          "scale": 2.0,
+          "color": "#2ecc71",
+          "revealStart": 98,
+          "revealEnd": 118
+        }
+      ]
+    },
+    {
+      "id": "t2-compare-002",
+      "type": "compare",
+      "transition": { "type": "clockWipe", "durationInFrames": 30 },
+      "durationInFrames": 120,
+      "title": "Handwriting vs. Print",
+      "left": {
+        "heading": "Handwriting",
+        "items": [
+          "Personal and unique to the writer",
+          "Slow — one copy at a time",
+          "Variations introduce scribal errors",
+          "Still dominant until 1800s"
+        ]
+      },
+      "right": {
+        "heading": "Print",
+        "items": [
+          "Uniform — identical across every copy",
+          "Mass production at scale",
+          "Fixed errors across an entire run",
+          "Standardised spelling and grammar"
+        ]
+      },
+      "doodles": [
+        {
+          "asset": "star",
+          "x": 1800,
+          "y": 860,
+          "scale": 1.0,
+          "color": "#f39c12",
+          "revealStart": 65,
+          "revealEnd": 90
+        }
+      ]
+    },
+    {
+      "id": "t2-step-003",
+      "type": "stepReveal",
+      "transition": { "type": "wipe", "durationInFrames": 20, "direction": "from-right" },
+      "durationInFrames": 130,
+      "title": "Writing goes digital",
+      "body": [
+        "1868 — Sholes patents the QWERTY typewriter keyboard",
+        "1963 — ASCII encodes 128 characters for early computers",
+        "1991 — Unicode begins; now covers 149,000+ characters in 161 scripts",
+        "2007 — touchscreens shift input from physical keys to virtual ones",
+        "2020s — voice and AI begin to complement typed text as primary input"
+      ],
+      "doodles": [
+        {
+          "asset": "circle",
+          "x": 1630,
+          "y": 400,
+          "scale": 1.3,
+          "color": "#e74c3c",
+          "revealStart": 60,
+          "revealEnd": 90
+        }
+      ]
+    },
+    {
+      "id": "t2-diagram-003",
+      "type": "diagramBuild",
+      "transition": { "type": "slide", "durationInFrames": 20, "direction": "from-right" },
+      "durationInFrames": 110,
+      "title": "A Character's Journey: A → 0x41 → Pixel",
+      "doodles": [
+        {
+          "asset": "bracket",
+          "x": 160,
+          "y": 300,
+          "scale": 2.0,
+          "color": "#f39c12",
+          "revealStart": 10,
+          "revealEnd": 38
+        },
+        {
+          "asset": "arrow",
+          "x": 500,
+          "y": 480,
+          "scale": 2.0,
+          "color": "#e8e4d8",
+          "revealStart": 32,
+          "revealEnd": 58
+        },
+        {
+          "asset": "star",
+          "x": 840,
+          "y": 340,
+          "scale": 2.0,
+          "color": "#f39c12",
+          "revealStart": 52,
+          "revealEnd": 78
+        },
+        {
+          "asset": "arrow",
+          "x": 1160,
+          "y": 480,
+          "scale": 2.0,
+          "color": "#e8e4d8",
+          "revealStart": 72,
+          "revealEnd": 95
+        },
+        {
+          "asset": "circle",
+          "x": 1480,
+          "y": 360,
+          "scale": 2.0,
+          "color": "#2ecc71",
+          "revealStart": 88,
+          "revealEnd": 108
+        }
+      ]
+    },
+    {
+      "id": "t2-outro-001",
+      "type": "outro",
+      "transition": { "type": "fade", "durationInFrames": 30 },
+      "durationInFrames": 100,
+      "title": "5,400 years of putting thought into marks.",
+      "body": [
+        "Every letter you type sits on 150 centuries of invention.",
+        "Dark Chalk / Amber Accent — WhiteboardExplainer-2"
+      ]
+    }
+  ]
+}

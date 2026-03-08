@@ -1,0 +1,4 @@
+topic: The Malthusian Trap — and How Humanity Escaped It
+pattern: 003
+videos: 1
+guidance: Explain the trap itself — why Malthus's logic was sound and why it described all of human history up to ~1800. Then focus on the escape: industrial revolution, demographic transition, agricultural productivity. Why the escape happened when and where it did is still debated — include that uncertainty.

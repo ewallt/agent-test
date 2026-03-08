@@ -1,0 +1,4 @@
+topic: The Thirty Years' War (1618-1648)
+pattern: 003
+videos: 1
+guidance: Focus on why this war matters — the scale of destruction, the religious and political dimensions, and how the Peace of Westphalia shaped the modern nation-state system. Make it relevant, not just a catalog of battles.

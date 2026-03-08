@@ -1,0 +1,17 @@
+key: ww2-britain-atlantic
+topic: Major Battles of WW2 — Britain & Atlantic
+title: WW2 Battles: Britain & Atlantic
+pattern: 004-A
+research: yes
+guidance: |
+  Two battles, one video each. Apply the same lens to both:
+  why the battle was important, what was unique about it, surprising facts
+  people might not know, and how it shifted the arc of the war.
+
+  Battle of Britain (1940): The first campaign won entirely through air power.
+  The RAF's narrow margin of survival, the role of radar, Churchill's rhetoric,
+  and why Hitler called off the invasion. What made it so close.
+
+  Battle of the Atlantic (1939-45): The longest continuous campaign of WW2.
+  The U-boat wolf packs, the breaking of Enigma, the critical role of supply
+  lines to Britain. Why Churchill called it the battle that frightened him most.

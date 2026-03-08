@@ -1,0 +1,114 @@
+export type ModelEntry = {
+  model: string;
+  lab: string;
+  date: string; // ISO format: YYYY-MM-DD
+  mmlu: number; // percentage 0-100
+  estimated?: boolean;
+};
+
+export type StoryCard = {
+  triggerModel: string;
+  headline: string;
+  body: string;
+};
+
+export const STORY_CARDS: StoryCard[] = [
+  {
+    triggerModel: 'GPT-3',
+    headline: 'The race begins',
+    body: 'OpenAI fires the starting gun. GPT-3 scores 43.9% on MMLU — impressive, but far from human-level.',
+  },
+  {
+    triggerModel: 'Mistral 7B',
+    headline: 'Open source joins the race',
+    body: "Meta's Llama and France's Mistral prove you don't need a tech giant to compete at the frontier — and both are free to use.",
+  },
+  {
+    triggerModel: 'Gemini Ultra',
+    headline: 'Google enters',
+    body: "The world's largest AI research org brings Gemini. Big Tech is officially in the race.",
+  },
+  {
+    triggerModel: 'Claude 3.5 Sonnet',
+    headline: 'Crossing 90%',
+    body: "Anthropic's Claude 3.5 Sonnet breaks the 90% barrier. Human expert-level performance is within reach.",
+  },
+  {
+    triggerModel: 'o1',
+    headline: 'The reasoning era begins',
+    body: "OpenAI's o1 thinks before it answers. Chain-of-thought reasoning pushes past 92% — a new paradigm for AI.",
+  },
+  {
+    triggerModel: 'DeepSeek V3',
+    headline: 'Shockwaves through Nasdaq',
+    body: 'DeepSeek matches US frontier models at a fraction of the cost. Markets reel. The assumption that AI dominance requires billions collapses overnight.',
+  },
+  {
+    triggerModel: 'Claude 3.7 Sonnet',
+    headline: 'The 93% sprint',
+    body: 'In a single month, Grok-3, Claude 3.7, and GPT-4.5 all launch. Three labs cross 92% in 30 days — the race accelerates.',
+  },
+  {
+    triggerModel: 'GPT-5',
+    headline: 'GPT-5 arrives',
+    body: 'OpenAI releases GPT-5 with built-in reasoning. The gap between models narrows — but the ceiling keeps rising.',
+  },
+  {
+    triggerModel: 'GPT-5.2',
+    headline: 'Racing past 94%',
+    body: 'GPT-5.2 pushes past 94% on MMLU. Five years ago, 43.9% was the starting line.',
+  },
+  {
+    triggerModel: 'GPT-5.3-Codex',
+    headline: 'Still climbing',
+    body: 'GPT-5.3-Codex pushes to 93%. The benchmark that once seemed like a ceiling keeps moving.',
+  },
+];
+
+export const LAB_COLORS: Record<string, string> = {
+  OpenAI: '#10a37f',   // teal
+  Anthropic: '#e05252', // red
+  Google: '#4285f4',   // blue
+  xAI: '#e0e0e0',      // eggshell
+  Meta: '#a855f7',     // purple
+  Mistral: '#f97316',  // orange
+  DeepSeek: '#eab308', // yellow
+};
+
+export const DATA: ModelEntry[] = [
+  { model: 'GPT-3',            lab: 'OpenAI',    date: '2020-06-11', mmlu: 43.9, estimated: false },
+  { model: 'GPT-3.5',          lab: 'OpenAI',    date: '2022-11-30', mmlu: 70.0, estimated: true },
+  { model: 'GPT-4',            lab: 'OpenAI',    date: '2023-03-14', mmlu: 86.4 },
+  { model: 'Claude 1',         lab: 'Anthropic', date: '2023-03-14', mmlu: 75.0, estimated: true },
+  { model: 'Claude 2',         lab: 'Anthropic', date: '2023-07-11', mmlu: 78.5 },
+  { model: 'Llama 2 70B',      lab: 'Meta',      date: '2023-07-18', mmlu: 68.9 },
+  { model: 'Mistral 7B',       lab: 'Mistral',   date: '2023-09-27', mmlu: 64.2 },
+  { model: 'Grok-1',           lab: 'xAI',       date: '2023-11-04', mmlu: 73.0 },
+  { model: 'GPT-4 Turbo',      lab: 'OpenAI',    date: '2023-11-06', mmlu: 86.7 },
+  { model: 'Gemini Ultra',     lab: 'Google',    date: '2023-12-06', mmlu: 83.7 },
+  { model: 'Mistral Large',    lab: 'Mistral',   date: '2024-02-26', mmlu: 81.2 },
+  { model: 'Claude 3 Opus',   lab: 'Anthropic', date: '2024-03-04', mmlu: 86.8 },
+  { model: 'Llama 3 70B',      lab: 'Meta',      date: '2024-04-18', mmlu: 79.5 },
+  { model: 'GPT-4o',           lab: 'OpenAI',    date: '2024-05-13', mmlu: 87.4 },
+  { model: 'DeepSeek V2',      lab: 'DeepSeek',  date: '2024-05-07', mmlu: 78.5, estimated: true },
+  { model: 'Claude 3.5 Sonnet',lab: 'Anthropic', date: '2024-06-20', mmlu: 90.4 },
+  { model: 'Mistral Large 2',  lab: 'Mistral',   date: '2024-07-24', mmlu: 84.0 },
+  { model: 'Llama 3.1 405B',   lab: 'Meta',      date: '2024-07-23', mmlu: 88.6 },
+  { model: 'Grok-2',           lab: 'xAI',       date: '2024-08-13', mmlu: 87.5 },
+  { model: 'o1',               lab: 'OpenAI',    date: '2024-09-12', mmlu: 92.3 },
+  { model: 'Claude 3.5 Sonnet v2', lab: 'Anthropic', date: '2024-10-22', mmlu: 88.3 },
+  { model: 'DeepSeek V3',      lab: 'DeepSeek',  date: '2024-12-26', mmlu: 88.5 },
+  { model: 'DeepSeek R1',      lab: 'DeepSeek',  date: '2025-01-20', mmlu: 90.8 },
+  { model: 'Grok-3',           lab: 'xAI',       date: '2025-02-17', mmlu: 92.7 },
+  { model: 'Claude 3.7 Sonnet',lab: 'Anthropic', date: '2025-02-24', mmlu: 93.0 },
+  { model: 'GPT-4.5',          lab: 'OpenAI',    date: '2025-02-27', mmlu: 89.1 },
+  { model: 'Gemini 2.5 Pro',   lab: 'Google',    date: '2025-03-25', mmlu: 90.0, estimated: true },
+  { model: 'Llama 4 Maverick', lab: 'Meta',      date: '2025-04-05', mmlu: 85.5 },
+  { model: 'Claude Opus 4',    lab: 'Anthropic', date: '2025-05-22', mmlu: 92.0, estimated: true },
+  { model: 'GPT-5',            lab: 'OpenAI',    date: '2025-08-07', mmlu: 91.4 },
+  { model: 'Claude Opus 4.5',  lab: 'Anthropic', date: '2025-11-24', mmlu: 90.8, estimated: true },
+  { model: 'GPT-5.2',          lab: 'OpenAI',    date: '2025-12-09', mmlu: 94.0, estimated: true },
+  { model: 'Gemini 3 Pro',     lab: 'Google',    date: '2025-12-15', mmlu: 92.0, estimated: true },
+  { model: 'GPT-5.3-Codex',   lab: 'OpenAI',    date: '2026-02-05', mmlu: 93.0, estimated: true },
+  { model: 'Gemini 3.1 Pro',  lab: 'Google',    date: '2026-02-19', mmlu: 93.0, estimated: true },
+];

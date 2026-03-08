@@ -1,0 +1,4 @@
+topic: How the Printing Press Changed Europe
+pattern: 003
+videos: 3
+guidance: Go beyond "information spread faster." Focus on the specific mechanisms — standardization of language, the Protestant Reformation as a media event, the Republic of Letters, and how print changed the nature of authority and knowledge.

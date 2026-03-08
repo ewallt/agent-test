@@ -1,0 +1,13 @@
+key: sci-rev-physics
+topic: Scientific Revolutions — Physics
+title: Scientific Revolutions: Physics
+pattern: 003
+videos: 3
+research: yes
+copied-text: no
+guidance: |
+  Three paradigm-shifting discoveries in physics. Each video applies the same lens:
+  what the old model was, the breakthrough moment, the resistance it faced, what it changed forever.
+  Video 1: Newton's Laws of Motion & Universal Gravitation
+  Video 2: Thermodynamics & the Laws of Energy
+  Video 3: Einstein's Special & General Relativity

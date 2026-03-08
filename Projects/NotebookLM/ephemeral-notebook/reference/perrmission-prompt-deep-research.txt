@@ -1,0 +1,76 @@
+ Here is a comprehensive breakdown of the Claude Code permission system, documented triggers, and strategies to achieve uninterrupted autonomous workflows based on Anthropic’s documentation, bug reports, and community findings.
+
+1. The Permission Prompt System and Design Intent
+Claude Code utilizes a tiered permission system designed to balance agent autonomy with security. Because the agent operates locally with the host's operating system privileges, the permission system is primarily designed to protect against a "lethal trifecta" of risks: arbitrary code execution, unmonitored file deletion/modification, and network exfiltration via prompt injection.
+
+The system operates at the tool call level (e.g., Read, Write, Edit, Bash). By default, Claude operates in a read-only state and will halt execution to prompt the user before modifying state or executing shell commands.
+
+2. Known and Suspected Triggers
+Here is the trigger map based on official documentation and community observations:
+
+Bash Commands (Shell execution): Confirmed Trigger.
+
+Behavior: Prompts by default on the first use.
+
+Inheritance: Documented to be saved "permanently per project directory and command" if the user selects "Yes, don't ask again".
+
+Note: Changing command arguments often triggers a new prompt because the exact string changes.
+
+Write / Edit (File modification): Confirmed Trigger.
+
+Behavior: Prompts by default.
+
+Inheritance: Documented to persist "Until session end". However, there is a widely reported bug (especially on Windows) where selecting "allow all edits during this session" fails to persist, causing repeated prompts for subsequent file modifications.
+
+Read / Grep (File reads): Safe (with exceptions).
+
+Behavior: Documented as not requiring approval.
+
+Exceptions: Claude has built-in deny rules that block it from reading sensitive files like .env or .aws/ directories, which may trigger blocks or prompts. Additionally, some users have reported regression bugs where basic Read operations incorrectly triggered prompts.
+
+3. Pre-Approval Settings and Configuration
+You can pre-approve tools to eliminate prompts using several mechanisms:
+
+Global/Local settings.json: You can add specific tools to an allow array in your ~/.claude/settings.json or project-level settings. For example, adding "allow": will instruct Claude Code to skip manual approval for those tools. You can also use wildcards for specific commands, like "Bash(npm run *)".
+
+Permission Modes: You can launch Claude with specific modes that alter its default behavior:
+
+acceptEdits: Automatically accepts all file modifications (mkdir, rm, mv, Edit, Write) for the session, though Bash commands still prompt.
+
+bypassPermissions: Skips all permission prompts for all tools.
+
+Sandboxing: Anthropic recently introduced native sandboxing (/sandbox). If enabled, Claude creates defined boundaries (filesystem and network isolation), which automatically reduces permission prompts for safe commands within the sandbox by up to 84%.
+
+4. Windows 11 Specific Behaviors
+Running on Windows 11 introduces a few documented quirks with the permission system:
+
+Persistence Bugs: Multiple Windows users have reported that the "Yes, and accept all for this session" option simply does not work, resulting in repeated prompts during the same session.
+
+Terminal Freezing: There are open bug reports detailing that on Windows, the terminal can freeze and refuse keyboard input when a permission prompt appears, requiring a specific key sequence (1 -> Enter -> Escape) to bypass.
+
+Wildcard Parsing: Defining Bash wildcards in the settings file (e.g., Bash(cd*)) can sometimes be ignored on Windows, leading to unexpected prompts.
+
+5. Practical Recommendations for Uninterrupted Workflows
+To achieve a fully autonomous run for "Tom" with zero prompts, you should implement the following workflow structure:
+
+Option A: The Targeted Approval Method (Safest)
+
+If Tom is only doing file generation and specific CLI tasks, start the session using the acceptEdits mode combined with predefined Bash rules.
+
+Run the CLI with: claude --permission-mode acceptEdits "Your prompt here". This permanently suppresses the Write and Edit prompts that are currently breaking your session.
+
+In ~/.claude/settings.json, add an allowlist for the specific nlm tools Tom needs:
+
+"allow":.
+
+Option B: The "YOLO" Method (Requires Isolation)
+
+If you cannot predict the exact Bash commands and need total autonomy, use the bypass flag.
+
+Launch the agent using the --dangerously-skip-permissions flag.
+
+Crucial Constraint: Anthropic strongly warns that this should only be used inside an isolated Docker container or VM to prevent accidental data loss or prompt-injection exfiltration.
+
+Option C: Implement Deterministic Hooks
+
+Instead of relying on the LLM's context, you can define a PreToolUse hook in your settings that runs a local script to automatically approve or deny actions based on your own custom logic before Claude ever renders a prompt to the UI.

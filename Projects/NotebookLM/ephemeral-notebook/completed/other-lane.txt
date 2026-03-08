@@ -1,0 +1,19 @@
+key: other-lane
+topic: Why the Other Lane Always Seems Faster
+videos: 3
+app: yes
+slideshow: yes
+guidance: |
+  The phenomenon has two explanations: (1) psychological — confirmation bias and selective
+  memory mean we notice when the other lane moves and forget when ours does; (2) statistical
+  — slower lanes genuinely have more cars, so we are mathematically more likely to be in one.
+
+  Video 1: The psychology angle — confirmation bias, selective attention, negativity bias.
+  Video 2: The statistics angle — why slower lanes have more cars, the inspection paradox,
+  the math working against us.
+  Video 3: Broader examples of the same phenomenon — checkout lines, elevators, waiting rooms,
+  download bars. Short intro stating the two underlying concepts (psychology + statistics),
+  then a survey of other everyday cases. Keep intro tight.
+
+  Prioritise sources that engage with the statistical/mathematical explanation — this is
+  the more surprising and less well-known angle. Avoid purely anecdotal sources.

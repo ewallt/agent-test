@@ -1,0 +1,13 @@
+key: sci-rev-chemistry
+topic: Scientific Revolutions — Chemistry
+title: Scientific Revolutions: Chemistry
+pattern: 003
+videos: 3
+research: yes
+copied-text: no
+guidance: |
+  Three paradigm-shifting discoveries in chemistry. Each video applies the same lens:
+  what the old model was, the breakthrough moment, the resistance it faced, what it changed forever.
+  Video 1: Lavoisier & the Chemical Revolution (combustion, oxygen, end of phlogiston)
+  Video 2: Dalton's Atomic Theory
+  Video 3: Mendeleev & the Periodic Table

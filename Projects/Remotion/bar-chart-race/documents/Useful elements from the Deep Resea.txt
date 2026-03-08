@@ -1,0 +1,106 @@
+Useful elements from the Deep Research report
+
+Recommended source
+
+Use the Our World in Data indicator “Number of people living in extreme poverty,” sourced from the World Bank Poverty and Inequality Platform. This is the best single coherent dataset for a bar chart race because it is already structured as a country-year series and measures counts of people rather than percentages.
+
+Recommended country lineup
+
+India
+China
+Nigeria
+Democratic Republic of the Congo
+Ethiopia
+Bangladesh
+Pakistan
+Tanzania
+Kenya
+Indonesia
+
+Recommended milestone years
+
+1990
+2000
+2005
+2010
+2015
+2022
+
+Recommended unit
+
+Millions of people
+
+Recommended final CSV structure
+
+model,lab,date,value
+
+Formatting rules implied by the report
+
+model should be the country name.
+
+lab should be the same as the country name.
+
+date should be converted from the milestone years into full unique dates in YYYY-MM-DD format.
+
+value should be numeric only, expressed in millions of people.
+
+Rows should remain in chronological order.
+
+Every row must have a unique date, even when multiple countries share the same year.
+
+Recommended dataset workflow
+
+Use the OWID country-year series as the base dataset.
+
+Filter to the 10 selected countries.
+
+Filter to the six milestone years.
+
+Convert raw people counts into millions of people.
+
+Then convert year-only entries into unique full dates for the app.
+
+Recommended time span logic
+
+Use a modern policy-history arc rather than the full historical range.
+
+The report treats 1990 to a recent endpoint as the best narrative window.
+
+The selected milestone years are meant to keep the final table near 60 rows while preserving a clear long-run story.
+
+Recommended story logic
+
+The race should likely begin with very large poverty counts in major Asian countries.
+
+A major part of the story is the decline in poverty counts in large Asian countries over time.
+
+Another major part of the story is the increasing prominence of Sub-Saharan African countries in later years.
+
+Possible story moments should be chosen after the numeric data are extracted, especially around:
+dominance in the early years,
+sharp decline by a major country,
+rank shifts,
+and growing African concentration in later years.
+
+Important caveats from the report
+
+These are estimated poverty counts, not direct census-like yearly counts.
+
+The series depends on household survey data.
+
+Some years may involve interpolation, extrapolation, or modeled alignment across surveys.
+
+Income-based and consumption-based measures are not identical, though OWID simplifies to one country-year observation for charting.
+
+PPP revisions matter, so values should not be mixed across incompatible poverty-line vintages.
+
+The chart measures absolute numbers of people in extreme poverty, not poverty rates.
+
+Most important limitation
+
+The report does not contain the actual numeric country-year values needed to populate the value column. It provides the structure, source choice, countries, years, and caveats, but not the extracted numbers themselves.
+
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>

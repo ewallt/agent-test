@@ -1,0 +1,21 @@
+# Dependencies
+**/node_modules/
+
+# Build caches
+.cache/
+**/.cache/
+
+# Rendered video output
+**/out/
+**/*.mp4
+
+# Remotion preview cache
+**/.remotion/
+
+# Environment / secrets
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db

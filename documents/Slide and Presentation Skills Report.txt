@@ -1,0 +1,239 @@
+# Slide and Presentation Skills in the Claude Code Ecosystem
+
+## What I searched and how installs work
+
+You asked for **SKILL.md-based “presentation workflows”**—skills that go beyond just opening or editing a `.pptx` file, and instead provide **structure, manifests, pipelines, or presentation-as-code approaches** (HTML slide decks, Reveal.js/Marp/Slidev, etc.).
+
+I widened the search across your priority sources:
+
+- entity["company","GitHub","code hosting platform"] repos: `anthropics/skills`, `vercel-labs/agent-skills`, plus targeted `path:SKILL.md` keyword searches.
+- skills.sh (leaderboard + keyword discovery) for “slides / presentation / deck / slideshow / reveal.js / marp / slidev.”
+- entity["organization","VoltAgent","agent framework project"]’s curated list to surface community-adopted skills that may not rank highly on the leaderboard. citeturn4view0turn5view1
+- `hesreallyhim/awesome-claude-code` for any slide/presentation entries (this list is strong for Claude Code workflows generally, but my scan did not turn up “slide” or “presentation” entries via text search). citeturn4view1turn5view2turn5view3
+
+### Install command reality check
+
+The skills CLI (“npx skills”) supports:
+- `npx skills add owner/repo` (GitHub shorthand), or a full GitHub URL
+- `--skill <name>` to install a specific skill
+- `-g` for global install and `-y` to skip prompts
+- `-a claude-code` to target Claude Code specifically (optional but useful) citeturn0search2turn7view1
+
+So the correct pattern for what you requested is:
+
+```bash
+npx skills add <owner/repo-or-url> --skill <skill-name> -g -a claude-code -y
+```
+
+This matches the CLI’s documented flags (`-g`, `-y`, `--skill`, `-a`). citeturn7view1
+
+## What I found at your priority sources
+
+### Anthropic’s official skills repo
+
+In entity["company","Anthropic","ai company"]’s `anthropics/skills`, there is indeed an official “pptx” document skill (expected), but the repo also includes a **theme styling helper** that explicitly mentions “presentation slide decks” as a use case:
+
+- `theme-factory` is designed to apply professional font/color themes to artifacts, specifically calling out slide decks. citeturn3search0turn4view0
+
+This is useful for styling, but it’s not a full “slides workflow generator” by itself.
+
+### Vercel’s agent-skills repo
+
+In entity["company","Vercel","cloud platform company"]’s `vercel-labs/agent-skills`, I did not find a dedicated slides/presentation skill (no “slide” or “presentation” matches in the repo page text). citeturn6view0turn6view1turn6view2
+
+### Curated “awesome” index
+
+VoltAgent’s curated list is helpful because it explicitly surfaces at least one strong slide workflow skill (`frontend-slides`) and confirms Anthropic’s official “pptx” skill exists as the baseline. citeturn4view0turn5view1
+
+## Top candidates ranked by fit
+
+These are the **3–5 strongest matches** I found that best satisfy your “good match” criteria (workflow guidance, presentation-as-code, manifest/pipeline thinking, clear triggers, not merely raw `.pptx` manipulation). All are installed via the `npx skills` ecosystem.
+
+### Quick comparison
+
+| Rank | Skill | Output format focus | Why it’s a strong match |
+|---:|---|---|---|
+| 1 | `frontend-slides` | Single-file HTML slideshow | End-to-end slide creation + style discovery + PPT/PPTX → web conversion |
+| 2 | `ppt-creator` | Markdown slides (+ optional PPTX) | Full deck pipeline: intake → outline → charts → speaker notes → rubric‑driven refinement |
+| 3 | `revealjs` | Reveal.js HTML + CSS | Strong presentation-as-code workflow + scaffolding + automated overflow checks |
+| 4 | `ln-150-presentation-creator` | Interactive HTML “doc presentation” | Converts project docs into a structured web presentation with tabs + Mermaid |
+| 5 | `markdown-slides` | Markdown slides (Deckset/Marp) | Clean “slides as Markdown” conversion with speaker notes guidance |
+
+(Each entry below includes install command, what it does, why it matches, and any concerns.)
+
+## Candidate details with install commands and concerns
+
+### Frontend Slides
+
+**Skill name + source**  
+`frontend-slides` — `zarazhangrui/frontend-slides` (skills.sh listing) citeturn8search0turn8search1
+
+**One-sentence description**  
+Creates **zero-dependency, animation-rich HTML presentations** and supports converting existing PowerPoint decks into web slideshows, with “show-don’t-tell” style preview exploration. citeturn8search0turn9view0
+
+**Why it matches slides workflow needs**  
+This is one of the clearest “presentation-as-code” skills found: it emphasizes **single HTML files**, **no build tools**, **viewport-fit discipline**, and an explicit **style exploration phase** (generating preview files the user can open and react to). citeturn8search0turn8search1  
+It additionally includes a real conversion path: the repo has a `scripts/extract-pptx.py` extractor and describes a PPT → web conversion workflow. citeturn9view0turn14view1turn10view0
+
+**Security / quality concerns**  
+- The repo includes a Python script (`extract-pptx.py`) that reads a local `.pptx` and writes extracted images + JSON. I did not find obvious red flags like `eval`, base64 payloads, or shell execution in the script excerpt retrieved. citeturn14view1turn26view0turn26view3  
+- It requires Python + `python-pptx` for PPT conversion. That’s not inherently risky, but it is an additional dependency surface. citeturn9view0turn14view1
+
+**Install command (Claude Code, global, non-interactive)**  
+```bash
+npx skills add https://github.com/zarazhangrui/frontend-slides --skill frontend-slides -g -a claude-code -y
+```
+(`-g` and `-y` are documented flags in the skills CLI.) citeturn7view1turn8search0
+
+---
+
+### PPT Creator
+
+**Skill name + source**  
+`ppt-creator` — `daymade/claude-code-skills` (skills.sh listing) citeturn27search0turn14view2
+
+**One-sentence description**  
+A structured, quality‑gated pipeline that turns a topic or documents into a presentation: intake questions → story structure → chart selection → speaker notes → self‑scoring rubric → optional PPTX export. citeturn27search0turn14view2
+
+**Why it matches slides workflow needs**  
+This is one of the most “workflow-y” slide skills I found. It explicitly:
+- uses an intake form if key info is missing,
+- applies a narrative method (“one conclusion → reasons → evidence”),
+- generates charts (optionally via a script),
+- generates speaker notes,
+- self‑evaluates against a rubric and iterates up to two times,
+- outputs **slides.md** (not just PPTX), explicitly noting Marp/Reveal.js compatibility, plus citations and assets. citeturn27search0turn14view2
+
+It also includes a safety constraint: “do not scrape the web without permission” and only run scripts when user provides data—this is a good sign of thoughtful guardrails. citeturn14view2turn27search0
+
+**Security / quality concerns**  
+- The skill references a `scripts/chartkit.py` helper. I was not able to retrieve the script content in this environment (tool cache retrieval failures), so I cannot personally confirm the absence of suspicious patterns inside that file. However, the SKILL.md itself contains explicit safety guidance and does not show credential embedding. citeturn14view2turn27search0turn24view2  
+- This skill can optionally produce PPTX if python tooling is available; that means your environment may need Python dependencies if you want that path. citeturn27search0turn14view2
+
+**Install command (Claude Code, global, non-interactive)**  
+```bash
+npx skills add https://github.com/daymade/claude-code-skills --skill ppt-creator -g -a claude-code -y
+```
+citeturn7view1turn27search0
+
+---
+
+### Reveal.js Presentations
+
+**Skill name + source**  
+`revealjs` — `ryanbbrown/revealjs-skill` (skills.sh listing) citeturn20search0turn21view0
+
+**One-sentence description**  
+Generates **Reveal.js HTML + CSS presentations** with no build step, and includes a workflow that scaffolds decks, checks overflow automatically, and encourages screenshot review. citeturn20search0turn21view0
+
+**Why it matches slides workflow needs**  
+This is a strong “presentation-as-code” solution:
+- The skill defines what a Reveal.js deck is (HTML + CSS),  
+- Provides a scaffolding generator (`create-presentation.js`) to avoid re-authoring boilerplate,  
+- Includes an overflow checker (`check-overflow.js`) using Puppeteer to detect slide overflow,  
+- Encourages a disciplined “check overflow + screenshot every slide” workflow and even supports targeted re-screenshooting via Decktape. citeturn20search0turn21view2turn23view0turn23view1
+
+**Security / quality concerns**  
+- The workflow runs Node scripts and uses Puppeteer/Decktape. The two scripts I was able to retrieve (`create-presentation.js`, `check-overflow.js`) did not show obvious red flags like base64 payloads, `eval`, or spawning shell commands; `check-overflow.js` launches Puppeteer and evaluates DOM sizing to detect overflow. citeturn23view0turn23view1turn22view0turn22view2  
+- Because it uses browser automation tools, you still want to treat it like any automation code: install dependencies deliberately and run in a controlled environment. (This is best practice rather than a specific red flag.)
+
+**Install command (Claude Code, global, non-interactive)**  
+```bash
+npx skills add https://github.com/ryanbbrown/revealjs-skill --skill revealjs -g -a claude-code -y
+```
+citeturn7view1turn20search0
+
+---
+
+### HTML Presentation Builder
+
+**Skill name + source**  
+`ln-150-presentation-creator` — `levnikolaevich/claude-code-skills` (skills.sh listing) citeturn27search1turn16view0
+
+**One-sentence description**  
+Builds an **interactive, self-contained HTML presentation** (six-tab UI) from a project’s Markdown documentation, with Mermaid diagram support and a multi-phase build pipeline. citeturn27search1turn16view0
+
+**Why it matches slides workflow needs**  
+This is a “deck generation pipeline” in the clearest sense: it describes a 7-phase workflow (read docs → validate → create dir → copy templates → inject content → build HTML) and outputs a final generated HTML presentation file, while keeping editable sources in an assets directory. citeturn27search1turn16view0  
+It’s also explicitly oriented toward **documentation-to-presentation** transformation (architecture, requirements, roadmap), which is a practical, high-value niche.
+
+**Security / quality concerns**  
+- The skill emphasizes content injection and references XSS escaping in its “best practices” section as shown in the skills.sh excerpt, which is a good sign for HTML generation quality. citeturn27search1turn16view0  
+- I did not retrieve and inspect the referenced Node build script templates in this environment (cache misses), so I cannot fully attest to script internals; however, the SKILL.md did not show signs of credential stuffing or “hide actions” tactics. citeturn16view0turn25view4
+
+**Install command (Claude Code, global, non-interactive)**  
+```bash
+npx skills add https://github.com/levnikolaevich/claude-code-skills --skill ln-150-presentation-creator -g -a claude-code -y
+```
+citeturn7view1turn27search1
+
+---
+
+### Markdown Slides
+
+**Skill name + source**  
+`markdown-slides` — `jykim/claude-obsidian-skills` (skills.sh listing) citeturn2search5turn27search3
+
+**One-sentence description**  
+Converts content into Markdown slide decks compatible with Deckset and Marp, with guidance on speaker notes, structure, and slide density. citeturn2search5turn27search3turn19view0
+
+**Why it matches slides workflow needs**  
+This is a clean “presentation-as-text” skill: it turns notes into a slide-friendly Markdown format and explicitly mentions Deckset/Marp compatibility and speaker notes. citeturn2search5turn27search3  
+The repo also includes `markdown-video` (adjacent) that can convert markdown slides into an MP4 with TTS, suggesting a larger “content → slides → video” pathway if you later expand. citeturn19view0
+
+**Security / quality concerns**  
+- The skill itself (markdown-slides) is described as having no external requirements in the repo’s requirements table (markdown-only). That reduces risk surface. citeturn19view0  
+- Note: the same repo includes other skills that require API keys (e.g., video cleaning, image generation). That doesn’t implicate markdown-slides directly, but it’s worth being mindful if you install the whole repo rather than one skill. citeturn19view0
+
+**Install command (Claude Code, global, non-interactive)**  
+```bash
+npx skills add https://github.com/jykim/claude-obsidian-skills --skill markdown-slides -g -a claude-code -y
+```
+citeturn7view1turn2search5
+
+## Security scan checklist and what I actually verified
+
+You asked to flag:
+- hardcoded credentials
+- base64 payloads in scripts/
+- instructions to suppress output / hide actions
+- `eval()` or dynamic shell execution
+
+What I checked in this environment:
+
+- For `frontend-slides`, I retrieved and scanned `extract-pptx.py` (PPTX extraction) and did not see base64 strings, eval-like behavior, or shell execution patterns; the script reads PPTX via `python-pptx`, writes images, and emits structured JSON. citeturn14view1turn26view3  
+- For `revealjs`, I retrieved and scanned `create-presentation.js` and `check-overflow.js`. `check-overflow.js` uses Puppeteer to load a local file URL and checks DOM dimensions; no `eval()` usage was found via text search, and the script content is straightforward automation (launch browser, evaluate sizes). citeturn23view0turn23view1turn22view0turn22view2  
+- For `ppt-creator` and `ln-150-presentation-creator`, I could retrieve the SKILL.md content but not all referenced scripts due to intermittent fetch failures. I did not see credential patterns inside SKILL.md itself, and both describe fairly transparent workflows. citeturn14view2turn16view0turn24view2turn25view4  
+
+If you want a “real” security review workflow, the practical advice is:
+1) install a single skill (not an entire repo) using `--skill`,  
+2) inspect the repo’s `scripts/` directory before running anything,  
+3) run automation in a sandboxed directory/project,  
+4) avoid skills that instruct you to “hide logs” or “suppress outputs” without a legitimate reason.
+
+## Gaps and what this means for your own slideshow manifest workflow
+
+You *did* find real, high-quality slide workflow skills—especially `frontend-slides`, `revealjs`, and `ppt-creator`. So there is not a general “nothing exists” gap.
+
+The gap that still seems real (based on what surfaced in top matches) is:
+
+- A **standard, widely adopted “slide manifest schema”** skill that outputs a structured `slides.json` (or similar) and then supports multiple targets (HTML deck, Reveal.js, Marp/Slidev, PPTX export) from the same manifest.  
+
+`ppt-creator` comes closest to this “pipeline” mindset (it explicitly outputs multiple artifacts and describes orchestration), but it still centers on specific deliverables rather than a universal manifest standard. citeturn27search0turn14view2
+
+If your home-built slideshow manifest workflow is strong, that may still be worth publishing—especially if you can position it as:
+- “manifest-first slides”
+- “multi-target export”
+- “research + citations pipeline”
+- “quality gates and viewport-fit guarantees”
+- “clear triggers that avoid colliding with generic doc skills”
+
+## Honorable mentions you may also want to try
+
+If you want additional options beyond the top five:
+
+- `marp-slide` (Marp deck creation with presets/themes) citeturn2search1  
+- `slidev` (Slidev “slides for developers”) citeturn2search9turn0search5  
+- `presenterm` (terminal slideshow tool driven by Markdown; more “present in terminal” than “generate deck”) citeturn2search4  
+- `magicslides` (wraps a third-party CLI that requires login/auth; useful if you already use that service) citeturn2search2turn0search3  
+- `theme-factory` from Anthropic (styling themes for slide decks; complements a generator rather than replacing one) citeturn3search0turn4view0

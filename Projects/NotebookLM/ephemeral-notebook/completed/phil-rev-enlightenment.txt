@@ -1,0 +1,13 @@
+key: phil-rev-enlightenment
+topic: Philosophical Revolutions — Enlightenment
+title: Philosophical Revolutions: Enlightenment
+pattern: 003
+videos: 3
+research: yes
+copied-text: no
+guidance: |
+  Three pivotal Enlightenment philosophers. Each video applies the same lens:
+  what view was overturned, the key argument, the resistance it faced, the lasting impact.
+  Video 1: Descartes — radical doubt and the thinking self; tearing down everything to rebuild knowledge on certainty
+  Video 2: Hume — the problem of induction and the limits of reason; what we can't actually know and why that matters
+  Video 3: Kant — the great synthesis; how mind shapes experience, uniting rationalism and empiricism

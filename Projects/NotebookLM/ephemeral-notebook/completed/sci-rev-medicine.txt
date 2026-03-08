@@ -1,0 +1,13 @@
+key: sci-rev-medicine
+topic: Scientific Revolutions — Medicine
+title: Scientific Revolutions: Medicine
+pattern: 003
+videos: 3
+research: yes
+copied-text: no
+guidance: |
+  Three paradigm-shifting discoveries in medicine. Each video applies the same lens:
+  what the old model was, the breakthrough moment, the resistance it faced, what it changed forever.
+  Video 1: Germ Theory (Pasteur & Koch)
+  Video 2: Vaccination (Jenner → smallpox eradication)
+  Video 3: Antibiotics (Fleming & penicillin)

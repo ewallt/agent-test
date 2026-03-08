@@ -1,0 +1,7 @@
+key: shifting-agi-timelines
+topic: Shifting AGI Timelines and the Impact of Reasoning Models
+pattern: 003
+videos: 3
+research: no
+copied-text: yes
+guidance: Three videos mapping the 2025 trajectory of AGI predictions based on the provided transcript. Video 1: The early 2025 hype triggered by OpenAI's o1 and o3 reasoning models, expectations of rapid generalization, and the AI 2027 automated R&D scenario. Video 2: The subsequent timeline extensions caused by the physical and economic limits of inference scaling, chip shortages, and the compute inefficiency of reinforcement learning. Video 3: Contrast the timeline delays with the continued commercial success of AI, focusing on falling near-frontier costs, massive industry revenue growth, and the sobering consensus establishing a 10-year window for transformative AI.
