@@ -1,0 +1,150 @@
+{
+  "groups": [
+    {
+      "id": "remotion",
+      "label": "Remotion",
+      "workflows": [
+        {
+          "id": "bar-chart-race",
+          "label": "Bar Chart Race",
+          "tasks": [
+            {
+              "id": "bcr-1",
+              "title": "Wire up Tallest Buildings",
+              "notes": "Data files exist in data/tallest-buildings/ — needs wiring into src/index.tsx",
+              "priority": 3,
+              "status": "pending"
+            }
+          ]
+        },
+        {
+          "id": "simple-narrated-slides",
+          "label": "Simple Narrated Slides",
+          "tasks": [
+            {
+              "id": "sns-1",
+              "title": "Upgrade Britain1940 to per-bullet audio",
+              "notes": "Currently uses per-slide architecture (one MP3 per slide). BattleOfAtlantic already uses the newer per-bullet pattern — Britain1940 needs to match it.",
+              "priority": 4,
+              "status": "pending"
+            }
+          ]
+        },
+        {
+          "id": "whiteboard-explainer",
+          "label": "Whiteboard Explainer",
+          "tasks": [
+            {
+              "id": "we-1",
+              "title": "Build 6 new scene types",
+              "notes": "quote, stat, splitContent, timeline, imageReveal, flowChart — all specced in documents/planning.md",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "we-2",
+              "title": "Demo in WhiteboardExplainer-3 with a third theme",
+              "notes": "New composition to showcase all 6 new scene types. Theme candidates in planning.md.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "we-3",
+              "title": "V2 roadmap",
+              "notes": "Four improvements: evolvePath (better doodle animation), Rough.js (hand-drawn texture, seed:1), Google Fonts (handwritten style), map scene type (D3-Geo animated zoom).",
+              "priority": 3,
+              "status": "pending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "notebooklm",
+      "label": "NotebookLM",
+      "workflows": [
+        {
+          "id": "ephemeral-notebook",
+          "label": "Ephemeral Notebook",
+          "tasks": [
+            {
+              "id": "nlm-1",
+              "title": "Unified artifact workflow",
+              "notes": "Full session build order: sources → Briefing Doc + app → slideshow manifest → Remotion content → videos. remotion flag + Report 3 skill still to design.",
+              "priority": 3,
+              "status": "in-progress"
+            },
+            {
+              "id": "nlm-2",
+              "title": "Two-instance pipeline end-to-end test",
+              "notes": "Test strategist → operator sequential run. See design/two-instance-architecture.md.",
+              "priority": 5,
+              "status": "pending"
+            },
+            {
+              "id": "nlm-3",
+              "title": "FileSystemWatcher script",
+              "notes": "PowerShell script for concurrent pipeline operation. Script drafted in design/filesystemwatcher.md.",
+              "priority": 5,
+              "status": "pending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "infrastructure",
+      "label": "Infrastructure",
+      "workflows": [
+        {
+          "id": "infrastructure",
+          "label": "",
+          "tasks": [
+            {
+              "id": "inf-1",
+              "title": "Task manager web app",
+              "notes": "This app. Located at tools/.",
+              "priority": 1,
+              "status": "in-progress"
+            },
+            {
+              "id": "inf-2",
+              "title": "Installed-skills tracker skill",
+              "notes": "A skill that maintains awareness of what skills are installed, their purpose, and when they were added. Referenced by skill-finder to avoid redundant suggestions.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "inf-3",
+              "title": "Skill eval pass",
+              "notes": "Use skill-creator (Anthropic official) to evaluate and refine home-built skills: whiteboard-explainer, remotion-narrated-slides, project-report.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "inf-4",
+              "title": "Upgrade nlm to v0.3.3",
+              "notes": "Minor bugfix release, no breaking changes.",
+              "priority": 4,
+              "status": "pending"
+            },
+            {
+              "id": "inf-5",
+              "title": "nlm download video integration",
+              "notes": "Command is known and documented in CONTEXT.md. Needs wiring into the ephemeral notebook workflow.",
+              "priority": 4,
+              "status": "pending"
+            },
+            {
+              "id": "inf-6",
+              "title": "Build design docs DOC-002 through DOC-012",
+              "notes": "See ephemeral-notebook/design/DOC-000-table-of-contents.md for the full list.",
+              "priority": 5,
+              "status": "pending"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
