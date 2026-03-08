@@ -10,7 +10,6 @@ import {
   useVideoConfig,
 } from "remotion";
 
-const BUILD = "B3";
 const TITLE_FRAMES = 120;       // 4s — accommodates 3.5s title audio + breathing room
 const SLIDE_BUFFER_FRAMES = 60; // 2s silence appended after each slide's audio
 const TOTAL_SLIDES = 5;
@@ -356,13 +355,6 @@ export const Britain1940: React.FC<Britain1940Props> = ({ slideDurations }) => {
       <ScanlineOverlay />
       <Vignette />
       <GlobalProgressBar />
-
-      {/* Build indicator — remove when confirmed working */}
-      <div style={{
-        position: "absolute", top: 16, left: 24, zIndex: 99,
-        color: "rgba(251,191,36,0.9)", fontFamily: "monospace", fontSize: 18, fontWeight: 700,
-        letterSpacing: "0.1em",
-      }}>{BUILD}</div>
 
       <Sequence from={0} durationInFrames={TITLE_FRAMES}>
         <TitleCard />
