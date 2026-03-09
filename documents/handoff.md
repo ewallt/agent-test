@@ -2,58 +2,63 @@
 
 ## What Was Done This Session
 
-### Crash recovery
-- Previous session crashed mid-work on bar-chart-race reconstruction
-- Project confirmed fully restored at `Projects/Remotion/bar-chart-race/`
-- Both compositions (AiMmlu, StreamingWars) working in Studio
-- Tom re-obtained "Signal Through the Dark.mp3" and placed in public/
+### Shutdown routine built
+- New skill at `~/.claude/skills/shutdown/SKILL.md` — invoked with `/shutdown`
+- Flow: handoff discussion (collaborative) → session log, pending, tasks.json, git commit (independent)
+- No server shutdown, no promote — those are separate deliberate acts
+- User preference confirmed and saved to MEMORY.md: Claude always writes session log entries, never asks Tom to narrate
 
-### Remotion studios — fixed ports
-- bar-chart-race: 3000, simple-narrated-slides: 3001, whiteboard-explainer: 3002
-- All three can run simultaneously; Claude starts them at the top of Remotion sessions
-- remotion.config.ts updated in all three projects
+### Server persistence clarified
+- Remotion studios (3000/3001/3002) and task manager (3010) are OS-level processes — persist across Claude sessions
+- `startup.md` and `remotion-context.md` updated: check ports first, start only if not already running
+- "May need restarting" language removed from documentation
 
-### Git / dev-prod environment
-- `git init` at agent-test root — single repo covering all projects
-- Branches: `main` (production), `dev` (working — currently on this)
-- `promote.sh` at root — runs all tests, merges dev → main if passed
-- 99 structural tests across all three Remotion projects (all passing)
+### Braess's Paradox — full notebook build
+- Notebook created: `fc34301f-00c3-4065-8617-1ce6a74f3809`
+- Knowledge base written by Claude from general knowledge (no nlm research) — added as source, temp file deleted
+- Gemini slide manifest written — `artifacts/braess-paradox/manifest.md` (8 slides, 1960s technical illustration style)
+- Both added as notebook sources; video queued (`215894d5`) — retro_print style, still rendering
+- Inference web app built — `artifacts/braess-paradox/app.html` (Explorer + Quiz tabs, groq proxy)
+- Task file created — `tasks/braess-paradox.md`
 
-### B3 build indicator
-- Removed from Britain1940.tsx (BattleOfAtlantic never had it)
+### Artifacts folder restructure
+- Retired flat `apps/` and `slideshows/` folders in favour of `artifacts/<topic-slug>/`
+- Each topic folder holds: `app.html`, `slides.html`, `manifest.md`
+- Existing apps migrated: braess-paradox, double-entry-bookkeeping, other-lane, poc
+- `.gitignore` updated: `**/artifacts/**/slides.html` excluded (large base64 files)
+- CONTEXT.md, skill-inference-app.md, skill-slideshow-manifest.md updated
 
-### Task manager app
-- `tools/tasks.html` + `tools/tasks.json`
-- Served on localhost:3010 via `npx serve . --listen 3010` in tools/
-- Two-level hierarchy: Remotion/NotebookLM/Infrastructure → sub-workflows → tasks
-- Read-only for now; tasks.json maintained manually by Claude
+### GitHub setup
+- Repo created: `https://github.com/ewallt/claude-code-fun` (public)
+- `main` and `dev` branches pushed; `promote.sh` updated to push both branches after merging
+- `gh-pages` orphan branch created; GitHub Pages enabled
+- Braess's Paradox web app live: `https://ewallt.github.io/claude-code-fun/braess-paradox/`
+- Braess's Paradox slides live: `https://ewallt.github.io/claude-code-fun/braess-paradox-slides/`
 
-### Startup routine overhauled
-- No longer reads active.txt or pre-loads workflow context
-- Reads `documents/overview.md` at start for high-level orientation
-- Then waits for Tom to indicate workflow before loading deep context
+### Character Narrator — future project concept
+- Design doc: `documents/future-projects/character-narrator.md`
+- Second-person character-driven animated videos (inspired by "How to Penguin")
+- Added to tasks.json as `we-4`, priority 5; prerequisite: Rough.js in whiteboard explainer V2 first
 
-### overview.md created
-- `documents/overview.md` — high-level map of all 5 groups with pointers to detail docs
-- Wired into MEMORY.md as the session-start read
+### Other
+- `documents/skills-installer-guide.html` — explains `npx skills` CLI and installed skills
+- `source add --file` uses positional notebook ID confirmed (not `--notebook-id` flag)
 
 ---
 
 ## State Right Now
 
-- On `dev` branch; several commits ahead of `main` (not yet promoted)
-- All three Remotion studios were running when session ended (may need restarting)
-- Task manager server was running on 3010 (may need restarting)
+- On `dev` branch; changes from this session uncommitted
+- Braess's Paradox video still rendering (`215894d5`) — not yet shared
+- Task file `tasks/braess-paradox.md` not yet moved to `completed/`
+- GitHub Pages live and built
 
 ## Next Session Priority
 
-**IMPORTANT: Build the shutdown routine** — a checklist/skill for cleanly ending sessions:
-commit uncommitted changes, update tasks.json, update session-log.md and pending.md,
-optionally promote to main.
+No specific priority set. Top candidates from tasks.json: 6 new whiteboard scene types (we-1), Tallest Buildings wiring (bcr-1), unified artifact workflow (nlm-1).
 
-## Other 3-Priority Items (per ReadMe)
-- Bar chart race: wire up Tallest Buildings
-- Whiteboard Explainer: 6 new scene types + WhiteboardExplainer-3
-- Whiteboard Explainer: V2 roadmap items
-- NotebookLM: unified artifact workflow (remotion flag still to design)
-- Infrastructure: installed-skills tracker, skill eval pass
+## Other Items
+
+- Check Braess's Paradox video status next session and share the notebook
+- Move `tasks/braess-paradox.md` to `completed/` once video confirmed and notebook shared
+- Deploy script for gh-pages worth building (discussed but not built this session)
