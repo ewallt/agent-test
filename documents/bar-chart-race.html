@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bar Chart Race — How It Works</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 48px; }
+
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+    flex-shrink: 0;
+  }
+  h3 {
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 20px 0 8px;
+  }
+  h3:first-child { margin-top: 0; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: .95rem;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* File tree */
+  .tree {
+    background: #060b15;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: .85rem;
+    line-height: 1.8;
+    padding: 18px 22px;
+    margin: 14px 0;
+    overflow-x: auto;
+  }
+  .tree .dir  { color: var(--accent); }
+  .tree .file { color: #e6edf7; }
+  .tree .note { color: #546e7a; }
+  .tree .tag  { color: rgba(124,255,178,.8); font-size: .78rem; margin-left: 6px; }
+
+  /* Code blocks */
+  .code {
+    background: #060b15;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: .85rem;
+    line-height: 1.75;
+    padding: 16px 20px;
+    margin: 14px 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code .kw   { color: #c792ea; }
+  .code .str  { color: #c3e88d; }
+  .code .num  { color: rgba(255,214,100,.9); }
+  .code .cmt  { color: #546e7a; }
+  .code .key  { color: var(--accent); }
+  .code .type { color: rgba(124,255,178,.8); }
+
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; padding-bottom: 0; }
+  .step:first-child { padding-top: 0; }
+  .step-num {
+    background: rgba(139,185,255,.15);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: .78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    height: 26px;
+    width: 26px;
+    line-height: 26px;
+    text-align: center;
+    margin-top: 1px;
+  }
+  .step-body { flex: 1; }
+  .step-body strong { color: var(--text); display: block; margin-bottom: 3px; font-size: .93rem; }
+  .step-body span { color: var(--muted); font-size: .9rem; line-height: 1.5; }
+
+  /* Props table */
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  th {
+    background: rgba(255,255,255,.04);
+    color: var(--muted);
+    font-size: .76rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    padding: 9px 14px;
+    text-align: left;
+    text-transform: uppercase;
+  }
+  td {
+    border-top: 1px solid var(--border);
+    padding: 10px 14px;
+    color: var(--muted);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  td:first-child { font-family: var(--mono); font-size: .82rem; color: var(--accent); white-space: nowrap; }
+  td strong { color: var(--text); }
+  .opt { color: #546e7a; font-size: .76rem; font-weight: 600; letter-spacing: .04em; }
+  .req { color: rgba(255,122,138,.8); font-size: .76rem; font-weight: 600; letter-spacing: .04em; }
+
+  /* Callout */
+  .callout {
+    background: rgba(139,185,255,.06);
+    border: 1px solid rgba(139,185,255,.18);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: .9rem;
+    line-height: 1.6;
+    padding: 14px 18px;
+    margin-top: 16px;
+  }
+  .callout strong { color: var(--accent); }
+
+  /* Two-column layout for small cards */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+  .mini-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .mini-card .label { font-size: .75rem; font-weight: 700; color: var(--accent); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 8px; }
+  .mini-card p { font-size: .88rem; margin: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Reference Guide</div>
+  <h1>Bar Chart <span>Race</span></h1>
+  <p>How the engine works, how the data is structured, and how to wire up a new dataset.</p>
+</header>
+
+<div class="container">
+
+  <!-- Architecture -->
+  <section>
+    <h2><span class="icon">⬡</span> Architecture — Engine vs. Data</h2>
+    <div class="card">
+      <p>The project is split into two permanent layers that never mix: a <strong>generic engine</strong> that knows how to render any bar chart race, and <strong>per-project data files</strong> that supply everything domain-specific. You never touch the engine to add a new project.</p>
+
+      <div class="tree">
+<span class="dir">bar-chart-race/</span>
+  <span class="dir">src/</span>                          <span class="note">← engine — never changes</span>
+    <span class="file">index.tsx</span>                  <span class="note">← registers all compositions</span>
+    <span class="dir">engine/</span>
+      <span class="file">BarChartRace.tsx</span>         <span class="note">← generic renderer</span>
+      <span class="file">compute.ts</span>              <span class="note">← pure computation</span>
+      <span class="file">types.ts</span>               <span class="note">← shared TypeScript types</span>
+
+  <span class="dir">data/</span>                         <span class="note">← one folder per project</span>
+    <span class="dir">ai-mmlu/</span>
+      <span class="file">entries.ts</span>             <span class="note">← raw data rows</span>
+      <span class="file">categories.ts</span>          <span class="note">← lab → color map</span>
+      <span class="file">metadata.ts</span>            <span class="note">← id and title</span>
+      <span class="file">story-cards.ts</span>         <span class="note">← narrative cards</span>
+      <span class="file">barchart.ts</span>            <span class="note">← generated output (imported by engine)</span>
+    <span class="dir">streaming-wars/</span>           <span class="note">← same structure</span>
+    <span class="dir">tallest-buildings/</span>        <span class="note">← data exists, not yet wired up</span>
+
+  <span class="dir">library/</span>                      <span class="note">← shared defaults</span>
+    <span class="file">timing.ts</span>              <span class="note">← standardTiming constants</span>
+    <span class="file">music.ts</span>               <span class="note">← music track references</span>
+    <span class="file">colors.ts</span>              <span class="note">← palette5 / palette7 / palette10</span>
+
+  <span class="dir">staging/</span>                      <span class="note">← build output, pre-activation</span>
+  <span class="dir">completed/</span>                    <span class="note">← archived after render</span>
+      </div>
+
+      <p>The engine's entry point, <code>src/index.tsx</code>, imports each project's <code>barchart.ts</code> and registers it as a Remotion composition. Adding a new project means adding two lines there — nothing else in <code>src/</code> changes.</p>
+    </div>
+  </section>
+
+  <!-- Engine internals -->
+  <section>
+    <h2><span class="icon">⚙</span> How the Engine Works</h2>
+    <div class="card">
+      <h3>compute.ts — pure functions, no React</h3>
+      <p>Before any frame is drawn, <code>compute.ts</code> derives everything the renderer needs from the config. Three key functions:</p>
+
+      <div class="two-col" style="margin-top: 14px;">
+        <div class="mini-card">
+          <div class="label">buildKeyframes(config)</div>
+          <p>Sorts entries by date, then produces one <strong>Keyframe</strong> per entry. Each keyframe records which models are in the top N at that moment, their scores, and the frame number where the keyframe starts.</p>
+        </div>
+        <div class="mini-card">
+          <div class="label">buildCardSchedule(config, keyframes)</div>
+          <p>Matches each story card's <code>trigger</code> field (a model name) to its keyframe. Each card runs from its trigger frame until the <em>next</em> card's trigger — no gaps once the first card appears.</p>
+        </div>
+        <div class="mini-card">
+          <div class="label">computeTotalFrames(config)</div>
+          <p>Returns <code>entries.length × framesPerEntry + trailingFrames</code>. Remotion needs this upfront to set the composition length.</p>
+        </div>
+        <div class="mini-card">
+          <div class="label">getConstants(config)</div>
+          <p>Reads timing params from the config (or applies defaults). Returns <code>topN</code>, <code>fps</code>, <code>transitionFrames</code>, <code>holdFrames</code>, and the derived <code>framesPerEntry</code>.</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3>Animation model</h3>
+      <p>Every entry gets a two-phase keyframe:</p>
+      <div class="two-col" style="margin-top: 14px;">
+        <div class="mini-card">
+          <div class="label">Transition (default 25 frames)</div>
+          <p>Bars animate to new widths and positions. New entries slide in from below; entries that drop out of the top N slide away downward.</p>
+        </div>
+        <div class="mini-card">
+          <div class="label">Hold (default 20 frames)</div>
+          <p>Everything pauses. The new bar has appeared, the date updates, and the story card (if any) is fully visible before the next entry arrives.</p>
+        </div>
+      </div>
+      <p style="margin-top: 14px;">At 30 fps, each entry takes <strong>45 frames = 1.5 seconds</strong>. A dataset of 35 entries runs about 53 seconds before the trailing hold.</p>
+
+      <div class="divider"></div>
+
+      <h3>BarChartRace.tsx — the renderer</h3>
+      <p>A React component that receives the full config as props. On each frame it calls <code>compute.ts</code> to get the keyframes, finds the current and previous keyframe, and interpolates bar positions and widths using Remotion's <code>interpolate()</code>. It renders bars, rank numbers, the date display, story cards, legend, and background music — all in one component. You never need to touch it.</p>
+    </div>
+  </section>
+
+  <!-- BarChartConfig reference -->
+  <section>
+    <h2><span class="icon">≡</span> BarChartConfig Reference</h2>
+    <div class="card">
+      <p>Every project exports a single <code>data</code> object of this type. Required fields first, then optional.</p>
+      <table>
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>id</td>
+            <td><span class="req">required</span></td>
+            <td>Remotion composition ID — must be unique across all projects. Used in the URL and render command. Example: <strong>AiMmlu</strong></td>
+          </tr>
+          <tr>
+            <td>title</td>
+            <td><span class="req">required</span></td>
+            <td>Displayed in the video header.</td>
+          </tr>
+          <tr>
+            <td>entries</td>
+            <td><span class="req">required</span></td>
+            <td>Array of <code>ModelEntry</code>. Each has <code>model</code> (bar label), <code>lab</code> (category — must match a key in <code>labColors</code>), <code>date</code> (YYYY-MM-DD), <code>mmlu</code> (the numeric score — legacy field name used for all projects), and optional <code>estimated: true</code> which renders a <code>~</code> prefix on the value.</td>
+          </tr>
+          <tr>
+            <td>labColors</td>
+            <td><span class="req">required</span></td>
+            <td>Map of lab name → hex color string. Every lab name that appears in <code>entries</code> must have an entry here.</td>
+          </tr>
+          <tr>
+            <td>storyCards</td>
+            <td><span class="req">required</span></td>
+            <td>Array of narrative cards. Each has <code>trigger</code> (a <code>model</code> value — the entry whose keyframe starts this card), <code>title</code>, and <code>body</code>. Cards without a matching trigger are silently ignored.</td>
+          </tr>
+          <tr>
+            <td>topN</td>
+            <td><span class="opt">optional</span></td>
+            <td>How many bars to show at once. Default: <strong>10</strong>.</td>
+          </tr>
+          <tr>
+            <td>fps</td>
+            <td><span class="opt">optional</span></td>
+            <td>Frames per second. Default: <strong>30</strong>.</td>
+          </tr>
+          <tr>
+            <td>transitionFrames</td>
+            <td><span class="opt">optional</span></td>
+            <td>Frames spent animating each new entry. Default: <strong>25</strong>.</td>
+          </tr>
+          <tr>
+            <td>holdFrames</td>
+            <td><span class="opt">optional</span></td>
+            <td>Frames to pause after each transition. Default: <strong>20</strong>.</td>
+          </tr>
+          <tr>
+            <td>trailingFrames</td>
+            <td><span class="opt">optional</span></td>
+            <td>Extra frames appended after the last entry — a final hold. Default: <strong>0</strong>. Standard timing uses <strong>60</strong> (2 seconds).</td>
+          </tr>
+          <tr>
+            <td>musicSrc</td>
+            <td><span class="opt">optional</span></td>
+            <td>Filename of an MP3 in <code>public/</code>. Resolved via Remotion's <code>staticFile()</code>.</td>
+          </tr>
+          <tr>
+            <td>musicVolume</td>
+            <td><span class="opt">optional</span></td>
+            <td>Volume 0–1. Default: <strong>0.7</strong>.</td>
+          </tr>
+          <tr>
+            <td>valueSuffix</td>
+            <td><span class="opt">optional</span></td>
+            <td>Suffix shown after each score. Default: <strong>%</strong>. Change to <code>M</code>, <code>K</code>, etc. for non-percentage data.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Adding a new dataset -->
+  <section>
+    <h2><span class="icon">+</span> Adding a New Dataset</h2>
+    <div class="card">
+      <p>A new project is entirely self-contained in a new <code>data/{project}/</code> folder. The build script assembles the component files into the final <code>barchart.ts</code> that the engine imports.</p>
+
+      <div class="divider"></div>
+
+      <h3>Step 1 — Create the four component files</h3>
+      <p>Create <code>data/{project}/</code> and write these four files:</p>
+
+      <p><strong>metadata.ts</strong></p>
+      <div class="code"><span class="kw">export const</span> <span class="key">metadata</span> = {
+  <span class="key">id</span>:    <span class="str">'MyProject'</span>,           <span class="cmt">// Remotion composition ID — no spaces</span>
+  <span class="key">title</span>: <span class="str">'My Bar Chart Race'</span>,
+};</div>
+
+      <p><strong>categories.ts</strong></p>
+      <div class="code"><span class="kw">import</span> { palette7 } <span class="kw">from</span> <span class="str">'../../library/colors'</span>;
+
+<span class="kw">export const</span> <span class="key">categories</span>: Record&lt;string, string&gt; = {
+  <span class="key">CategoryA</span>: palette7[<span class="num">0</span>],  <span class="cmt">// teal</span>
+  <span class="key">CategoryB</span>: palette7[<span class="num">1</span>],  <span class="cmt">// red</span>
+  <span class="cmt">// or use hex directly: CategoryC: '#f97316'</span>
+};</div>
+
+      <p><strong>entries.ts</strong></p>
+      <div class="code"><span class="kw">import</span> { ModelEntry } <span class="kw">from</span> <span class="str">'../../src/engine/types'</span>;
+
+<span class="kw">export const</span> <span class="key">entries</span>: ModelEntry[] = [
+  { <span class="key">model</span>: <span class="str">'Item A'</span>, <span class="key">lab</span>: <span class="str">'CategoryA'</span>, <span class="key">date</span>: <span class="str">'2020-01-01'</span>, <span class="key">mmlu</span>: <span class="num">42.0</span> },
+  { <span class="key">model</span>: <span class="str">'Item B'</span>, <span class="key">lab</span>: <span class="str">'CategoryB'</span>, <span class="key">date</span>: <span class="str">'2020-06-15'</span>, <span class="key">mmlu</span>: <span class="num">67.5</span> },
+  <span class="cmt">// Entries can be in any order — the engine sorts by date</span>
+  <span class="cmt">// estimated: true adds a ~ prefix to the displayed value</span>
+];</div>
+
+      <p><strong>story-cards.ts</strong></p>
+      <div class="code"><span class="kw">import</span> { StoryCard } <span class="kw">from</span> <span class="str">'../../src/engine/types'</span>;
+
+<span class="kw">export const</span> <span class="key">storyCards</span>: StoryCard[] = [
+  {
+    <span class="key">trigger</span>: <span class="str">'Item A'</span>,        <span class="cmt">// must exactly match a model name</span>
+    <span class="key">title</span>:   <span class="str">'The story begins'</span>,
+    <span class="key">body</span>:    <span class="str">'Narrative text shown from this entry until the next card.'</span>,
+  },
+];</div>
+
+      <div class="divider"></div>
+
+      <h3>Step 2 — Run the build script</h3>
+      <p>From the <code>bar-chart-race/</code> directory:</p>
+      <div class="code">npm run build -- my-project</div>
+      <p>This reads the four component files, merges them with the standard timing defaults and default music track, and writes two files:</p>
+      <div class="code"><span class="cmt">✓ Built   data/my-project/barchart.ts</span>    <span class="cmt">← permanent archive copy</span>
+<span class="cmt">✓ Staged  staging/my-project.ts</span>           <span class="cmt">← ready to activate</span></div>
+
+      <div class="divider"></div>
+
+      <h3>Step 3 — Register it in data/index.ts</h3>
+      <p>Open <code>data/index.ts</code> and add your project:</p>
+      <div class="code"><span class="kw">import</span> { data <span class="kw">as</span> myProject } <span class="kw">from</span> <span class="str">'./my-project/barchart'</span>;
+
+<span class="kw">export const</span> <span class="key">configs</span> = [aiMmlu, streamingWars, <span class="key">myProject</span>];</div>
+      <p><code>src/index.tsx</code> never changes — it just imports <code>configs</code> from here. The engine registers a Remotion composition for every entry in the array.</p>
+
+      <div class="divider"></div>
+
+      <h3>Step 4 — Preview and render</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>npm start</strong>
+            <span>Opens Remotion Studio at <code>localhost:3000</code>. Your new composition appears in the sidebar alongside the existing ones. Scrub through it to check timing and story cards.</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Render</strong>
+            <span>Run <code>npx remotion render MyProject out/my-project.mp4</code> directly (the <code>npm run render</code> script is hardcoded to AiMmlu — use the CLI directly for other projects).</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Archive</strong>
+            <span>Once rendered, move the staged file from <code>staging/</code> to <code>completed/</code>. The <code>data/{project}/</code> folder stays as the permanent source.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Note on the mmlu field name:</strong> The <code>ModelEntry</code> type uses <code>mmlu</code> as the score field — a legacy name from the first project. It's just a number and works for any domain (subscriber counts, building heights, etc.). Use <code>valueSuffix</code> in the config to control how it displays.
+      </div>
+    </div>
+  </section>
+
+  <!-- Library defaults -->
+  <section>
+    <h2><span class="icon">📚</span> Library Defaults</h2>
+    <div class="card">
+      <p>The <code>library/</code> folder holds shared constants used by the build script. You can override any of these in the config, but the build script applies them automatically as defaults.</p>
+
+      <h3>timing.ts — standardTiming</h3>
+      <div class="code">fps: <span class="num">30</span>  |  topN: <span class="num">10</span>  |  transitionFrames: <span class="num">25</span>  |  holdFrames: <span class="num">20</span>  |  trailingFrames: <span class="num">60</span></div>
+
+      <h3>music.ts — signalThroughTheDark</h3>
+      <p>The default background music. Points to <code>Signal Through the Dark.mp3</code> in <code>public/</code>, volume 0.7. Override <code>musicSrc</code> in the config to use a different track (add the MP3 to <code>public/</code> first).</p>
+
+      <h3>colors.ts — palettes</h3>
+      <p>Four ready-made palettes: <code>palette5</code>, <code>palette6</code>, <code>palette7</code>, <code>palette10</code>. All share the same ordered set of colors — teal, red, blue, eggshell/eggshell-white, purple, orange, yellow, pink, cyan, lime. Use palette indices in <code>categories.ts</code> for consistent color assignment, or use hex strings directly.</p>
+    </div>
+  </section>
+
+  <!-- Commands quick ref -->
+  <section>
+    <h2><span class="icon">⌨</span> Commands</h2>
+    <div class="card">
+      <div class="code"><span class="cmt"># Start Remotion Studio (localhost:3000)</span>
+npm start
+
+<span class="cmt"># Build a project from component files</span>
+npm run build -- &lt;project-name&gt;
+
+<span class="cmt"># Run tests (compute.ts unit tests — no rendering)</span>
+npm test
+
+<span class="cmt"># Render a specific composition</span>
+npx remotion render &lt;CompositionId&gt; out/&lt;filename&gt;.mp4
+
+<span class="cmt"># Example</span>
+npx remotion render AiMmlu out/ai-mmlu.mp4</div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

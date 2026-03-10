@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useCurrentFrame, interpolate, Easing, Audio, staticFile } from 'remotion';
 import { BarChartConfig } from './types';
-import { buildKeyframes, buildCardSchedule, getConstants, Keyframe } from './compute';
+import { buildSimKeyframes, buildSimCardSchedule, getConstants, Keyframe } from './compute';
 
 const WIDTH = 1280;
 const HEIGHT = 720;
@@ -15,11 +15,11 @@ interface Props {
   config: BarChartConfig;
 }
 
-export const BarChartRace: React.FC<Props> = ({ config }) => {
+export const BarChartRaceSimultaneous: React.FC<Props> = ({ config }) => {
   const frame = useCurrentFrame();
   const { topN, transitionFrames, framesPerEntry } = useMemo(() => getConstants(config), [config]);
-  const keyframes = useMemo(() => buildKeyframes(config), [config]);
-  const cardSchedule = useMemo(() => buildCardSchedule(config, keyframes), [config, keyframes]);
+  const keyframes = useMemo(() => buildSimKeyframes(config), [config]);
+  const cardSchedule = useMemo(() => buildSimCardSchedule(config, keyframes), [config, keyframes]);
 
   // Match legacy keyframe lookup: frame <= endFrame
   let kfIndex = keyframes.length - 1;
@@ -65,7 +65,10 @@ export const BarChartRace: React.FC<Props> = ({ config }) => {
   const currentEntry = [...cardSchedule].reverse().find((c) => frame >= c.startFrame) ?? null;
   let cardOpacity = 0;
   if (currentEntry) {
-    const fadeOutStart = Math.max(currentEntry.startFrame + 70, currentEntry.endFrame - 20);
+    const fadeOutStart = Math.max(
+      currentEntry.startFrame + 16,
+      Math.min(currentEntry.startFrame + 70, currentEntry.endFrame - 20, currentEntry.endFrame - 1),
+    );
     cardOpacity = interpolate(
       frame,
       [currentEntry.startFrame, currentEntry.startFrame + 15, fadeOutStart, currentEntry.endFrame],
@@ -181,7 +184,7 @@ export const BarChartRace: React.FC<Props> = ({ config }) => {
         const barWidth = (animatedScore / animatedMaxScore) * barMaxWidth;
         const color = config.labColors[entry.lab] ?? '#888';
         const y = CHART_TOP + animatedRank * (BAR_HEIGHT + BAR_GAP);
-        const isNew = kf.newModel === entry.model;
+        const isNew = isEntering;
 
         return (
           <div key={entry.model} style={{ opacity }}>

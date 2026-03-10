@@ -11,8 +11,29 @@
             {
               "id": "bcr-1",
               "title": "Wire up Tallest Buildings",
-              "notes": "Data files exist in data/tallest-buildings/ — needs wiring into src/index.tsx",
+              "notes": "Data files exist in data/tallest-buildings/ — needs wiring into data/index.ts",
               "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "bcr-2",
+              "title": "UsCities pacing fix",
+              "notes": "Simultaneous engine goes too fast — only 13 decennial periods (~10s total). Fix: source annual data or increase frame counts significantly.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "bcr-3",
+              "title": "Document UsTop10Cities minor issues",
+              "notes": "Review the composition and document remaining issues. Update design guide algorithm rules.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "bcr-4",
+              "title": "gh-pages deploy script",
+              "notes": "Discussed two sessions ago. Not yet built.",
+              "priority": 4,
               "status": "pending"
             }
           ]

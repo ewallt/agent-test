@@ -19,3 +19,6 @@
 # OS
 .DS_Store
 Thumbs.db
+
+# Large NotebookLM artifact files (base64 image-embedded slides HTML — can be 16MB+)
+**/artifacts/**/slides.html

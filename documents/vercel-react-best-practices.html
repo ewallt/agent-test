@@ -6,106 +6,234 @@
   <title>Popular Skills Notes</title>
   <style>
     :root {
-      --bg: #f7f7f8;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #4b5563;
-      --border: #e5e7eb;
-      --accent: #2563eb;
+      --bg: #070c16;
+      --surface: #0f1726;
+      --surface2: #131e30;
+      --border: rgba(255,255,255,.10);
+      --text: #e6edf7;
+      --muted: #a9b6cc;
+      --accent: #8bb9ff;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
+      background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
       color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.65;
+      min-height: 100vh;
+      padding: 0 0 80px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 52px 24px 40px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(139,185,255,.12);
+      border: 1px solid rgba(139,185,255,.25);
+      border-radius: 99px;
+      color: var(--accent);
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      padding: 4px 14px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -.03em;
+      margin-bottom: 14px;
+    }
+    header h1 span { color: var(--accent); }
+    header p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+    section { margin-top: 40px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: 12px;
       line-height: 1.6;
     }
-    .wrap {
-      max-width: 860px;
-      margin: 32px auto;
-      padding: 0 20px;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      margin-bottom: 24px;
-    }
-    h1, h2 {
-      line-height: 1.25;
-      margin-top: 0;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 8px;
-    }
-    h2 {
-      font-size: 1.45rem;
-      margin-bottom: 14px;
-      color: var(--accent);
-    }
-    p {
-      margin: 0 0 16px;
-    }
+    p:last-child { margin-bottom: 0; }
+    p strong { color: var(--text); }
+
     ul {
-      margin: 0 0 18px 22px;
+      list-style: none;
+      margin: 14px 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    ul li {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .93rem;
+      line-height: 1.5;
+    }
+    ul li:first-child { border-top: none; }
+    .skill-name {
+      color: var(--text);
+      font-weight: 600;
+      white-space: nowrap;
+      min-width: 220px;
+    }
+    .install-count {
+      color: var(--accent);
+      font-size: .82rem;
+      font-weight: 600;
+      font-family: var(--mono);
+      white-space: nowrap;
+    }
+
+    code {
+      background: rgba(139,185,255,.1);
+      border-radius: 5px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: .85em;
+      padding: 2px 7px;
+    }
+    pre {
+      background: #060b15;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: .85rem;
+      line-height: 1.7;
+      margin: 14px 0 0;
+      overflow-x: auto;
+      padding: 16px 20px;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 12px 0 0;
       padding: 0;
     }
-    li {
-      margin-bottom: 8px;
-    }
-    .muted {
+    .feature-list li {
+      display: flex;
+      gap: 10px;
+      padding: 7px 0;
+      border-top: 1px solid var(--border);
       color: var(--muted);
+      font-size: .93rem;
+      line-height: 1.5;
     }
-    code {
-      background: #f3f4f6;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 2px 6px;
-      font-family: Consolas, Monaco, monospace;
-      font-size: 0.95em;
+    .feature-list li:first-child { border-top: none; }
+    .feature-list li::before {
+      content: '→';
+      color: var(--accent);
+      flex-shrink: 0;
     }
+    .feature-list li strong { color: var(--text); }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Popular Skills Notes</h1>
-      <p class="muted">A quick reference on highly installed development skills and one especially useful session-management skill.</p>
-    </div>
 
+<header>
+  <div class="badge">Reference</div>
+  <h1>Popular <span>Skills Notes</span></h1>
+  <p>Highly installed development skills and one especially useful session-management skill.</p>
+</header>
+
+<div class="container">
+
+  <section>
     <div class="card">
-      <h2>Vercel React Best Practices</h2>
-      <p><strong>Vercel React Best Practices</strong> is the second most popular skill on the global leaderboard, with an impressive <strong>196.2K verified installations</strong>.</p>
-      <p>Based on installation metrics from the skills.sh registry, other highly popular skills include:</p>
+      <h2>Top Skills by Install Count</h2>
+      <p><strong>Vercel React Best Practices</strong> is the second most popular skill on the global leaderboard. Based on installation metrics from the skills.sh registry:</p>
       <ul>
-        <li><strong>Vercel Web Design Guidelines</strong> — 151.9K installs globally.</li>
-        <li><strong>Remotion Video Creation</strong> — 127.3K installs, ranking fourth globally.</li>
-        <li><strong>Anthropic Frontend Design</strong> — 126.3K installs, ranking fifth globally.</li>
-        <li><strong>Anthropic Skill Creator</strong> — 63.7K installs.</li>
-        <li><strong>Superpowers (Brainstorming module)</strong> — 41.7K installs.</li>
-        <li><strong>Anthropic Document Skills (PDF)</strong> — 29.3K installs for the PDF extraction skill alone.</li>
-        <li><strong>Supabase Postgres Best Practices</strong> — 28.8K installs.</li>
-        <li><strong>Superpowers (Systematic Debugging module)</strong> — 23.2K installs.</li>
+        <li>
+          <span class="skill-name">Vercel React Best Practices</span>
+          <span class="install-count">196.2K installs</span>
+        </li>
+        <li>
+          <span class="skill-name">Vercel Web Design Guidelines</span>
+          <span class="install-count">151.9K installs</span>
+        </li>
+        <li>
+          <span class="skill-name">Remotion Video Creation</span>
+          <span class="install-count">127.3K installs</span>
+        </li>
+        <li>
+          <span class="skill-name">Anthropic Frontend Design</span>
+          <span class="install-count">126.3K installs</span>
+        </li>
+        <li>
+          <span class="skill-name">Anthropic Skill Creator</span>
+          <span class="install-count">63.7K installs</span>
+        </li>
+        <li>
+          <span class="skill-name">Superpowers (Brainstorming)</span>
+          <span class="install-count">41.7K installs</span>
+        </li>
+        <li>
+          <span class="skill-name">Anthropic Document Skills (PDF)</span>
+          <span class="install-count">29.3K installs</span>
+        </li>
+        <li>
+          <span class="skill-name">Supabase Postgres Best Practices</span>
+          <span class="install-count">28.8K installs</span>
+        </li>
+        <li>
+          <span class="skill-name">Superpowers (Systematic Debugging)</span>
+          <span class="install-count">23.2K installs</span>
+        </li>
       </ul>
-      <p>The pattern is clear: developers strongly favor skills that standardize frontend design, reduce repetitive deployment work, and enforce framework-specific best practices.</p>
+      <p style="margin-top: 16px;">The pattern is clear: developers strongly favor skills that standardize frontend design, reduce repetitive deployment work, and enforce framework-specific best practices.</p>
     </div>
+  </section>
 
+  <section>
     <div class="card">
       <h2>Task Wrap-Up Orchestrator</h2>
-      <p>There is a skill designed specifically to prevent context loss at the end of a coding session: the <strong>Task Wrap-Up Orchestrator</strong>, often called <strong>Task Wrap-Up</strong>.</p>
-      <p>Its purpose is to act as an automated end-of-session checklist. Instead of leaving the session scattered across terminal history and unstaged files, it helps close things out in a disciplined way.</p>
-      <ul>
-        <li><strong>Cognitive review and memory</strong> — It reviews the session history to identify lessons learned and recurring mistakes made by the AI.</li>
-        <li><strong>Persistent documentation</strong> — It updates memory files such as <code>CLAUDE.md</code> so future sessions preserve architectural decisions and avoid repeating the same errors.</li>
-        <li><strong>Repository management</strong> — It checks local file changes, catches uncommitted work, generates standardized Git commits, and pushes the changes.</li>
+      <p>A skill designed specifically to prevent context loss at the end of a coding session. Its purpose is to act as an automated end-of-session checklist — closing things out in a disciplined way rather than leaving the session scattered across terminal history and unstaged files.</p>
+      <ul class="feature-list">
+        <li><strong>Cognitive review and memory</strong> — Reviews session history to identify lessons learned and recurring mistakes made by the AI.</li>
+        <li><strong>Persistent documentation</strong> — Updates memory files such as <code>CLAUDE.md</code> so future sessions preserve architectural decisions and avoid repeating errors.</li>
+        <li><strong>Repository management</strong> — Checks local file changes, catches uncommitted work, generates standardized Git commits, and pushes changes.</li>
       </ul>
-      <p>This turns the AI from a stateless assistant into more of a continuous collaborator that can build compounding knowledge over time.</p>
-      <p>Install command:</p>
-      <p><code>npx skills add charon-fan/agent-playbook --skill wrap-up</code></p>
+      <p style="margin-top: 16px;">This turns the AI from a stateless assistant into a continuous collaborator that builds compounding knowledge over time.</p>
+      <pre>npx skills add charon-fan/agent-playbook --skill wrap-up</pre>
     </div>
-  </div>
+  </section>
+
+</div>
 </body>
 </html>

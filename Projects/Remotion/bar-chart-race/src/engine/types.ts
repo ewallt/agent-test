@@ -36,4 +36,8 @@ export interface BarChartConfig {
   trailingFrames?: number;
   /** Suffix shown after each score value. Default: '%' */
   valueSuffix?: string;
+  /** Decimal places shown on bar values. Default: 1 */
+  valueDecimals?: number;
+  /** Animation mode. 'sequential' = one entry at a time. 'simultaneous' = all bars update together. Default: 'sequential' */
+  mode?: 'sequential' | 'simultaneous';
 }

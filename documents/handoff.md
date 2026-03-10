@@ -1,64 +1,72 @@
-# Session Handoff — 2026-03-08
+# Session Handoff — 2026-03-09
 
 ## What Was Done This Session
 
-### Shutdown routine built
-- New skill at `~/.claude/skills/shutdown/SKILL.md` — invoked with `/shutdown`
-- Flow: handoff discussion (collaborative) → session log, pending, tasks.json, git commit (independent)
-- No server shutdown, no promote — those are separate deliberate acts
-- User preference confirmed and saved to MEMORY.md: Claude always writes session log entries, never asks Tom to narrate
+### HTML Document Upgrades
+- Upgraded three existing documents to dark theme matching `skills-installer-guide.html`:
+  - `documents/claude-code-tips.html` — bare HTML fragment → full dark-themed reference doc
+  - `documents/publishing-skill-community-github.html` — light theme → dark theme
+  - `documents/vercel-react-best-practices.html` — light theme → dark theme
 
-### Server persistence clarified
-- Remotion studios (3000/3001/3002) and task manager (3010) are OS-level processes — persist across Claude sessions
-- `startup.md` and `remotion-context.md` updated: check ports first, start only if not already running
-- "May need restarting" language removed from documentation
+### Bar Chart Race Reference Doc
+- Created `documents/bar-chart-race.html` — explains the refactored architecture, BarChartConfig reference table, and step-by-step guide for adding a new dataset
+- Moved to `Projects/Remotion/bar-chart-race/documents/bar-chart-race.html` (correct home)
 
-### Braess's Paradox — full notebook build
-- Notebook created: `fc34301f-00c3-4065-8617-1ce6a74f3809`
-- Knowledge base written by Claude from general knowledge (no nlm research) — added as source, temp file deleted
-- Gemini slide manifest written — `artifacts/braess-paradox/manifest.md` (8 slides, 1960s technical illustration style)
-- Both added as notebook sources; video queued (`215894d5`) — retro_print style, still rendering
-- Inference web app built — `artifacts/braess-paradox/app.html` (Explorer + Quiz tabs, groq proxy)
-- Task file created — `tasks/braess-paradox.md`
+### data/index.ts Refactor
+- Moved project imports out of `src/index.tsx` into a new `data/index.ts` barrel file
+- `src/index.tsx` now only imports `configs` from `../data` — never changes when adding new projects
+- Added `mode` field to `BarChartConfig` type: `'sequential' | 'simultaneous'`
 
-### Artifacts folder restructure
-- Retired flat `apps/` and `slideshows/` folders in favour of `artifacts/<topic-slug>/`
-- Each topic folder holds: `app.html`, `slides.html`, `manifest.md`
-- Existing apps migrated: braess-paradox, double-entry-bookkeeping, other-lane, poc
-- `.gitignore` updated: `**/artifacts/**/slides.html` excluded (large base64 files)
-- CONTEXT.md, skill-inference-app.md, skill-slideshow-manifest.md updated
+### UsCities Dataset
+- Built `data/us-cities/` from memory — 19 cities, 1900–2020, decennial census
+- Set `mode: 'simultaneous'`
+- Note: goes too fast (only 13 time periods) — identified as known issue
 
-### GitHub setup
-- Repo created: `https://github.com/ewallt/claude-code-fun` (public)
-- `main` and `dev` branches pushed; `promote.sh` updated to push both branches after merging
-- `gh-pages` orphan branch created; GitHub Pages enabled
-- Braess's Paradox web app live: `https://ewallt.github.io/claude-code-fun/braess-paradox/`
-- Braess's Paradox slides live: `https://ewallt.github.io/claude-code-fun/braess-paradox-slides/`
+### UsTop10Cities Dataset
+- Processed `intake/us-top-10-cities-1960-present.json` via Node script
+- 660 entries, 18 cities, annual 1960–2025, raw population values
+- Added `valueDecimals: 0` for comma-formatted integers (3,653,000 style)
+- Added `loop` to Audio component in both engines
+- Set `mode: 'simultaneous'`
 
-### Character Narrator — future project concept
-- Design doc: `documents/future-projects/character-narrator.md`
-- Second-person character-driven animated videos (inspired by "How to Penguin")
-- Added to tasks.json as `we-4`, priority 5; prerequisite: Rough.js in whiteboard explainer V2 first
+### Simultaneous Engine
+- Created `src/engine/BarChartRaceSimultaneous.tsx` — copy of sequential engine, renamed export
+- Added to `src/engine/compute.ts`: `buildSimKeyframes`, `computeSimTotalFrames`, `buildSimCardSchedule`
+- `src/index.tsx` routes to correct component based on `data.mode`, uses correct total-frames function
+- Fixed bug: card fade interpolation range was non-monotonic for short-duration cards
+- `isNew` highlight changed to fire on cities entering the top N (not single newModel)
 
-### Other
-- `documents/skills-installer-guide.html` — explains `npx skills` CLI and installed skills
-- `source add --file` uses positional notebook ID confirmed (not `--notebook-id` flag)
+### Bar Chart Race Design Guide
+- Created `Projects/Remotion/bar-chart-race/documents/bar-chart-race-design-guide.html`
+- Reviews all four compositions, documents what makes a good bar chart race, early algorithm rules
+- Living document — to be updated as more compositions are built
+
+### Data AI Prompt Collaboration
+- Exchanged three rounds of notes with the data AI (saved in `documents/prompts/`)
+- Updated `documents/prompts/bar-chart-race-data-prep.md` with agreed changes:
+  - New context inputs: `targetVideoLengthSeconds`, `renderMode`, `priority`, `preferredCadence`, `preferNewEntrants`
+  - New required output fields: `unit`, `dataQuality`
+  - `estimated` is now selective (row-level only); whole-dataset uncertainty goes in `dataQuality`
+  - Entry count is a soft mode-aware limit with flagging, not hard truncation
+  - Scaling explicitly Claude's responsibility; data AI always provides raw values
 
 ---
 
 ## State Right Now
 
 - On `dev` branch; changes from this session uncommitted
-- Braess's Paradox video still rendering (`215894d5`) — not yet shared
-- Task file `tasks/braess-paradox.md` not yet moved to `completed/`
-- GitHub Pages live and built
+- All four compositions working in Remotion Studio (localhost:3000)
+- UsCities simultaneous engine works but goes too fast — needs more time periods or higher frame counts
+- UsTop10Cities simultaneous engine rated excellent with minor issues (not yet documented)
 
 ## Next Session Priority
 
-No specific priority set. Top candidates from tasks.json: 6 new whiteboard scene types (we-1), Tallest Buildings wiring (bcr-1), unified artifact workflow (nlm-1).
+No specific priority set. Top candidates: document UsTop10Cities minor issues and refine design guide, 6 new whiteboard scene types (we-1), Tallest Buildings wiring (bcr-1).
 
 ## Other Items
 
-- Check Braess's Paradox video status next session and share the notebook
-- Move `tasks/braess-paradox.md` to `completed/` once video confirmed and notebook shared
-- Deploy script for gh-pages worth building (discussed but not built this session)
+- UsTop10Cities minor issues — still to be documented after review; will sharpen the design guide algorithm
+- UsCities pacing fix — either source annual data or increase frame counts significantly
+- Braess's Paradox video (`215894d5`) — still pending check and notebook share (carried from last session)
+- `tasks/braess-paradox.md` — still to be moved to `completed/` once video confirmed
+- gh-pages deploy script — discussed two sessions ago, not yet built
