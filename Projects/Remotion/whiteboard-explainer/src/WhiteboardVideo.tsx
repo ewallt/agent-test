@@ -1,4 +1,5 @@
 import React from "react";
+import { Audio, staticFile } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { slide } from "@remotion/transitions/slide";
@@ -37,6 +38,7 @@ export const WhiteboardVideo: React.FC<ScenesProps> = ({ scenes, theme = "warmPa
     }
     children.push(
       <TransitionSeries.Sequence key={scene.id} durationInFrames={scene.durationInFrames}>
+        {scene.narration ? <Audio src={staticFile(`audio/braess/${scene.id}.mp3`)} /> : null}
         <SceneDispatcher scene={scene} />
       </TransitionSeries.Sequence>
     );

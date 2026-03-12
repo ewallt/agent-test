@@ -13,11 +13,22 @@ Items carried forward from session to session.
 
 ## Whiteboard Explainer
 
-- [ ] **6 new scene types** (`we-1`) — quote, stat, splitContent, timeline, imageReveal, flowChart — specced in planning.md.
+- [x] **6 new scene types** (`we-1`) — quote, stat, flowChart built and in use; splitContent, timeline, imageReveal deferred to V2.
+- [ ] **Braess's Paradox narration + slides** — narration added, slides 3 and 5 redesigned. More slide tweaks to come eventually.
+
+## NotebookLM (Agent Parallelization)
+
+- [ ] **Agent parallelization** — design notes in `ephemeral-notebook/design/agent-parallelization.md`. Four use cases: parallel artifact generation within a run, isomorphic series parallelization, knowledge base enrichment, background wrap-up. Priority order in the doc.
 
 ## NotebookLM
 
 - [ ] **Unified artifact workflow** (`nlm-1`) — remotion flag + Report 3 skill still to design.
+- [ ] **Quiz chip-targeting enhancement** (`nlm-2`) — track which Explorer chips the user clicks and use them to scope the quiz. If no chip has been clicked (app first load, or fresh dropdown selection), treat the active dropdown selection as a chip substitute. The quiz prompt would be built from the accumulated chip history rather than the static scope string. See `notebooklm-webapp` skill for full spec note.
+- [ ] **Infographic artifact type** — add to ephemeral notebook workflow. Verify NLM slide process (nlm slides create), confirm Gemini slide manifest pipeline is working. Next session priority.
+
+## Infrastructure
+
+- [ ] **Parking lot browser integration** — Tom maintains a parking lot webpage of URLs for active work. Needs a way to sync open browser tabs to it without manual copying. Investigate browser extensions that export open tabs to a local file (e.g. Tab Copy, OneTab, or a custom extension). Claude reads the file and updates the parking lot. End goal: one action updates the parking lot from whatever tabs are open.
 
 ## Misc / Carried
 

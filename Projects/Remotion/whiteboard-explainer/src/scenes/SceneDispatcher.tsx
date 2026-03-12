@@ -6,6 +6,9 @@ import { StepRevealScene } from "./StepRevealScene";
 import { DiagramBuildScene } from "./DiagramBuildScene";
 import { CompareScene } from "./CompareScene";
 import { OutroScene } from "./OutroScene";
+import { QuoteScene } from "./QuoteScene";
+import { StatScene } from "./StatScene";
+import { FlowChartScene } from "./FlowChartScene";
 
 const TYPE_LABELS: Record<Scene["type"], string> = {
   title: "Title",
@@ -13,6 +16,9 @@ const TYPE_LABELS: Record<Scene["type"], string> = {
   diagramBuild: "Diagram Build",
   compare: "Compare",
   outro: "Outro",
+  quote: "Quote",
+  stat: "Stat",
+  flowChart: "Flow Chart",
 };
 
 function transitionLabel(scene: Scene): string {
@@ -47,6 +53,12 @@ function renderScene(scene: Scene): React.ReactNode {
       return <CompareScene {...scene} />;
     case "outro":
       return <OutroScene {...scene} />;
+    case "quote":
+      return <QuoteScene {...scene} />;
+    case "stat":
+      return <StatScene {...scene} />;
+    case "flowChart":
+      return <FlowChartScene {...scene} />;
     default: {
       const _exhaustive: never = scene;
       return null;

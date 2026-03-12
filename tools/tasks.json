@@ -58,9 +58,9 @@
             {
               "id": "we-1",
               "title": "Build 6 new scene types",
-              "notes": "quote, stat, splitContent, timeline, imageReveal, flowChart — all specced in documents/planning.md",
+              "notes": "quote, stat, flowChart built and in use. splitContent, timeline, imageReveal deferred to V2.",
               "priority": 3,
-              "status": "pending"
+              "status": "completed"
             },
             {
               "id": "we-2",
@@ -94,6 +94,13 @@
               "notes": "Full session build order: sources → Briefing Doc + app → slideshow manifest → Remotion content → videos. remotion flag + Report 3 skill still to design.",
               "priority": 3,
               "status": "in-progress"
+            },
+            {
+              "id": "nlm-4",
+              "title": "Add Infographic artifact type",
+              "notes": "Add Infographic to ephemeral notebook workflow. Verify NLM slide process (nlm slides create) end-to-end. Confirm Gemini slide manifest pipeline working.",
+              "priority": 2,
+              "status": "pending"
             },
             {
               "id": "nlm-2",

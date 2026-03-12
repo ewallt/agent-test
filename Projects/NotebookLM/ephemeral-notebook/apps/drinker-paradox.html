@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Drinker Paradox — Explorer & Quiz</title>
+  <style>
+    :root {
+      --bg: #070c16;
+      --surface: #0f1726;
+      --border: rgba(255,255,255,.10);
+      --text: #e6edf7;
+      --muted: #a9b6cc;
+      --accent: #8bb9ff;
+      --green: rgba(124,255,178,.92);
+      --red: rgba(255,122,138,.95);
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--sans);
+      background: linear-gradient(180deg, #070c16 0%, #0b1220 50%, #070c16 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 28px 20px;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .sub { color: var(--muted); font-size: 13px; margin-bottom: 22px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .tab {
+      padding: 9px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: rgba(139,185,255,.12);
+      border-color: rgba(139,185,255,.35);
+      color: var(--accent);
+    }
+    .tabpanel { display: none; }
+    .tabpanel.active { display: block; }
+    .card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .card-hd {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,.14);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-hd h2 { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .2px; }
+    .card-bd { padding: 16px; }
+    label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    select {
+      width: 100%;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 34px 10px 12px;
+      font-family: var(--sans);
+      font-size: 14px;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, rgba(230,237,247,.85) 50%),
+        linear-gradient(135deg, rgba(230,237,247,.85) 50%, transparent 50%);
+      background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+    select:focus { border-color: rgba(139,185,255,.55); box-shadow: 0 0 0 3px rgba(139,185,255,.14); }
+    select option { background: #0f1726; color: var(--text); }
+    .btn-row { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(139,185,255,1), rgba(124,255,178,.92));
+      color: #08101d;
+      box-shadow: var(--shadow);
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.2); flex-shrink: 0; }
+    .dot.live { background: var(--accent); box-shadow: 0 0 0 3px rgba(139,185,255,.18); }
+    .dot.ok   { background: var(--green);  box-shadow: 0 0 0 3px rgba(124,255,178,.18); }
+    .dot.bad  { background: var(--red);    box-shadow: 0 0 0 3px rgba(255,122,138,.18); }
+    .summary { font-size: 14px; line-height: 1.6; color: var(--text); margin-bottom: 14px; }
+    .tablewrap { overflow: auto; border-radius: 12px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; background: rgba(0,0,0,.18); }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      font-size: 13px;
+      line-height: 1.45;
+      vertical-align: top;
+    }
+    th { color: var(--muted); font-weight: 700; background: rgba(0,0,0,.16); font-size: 12px; }
+    tr:last-child td { border-bottom: none; }
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .chip {
+      font-size: 12px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .chip:hover {
+      border-color: rgba(139,185,255,.45);
+      background: rgba(139,185,255,.09);
+      color: var(--accent);
+    }
+    .chip.used {
+      border-color: rgba(139,185,255,.3);
+      background: rgba(139,185,255,.07);
+      color: var(--accent);
+    }
+    .question-text { font-size: 16px; font-weight: 600; line-height: 1.55; margin-bottom: 20px; }
+    .options { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn {
+      text-align: left;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: rgba(139,185,255,.45);
+      background: rgba(139,185,255,.07);
+    }
+    .option-btn.correct { border-color: rgba(124,255,178,.6); background: rgba(124,255,178,.10); }
+    .option-btn.wrong   { border-color: rgba(255,122,138,.6); background: rgba(255,122,138,.08); }
+    .option-btn:disabled { cursor: default; }
+    .explanation {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+      display: none;
+    }
+    .explanation.show { display: block; }
+    .chip-history-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 10px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>The Drinker Paradox</h1>
+  <div class="sub">In any pub, someone's drinking status implies everyone's · AI-powered explorer & quiz</div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('explorer', this)">Explorer</button>
+    <button class="tab" onclick="switchTab('quiz', this)">Quiz</button>
+  </div>
+
+  <!-- EXPLORER TAB -->
+  <div class="tabpanel active" id="tab-explorer">
+    <div class="card">
+      <div class="card-hd"><h2>Query</h2></div>
+      <div class="card-bd">
+        <label for="focus">Focus</label>
+        <select id="focus">
+          <option value="statement">The Paradox Stated</option>
+          <option value="proof">The Two-Case Proof</option>
+          <option value="material">The Material Conditional</option>
+          <option value="vacuous">Vacuous Truth</option>
+          <option value="nonconstructive">Non-Constructive Existence</option>
+          <option value="smullyan">Raymond Smullyan & Recreational Logic</option>
+          <option value="related">Related Paradoxes</option>
+        </select>
+        <div class="btn-row">
+          <button class="btn-primary" id="exploreBtn" onclick="runExplorer()">Explore</button>
+          <button class="btn-secondary" onclick="clearExplorer()">Clear</button>
+        </div>
+        <div class="status">
+          <span class="dot" id="exploreDot"></span>
+          <span id="exploreStatus">Select a focus and run.</span>
+        </div>
+      </div>
+    </div>
+    <div id="explorerOutput" style="display:none">
+      <div class="card">
+        <div class="card-hd"><h2 id="explorerTitle">Results</h2></div>
+        <div class="card-bd">
+          <div class="summary" id="explorerSummary"></div>
+          <div class="tablewrap">
+            <table id="explorerTable"></table>
+          </div>
+          <div class="chips" id="explorerChips"></div>
+          <div class="chip-history-note" id="chipNote"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ TAB -->
+  <div class="tabpanel" id="tab-quiz">
+    <div class="card">
+      <div class="card-hd"><h2>Multiple Choice</h2></div>
+      <div class="card-bd">
+        <div id="quizMeta" style="display:none; font-size:13px; color:var(--muted); margin-bottom:16px;">
+          <span id="quizMetaText"></span>
+        </div>
+        <div id="quizContent" style="display:none">
+          <div class="question-text" id="questionText"></div>
+          <div class="options" id="optionsList"></div>
+          <div class="explanation" id="explanationText"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-primary" id="newQuizBtn" onclick="runQuiz()">New Quiz</button>
+          <button class="btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none">Next Question</button>
+          <button class="btn-primary" id="seeResultsBtn" onclick="showResults()" style="display:none">See Results</button>
+        </div>
+        <div class="status">
+          <span class="dot" id="quizDot"></span>
+          <span id="quizStatus">Press New Quiz to begin.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROXY = 'https://groq-proxy.ewalltom.workers.dev';
+const MODEL = 'openai/gpt-oss-120b';
+const LS_KEY = 'drinker-paradox-chips';
+
+// ── Chip history (localStorage) ───────────────────────────────────────────────
+function loadChips() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveChips(arr) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(arr)); } catch {}
+}
+function addChip(text) {
+  const chips = loadChips();
+  if (!chips.includes(text)) { chips.push(text); saveChips(chips); }
+}
+
+// ── AI infrastructure ──────────────────────────────────────────────────────────
+async function callAI(promptText) {
+  const response = await fetch(PROXY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: promptText }] }],
+      generationConfig: { responseMimeType: 'text/plain' },
+      model: MODEL
+    })
+  });
+  const raw = await response.text();
+  let data;
+  try { data = JSON.parse(raw); }
+  catch { throw new Error(`Non-JSON from proxy (HTTP ${response.status}): ${raw.slice(0,300)}`); }
+  if (!response.ok) throw new Error(data?.error?.message || `HTTP ${response.status}`);
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('No text in AI response');
+  return text;
+}
+
+function extractJson(text) {
+  let t = String(text).trim();
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fence) t = fence[1].trim();
+  const a = t.indexOf('{'), b = t.lastIndexOf('}');
+  if (a >= 0 && b > a) t = t.slice(a, b + 1);
+  try { return JSON.parse(t); } catch { return null; }
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tabpanel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Explorer ──────────────────────────────────────────────────────────────────
+const FOCUS_PROMPTS = {
+  statement: 'The Drinker Paradox stated: in any non-empty pub, there exists at least one person such that if that person is drinking, then everyone in the pub is drinking. The formal logical statement using existential quantification, the material conditional, and universal quantification. Why this sounds absurd but is a provable theorem of classical first-order logic.',
+  proof: 'The two-case proof of the Drinker Paradox using the Law of Excluded Middle: Case 1 where everyone is drinking (any person works as the witness because the consequent is already true), Case 2 where someone is not drinking (that non-drinker works as the witness because the antecedent is false, making the conditional vacuously true). Why both cases jointly guarantee existence of the witness.',
+  material: 'The material conditional in classical logic: P implies Q is false only when P is true and Q is false. The truth table. How this differs from everyday causal or intentional uses of "if...then." Why the material conditional makes no claim about causation or relevance between antecedent and consequent. How this definition is the key to resolving the apparent paradox.',
+  vacuous: 'Vacuous truth: when the antecedent of a conditional is false, the whole conditional is true regardless of the consequent. Why this is a necessary and well-motivated feature of classical logic rather than a bug. Examples of vacuous truth in mathematics and everyday reasoning. Why the Drinker Paradox\'s most counterintuitive case — pointing to a non-drinker — relies entirely on vacuous truth.',
+  nonconstructive: 'Non-constructive existence proofs: proving that something exists without exhibiting a specific example. How the Drinker proof is non-constructive — before surveying the pub, we cannot name the witness in advance. Classical logic versus intuitionistic logic on whether such proofs are valid. The Law of Excluded Middle as the dividing line. Other famous non-constructive proofs in mathematics.',
+  smullyan: 'Raymond Smullyan (1919-2017): logician, mathematician, magician, Taoist, and author of recreational logic puzzle books including "What Is the Name of This Book?" (1978), "The Lady or the Tiger?" (1982), and "To Mock a Mockingbird" (1985). His philosophy that rigor and playfulness reinforce each other. His academic career at Princeton, Yeshiva University, and CUNY. The Drinker Paradox as an example of his style.',
+  related: 'Paradoxes and concepts related to the Drinker Paradox: Curry\'s Paradox (self-referential material conditional), the Barber Paradox (Russell\'s self-referential set), the Law of Excluded Middle and its rejection by intuitionistic logicians, non-constructive versus constructive proofs in mathematics, and the Inspection Paradox as another counterintuitive result that dissolves under formal analysis.'
+};
+
+function setExploreStatus(kind, msg) {
+  document.getElementById('exploreDot').className = 'dot ' + (kind || '');
+  document.getElementById('exploreStatus').textContent = msg;
+}
+
+async function runExplorer(customFocus) {
+  const focusKey = document.getElementById('focus').value;
+  const focusLabel = customFocus || FOCUS_PROMPTS[focusKey];
+  const displayLabel = customFocus || document.getElementById('focus').selectedOptions[0].textContent;
+  const btn = document.getElementById('exploreBtn');
+  btn.disabled = true;
+  document.getElementById('explorerOutput').style.display = 'none';
+  setExploreStatus('live', 'Calling AI…');
+
+  const schema = {
+    title: "",
+    summary: "",
+    items: [{ name: "", key_figure_or_date: "", description: "", significance: "" }],
+    follow_up_questions: [""]
+  };
+
+  const prompt = [
+    'Return ONLY valid JSON matching the schema exactly. No markdown, no backticks.',
+    '',
+    'SCHEMA:',
+    JSON.stringify(schema, null, 2),
+    '',
+    'REQUEST:',
+    'Topic: The Drinker Paradox — a theorem of classical first-order logic stating that in any non-empty pub, there exists a person such that if that person is drinking, everyone is drinking. The proof relies on the material conditional, vacuous truth, and the Law of Excluded Middle.',
+    `Focus: ${focusLabel}`,
+    'Generate 6-8 items relevant to this focus. Use real names, dates, concepts, and logical definitions. Be specific and accurate.',
+    'key_figure_or_date: the most relevant logician, year, or technical identifier for this item.',
+    'significance: one sentence on why this item matters to understanding the paradox.',
+    'follow_up_questions: 3 drill-down questions a curious reader might want answered next.',
+    'summary: 2-3 sentences framing this focus within the broader story of the paradox.'
+  ].join('\n');
+
+  try {
+    const text = await callAI(prompt);
+    const data = extractJson(text);
+    if (!data || !Array.isArray(data.items)) throw new Error('Unexpected response shape.');
+    renderExplorer(data, displayLabel);
+    setExploreStatus('ok', 'Done.');
+  } catch (err) {
+    setExploreStatus('bad', 'Error: ' + err.message.slice(0, 140));
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderExplorer(data, focusLabel) {
+  document.getElementById('explorerTitle').textContent = data.title || focusLabel;
+  document.getElementById('explorerSummary').textContent = data.summary || '';
+  const table = document.getElementById('explorerTable');
+  table.innerHTML = '';
+  const thead = document.createElement('thead');
+  const trh = document.createElement('tr');
+  ['Concept / Name', 'Figure or Date', 'Description', 'Why It Matters'].forEach(h => {
+    const th = document.createElement('th'); th.textContent = h; trh.appendChild(th);
+  });
+  thead.appendChild(trh);
+  table.appendChild(thead);
+  const tbody = document.createElement('tbody');
+  (data.items || []).forEach(row => {
+    const tr = document.createElement('tr');
+    [row.name, row.key_figure_or_date, row.description, row.significance].forEach(v => {
+      const td = document.createElement('td'); td.textContent = v || '—'; tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+
+  const chipsEl = document.getElementById('explorerChips');
+  chipsEl.innerHTML = '';
+  const storedChips = loadChips();
+  (data.follow_up_questions || []).filter(Boolean).forEach(q => {
+    const div = document.createElement('div');
+    div.className = 'chip' + (storedChips.includes(q) ? ' used' : '');
+    div.textContent = q;
+    div.onclick = () => {
+      addChip(q);
+      div.classList.add('used');
+      updateChipNote();
+      runExplorer(q);
+    };
+    chipsEl.appendChild(div);
+  });
+
+  document.getElementById('explorerOutput').style.display = '';
+  updateChipNote();
+}
+
+function updateChipNote() {
+  const chips = loadChips();
+  const note = document.getElementById('chipNote');
+  if (chips.length > 0) {
+    note.textContent = `${chips.length} question${chips.length === 1 ? '' : 's'} saved — quiz will draw from your exploration history.`;
+  } else {
+    note.textContent = '';
+  }
+}
+
+function clearExplorer() {
+  document.getElementById('explorerOutput').style.display = 'none';
+  setExploreStatus('', 'Select a focus and run.');
+}
+
+// ── Quiz ──────────────────────────────────────────────────────────────────────
+let batchQuestions = [], batchIndex = 0, batchScore = 0, askedQuestions = [];
+
+function shuffleOptions(q) {
+  const letters = ['A', 'B', 'C', 'D'];
+  const correctIdx = letters.indexOf(q.correct);
+  const texts = q.options.map(opt => opt.replace(/^[A-D]\.\s*/, ''));
+  const correctText = texts[correctIdx];
+  for (let i = texts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [texts[i], texts[j]] = [texts[j], texts[i]];
+  }
+  const newCorrectIdx = texts.indexOf(correctText);
+  return { ...q, options: texts.map((t, i) => `${letters[i]}. ${t}`), correct: letters[newCorrectIdx] };
+}
+
+function setQuizStatus(kind, msg) {
+  document.getElementById('quizDot').className = 'dot ' + (kind || '');
+  document.getElementById('quizStatus').textContent = msg;
+}
+
+async function runQuiz() {
+  const btn = document.getElementById('newQuizBtn');
+  btn.disabled = true;
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('seeResultsBtn').style.display = 'none';
+  document.getElementById('quizContent').style.display = 'none';
+  document.getElementById('quizMeta').style.display = 'none';
+  setQuizStatus('live', 'Generating 5 questions…');
+
+  const clickedChips = loadChips();
+  const avoidStr = askedQuestions.length
+    ? 'Do not repeat these questions: ' + askedQuestions.slice(-15).join(' | ')
+    : '';
+
+  // Build scope: use clicked chips if available, else use the full topic scope
+  let scopeStr;
+  if (clickedChips.length > 0) {
+    scopeStr = 'Focus the questions on these specific topics the user has explored:\n' +
+      clickedChips.map(c => '- ' + c).join('\n') +
+      '\nAlso draw on related foundational concepts as needed for well-rounded questions.';
+  } else {
+    scopeStr = 'Cover the full scope of the paradox: the statement and formal notation, the two-case proof using the Law of Excluded Middle, the material conditional truth table, vacuous truth, non-constructive existence, Raymond Smullyan, intuitionistic versus classical logic, and related paradoxes (Curry\'s Paradox, the Barber Paradox).';
+  }
+
+  const schema = {
+    questions: [{ question: "", options: ["A. ", "B. ", "C. ", "D. "], correct: "A", explanation: "" }]
+  };
+
+  const prompt = [
+    'Return ONLY valid JSON matching the schema exactly. No markdown, no backticks.',
+    '',
+    'SCHEMA:',
+    JSON.stringify(schema, null, 2),
+    '',
+    'REQUEST:',
+    'Topic: The Drinker Paradox — a theorem of classical first-order logic. The proof uses the Law of Excluded Middle and the material conditional. Key concepts: vacuous truth, non-constructive existence proofs, intuitionistic vs classical logic. Attributed to Raymond Smullyan.',
+    scopeStr,
+    'Generate exactly 5 multiple-choice questions. Each must have exactly 4 options (A-D). correct: must be exactly "A", "B", "C", or "D".',
+    'Vary question types: definition recall, proof steps, conceptual application, identification of related concepts.',
+    'explanation: 2 sentences explaining why the correct answer is right.',
+    avoidStr
+  ].filter(Boolean).join('\n');
+
+  try {
+    const text = await callAI(prompt);
+    const data = extractJson(text);
+    if (!data || !Array.isArray(data.questions) || data.questions.length === 0) {
+      throw new Error('Unexpected response shape.');
+    }
+    batchQuestions = data.questions.slice(0, 5).map(shuffleOptions);
+    batchIndex = 0;
+    batchScore = 0;
+    batchQuestions.forEach(q => askedQuestions.push(q.question.slice(0, 80)));
+    renderQuestion();
+    setQuizStatus('ok', 'Choose your answer.');
+  } catch (err) {
+    setQuizStatus('bad', 'Error: ' + err.message.slice(0, 140));
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderQuestion() {
+  const q = batchQuestions[batchIndex];
+  document.getElementById('quizMeta').style.display = '';
+  document.getElementById('quizMetaText').textContent = `Question ${batchIndex + 1} of ${batchQuestions.length}`;
+  document.getElementById('questionText').textContent = q.question;
+  const optsList = document.getElementById('optionsList');
+  optsList.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => answerQuestion(letters[idx], q.correct, q.explanation, optsList, letters);
+    optsList.appendChild(btn);
+  });
+  document.getElementById('explanationText').className = 'explanation';
+  document.getElementById('explanationText').textContent = '';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('seeResultsBtn').style.display = 'none';
+  document.getElementById('quizContent').style.display = '';
+}
+
+function answerQuestion(chosen, correct, explanation, optsList, letters) {
+  const isCorrect = chosen === correct;
+  if (isCorrect) batchScore++;
+  Array.from(optsList.children).forEach((btn, idx) => {
+    btn.disabled = true;
+    if (letters[idx] === correct) btn.classList.add('correct');
+    else if (letters[idx] === chosen && !isCorrect) btn.classList.add('wrong');
+  });
+  const expEl = document.getElementById('explanationText');
+  expEl.textContent = (isCorrect ? '✓ Correct! ' : '✗ Incorrect. ') + (explanation || '');
+  expEl.className = 'explanation show';
+  setQuizStatus(isCorrect ? 'ok' : 'bad', isCorrect ? 'Correct!' : `Incorrect. The answer was ${correct}.`);
+  if (batchIndex < batchQuestions.length - 1) {
+    document.getElementById('nextBtn').style.display = '';
+  } else {
+    document.getElementById('seeResultsBtn').style.display = '';
+  }
+}
+
+function nextQuestion() {
+  batchIndex++;
+  document.getElementById('nextBtn').style.display = 'none';
+  renderQuestion();
+  setQuizStatus('ok', 'Choose your answer.');
+}
+
+function showResults() {
+  document.getElementById('quizContent').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('seeResultsBtn').style.display = 'none';
+  document.getElementById('quizMeta').style.display = '';
+  document.getElementById('quizMetaText').textContent = `You scored ${batchScore} / ${batchQuestions.length}`;
+  const good = batchScore >= Math.ceil(batchQuestions.length / 2);
+  setQuizStatus(good ? 'ok' : 'bad', batchScore === batchQuestions.length ? 'Perfect score!' : good ? 'Well done!' : 'Better luck next time!');
+}
+</script>
+</body>
+</html>

@@ -5,17 +5,21 @@ import { DoodleReveal } from "../components/DoodleReveal";
 import { CalloutText } from "../components/CalloutText";
 import { useTheme } from "../ThemeContext";
 
-// Each bullet appears BULLET_STAGGER frames after the previous
-const BULLET_STAGGER = 18;
 const TITLE_APPEAR = 15;
 
 export const StepRevealScene: React.FC<StepRevealSceneProps> = ({
   title,
   body,
   doodles = [],
+  durationInFrames,
 }) => {
   const { theme: THEME } = useTheme();
   const frame = useCurrentFrame();
+
+  // Spread bullets evenly but cap stagger so extra duration becomes hold time at the end
+  const MAX_STAGGER = 45;
+  const totalRevealFrames = durationInFrames * 0.65 - TITLE_APPEAR;
+  const BULLET_STAGGER = Math.min(MAX_STAGGER, body.length > 1 ? totalRevealFrames / (body.length - 1) : totalRevealFrames);
 
   const titleOpacity = interpolate(frame, [0, TITLE_APPEAR], [0, 1], {
     extrapolateLeft: "clamp",
