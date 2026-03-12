@@ -18,13 +18,15 @@ Items carried forward from session to session.
 
 ## NotebookLM (Agent Parallelization)
 
-- [ ] **Agent parallelization** — design notes in `ephemeral-notebook/design/agent-parallelization.md`. Four use cases: parallel artifact generation within a run, isomorphic series parallelization, knowledge base enrichment, background wrap-up. Priority order in the doc.
+- [ ] **Agent parallelization** — design notes in `ephemeral-notebook/documents/agent-parallelization.md`. Four use cases: parallel artifact generation within a run, isomorphic series parallelization, knowledge base enrichment, background wrap-up. Priority order in the doc.
 
 ## NotebookLM
 
 - [ ] **Unified artifact workflow** (`nlm-1`) — remotion flag + Report 3 skill still to design.
 - [ ] **Quiz chip-targeting enhancement** (`nlm-2`) — track which Explorer chips the user clicks and use them to scope the quiz. If no chip has been clicked (app first load, or fresh dropdown selection), treat the active dropdown selection as a chip substitute. The quiz prompt would be built from the accumulated chip history rather than the static scope string. See `notebooklm-webapp` skill for full spec note.
-- [ ] **Infographic artifact type** — add to ephemeral notebook workflow. Verify NLM slide process (nlm slides create), confirm Gemini slide manifest pipeline is working. Next session priority.
+- [ ] **source-knowledge-base.md** — fill in format/structure for Claude-written knowledge base document. Hard stop in workflow.md Step 3a. Needs Tom's input.
+- [ ] **source-web-app.md** — fill in format/structure for web app knowledge document. Hard stop in workflow.md Step 3c. Needs Tom's input.
+- [x] **Infographic artifact type** — skill created, integrated into master skill and workflow.md.
 
 ## Infrastructure
 

@@ -98,7 +98,21 @@
             {
               "id": "nlm-4",
               "title": "Add Infographic artifact type",
-              "notes": "Add Infographic to ephemeral notebook workflow. Verify NLM slide process (nlm slides create) end-to-end. Confirm Gemini slide manifest pipeline working.",
+              "notes": "Skill created, integrated into master skill and workflow.md.",
+              "priority": 2,
+              "status": "completed"
+            },
+            {
+              "id": "nlm-5",
+              "title": "Fill in source-knowledge-base.md",
+              "notes": "Format and structure for Claude-written knowledge base document. Hard stop in workflow.md Step 3a. Needs Tom's input.",
+              "priority": 2,
+              "status": "pending"
+            },
+            {
+              "id": "nlm-6",
+              "title": "Fill in source-web-app.md",
+              "notes": "Format and structure for web app knowledge document. Hard stop in workflow.md Step 3c. Needs Tom's input.",
               "priority": 2,
               "status": "pending"
             },
@@ -166,7 +180,7 @@
             {
               "id": "inf-6",
               "title": "Build design docs DOC-002 through DOC-012",
-              "notes": "See ephemeral-notebook/design/DOC-000-table-of-contents.md for the full list.",
+              "notes": "See ephemeral-notebook/documents/DOC-000-table-of-contents.md for the full list.",
               "priority": 5,
               "status": "pending"
             }

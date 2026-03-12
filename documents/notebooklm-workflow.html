@@ -286,6 +286,59 @@
         <p>The word "ephemeral" reflects the current phase of development — notebooks are treated as throwaway while the workflow itself is still being built and refined. Once the workflow matures, the notebooks may well be worth keeping long-term. The name describes a temporary posture, not a permanent design intent.</p>
       </div>
     </div>
+
+    <div style="background: rgba(124,255,178,.07); border: 2px solid rgba(124,255,178,.4); border-radius: 14px; padding: 22px 26px; margin-top: 16px;">
+      <div style="font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(124,255,178,.92); margin-bottom: 10px;">How to Start a Run</div>
+      <p style="color: #e6edf7; font-size: 1rem; margin-bottom: 10px;">Say any of the following to trigger the workflow:</p>
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 0;">
+        <div style="background: rgba(0,0,0,.25); border-radius: 8px; padding: 10px 16px; font-family: ui-monospace, monospace; font-size: .95rem; color: rgba(124,255,178,.92);">"run a notebook"</div>
+        <div style="background: rgba(0,0,0,.25); border-radius: 8px; padding: 10px 16px; font-family: ui-monospace, monospace; font-size: .95rem; color: rgba(124,255,178,.92);">"run the ephemeral notebook workflow"</div>
+        <div style="background: rgba(0,0,0,.25); border-radius: 8px; padding: 10px 16px; font-family: ui-monospace, monospace; font-size: .95rem; color: rgba(124,255,178,.92);">"run the notebook workflow"</div>
+      </div>
+      <p style="color: var(--muted); font-size: .88rem; margin-top: 12px; margin-bottom: 0;">Claude will load the master skill, read the workflow document, and execute the full run from the task file in <code>tasks/</code>.</p>
+    </div>
+  </section>
+
+  <!-- Sub-skills -->
+  <section>
+    <h2><span class="icon">🧩</span> Skills Loaded by the Master Skill</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>The master skill (<code>notebooklm-ephemeral-notebook</code>) loads sub-skills on demand based on task file flags. Each sub-skill is self-contained and loaded at the moment it's needed (JIT pattern).</p>
+        <table>
+          <tr>
+            <th>Task flag</th>
+            <th>Skill</th>
+            <th>What it does</th>
+          </tr>
+          <tr>
+            <td><code>videos: N</code></td>
+            <td><strong>notebooklm-video</strong></td>
+            <td>Focus prompt and visual style guidance for NLM video generation</td>
+          </tr>
+          <tr>
+            <td><code>slides: yes</code></td>
+            <td><strong>notebooklm-slide</strong></td>
+            <td>NLM-native slide deck — generates and downloads as PDF</td>
+          </tr>
+          <tr>
+            <td><code>slideshow: yes</code></td>
+            <td><strong>notebooklm-slide-manifest</strong></td>
+            <td>Gemini slide manifest — written by Claude, uploaded as a notebook source</td>
+          </tr>
+          <tr>
+            <td><code>infographic: yes</code></td>
+            <td><strong>notebooklm-infographic</strong></td>
+            <td>NLM-native infographic — generates and downloads as PNG</td>
+          </tr>
+          <tr>
+            <td><code>app: yes</code></td>
+            <td><strong>notebooklm-webapp</strong></td>
+            <td>Standalone HTML web app built by Claude (Explorer + Quiz)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </section>
 
   <!-- Inputs and Outputs -->

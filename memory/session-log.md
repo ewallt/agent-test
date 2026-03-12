@@ -2,6 +2,38 @@
 
 ---
 
+## 2026-03-11 — Ephemeral Notebook Skill Architecture Overhaul
+
+### Master Skill + Sub-skills
+- Created `notebooklm-ephemeral-notebook` master skill — lean trigger, points to `workflow.md`, lists sub-skills by task flag
+- Created `notebooklm-slide` skill — NLM-native slide deck (PDF)
+- Created `notebooklm-infographic` skill — NLM-native infographic (PNG), orientation/detail/focus options documented
+- Updated `notebooklm-slide-manifest` — corrected workflow: manifest uploaded as notebook source, Gemini reads sources and builds slides (not an external Imagen pipeline)
+- Updated `notebooklm-video`, `notebooklm-webapp` — added "Read First" headers
+
+### Workflow Documentation (JIT Pattern)
+- Created `documents/workflow.md` — full JIT sequencer, Steps 0–7, explicit "READ NOW" gates, ✓ checkboxes, ⚠️ stop gates at TODO stubs
+- Created `documents/source-authoring.md` — 1–3 sources model, what each source drives, upload order
+- Created `documents/source-knowledge-base.md` — TODO stub (hard stop in workflow; needs Tom's input)
+- Created `documents/source-web-app.md` — TODO stub (hard stop in workflow; needs Tom's input)
+- Renamed `design/` → `documents/` under `ephemeral-notebook/`; updated 3 references
+
+### Reference Documents
+- Created `documents/notebooklm-cli.html` — full `nlm` command reference; all groups, artifact types, typical run sequence, gotchas
+- Updated `documents/notebooklm-workflow.html` — trigger phrase callout, sub-skills table
+- Updated `documents/index.html` — added CLI reference card
+
+### Skill Creator + Memory
+- Added JIT reference to `skill-creator/SKILL.md` — points to `JIT-experiment.md`
+- Added feedback memory: invoke skill-creator when creating/modifying skills (Tom triggers explicitly)
+
+### Design Discussion
+- Reasoned through memory injection model: MEMORY.md injected once at session start; everything else loaded on demand
+- Established that workflow security comes from JIT gating; ad hoc tasks rely on memory + Tom invoking skill-creator
+- Division of responsibility: Tom invokes skill-creator; Claude executes it
+
+---
+
 ## 2026-03-11 — Whiteboard Explainer: Narration, Parallel Lanes, Skill Adjunct; Shutdown Skill Tightening
 
 ### Shutdown Skill
@@ -79,7 +111,7 @@
 - Discovery: nlm slides create produces a PDF, not the Gemini manifest — manifest must be written by Claude directly; captured in notebooklm-slide-manifest skill
 
 ### Design Notes and Future Items
-- `ephemeral-notebook/design/agent-parallelization.md` — four use cases for spawning subagents: parallel artifact generation, isomorphic series parallelization, knowledge base enrichment, background wrap-up
+- `ephemeral-notebook/documents/agent-parallelization.md` — four use cases for spawning subagents: parallel artifact generation, isomorphic series parallelization, knowledge base enrichment, background wrap-up
 - Parking lot browser integration noted in pending.md — investigate tab export extensions to sync open tabs to the parking lot page
 - Quiz chip-targeting localStorage enhancement noted as nlm-2 in pending.md
 

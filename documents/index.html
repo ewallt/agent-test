@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documents — agent-test</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 48px 32px 0;
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .section-label {
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+
+  a.card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color .15s, background .15s, transform .15s;
+  }
+  a.card:hover {
+    border-color: rgba(139,185,255,.35);
+    background: var(--surface2);
+    transform: translateY(-2px);
+  }
+  .card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 14px;
+  }
+  .card h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -.01em;
+  }
+  .card p {
+    font-size: .875rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .card .tag {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: .7;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">agent-test</div>
+  <h1>Document <span>Index</span></h1>
+  <p>Reference documents and guides for the agent-test projects.</p>
+</header>
+
+<main>
+  <div class="columns">
+
+    <div class="column">
+      <div class="section-label">Remotion</div>
+      <a class="card" href="bar-chart-race.html">
+        <div class="card-icon">📊</div>
+        <h2>Bar Chart Race</h2>
+        <p>How the engine works, how the data is structured, and how to wire up a new dataset.</p>
+      </a>
+    </div>
+
+    <div class="column">
+      <div class="section-label">NotebookLM</div>
+      <a class="card" href="notebooklm-workflow.html">
+        <div class="card-icon">📓</div>
+        <h2>NotebookLM Workflow</h2>
+        <p>The Ephemeral Notebook workflow — phases, inputs, outputs, design patterns, and the nlm tool.</p>
+      </a>
+      <a class="card" href="notebooklm-cli.html">
+        <div class="card-icon">⌨️</div>
+        <h2>NotebookLM CLI Reference</h2>
+        <p>Full command reference for the <code>nlm</code> CLI — notebooks, sources, artifacts, download, sharing, and gotchas.</p>
+      </a>
+    </div>
+
+    <div class="column">
+      <div class="section-label">Claude Code &amp; Skills</div>
+      <a class="card" href="claude-code-tips.html">
+        <div class="card-icon">⚡</div>
+        <h2>Claude Code Tips</h2>
+        <p>Loading tips and productivity patterns for working with Claude Code effectively.</p>
+      </a>
+      <a class="card" href="skills-installer-guide.html">
+        <div class="card-icon">🔧</div>
+        <h2>Agent Skills Installer</h2>
+        <p>How the skills installer works — installing, updating, and managing agent skills.</p>
+      </a>
+      <a class="card" href="publishing-skill-community-github.html">
+        <div class="card-icon">🚀</div>
+        <h2>Publishing a Skill</h2>
+        <p>How to publish a Claude Code skill to the community via GitHub.</p>
+      </a>
+    </div>
+
+    <div class="column">
+      <div class="section-label">Development</div>
+      <a class="card" href="vercel-react-best-practices.html">
+        <div class="card-icon">🌐</div>
+        <h2>Popular Skills Notes</h2>
+        <p>Notes on popular skills and Vercel / React best practices.</p>
+      </a>
+    </div>
+
+  </div>
+</main>
+</body>
+</html>
