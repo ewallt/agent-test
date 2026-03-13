@@ -1,5 +1,7 @@
 # Pending Items
 
+> **Superseded by `tools/tasks.json` (the ticket board).** New items go there, not here. This file is kept as a historical archive.
+
 Items carried forward from session to session.
 
 ---
@@ -27,6 +29,10 @@ Items carried forward from session to session.
 - [ ] **source-knowledge-base.md** — fill in format/structure for Claude-written knowledge base document. Hard stop in workflow.md Step 3a. Needs Tom's input.
 - [ ] **source-web-app.md** — fill in format/structure for web app knowledge document. Hard stop in workflow.md Step 3c. Needs Tom's input.
 - [x] **Infographic artifact type** — skill created, integrated into master skill and workflow.md.
+
+## IMPORTANT
+
+- [ ] **Discuss dev→main sync procedure** — dev is 8 commits ahead of main with no established promotion cadence. Agree on when and how to promote (manual trigger, promote.sh, etc.).
 
 ## Infrastructure
 
