@@ -161,7 +161,7 @@
               "title": "Task manager web app",
               "notes": "This app. Located at tools/. Now the primary home for pending items (replaces pending.md).",
               "priority": 1,
-              "status": "in-progress"
+              "status": "done"
             },
             {
               "id": "inf-2",

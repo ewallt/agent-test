@@ -2,6 +2,40 @@
 
 ---
 
+## 2026-03-12 — Ticket System, Skills, Test Coverage, Promotion
+
+### Ticket System (Jira-style)
+- Created `ticket-tracker` skill — reads/writes `tools/tasks.json`, triggers on "jira", "ticket", ticket IDs, shutdown Step 4
+- Reconciled `tasks.json` with `pending.md`: renamed `completed` → `done`, added 6 missing tickets (we-4, nlm-2 revised, nlm-3/4/6/7, inf-2/3), fixed status/HTML mismatch
+- Updated `tasks.html`: added `blocked` status (red dot), fixed summary counter, centered layout
+- Updated shutdown skill Step 4 to use correct status values and reference ticket-tracker
+- `memory/pending.md` marked as superseded — `tasks.json` is now source of truth
+- Added `project_ticket_tracker.md` memory file; updated `MEMORY.md` session startup note
+
+### doc-writer Skill
+- Created `doc-writer` skill — writes styled HTML reference docs in the established dark theme
+- Skill embeds full CSS; knows to update `documents/index.html` when saving to `agent-test/documents/`
+- Description tuned to avoid competing with `doc-coauthoring` and `frontend-design`
+- Refined via skill-creator (no formal evals — subjective output)
+
+### Ticket Board Reference Doc
+- Wrote `documents/ticket-board.html` — covers schema, statuses, ID prefixes, JSON structure, how Claude manages tickets, history
+- Updated `documents/index.html`: replaced stale "Pending Items" card with "Ticket Board" card
+
+### Structural Test Coverage
+- Whiteboard Explainer: added `QuoteScene`, `StatScene`, `FlowChartScene`, `scenes.example_3.json` (25 tests, +4)
+- Bar Chart Race: added `BarChartRaceSimultaneous.tsx`, `data/index.ts`, `us-cities`, `us-top-10-cities` (55 tests, +12)
+- Simple Narrated Slides: no changes needed
+
+### Promotion
+- Committed session work to dev, ran promote.sh — all 115 tests passed, merged dev → main
+- Large batch: first promotion in several sessions, brought in everything since last merge
+
+### Servers
+- Started all four servers: ports 3000 (BCR), 3001 (SNS), 3002 (WE), 3010 (task board via Python http.server)
+
+---
+
 ## 2026-03-11 — Ephemeral Notebook Skill Architecture Overhaul
 
 ### Master Skill + Sub-skills
