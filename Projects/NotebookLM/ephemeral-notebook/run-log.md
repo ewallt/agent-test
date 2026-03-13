@@ -233,3 +233,20 @@
 - Hiccups: First run blocked by UnicodeEncodeError on all styled nlm output -- root cause: PYTHONIOENCODING=utf-8 not set; fix: bash env prefix. Report download (both runs) fails -- URL field empty in artifact list; v0.3.2 bug. Source-id typo in manifest PS1 fixed before second run.
 
 ---
+
+## 2026-03-09 | Ephemeral Notebook | "The Drinker Paradox"
+- Notebook ID: cce55efb-9728-41ec-8ea5-3686f47f9f23
+- URL: https://notebooklm.google.com/notebook/cce55efb-9728-41ec-8ea5-3686f47f9f23
+- Pattern: Claude as Source — knowledge base written by Claude, uploaded as single .txt source
+- Source ID: 791c9db3-3822-4c4b-b600-c3313b02eec1
+- Videos: 1 | Style: Retro Print | Artifact ID: c28a4ae6-2c7e-4299-872e-f087e0813c18
+- Focus: The Drinker Paradox stated, proved, and unpacked — material implication, vacuous truth, non-constructive existence
+- Slide deck: completed | Artifact ID: 950f4573-600e-4b69-bb10-c8949a77340f | Downloaded: artifacts/drinker-paradox-slides.pdf
+- Slide style: vintage British pub illustration, warm amber and sepia tones, hand-drawn cross-hatching, golden candlelight atmosphere, dense editorial detail, scholarly marginalia aesthetic.
+- App: apps/drinker-paradox.html — Explorer (7 focus angles) + Quiz with localStorage chip-targeting
+- Elapsed: ~15m
+- Intervention: None observed
+- Gemini slide manifest: written by Claude — slideshows/drinker-paradox.md (10 slides, vintage British pub style)
+- Hiccups: Video status reported as "unknown" after generation — download failed via CLI (known issue). Video accessible in NotebookLM UI. Slide deck downloaded successfully as PDF. nlm slides create produces a PDF, not the Gemini manifest — manifest must be written by Claude directly (new pattern, captured in notebooklm-slide-manifest skill).
+
+---

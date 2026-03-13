@@ -7,16 +7,23 @@ import { useTheme } from "../ThemeContext";
 
 const TITLE_FRAMES = 15;
 const HEADING_FRAMES = 25;
-const ITEM_STAGGER = 15;
+const ITEMS_START = HEADING_FRAMES + 15; // frame when first item begins
 
 export const CompareScene: React.FC<CompareSceneProps> = ({
   title,
   left,
   right,
   doodles = [],
+  durationInFrames,
 }) => {
   const { theme: THEME } = useTheme();
   const frame = useCurrentFrame();
+
+  // Spread items evenly but cap stagger so extra duration becomes hold time at the end
+  const MAX_STAGGER = 40;
+  const maxItems = Math.max(left.items.length, right.items.length);
+  const totalRevealFrames = durationInFrames * 0.65 - ITEMS_START;
+  const ITEM_STAGGER = Math.min(MAX_STAGGER, maxItems > 1 ? totalRevealFrames / (maxItems - 1) : totalRevealFrames);
 
   const titleOpacity = interpolate(frame, [0, TITLE_FRAMES], [0, 1], {
     extrapolateLeft: "clamp",
@@ -27,8 +34,6 @@ export const CompareScene: React.FC<CompareSceneProps> = ({
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-
-  const maxItems = Math.max(left.items.length, right.items.length);
 
   return (
     <div
@@ -90,7 +95,7 @@ export const CompareScene: React.FC<CompareSceneProps> = ({
               >
                 <CalloutText
                   text={`▸ ${item}`}
-                  startFrame={HEADING_FRAMES + 15 + i * ITEM_STAGGER}
+                  startFrame={ITEMS_START + i * ITEM_STAGGER}
                 />
               </li>
             ))}
@@ -139,7 +144,7 @@ export const CompareScene: React.FC<CompareSceneProps> = ({
               >
                 <CalloutText
                   text={`▸ ${item}`}
-                  startFrame={HEADING_FRAMES + 15 + i * ITEM_STAGGER}
+                  startFrame={ITEMS_START + i * ITEM_STAGGER}
                 />
               </li>
             ))}

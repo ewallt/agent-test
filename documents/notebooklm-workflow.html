@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NotebookLM Workflow — How It Works</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* Header */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Layout */
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 48px; }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+  }
+  h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .card-bd { padding: 22px 24px; }
+  p { color: var(--muted); font-size: .97rem; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+
+  /* Code */
+  .code-block {
+    background: #060b15;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: .85rem;
+    line-height: 1.7;
+    margin: 14px 0;
+    overflow-x: auto;
+    padding: 16px 20px;
+  }
+  .code-block .key { color: #8bb9ff; }
+  .code-block .val { color: #c3e88d; }
+  .code-block .comment { color: #546e7a; }
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .step-num {
+    background: rgba(139,185,255,.15);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    width: 28px;
+    margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-body strong { color: var(--text); display: block; margin-bottom: 4px; font-size: .95rem; }
+  .step-body span { color: var(--muted); font-size: .9rem; }
+
+  /* IO Grid */
+  .io-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 600px) { .io-grid { grid-template-columns: 1fr; } }
+  .io-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+  }
+  .io-label {
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .io-label.input { color: var(--yellow); }
+  .io-label.output { color: var(--green); }
+  .io-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: .9rem;
+    color: var(--muted);
+  }
+  .io-item:last-child { margin-bottom: 0; }
+  .io-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+  .io-dot.in { background: var(--yellow); }
+  .io-dot.out { background: var(--green); }
+  .io-item strong { color: var(--text); }
+
+  /* Phase blocks */
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .phase-header {
+    background: rgba(139,185,255,.06);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .phase-num {
+    background: rgba(139,185,255,.15);
+    color: var(--accent);
+    border-radius: 8px;
+    font-size: .8rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .phase-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+  .phase-sub { font-size: .85rem; color: var(--muted); margin-top: 1px; }
+  .phase-bd { padding: 20px 22px; }
+  .phase-bd p { font-size: .9rem; }
+
+  /* Pill tags */
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .tag {
+    border-radius: 99px;
+    font-size: .78rem;
+    font-weight: 600;
+    padding: 3px 12px;
+    border: 1px solid;
+  }
+  .tag-blue  { color: var(--accent); border-color: rgba(139,185,255,.3); background: rgba(139,185,255,.07); }
+  .tag-green { color: var(--green);  border-color: rgba(124,255,178,.3); background: rgba(124,255,178,.07); }
+  .tag-yellow{ color: var(--yellow); border-color: rgba(255,214,100,.3); background: rgba(255,214,100,.07); }
+  .tag-red   { color: var(--red);    border-color: rgba(255,122,138,.3); background: rgba(255,122,138,.07); }
+
+  /* Callout */
+  .callout {
+    background: rgba(139,185,255,.06);
+    border: 1px solid rgba(139,185,255,.18);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: .9rem;
+    line-height: 1.6;
+    padding: 14px 18px;
+    margin-top: 16px;
+  }
+  .callout strong { color: var(--accent); }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  th {
+    background: rgba(255,255,255,.04);
+    color: var(--muted);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    padding: 10px 16px;
+    text-align: left;
+    text-transform: uppercase;
+  }
+  td { border-top: 1px solid var(--border); padding: 11px 16px; color: var(--muted); vertical-align: top; }
+  td strong { color: var(--text); }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 48px 0 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Reference Guide</div>
+  <h1>NotebookLM <span>Ephemeral Notebook</span> Workflow</h1>
+  <p>One fresh notebook per topic, built and populated automatically — from a topic description to a finished NotebookLM notebook with videos, in minutes.</p>
+</header>
+
+<div class="container">
+
+  <!-- What It Is -->
+  <section>
+    <h2><span class="icon">?</span> What This Is</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p><strong>NotebookLM</strong> is Google's AI-powered research tool. You give it sources (web pages, PDFs, text), and it lets you generate study guides, briefings, and short videos summarizing them. Each video covers a narrow focus angle — one argument, one concept, one thread of the topic.</p>
+        <p>The <strong>Ephemeral Notebook</strong> workflow automates everything that would otherwise be manual: creating the notebook, running research, importing sources, generating videos, and optionally building extra artifacts. You describe a topic; Claude does the rest using the <code>nlm</code> CLI.</p>
+        <p>The word "ephemeral" reflects the current phase of development — notebooks are treated as throwaway while the workflow itself is still being built and refined. Once the workflow matures, the notebooks may well be worth keeping long-term. The name describes a temporary posture, not a permanent design intent.</p>
+      </div>
+    </div>
+
+    <div style="background: rgba(124,255,178,.07); border: 2px solid rgba(124,255,178,.4); border-radius: 14px; padding: 22px 26px; margin-top: 16px;">
+      <div style="font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(124,255,178,.92); margin-bottom: 10px;">How to Start a Run</div>
+      <p style="color: #e6edf7; font-size: 1rem; margin-bottom: 10px;">Say any of the following to trigger the workflow:</p>
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 0;">
+        <div style="background: rgba(0,0,0,.25); border-radius: 8px; padding: 10px 16px; font-family: ui-monospace, monospace; font-size: .95rem; color: rgba(124,255,178,.92);">"run a notebook"</div>
+        <div style="background: rgba(0,0,0,.25); border-radius: 8px; padding: 10px 16px; font-family: ui-monospace, monospace; font-size: .95rem; color: rgba(124,255,178,.92);">"run the ephemeral notebook workflow"</div>
+        <div style="background: rgba(0,0,0,.25); border-radius: 8px; padding: 10px 16px; font-family: ui-monospace, monospace; font-size: .95rem; color: rgba(124,255,178,.92);">"run the notebook workflow"</div>
+      </div>
+      <p style="color: var(--muted); font-size: .88rem; margin-top: 12px; margin-bottom: 0;">Claude will load the master skill, read the workflow document, and execute the full run from the task file in <code>tasks/</code>.</p>
+    </div>
+  </section>
+
+  <!-- Sub-skills -->
+  <section>
+    <h2><span class="icon">🧩</span> Skills Loaded by the Master Skill</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>The master skill (<code>notebooklm-ephemeral-notebook</code>) loads sub-skills on demand based on task file flags. Each sub-skill is self-contained and loaded at the moment it's needed (JIT pattern).</p>
+        <table>
+          <tr>
+            <th>Task flag</th>
+            <th>Skill</th>
+            <th>What it does</th>
+          </tr>
+          <tr>
+            <td><code>videos: N</code></td>
+            <td><strong>notebooklm-video</strong></td>
+            <td>Focus prompt and visual style guidance for NLM video generation</td>
+          </tr>
+          <tr>
+            <td><code>slides: yes</code></td>
+            <td><strong>notebooklm-slide</strong></td>
+            <td>NLM-native slide deck — generates and downloads as PDF</td>
+          </tr>
+          <tr>
+            <td><code>slideshow: yes</code></td>
+            <td><strong>notebooklm-slide-manifest</strong></td>
+            <td>Gemini slide manifest — written by Claude, uploaded as a notebook source</td>
+          </tr>
+          <tr>
+            <td><code>infographic: yes</code></td>
+            <td><strong>notebooklm-infographic</strong></td>
+            <td>NLM-native infographic — generates and downloads as PNG</td>
+          </tr>
+          <tr>
+            <td><code>app: yes</code></td>
+            <td><strong>notebooklm-webapp</strong></td>
+            <td>Standalone HTML web app built by Claude (Explorer + Quiz)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inputs and Outputs -->
+  <section>
+    <h2><span class="icon">⇄</span> Inputs and Outputs</h2>
+    <div class="io-grid">
+      <div class="io-card">
+        <div class="io-label input">Inputs</div>
+        <div class="io-item"><div class="io-dot in"></div><div><strong>A topic</strong> — what you want the notebook to be about. Can be a historical event, concept, puzzle, phenomenon, etc.</div></div>
+        <div class="io-item"><div class="io-dot in"></div><div><strong>A task file</strong> (optional) — a short markdown file in <code>tasks/</code> specifying key, topic, video count, and optional extras (app, slideshow, copied text).</div></div>
+        <div class="io-item"><div class="io-dot in"></div><div><strong>A JSON request</strong> (optional) — a richer format in <code>queue/</code> with search query, depth, style, and per-video focus guidance. Used for multi-notebook series or complex topics.</div></div>
+        <div class="io-item"><div class="io-dot in"></div><div><strong>Copied text</strong> (optional) — a raw transcript or article pasted into <code>copied-text/</code> when web research won't find the right source.</div></div>
+      </div>
+      <div class="io-card">
+        <div class="io-label output">Outputs</div>
+        <div class="io-item"><div class="io-dot out"></div><div><strong>A live NotebookLM notebook</strong> — created in your Google account with a permanent URL.</div></div>
+        <div class="io-item"><div class="io-dot out"></div><div><strong>Sources</strong> — 5–10 web pages or documents imported into the notebook, which NotebookLM uses as its knowledge base.</div></div>
+        <div class="io-item"><div class="io-dot out"></div><div><strong>Videos</strong> — one short AI video per focus angle (retro_print style). A three-video notebook covers three distinct angles on the topic.</div></div>
+        <div class="io-item"><div class="io-dot out"></div><div><strong>Slideshow manifest</strong> (optional) — a markdown file of slide content generated by Gemini, ready for a Remotion narrated slideshow.</div></div>
+        <div class="io-item"><div class="io-dot out"></div><div><strong>Web app</strong> (optional) — a standalone HTML file built by Claude that explores the topic interactively (e.g., a quiz, explorer, or infographic).</div></div>
+        <div class="io-item"><div class="io-dot out"></div><div><strong>Run log entry</strong> — appended to <code>run-log.md</code> with notebook ID, URL, focus angles, elapsed time, and any hiccups.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Four Phases -->
+  <section>
+    <h2><span class="icon">→</span> The Four Phases</h2>
+
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">Phase 1</div>
+        <div>
+          <div class="phase-title">Task Definition</div>
+          <div class="phase-sub">Deciding what to build and how to build it</div>
+        </div>
+      </div>
+      <div class="phase-bd">
+        <p>You give Claude a topic. Depending on complexity, one of two paths is taken:</p>
+        <p><strong>Simple path (task file):</strong> Claude reads or writes a short markdown file in <code>tasks/</code>. It specifies the topic, how many videos, and which optional artifacts (app, slideshow). This is the fast path for focused, single-notebook topics.</p>
+        <p><strong>Rich path (JSON request):</strong> A JSON file in <code>queue/</code> provides a full specification — search query string, depth, style, and detailed guidance for each focus angle. This is used for multi-notebook series (e.g., WW2 broken into four notebooks by theater) or when precise source-finding matters.</p>
+        <p>Focus angle design is the creative core of this phase: deciding which three (or one, or four) distinct threads of the topic each video will cover — so they're complementary, not overlapping.</p>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">Phase 2</div>
+        <div>
+          <div class="phase-title">Notebook Creation and Research</div>
+          <div class="phase-sub">Building the knowledge base</div>
+        </div>
+      </div>
+      <div class="phase-bd">
+        <p>Claude runs a sequence of <code>nlm</code> commands (always prefixed <code>PYTHONIOENCODING=utf-8 nlm ...</code>):</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Create notebook</strong>
+              <span><code>nlm notebook create</code> — creates a fresh notebook in your Google account and returns a notebook ID.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Run research</strong>
+              <span><code>nlm research add</code> with a search query — NotebookLM searches the web and finds ~10 relevant sources. Alternatively, copied text is uploaded directly as a source.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Wait for processing</strong>
+              <span>Sources take a moment to index. Claude checks <code>nlm source list</code> to confirm they're ready before proceeding.</span>
+            </div>
+          </div>
+        </div>
+        <div class="callout">
+          <strong>Known quirk:</strong> research imports sometimes report a timeout even when sources were actually imported. Checking the source count before retrying prevents duplicate imports.
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">Phase 3</div>
+        <div>
+          <div class="phase-title">Artifact Generation</div>
+          <div class="phase-sub">Producing videos and optional extras</div>
+        </div>
+      </div>
+      <div class="phase-bd">
+        <p>With the knowledge base ready, Claude generates the requested artifacts:</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Generate videos</strong>
+              <span><code>nlm video generate</code> — one call per focus angle, each with a specific guidance string telling NotebookLM exactly what to cover. Style is always <code>retro_print</code>. Typical run: 1–4 videos per notebook.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Download artifacts</strong>
+              <span><code>nlm artifact list</code> then <code>nlm artifact download</code> — retrieves the finished video files. Slideshow manifests are downloaded the same way.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Build web app (if requested)</strong>
+              <span>Claude writes a standalone HTML file in <code>apps/</code> — an interactive explorer, quiz, or infographic — using knowledge from the research. Not generated by NotebookLM; built by Claude from scratch.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-header">
+        <div class="phase-num">Phase 4</div>
+        <div>
+          <div class="phase-title">Wrap-Up</div>
+          <div class="phase-sub">Logging, housekeeping, and handoff</div>
+        </div>
+      </div>
+      <div class="phase-bd">
+        <p>Claude appends an entry to <code>run-log.md</code> recording the notebook ID, URL, focus angles with source IDs, elapsed time, any interventions required, and hiccups observed.</p>
+        <p>The task file is moved from <code>tasks/</code> to <code>completed/</code>. JSON requests are moved from <code>queue/</code> to <code>json-completed/</code>.</p>
+        <p>The notebook URL is returned to Tom. The notebook is live in Google NotebookLM and ready to use.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Folder Structure -->
+  <section>
+    <h2><span class="icon">📁</span> Folder Structure</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>Everything lives under <code>Projects/NotebookLM/ephemeral-notebook/</code>:</p>
+        <div class="code-block">
+<span class="comment">ephemeral-notebook/</span>
+<span class="key">  tasks/</span>           <span class="comment">  ← task files waiting to run (.md)</span>
+<span class="key">  completed/</span>       <span class="comment">  ← task files moved here after a run</span>
+<span class="key">  queue/</span>           <span class="comment">  ← JSON requests waiting to run</span>
+<span class="key">  json-completed/</span>  <span class="comment">  ← JSON requests moved here after a run</span>
+<span class="key">  copied-text/</span>     <span class="comment">  ← raw text to upload as a source</span>
+<span class="key">  staging/</span>         <span class="comment">  ← completed runs that haven't been reviewed yet</span>
+<span class="key">  artifacts/</span>       <span class="comment">  ← downloaded videos and manifests</span>
+<span class="key">  apps/</span>            <span class="comment">  ← web apps built by Claude</span>
+<span class="key">  slideshows/</span>      <span class="comment">  ← slideshow manifests</span>
+<span class="key">  run-log.md</span>       <span class="comment">  ← permanent record of every run</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Input Formats -->
+  <section>
+    <h2><span class="icon">✎</span> Input Formats</h2>
+
+    <div class="card">
+      <div class="card-bd">
+        <h3>Task File (simple, in <code>tasks/</code>)</h3>
+        <p>A short markdown file — human-readable, hand-writable. Used for straightforward single-notebook runs.</p>
+        <div class="code-block">
+<span class="key">key:</span> <span class="val">braess-paradox</span>
+<span class="key">topic:</span> <span class="val">Braess's Paradox</span>
+<span class="key">research:</span> <span class="val">no</span>
+<span class="key">copied-text:</span> <span class="val">no</span>
+<span class="key">app:</span> <span class="val">yes</span>
+<span class="key">slideshow:</span> <span class="val">yes</span>
+<span class="key">videos:</span> <span class="val">1</span>
+<span class="key">guidance:</span> <span class="val">|</span>
+  <span class="comment">Video style: retro_print. Focus on the core paradox and its</span>
+  <span class="comment">counterintuitive implications for road networks.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-bd">
+        <h3>JSON Request (rich, in <code>queue/</code>)</h3>
+        <p>A structured JSON array — one object per notebook. Includes a precise web search query and per-focus-angle guidance. Used when a pre-processing AI (a separate Claude or Gemini session) has already designed the notebook plan.</p>
+        <div class="code-block">
+<span class="val">[</span>
+  <span class="val">{</span>
+    <span class="key">"topic":</span>    <span class="val">"The Black Death (1347-1353)"</span>,
+    <span class="key">"videos":</span>   <span class="val">3</span>,
+    <span class="key">"style":</span>    <span class="val">"retro_print"</span>,
+    <span class="key">"format":</span>   <span class="val">"explainer"</span>,
+    <span class="key">"depth":</span>    <span class="val">"deep"</span>,
+    <span class="key">"query":</span>    <span class="val">"Black Death 1347 bubonic plague causes spread..."</span>,
+    <span class="key">"guidance":</span> <span class="val">"Focus on three angles: (1) origins and spread..."</span>
+  <span class="val">}</span>
+<span class="val">]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Design Patterns -->
+  <section>
+    <h2><span class="icon">◈</span> Design Patterns</h2>
+
+    <div class="card">
+      <div class="card-bd">
+        <h3>Single Notebook</h3>
+        <p>One notebook, 1–4 videos, all on a tightly scoped topic. Best for a concept, event, or puzzle with clear boundaries. Each video angle approaches the same topic from a different direction — causes vs. lived experience vs. aftermath; psychology vs. mathematics vs. everyday applications.</p>
+        <div class="tags">
+          <span class="tag tag-blue">Hume's Problem of Induction</span>
+          <span class="tag tag-blue">The Malthusian Trap</span>
+          <span class="tag tag-blue">Braess's Paradox</span>
+          <span class="tag tag-blue">Other Lane Paradox</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-bd">
+        <h3>Isomorphic Series</h3>
+        <p>A large topic that is naturally divisible into a set of parallel items — all the same kind of thing, examined through the same lens. Each item gets one video; items are grouped into notebooks by a natural organizing principle. Notebooks are peers, not hierarchical.</p>
+        <p>The WW2 series is the primary example: four notebooks (Mediterranean, Eastern Front, Pacific, Western Europe), each with 3–4 battles as videos, organized by theater.</p>
+        <div class="tags">
+          <span class="tag tag-yellow">WW2 Battles (by theater)</span>
+          <span class="tag tag-yellow">Scientific Revolutions (by field)</span>
+          <span class="tag tag-yellow">Philosophical Revolutions (by era)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-bd">
+        <h3>Claude as Source</h3>
+        <p>Used when the topic is something Claude knows well and the subject matter is <strong>static</strong> — not dependent on current events, live research, or recent data. Instead of running <code>nlm research</code>, Claude writes the knowledge base itself and uploads it as the source. The notebook becomes a structured container for Claude's knowledge rather than a digest of external web sources.</p>
+        <p>The workflow differs from the standard path in two ways. First, source creation: Claude authors a tailored knowledge document — scoped precisely to the focus angles the video will cover — and uploads it as a plain-text source. Second, the task file sets <code>research: no</code> and <code>copied-text: no</code>; Claude's written document is the only source, and it is crafted for the job rather than scraped from the web.</p>
+        <p>This pattern is best when web research would return noisy, inconsistent, or shallow results for a topic that Claude can cover with depth and precision. It is also faster — no research phase, no source indexing wait — and produces tighter videos because the source is written to match the focus angle exactly. The notebook still gets a Gemini slide manifest and any other requested artifacts; only the source origin changes.</p>
+        <p><strong>When to use it:</strong> well-established concepts, historical events, mathematics, philosophy, logic, science fundamentals — anything stable enough that Claude's training knowledge is a reliable and sufficient source. Avoid for anything time-sensitive, contested in current discourse, or requiring citation of specific real-world data.</p>
+        <div class="tags">
+          <span class="tag tag-red">Braess's Paradox</span>
+          <span class="tag tag-red">Topic TBD</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How Long It Takes -->
+  <section>
+    <h2><span class="icon">⏱</span> How Long It Takes</h2>
+    <div class="card">
+      <div class="card-bd">
+        <table>
+          <thead>
+            <tr>
+              <th>Notebook Type</th>
+              <th>Typical Time</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1 video, research</strong></td>
+              <td>5–8 min</td>
+              <td>Single focused topic, straightforward</td>
+            </tr>
+            <tr>
+              <td><strong>3 videos, research</strong></td>
+              <td>8–12 min</td>
+              <td>Standard run; most topics</td>
+            </tr>
+            <tr>
+              <td><strong>3 videos + app</strong></td>
+              <td>20–30 min</td>
+              <td>Claude builds the app after the notebook run</td>
+            </tr>
+            <tr>
+              <td><strong>3-notebook series</strong></td>
+              <td>~9 min total</td>
+              <td>Isomorphic runs can be tight when well-prepared</td>
+            </tr>
+            <tr>
+              <td><strong>Claude as Source (1–3 videos)</strong></td>
+              <td>3–8 min</td>
+              <td>No research phase; Claude writes and uploads the source directly</td>
+            </tr>
+            <tr>
+              <td><strong>With hiccups</strong></td>
+              <td>+5–20 min</td>
+              <td>Auth expiry, import timeouts, permission prompts</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Tool -->
+  <section>
+    <h2><span class="icon">⌨</span> The Key Tool</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p><strong><code>nlm</code></strong> is the <code>notebooklm-mcp-cli</code> (v0.3.2) — a command-line interface that talks to NotebookLM's API on your behalf. All commands are run through Claude's bash tool.</p>
+        <p>Every command is prefixed with <code>PYTHONIOENCODING=utf-8</code> to prevent Unicode encoding errors from the CLI's styled output on Windows.</p>
+        <div class="code-block">
+<span class="comment"># Core commands used in a typical run</span>
+<span class="key">PYTHONIOENCODING=utf-8 nlm notebook create</span>         <span class="comment">→ new notebook</span>
+<span class="key">PYTHONIOENCODING=utf-8 nlm research add</span> <span class="val">NOTEBOOK_ID "query"</span>
+<span class="key">PYTHONIOENCODING=utf-8 nlm source list</span> <span class="val">NOTEBOOK_ID</span>     <span class="comment">→ check sources</span>
+<span class="key">PYTHONIOENCODING=utf-8 nlm video generate</span> <span class="val">NOTEBOOK_ID</span> <span class="comment">→ generate video</span>
+<span class="key">PYTHONIOENCODING=utf-8 nlm artifact list</span> <span class="val">NOTEBOOK_ID</span>   <span class="comment">→ find videos</span>
+<span class="key">PYTHONIOENCODING=utf-8 nlm artifact download</span> <span class="val">NOTEBOOK_ID ARTIFACT_ID</span>
+        </div>
+        <div class="callout">
+          <strong>Account:</strong> ewalltom@gmail.com — all notebooks are created in this Google account.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Known Limitations -->
+  <section>
+    <h2><span class="icon">!</span> Known Limitations</h2>
+    <div class="card">
+      <div class="card-bd">
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">!</div>
+            <div class="step-body">
+              <strong>HTML files cannot be uploaded as sources</strong>
+              <span>NotebookLM only accepts URLs, PDFs, and plain text. Claude-built web apps can't feed back into the notebook as a source.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">!</div>
+            <div class="step-body">
+              <strong>Report/slideshow download bug (v0.3.2)</strong>
+              <span>The artifact URL field is sometimes empty, causing downloads to fail. Slideshow manifests are accessible in the notebook UI but may not be downloadable via CLI.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">!</div>
+            <div class="step-body">
+              <strong>Research import timeouts are often false</strong>
+              <span>The CLI may report a timeout even when sources were successfully imported. Always check source count before retrying — retrying duplicates all sources.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">!</div>
+            <div class="step-body">
+              <strong>Auth expiry on long runs</strong>
+              <span>Google session tokens expire. On multi-notebook runs or slow sessions, Claude may hit an auth error mid-run. Tom re-logs in and the run continues from where it stopped.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

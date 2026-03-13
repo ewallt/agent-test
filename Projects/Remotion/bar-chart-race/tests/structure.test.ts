@@ -15,10 +15,11 @@ function exists(rel: string) {
 }
 
 describe('engine', () => {
-  it('BarChartRace.tsx exists', () => expect(exists('src/engine/BarChartRace.tsx')).toBe(true));
-  it('compute.ts exists',       () => expect(exists('src/engine/compute.ts')).toBe(true));
-  it('types.ts exists',         () => expect(exists('src/engine/types.ts')).toBe(true));
-  it('index.tsx exists',        () => expect(exists('src/index.tsx')).toBe(true));
+  it('BarChartRace.tsx exists',            () => expect(exists('src/engine/BarChartRace.tsx')).toBe(true));
+  it('BarChartRaceSimultaneous.tsx exists', () => expect(exists('src/engine/BarChartRaceSimultaneous.tsx')).toBe(true));
+  it('compute.ts exists',                  () => expect(exists('src/engine/compute.ts')).toBe(true));
+  it('types.ts exists',                    () => expect(exists('src/engine/types.ts')).toBe(true));
+  it('index.tsx exists',                   () => expect(exists('src/index.tsx')).toBe(true));
 });
 
 describe('library', () => {
@@ -38,7 +39,7 @@ describe('music', () => {
     expect(exists('public/Signal Through the Dark.mp3')).toBe(true));
 });
 
-const DATA_PROJECTS = ['ai-mmlu', 'streaming-wars'];
+const DATA_PROJECTS = ['ai-mmlu', 'streaming-wars', 'us-cities', 'us-top-10-cities'];
 const REQUIRED_DATA_FILES = ['entries.ts', 'categories.ts', 'metadata.ts', 'story-cards.ts', 'barchart.ts'];
 
 describe('data projects', () => {
@@ -48,6 +49,10 @@ describe('data projects', () => {
         expect(exists(`data/${project}/${file}`)).toBe(true));
     }
   }
+});
+
+describe('data barrel', () => {
+  it('data/index.ts exists', () => expect(exists('data/index.ts')).toBe(true));
 });
 
 describe('scripts', () => {

@@ -1,0 +1,387 @@
+{
+  "theme": "darkChalk",
+  "scenes": [
+    {
+      "id": "t3-title-001",
+      "type": "title",
+      "durationInFrames": 209,
+      "narration": "Braess's Paradox. How adding a new road to a network can make everyone's journey slower.",
+      "title": "Braess's Paradox",
+      "subtitle": "How adding a road can make everyone slower",
+      "doodles": [
+        {
+          "asset": "arrow",
+          "x": 180,
+          "y": 120,
+          "scale": 1.2,
+          "color": "#f39c12",
+          "revealStart": 40,
+          "revealEnd": 100
+        },
+        {
+          "asset": "circle",
+          "x": 1720,
+          "y": 900,
+          "scale": 1,
+          "color": "#e74c3c",
+          "revealStart": 70,
+          "revealEnd": 130
+        },
+        {
+          "asset": "star",
+          "x": 1780,
+          "y": 130,
+          "scale": 0.9,
+          "color": "#2ecc71",
+          "revealStart": 96,
+          "revealEnd": 156
+        }
+      ]
+    },
+    {
+      "id": "t3-step-001",
+      "type": "stepReveal",
+      "durationInFrames": 609,
+      "narration": "Start with two routes from A to B. The first runs twenty-five minutes of variable road, then forty-five fixed. The second mirrors it: forty-five fixed, then twenty-five variable. With drivers splitting evenly, each variable leg stays at twenty-five minutes — so every journey takes seventy minutes.",
+      "transition": {
+        "type": "fade",
+        "durationInFrames": 20
+      },
+      "title": "Start with two equivalent routes",
+      "body": [
+        "Road 1: 25 minutes variable, then 45 minutes fixed",
+        "Road 2: 45 minutes fixed, then 25 minutes variable",
+        "The two routes are mirror images of each other",
+        "Drivers split evenly, so each variable half stays at 25 minutes"
+      ],
+      "doodles": [
+        {
+          "asset": "arrow",
+          "x": 1650,
+          "y": 480,
+          "scale": 1.3,
+          "color": "#f39c12",
+          "revealStart": 131,
+          "revealEnd": 184
+        }
+      ]
+    },
+    {
+      "id": "t3-flow-roads",
+      "type": "flowChart",
+      "durationInFrames": 437,
+      "narration": "Here is the network. Two parallel paths connect A to B. Road one takes the variable leg first, road two takes it last. With traffic split evenly, both routes take the same seventy minutes.",
+      "transition": {
+        "type": "slide",
+        "durationInFrames": 20,
+        "direction": "from-right"
+      },
+      "title": "Two parallel roads from A to B",
+      "nodes": [
+        { "id": "a",     "label": "A", "x": 120,  "y": 540, "height": 300 },
+        { "id": "u_div", "label": "—", "x": 960,  "y": 390, "startFrame": 18 },
+        { "id": "l_div", "label": "—", "x": 960,  "y": 690, "startFrame": 54 },
+        { "id": "b",     "label": "B", "x": 1800, "y": 540, "height": 300, "startFrame": 36 }
+      ],
+      "edges": [
+        { "from": "a",     "to": "u_div", "fromSide": "top",    "toSide": "center", "startFrame": 9  },
+        { "from": "u_div", "to": "b",     "fromSide": "center", "toSide": "top",    "startFrame": 27 },
+        { "from": "a",     "to": "l_div", "fromSide": "bottom", "toSide": "center", "startFrame": 45 },
+        { "from": "l_div", "to": "b",     "fromSide": "center", "toSide": "bottom", "startFrame": 63 }
+      ],
+      "labels": [
+        { "x": 240,  "y": 310, "text": "25 min (depending on traffic)",    "startFrame": 15, "fontSize": 32 },
+        { "x": 1075, "y": 310, "text": "45 min (independent of traffic)",  "startFrame": 33, "fontSize": 32 },
+        { "x": 240,  "y": 610, "text": "45 min (independent of traffic)",  "startFrame": 51, "fontSize": 32 },
+        { "x": 1075, "y": 610, "text": "25 min (depending on traffic)",    "startFrame": 69, "fontSize": 32 }
+      ]
+    },
+    {
+      "id": "t3-stat-001",
+      "type": "stat",
+      "durationInFrames": 190,
+      "narration": "Seventy minutes. That is the travel time for everyone before any changes are made.",
+      "transition": {
+        "type": "fade",
+        "durationInFrames": 20
+      },
+      "value": "70 min",
+      "label": "travel time before the connector",
+      "context": "25 variable + 45 fixed"
+    },
+    {
+      "id": "t3-step-002",
+      "type": "flowChart",
+      "durationInFrames": 563,
+      "narration": "Then an engineer adds a shortcut: a one-minute connecting road between the two midpoints. This creates a tempting new hybrid route. Take the fast variable leg from A, cross the connector, then take the fast variable leg into B. On paper, that is just fifty-one minutes.",
+      "transition": {
+        "type": "wipe",
+        "durationInFrames": 20,
+        "direction": "from-right"
+      },
+      "title": "Then a shortcut is added",
+      "nodes": [
+        { "id": "a",     "label": "A", "x": 120,  "y": 540, "height": 300 },
+        { "id": "u_div", "label": "—", "x": 960,  "y": 390, "startFrame": 18 },
+        { "id": "l_div", "label": "—", "x": 960,  "y": 690, "startFrame": 54 },
+        { "id": "b",     "label": "B", "x": 1800, "y": 540, "height": 300, "startFrame": 36 }
+      ],
+      "edges": [
+        { "from": "a",     "to": "u_div", "fromSide": "top",    "toSide": "center", "startFrame": 9  },
+        { "from": "u_div", "to": "b",     "fromSide": "center", "toSide": "top",    "startFrame": 27 },
+        { "from": "a",     "to": "l_div", "fromSide": "bottom", "toSide": "center", "startFrame": 45 },
+        { "from": "l_div", "to": "b",     "fromSide": "center", "toSide": "bottom", "startFrame": 63 },
+        { "from": "u_div", "to": "l_div", "vertical": true, "label": "1 min",       "startFrame": 80 },
+        { "from": "a",     "to": "u_div", "fromSide": "top",    "toSide": "center", "color": "#60a5fa", "startFrame": 233 },
+        { "from": "u_div", "to": "l_div", "vertical": true,                         "color": "#60a5fa", "startFrame": 251 },
+        { "from": "l_div", "to": "b",     "fromSide": "center", "toSide": "bottom", "color": "#60a5fa", "startFrame": 269 }
+      ],
+      "labels": [
+        { "x": 240,  "y": 310, "text": "25 min (depending on traffic)",   "startFrame": 15, "fontSize": 32 },
+        { "x": 1075, "y": 310, "text": "45 min (independent of traffic)", "startFrame": 33, "fontSize": 32 },
+        { "x": 240,  "y": 610, "text": "45 min (independent of traffic)", "startFrame": 51, "fontSize": 32 },
+        { "x": 1075, "y": 610, "text": "25 min (depending on traffic)",   "startFrame": 69, "fontSize": 32 }
+      ]
+    },
+    {
+      "id": "t3-flow-001",
+      "type": "flowChart",
+      "durationInFrames": 663,
+      "narration": "The new hybrid route looks like this: twenty-five variable, one connector, twenty-five variable — fifty-one minutes on paper. But when every driver chooses this same route, both variable legs become congested. Traffic rises until each leg stretches to forty-two minutes. The actual journey becomes eighty-five minutes.",
+      "transition": {
+        "type": "slide",
+        "durationInFrames": 20,
+        "direction": "from-right"
+      },
+      "title": "The route every driver wants",
+      "nodes": [
+        {
+          "id": "a1",
+          "label": "Point A",
+          "x": 160,
+          "y": 450
+        },
+        {
+          "id": "v1w",
+          "label": "25 min variable",
+          "x": 560,
+          "y": 450
+        },
+        {
+          "id": "cw",
+          "label": "1 min connector",
+          "x": 960,
+          "y": 450
+        },
+        {
+          "id": "v2w",
+          "label": "25 min variable",
+          "x": 1360,
+          "y": 450
+        },
+        {
+          "id": "b1",
+          "label": "Point B",
+          "x": 1760,
+          "y": 450
+        },
+        {
+          "id": "a2",
+          "label": "Point A",
+          "x": 160,
+          "y": 820,
+          "startFrame": 168
+        },
+        {
+          "id": "v1g",
+          "label": "42 min variable",
+          "x": 560,
+          "y": 820,
+          "startFrame": 204
+        },
+        {
+          "id": "cg",
+          "label": "1 min connector",
+          "x": 960,
+          "y": 820,
+          "startFrame": 240
+        },
+        {
+          "id": "v2g",
+          "label": "42 min variable",
+          "x": 1360,
+          "y": 820,
+          "startFrame": 276
+        },
+        {
+          "id": "b2",
+          "label": "Point B",
+          "x": 1760,
+          "y": 820,
+          "startFrame": 312
+        }
+      ],
+      "edges": [
+        {
+          "from": "a1",
+          "to": "v1w"
+        },
+        {
+          "from": "v1w",
+          "to": "cw"
+        },
+        {
+          "from": "cw",
+          "to": "v2w"
+        },
+        {
+          "from": "v2w",
+          "to": "b1"
+        },
+        {
+          "from": "a2",
+          "to": "v1g",
+          "startFrame": 186
+        },
+        {
+          "from": "v1g",
+          "to": "cg",
+          "startFrame": 222
+        },
+        {
+          "from": "cg",
+          "to": "v2g",
+          "startFrame": 258
+        },
+        {
+          "from": "v2g",
+          "to": "b2",
+          "startFrame": 294
+        }
+      ],
+      "labels": [
+        {
+          "x": 120,
+          "y": 330,
+          "text": "What every driver wants: 51 min",
+          "startFrame": 0
+        },
+        {
+          "x": 120,
+          "y": 700,
+          "text": "What every driver gets: 85 min",
+          "startFrame": 150
+        }
+      ]
+    },
+    {
+      "id": "t3-compare-001",
+      "type": "compare",
+      "durationInFrames": 450,
+      "narration": "What every driver expects: fifty-one minutes via the hybrid route. What every driver actually gets: eighty-five minutes. Rational individual choices have produced a worse collective outcome.",
+      "transition": {
+        "type": "wipe",
+        "durationInFrames": 20,
+        "direction": "from-right"
+      },
+      "title": "What drivers expect vs. what happens",
+      "left": {
+        "heading": "Expected",
+        "items": [
+          "25-minute variable leg",
+          "1-minute connector",
+          "25-minute variable leg",
+          "Total: 51 minutes"
+        ]
+      },
+      "right": {
+        "heading": "Actual",
+        "items": [
+          "Everyone chooses the same hybrid route",
+          "Both variable legs become congested",
+          "Each 25-minute leg rises to 42 minutes",
+          "Total: 85 minutes"
+        ]
+      },
+      "doodles": [
+        {
+          "asset": "star",
+          "x": 1800,
+          "y": 860,
+          "scale": 1,
+          "color": "#f39c12",
+          "revealStart": 120,
+          "revealEnd": 167
+        }
+      ]
+    },
+    {
+      "id": "t3-stat-002",
+      "type": "stat",
+      "durationInFrames": 180,
+      "narration": "Eighty-five minutes. Fifteen minutes slower than before the new road was built.",
+      "transition": {
+        "type": "fade",
+        "durationInFrames": 20
+      },
+      "value": "85 min",
+      "label": "travel time after the new road",
+      "context": "42 + 1 + 42"
+    },
+    {
+      "id": "t3-quote-001",
+      "type": "quote",
+      "durationInFrames": 210,
+      "narration": "A road that should help can make everyone worse off.",
+      "transition": {
+        "type": "fade",
+        "durationInFrames": 25
+      },
+      "quote": "A road that should help can make everyone worse off.",
+      "attribution": "Braess's paradox in one sentence"
+    },
+    {
+      "id": "t3-step-003",
+      "type": "stepReveal",
+      "durationInFrames": 623,
+      "narration": "The paradox happens because each driver acts rationally in their own interest. The new connector changes the incentives — the hybrid route always looks faster to any individual. But when everyone makes the same rational choice, both variable legs congest simultaneously. What is optimal for one becomes worse for all.",
+      "transition": {
+        "type": "slide",
+        "durationInFrames": 20,
+        "direction": "from-left"
+      },
+      "title": "Why the paradox happens",
+      "body": [
+        "Each driver acts rationally in their own interest",
+        "The hybrid route always looks faster to any individual",
+        "When everyone chooses it, both variable legs congest simultaneously",
+        "What is optimal for one becomes worse for all"
+      ],
+      "doodles": [
+        {
+          "asset": "circle",
+          "x": 1640,
+          "y": 400,
+          "scale": 1.2,
+          "color": "#e74c3c",
+          "revealStart": 105,
+          "revealEnd": 154
+        }
+      ]
+    },
+    {
+      "id": "t3-outro-001",
+      "type": "outro",
+      "durationInFrames": 245,
+      "narration": "More roads do not always mean less traffic. Sometimes the shortcut is exactly what makes the system slower.",
+      "transition": {
+        "type": "fade",
+        "durationInFrames": 30
+      },
+      "title": "More roads do not always mean less traffic.",
+      "body": [
+        "Sometimes the shortcut is exactly what makes the system slower."
+      ]
+    }
+  ]
+}

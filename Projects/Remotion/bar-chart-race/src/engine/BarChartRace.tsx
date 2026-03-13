@@ -247,7 +247,7 @@ export const BarChartRace: React.FC<Props> = ({ config }) => {
                 fontWeight: 600,
               }}
             >
-              {animatedScore.toFixed(1)}{config.valueSuffix ?? '%'}
+              {animatedScore.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: config.valueDecimals ?? 1 })}{config.valueSuffix ?? '%'}
             </div>
           </div>
         );
@@ -255,7 +255,7 @@ export const BarChartRace: React.FC<Props> = ({ config }) => {
 
       {/* Music */}
       {config.musicSrc && (
-        <Audio src={staticFile(config.musicSrc)} volume={config.musicVolume ?? 0.7} />
+        <Audio src={staticFile(config.musicSrc)} volume={config.musicVolume ?? 0.7} loop />
       )}
 
       {/* Legend */}

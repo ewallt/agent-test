@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Skills Installer — How It Works</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* Header */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  /* Layout */
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 48px; }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+  }
+  h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .card-bd { padding: 22px 24px; }
+  p { color: var(--muted); font-size: .97rem; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+
+  /* Code blocks */
+  .code-block {
+    background: #060b15;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: .85rem;
+    line-height: 1.7;
+    margin: 14px 0;
+    overflow-x: auto;
+    padding: 16px 20px;
+  }
+  .code-block .cmd { color: #8bb9ff; }
+  .code-block .arg { color: #c3e88d; }
+  .code-block .comment { color: #546e7a; }
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .step-num {
+    background: rgba(139,185,255,.15);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    width: 28px;
+    margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-body strong { color: var(--text); display: block; margin-bottom: 4px; font-size: .95rem; }
+  .step-body span { color: var(--muted); font-size: .9rem; }
+
+  /* Skills grid */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+  }
+  .skill-title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .skill-source { color: var(--muted); font-size: .8rem; font-family: var(--mono); margin-bottom: 12px; }
+  .skill-desc { color: var(--muted); font-size: .9rem; line-height: 1.5; margin-bottom: 16px; }
+  .risk-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .risk-pill {
+    border-radius: 99px;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: 3px 11px;
+    border: 1px solid;
+  }
+  .risk-safe  { color: var(--green); border-color: rgba(124,255,178,.3); background: rgba(124,255,178,.07); }
+  .risk-med   { color: var(--yellow); border-color: rgba(255,214,100,.3); background: rgba(255,214,100,.07); }
+  .risk-zero  { color: var(--green); border-color: rgba(124,255,178,.3); background: rgba(124,255,178,.07); }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  th {
+    background: rgba(255,255,255,.04);
+    color: var(--muted);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    padding: 10px 16px;
+    text-align: left;
+    text-transform: uppercase;
+  }
+  td { border-top: 1px solid var(--border); padding: 11px 16px; color: var(--muted); vertical-align: top; }
+  td strong { color: var(--text); }
+
+  /* Callout */
+  .callout {
+    background: rgba(139,185,255,.06);
+    border: 1px solid rgba(139,185,255,.18);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: .9rem;
+    line-height: 1.6;
+    padding: 14px 18px;
+    margin-top: 16px;
+  }
+  .callout strong { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Reference Guide</div>
+  <h1>Agent <span>Skills Installer</span></h1>
+  <p>How the <code>npx skills</code> CLI works — installing reusable AI agent capabilities from GitHub repositories across multiple coding agents.</p>
+</header>
+
+<div class="container">
+
+  <!-- What It Is -->
+  <section>
+    <h2><span class="icon">?</span> What Is This</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p><strong>Skills</strong> are reusable instruction packages for AI coding agents — Claude Code, Cursor, Copilot, and others. A skill tells the agent how to handle a specific domain: Remotion video creation, finding other skills, building notebooks, etc.</p>
+        <p>The <code>npx skills</code> CLI (from <strong>skills.sh</strong>) installs skills from public GitHub repositories into your project or global agent configuration. Once installed, the agent automatically loads the skill when relevant tasks come up.</p>
+        <p>Think of skills like plugins: they extend what the agent knows how to do without you having to explain it from scratch each session.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Command -->
+  <section>
+    <h2><span class="icon">⌨</span> The Command</h2>
+    <div class="card">
+      <div class="card-bd">
+        <div class="code-block">
+<span class="comment"># Install a skill from a GitHub repo</span>
+<span class="cmd">npx skills add</span> <span class="arg">remotion-dev/skills</span>
+
+<span class="comment"># General pattern</span>
+<span class="cmd">npx skills add</span> <span class="arg">&lt;github-owner&gt;/&lt;repo-name&gt;</span>
+        </div>
+        <p>The CLI fetches the repo, detects which skills it contains, runs security checks, and installs them — either project-scoped (into <code>.agents/skills/</code>) or globally. It uses a <strong>symlink</strong> so the skill stays in sync if the source repo updates.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Step by Step -->
+  <section>
+    <h2><span class="icon">→</span> Installation Flow</h2>
+    <div class="card">
+      <div class="card-bd">
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Clone the repo</strong>
+              <span>The CLI fetches the GitHub repository containing the skill(s).</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Detect skills</strong>
+              <span>It scans the repo for skill definition files and lists what it found.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>Security assessment</strong>
+              <span>Three automated checks run: Gen AI safety scan, Socket supply-chain analysis, and Snyk vulnerability scan. Results are shown before you confirm.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Choose scope and method</strong>
+              <span>Project (local to this repo) or global. Symlink (recommended — stays current) or copy.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong>Install</strong>
+              <span>For Claude Code, the skill lands in <code>.agents/skills/&lt;skill-name&gt;/</code> in your project, symlinked into Claude's skill directory.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installed Skills -->
+  <section>
+    <h2><span class="icon">✓</span> Skills Installed</h2>
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <div class="skill-title">remotion-best-practices</div>
+        <div class="skill-source">remotion-dev/skills</div>
+        <div class="skill-desc">Best practices for Remotion — programmatic video creation in React. Guides the agent on animations, compositions, timing, and media handling patterns specific to the Remotion framework.</div>
+        <div class="risk-row">
+          <span class="risk-pill risk-safe">Gen: Safe</span>
+          <span class="risk-pill risk-zero">Socket: 0 alerts</span>
+          <span class="risk-pill risk-med">Snyk: Med Risk</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-title">find-skills</div>
+        <div class="skill-source">vercel-labs/skills</div>
+        <div class="skill-desc">Helps discover and install agent skills. Triggers when you ask "how do I do X", "find a skill for X", or express interest in extending agent capabilities. Generates targeted search prompts for the skills ecosystem.</div>
+        <div class="risk-row">
+          <span class="risk-pill risk-safe">Gen: Safe</span>
+          <span class="risk-pill risk-zero">Socket: 0 alerts</span>
+          <span class="risk-pill risk-med">Snyk: Med Risk</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="callout">
+      <strong>Note on Snyk "Med Risk":</strong> This rating applies to the skill package itself, not its content. It typically flags missing security metadata (no license, no maintainer policy) rather than actual vulnerabilities in the skill instructions. Both skills above are plain instruction text — they contain no executable code of their own.
+    </div>
+  </section>
+
+  <!-- Security Checks Explained -->
+  <section>
+    <h2><span class="icon">🔒</span> Security Checks</h2>
+    <div class="card">
+      <div class="card-bd">
+        <table>
+          <thead>
+            <tr><th>Check</th><th>What It Tests</th><th>What to Watch For</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Gen</strong></td>
+              <td>AI-generated content safety scan — looks for prompt injection, jailbreak attempts, or malicious instructions embedded in the skill.</td>
+              <td>Anything other than "Safe" — a skill with hidden instructions could manipulate the agent.</td>
+            </tr>
+            <tr>
+              <td><strong>Socket</strong></td>
+              <td>Supply-chain analysis — checks for known malicious packages or suspicious dependencies if the skill includes scripts.</td>
+              <td>Any alerts. Zero alerts means no known supply-chain flags.</td>
+            </tr>
+            <tr>
+              <td><strong>Snyk</strong></td>
+              <td>Vulnerability scan — checks for known CVEs and security policy metadata.</td>
+              <td>"High Risk" is a red flag. "Med Risk" on instruction-only skills is usually a metadata gap, not a real vulnerability.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Where Skills Live -->
+  <section>
+    <h2><span class="icon">📁</span> Where Skills Live</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p><strong>Project-scoped</strong> (what was installed here):</p>
+        <div class="code-block">
+agent-test/
+  .agents/
+    skills/
+      remotion-best-practices/   ← symlinked → Claude Code
+      find-skills/               ← symlinked → Claude Code
+        </div>
+        <p><strong>Globally installed</strong> skills (manually written or installed via other means) live at:</p>
+        <div class="code-block">
+~/.claude/skills/
+  shutdown/          ← custom skill
+  whiteboard-explainer/
+  remotion-narrated-slides/
+  find-skills/       ← custom replacement version
+  ... etc
+        </div>
+        <p>When Claude Code starts, it loads both locations. Project-scoped skills take precedence over global ones with the same name.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Finding More Skills -->
+  <section>
+    <h2><span class="icon">⌕</span> Finding More Skills</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>Browse the skills ecosystem at <strong>skills.sh</strong> — a registry of 74,000+ published skills. You can search by category or agent type.</p>
+        <p>Notable sources used in this project:</p>
+        <div class="code-block">
+<span class="cmd">npx skills add</span> <span class="arg">remotion-dev/skills</span>        <span class="comment"># Remotion best practices</span>
+<span class="cmd">npx skills add</span> <span class="arg">vercel-labs/skills</span>         <span class="comment"># Find-skills discovery tool</span>
+<span class="cmd">npx skills add</span> <span class="arg">anthropics/skills</span>          <span class="comment"># Official Anthropic skill pack</span>
+<span class="cmd">npx skills add</span> <span class="arg">ncklrs/startup-os-skills</span>    <span class="comment"># Spring animation configs</span>
+        </div>
+        <p>Skills can also be written manually and placed directly in <code>~/.claude/skills/&lt;skill-name&gt;/SKILL.md</code> — no CLI required.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

@@ -93,6 +93,103 @@ export function computeTotalFrames(config: BarChartConfig): number {
   return config.entries.length * framesPerEntry + (config.trailingFrames ?? 0);
 }
 
+// ── Simultaneous mode ────────────────────────────────────────────────────────
+// One keyframe per unique date; all bars animate together each period.
+
+export function buildSimKeyframes(config: BarChartConfig): Keyframe[] {
+  const { topN, framesPerEntry } = getConstants(config);
+
+  const byDate = new Map<string, typeof config.entries[number][]>();
+  for (const entry of config.entries) {
+    if (!byDate.has(entry.date)) byDate.set(entry.date, []);
+    byDate.get(entry.date)!.push(entry);
+  }
+
+  const dates = [...byDate.keys()].sort();
+  const currentScores: Record<string, number> = {};
+  const currentLabs: Record<string, string> = {};
+  const keyframes: Keyframe[] = [];
+
+  for (let i = 0; i < dates.length; i++) {
+    const date = dates[i];
+    for (const entry of byDate.get(date)!) {
+      currentScores[entry.model] = entry.mmlu;
+      currentLabs[entry.model] = entry.lab;
+    }
+
+    const ranked = Object.entries(currentScores)
+      .map(([model, mmlu]) => ({ model, lab: currentLabs[model], mmlu }))
+      .sort((a, b) => b.mmlu - a.mmlu);
+
+    const topModels: RankedModel[] = ranked
+      .slice(0, topN)
+      .map((m, rank) => ({ ...m, rank }));
+
+    // newModel/newLab: first entry added this period (used for card border color)
+    const first = byDate.get(date)![0];
+
+    keyframes.push({
+      index: i,
+      startFrame: i * framesPerEntry,
+      date,
+      newModel: first.model,
+      newLab: first.lab,
+      topModels,
+      allScores: { ...currentScores },
+      allLabs: { ...currentLabs },
+    });
+  }
+
+  return keyframes;
+}
+
+export function computeSimTotalFrames(config: BarChartConfig): number {
+  const { framesPerEntry } = getConstants(config);
+  const uniqueDates = new Set(config.entries.map((e) => e.date));
+  return uniqueDates.size * framesPerEntry + (config.trailingFrames ?? 0);
+}
+
+export function buildSimCardSchedule(
+  config: BarChartConfig,
+  keyframes: Keyframe[],
+): ScheduledCard[] {
+  const totalFrames = computeSimTotalFrames(config);
+  const { framesPerEntry } = getConstants(config);
+
+  const dates = [...new Set(config.entries.map((e) => e.date))].sort();
+  const dateToFrame: Record<string, number> = {};
+  dates.forEach((date, i) => { dateToFrame[date] = i * framesPerEntry; });
+
+  // Map each model to the frame of its first date in the dataset
+  const modelToFrame: Record<string, number> = {};
+  for (const entry of [...config.entries].sort((a, b) => a.date.localeCompare(b.date))) {
+    if (!(entry.model in modelToFrame)) {
+      modelToFrame[entry.model] = dateToFrame[entry.date];
+    }
+  }
+
+  void keyframes;
+
+  const scheduled = config.storyCards
+    .filter((card) => card.trigger in modelToFrame)
+    .map((card) => ({
+      title: card.title,
+      body: card.body,
+      startFrame: modelToFrame[card.trigger],
+      endFrame: 0,
+    }))
+    .sort((a, b) => a.startFrame - b.startFrame);
+
+  for (let i = 0; i < scheduled.length; i++) {
+    scheduled[i].endFrame =
+      i + 1 < scheduled.length ? scheduled[i + 1].startFrame : totalFrames;
+  }
+
+  return scheduled;
+}
+
+// ── Sequential mode ───────────────────────────────────────────────────────────
+
 export function buildCardSchedule(
   config: BarChartConfig,
   keyframes: Keyframe[],

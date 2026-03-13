@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bar Chart Race — Design Guide</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 48px; }
+
+  h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+    flex-shrink: 0;
+  }
+  h3 {
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 20px 0 8px;
+  }
+  h3:first-child { margin-top: 0; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: .95rem;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+
+  /* Rating stars */
+  .rating { color: var(--yellow); font-size: 1rem; letter-spacing: 2px; }
+
+  /* Composition review cards */
+  .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .comp-grid { grid-template-columns: 1fr; } }
+  .comp-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .comp-card.excellent { border-color: rgba(124,255,178,.3); }
+  .comp-card.good      { border-color: rgba(255,214,100,.3); }
+  .comp-card.poor      { border-color: rgba(255,122,138,.3); }
+  .comp-name {
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .comp-meta {
+    font-size: .78rem;
+    color: #546e7a;
+    font-family: var(--mono);
+    margin-bottom: 10px;
+  }
+  .comp-card p { font-size: .88rem; margin-bottom: 8px; }
+  .comp-card p:last-child { margin-bottom: 0; }
+
+  /* Criteria table */
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  th {
+    background: rgba(255,255,255,.04);
+    color: var(--muted);
+    font-size: .76rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    padding: 9px 14px;
+    text-align: left;
+    text-transform: uppercase;
+  }
+  td {
+    border-top: 1px solid var(--border);
+    padding: 10px 14px;
+    color: var(--muted);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  td:first-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+  td strong { color: var(--text); }
+
+  /* Callout */
+  .callout {
+    background: rgba(139,185,255,.06);
+    border: 1px solid rgba(139,185,255,.18);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: .9rem;
+    line-height: 1.6;
+    padding: 14px 18px;
+    margin-top: 16px;
+  }
+  .callout strong { color: var(--accent); }
+  .callout.warn {
+    background: rgba(255,214,100,.05);
+    border-color: rgba(255,214,100,.2);
+  }
+  .callout.warn strong { color: var(--yellow); }
+
+  /* Feature list */
+  .flist { list-style: none; margin: 10px 0 0; padding: 0; }
+  .flist li {
+    display: flex;
+    gap: 10px;
+    padding: 7px 0;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: .92rem;
+    line-height: 1.5;
+  }
+  .flist li:first-child { border-top: none; padding-top: 0; }
+  .flist li .bullet { color: var(--accent); flex-shrink: 0; }
+  .flist li strong { color: var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Living Document</div>
+  <h1>Bar Chart Race <span>Design Guide</span></h1>
+  <p>What makes a bar chart race work well — observations from the first four compositions, building toward a construction algorithm.</p>
+</header>
+
+<div class="container">
+
+  <!-- Composition reviews -->
+  <section>
+    <h2><span class="icon">★</span> Composition Reviews</h2>
+    <div class="comp-grid">
+
+      <div class="comp-card excellent">
+        <div class="comp-name">AiMmlu</div>
+        <div class="comp-meta">sequential · mixed dates · 35 entries</div>
+        <div class="rating">★★★★★</div>
+        <p>Excellent. The gold standard for sequential mode. Constant stream of new entries arriving at different dates keeps the energy high throughout. Every keyframe is an event — a new model shaking up the rankings. Flows naturally from start to finish.</p>
+        <p><strong>Why it works:</strong> new items never stop arriving. The viewer is always waiting for the next challenger.</p>
+      </div>
+
+      <div class="comp-card excellent">
+        <div class="comp-name">UsTop10Cities</div>
+        <div class="comp-meta">simultaneous · annual · 660 entries · 66 periods</div>
+        <div class="rating">★★★★½</div>
+        <p>Excellent. The simultaneous mode works very well with annual data across 65 years. All bars moving at once creates a race feel. Minor issues to be identified and resolved.</p>
+        <p><strong>Why it works:</strong> enough time periods (66) to feel like a real race, not a slideshow. Annual granularity means visible movement each period.</p>
+      </div>
+
+      <div class="comp-card good">
+        <div class="comp-name">StreamingWars</div>
+        <div class="comp-meta">sequential · mixed dates · unknown</div>
+        <div class="rating">★★★★</div>
+        <p>Very good — only a small step below AiMmlu. Works well in sequential mode. Slight drop because entries may arrive in clusters or with longer gaps, reducing the sense of constant momentum.</p>
+        <p><strong>Note:</strong> good enough to use as-is. The gap from AiMmlu is minor.</p>
+      </div>
+
+      <div class="comp-card poor">
+        <div class="comp-name">UsCities</div>
+        <div class="comp-meta">simultaneous · decennial · ~220 entries · 13 periods</div>
+        <div class="rating">★★½</div>
+        <p>Weakest of the four. <strong>Core problem: goes by too fast.</strong> Only 13 time periods (census years 1900–2020) means the whole race is over in seconds even with standard timing. Not enough periods to build momentum or tell the story.</p>
+        <p><strong>Root cause:</strong> 10-year census intervals produce too few keyframes for simultaneous mode. The viewer can't follow the changes.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- The two modes -->
+  <section>
+    <h2><span class="icon">⬡</span> The Two Modes</h2>
+    <div class="card">
+      <h3>Sequential — one entry arrives at a time</h3>
+      <p>Each keyframe introduces a single new item. The bar slides in, ranks shuffle, and the viewer watches the newcomer find its place. Best when items genuinely arrive at different points in time and each arrival is meaningful.</p>
+      <ul class="flist">
+        <li><span class="bullet">→</span><span><strong>Ideal data:</strong> model releases, product launches, records broken — anything where each entry is a discrete event with a real date.</span></li>
+        <li><span class="bullet">→</span><span><strong>Key ingredient:</strong> a steady stream of new arrivals throughout. Long gaps with no new entries kill momentum.</span></li>
+        <li><span class="bullet">→</span><span><strong>Pacing:</strong> 25 transition + 20 hold (45 frames, 1.5s per entry) works well at 30fps.</span></li>
+      </ul>
+
+      <div class="divider"></div>
+
+      <h3>Simultaneous — all bars update together each period</h3>
+      <p>Every period (year, month, etc.) all bars grow or shrink at the same time. Classic YouTube bar chart race style. Best when all items exist throughout the dataset and update on a regular cadence.</p>
+      <ul class="flist">
+        <li><span class="bullet">→</span><span><strong>Ideal data:</strong> annual rankings, monthly metrics, any time series where all items are tracked across the same periods.</span></li>
+        <li><span class="bullet">→</span><span><strong>Key ingredient:</strong> enough periods to feel like motion. Annual data over 50+ years works well. Decade-level data does not — too few keyframes.</span></li>
+        <li><span class="bullet">→</span><span><strong>Pacing:</strong> 12 transition + 8 hold (20 frames, ~0.67s per period) works for dense annual data. For sparser data (e.g. every 5 years), increase to 25+20.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- What makes it work -->
+  <section>
+    <h2><span class="icon">✓</span> What Makes a Good Bar Chart Race</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>Factor</th><th>Observation</th><th>Implication</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>New entries arriving</td>
+            <td>AiMmlu's constant stream of new models is the single biggest driver of engagement. Every arrival is a moment.</td>
+            <td>For sequential mode, prefer datasets where entries appear throughout — not all at once at the start.</td>
+          </tr>
+          <tr>
+            <td>Number of time periods</td>
+            <td>UsCities (13 periods) goes by too fast. UsTop10Cities (66 periods) feels like a real race.</td>
+            <td>For simultaneous mode, aim for <strong>40+ periods</strong> minimum. Under 20 is too sparse regardless of timing settings.</td>
+          </tr>
+          <tr>
+            <td>Visible movement</td>
+            <td>Rankings need to actually change. If all items stay in the same order period after period, there's nothing to watch.</td>
+            <td>Choose datasets with meaningful churn. Cities are good — Sun Belt rise, Rust Belt decline provides visible drama.</td>
+          </tr>
+          <tr>
+            <td>Data granularity</td>
+            <td>Annual data works well for simultaneous. Monthly could work for shorter time spans. Decennial (every 10 years) is too sparse.</td>
+            <td>When choosing time increment, target enough periods that each one shows a small, readable change.</td>
+          </tr>
+          <tr>
+            <td>Item count (topN)</td>
+            <td>10 bars on screen is comfortable. More feels cramped; fewer feels thin.</td>
+            <td>Keep topN at 10. Track 15–20 total items so there's competition for spots.</td>
+          </tr>
+          <tr>
+            <td>Mode match</td>
+            <td>Using simultaneous mode for data that was designed for sequential (or vice versa) produces the wrong feel.</td>
+            <td>If each entry has a unique meaningful date → sequential. If all items update on the same cadence → simultaneous.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Known issues -->
+  <section>
+    <h2><span class="icon">!</span> Known Issues &amp; Open Questions</h2>
+    <div class="card">
+      <h3>UsCities — too fast</h3>
+      <p>The 13 census time points are not enough for simultaneous mode. Options: increase <code>transitionFrames</code> and <code>holdFrames</code> dramatically (e.g. 60+40), or source interpolated annual data instead. The latter produces a better result.</p>
+
+      <div class="divider"></div>
+
+      <h3>UsTop10Cities — minor issues (TBD)</h3>
+      <p>Rated excellent with a couple of minor things. To be documented after review.</p>
+
+      <div class="divider"></div>
+
+      <h3>StreamingWars gap from AiMmlu (hypothesis)</h3>
+      <p>Likely caused by uneven entry arrival — periods with no new entries reduce momentum. To be confirmed by reviewing the data distribution.</p>
+    </div>
+  </section>
+
+  <!-- Toward an algorithm -->
+  <section>
+    <h2><span class="icon">⚙</span> Toward a Construction Algorithm</h2>
+    <div class="card">
+      <p>Early-stage thinking. These are candidate rules — to be refined with more examples.</p>
+      <ul class="flist">
+        <li><span class="bullet">1</span><span><strong>Choose the mode first.</strong> Does each item arrive once at a meaningful date? → sequential. Do all items update together on a regular cadence? → simultaneous.</span></li>
+        <li><span class="bullet">2</span><span><strong>Check period count.</strong> For simultaneous: if fewer than ~30 unique time periods exist in the raw data, either source more granular data or the dataset is not suitable for simultaneous mode.</span></li>
+        <li><span class="bullet">3</span><span><strong>Check entry distribution (sequential only).</strong> Plot entries over time. If more than 30% of entries are clustered in the first 20% of the timeline, consider whether the dataset will feel front-loaded.</span></li>
+        <li><span class="bullet">4</span><span><strong>Set timing from period count (simultaneous).</strong> 60+ periods → 12+8 (fast). 30–60 periods → 20+15 (medium). Under 30 periods → 40+30 (slow) or reconsider data.</span></li>
+        <li><span class="bullet">5</span><span><strong>Target 15–20 tracked items</strong> with topN=10. Enough competition for spots, not so many that the dataset becomes unwieldy.</span></li>
+      </ul>
+
+      <div class="callout warn">
+        <strong>Open question:</strong> What are the minor issues on UsTop10Cities? Documenting these will sharpen the algorithm rules significantly.
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

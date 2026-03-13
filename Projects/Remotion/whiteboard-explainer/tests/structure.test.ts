@@ -32,7 +32,10 @@ describe('components', () => {
 });
 
 describe('scenes', () => {
-  const scenes = ['TitleScene', 'StepRevealScene', 'DiagramBuildScene', 'CompareScene', 'OutroScene', 'SceneDispatcher'];
+  const scenes = [
+    'TitleScene', 'StepRevealScene', 'DiagramBuildScene', 'CompareScene', 'OutroScene',
+    'SceneDispatcher', 'QuoteScene', 'StatScene', 'FlowChartScene',
+  ];
   for (const scene of scenes) {
     it(`${scene}.tsx exists`, () =>
       expect(exists(`src/scenes/${scene}.tsx`)).toBe(true));
@@ -42,6 +45,7 @@ describe('scenes', () => {
 describe('example compositions', () => {
   it('scenes.example_1.json exists', () => expect(exists('scenes.example_1.json')).toBe(true));
   it('scenes.example_2.json exists', () => expect(exists('scenes.example_2.json')).toBe(true));
+  it('scenes.example_3.json exists', () => expect(exists('scenes.example_3.json')).toBe(true));
 });
 
 describe('config', () => {

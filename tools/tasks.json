@@ -1,0 +1,220 @@
+{
+  "groups": [
+    {
+      "id": "remotion",
+      "label": "Remotion",
+      "workflows": [
+        {
+          "id": "bar-chart-race",
+          "label": "Bar Chart Race",
+          "tasks": [
+            {
+              "id": "bcr-1",
+              "title": "Wire up Tallest Buildings",
+              "notes": "Data files exist in data/tallest-buildings/ — needs wiring into data/index.ts",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "bcr-2",
+              "title": "UsCities pacing fix",
+              "notes": "Simultaneous engine goes too fast — only 13 decennial periods (~10s total). Fix: source annual data or increase frame counts significantly.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "bcr-3",
+              "title": "Document UsTop10Cities minor issues",
+              "notes": "Review the composition and document remaining issues. Update design guide algorithm rules.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "bcr-4",
+              "title": "gh-pages deploy script",
+              "notes": "Discussed two sessions ago. Not yet built.",
+              "priority": 4,
+              "status": "pending"
+            }
+          ]
+        },
+        {
+          "id": "simple-narrated-slides",
+          "label": "Simple Narrated Slides",
+          "tasks": [
+            {
+              "id": "sns-1",
+              "title": "Upgrade Britain1940 to per-bullet audio",
+              "notes": "Currently uses per-slide architecture (one MP3 per slide). BattleOfAtlantic already uses the newer per-bullet pattern — Britain1940 needs to match it.",
+              "priority": 4,
+              "status": "pending"
+            }
+          ]
+        },
+        {
+          "id": "whiteboard-explainer",
+          "label": "Whiteboard Explainer",
+          "tasks": [
+            {
+              "id": "we-1",
+              "title": "Build 6 new scene types",
+              "notes": "quote, stat, flowChart built and in use. splitContent, timeline, imageReveal deferred to V2.",
+              "priority": 3,
+              "status": "done"
+            },
+            {
+              "id": "we-2",
+              "title": "Demo in WhiteboardExplainer-3 with a third theme",
+              "notes": "New composition to showcase all 6 new scene types. Theme candidates in planning.md.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "we-3",
+              "title": "V2 roadmap",
+              "notes": "Four improvements: evolvePath (better doodle animation), Rough.js (hand-drawn texture, seed:1), Google Fonts (handwritten style), map scene type (D3-Geo animated zoom).",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "we-4",
+              "title": "Braess's Paradox slide tweaks",
+              "notes": "Narration added. Slides 3 and 5 redesigned (parallel lanes layout). More slide-level tweaks still to come — specific issues not yet documented.",
+              "priority": 3,
+              "status": "pending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "notebooklm",
+      "label": "NotebookLM",
+      "workflows": [
+        {
+          "id": "ephemeral-notebook",
+          "label": "Ephemeral Notebook",
+          "tasks": [
+            {
+              "id": "nlm-1",
+              "title": "Unified artifact workflow",
+              "notes": "Full session build order: sources → Briefing Doc + app → slideshow manifest → Remotion content → videos. remotion flag + Report 3 skill still to design.",
+              "priority": 3,
+              "status": "in-progress"
+            },
+            {
+              "id": "nlm-2",
+              "title": "Quiz chip-targeting enhancement",
+              "notes": "Track which Explorer chips the user clicks and use them to scope the quiz. Chip history accumulated over session; quiz prompt built from that history. On first load, fall back to the active dropdown selection. See notebooklm-webapp skill for full spec.",
+              "priority": 4,
+              "status": "pending"
+            },
+            {
+              "id": "nlm-3",
+              "title": "Fill in source-knowledge-base.md",
+              "notes": "Format and structure for Claude-written knowledge base document. Currently a hard stop in workflow.md Step 3a. Needs Tom's input on what the document should contain.",
+              "priority": 2,
+              "status": "pending"
+            },
+            {
+              "id": "nlm-4",
+              "title": "Fill in source-web-app.md",
+              "notes": "Format and structure for web app knowledge document. Hard stop in workflow.md Step 3c. Needs Tom's input.",
+              "priority": 2,
+              "status": "pending"
+            },
+            {
+              "id": "nlm-5",
+              "title": "Add Infographic artifact type",
+              "notes": "Skill created, integrated into master skill and workflow.md.",
+              "priority": 2,
+              "status": "done"
+            },
+            {
+              "id": "nlm-6",
+              "title": "Agent parallelization",
+              "notes": "Four use cases: parallel artifact generation within a run, isomorphic series parallelization, knowledge base enrichment, background wrap-up. Design notes in ephemeral-notebook/documents/agent-parallelization.md. Priority order documented there.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "nlm-7",
+              "title": "Confirm Braess's Paradox video and share notebook",
+              "notes": "Video generated in notebook 215894d5. Confirm video renders correctly in UI, then share the notebook. Move tasks/braess-paradox.md to completed/ when done.",
+              "priority": 3,
+              "status": "pending"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "infrastructure",
+      "label": "Infrastructure",
+      "workflows": [
+        {
+          "id": "infrastructure",
+          "label": "",
+          "tasks": [
+            {
+              "id": "inf-1",
+              "title": "Task manager web app",
+              "notes": "This app. Located at tools/. Now the primary home for pending items (replaces pending.md).",
+              "priority": 1,
+              "status": "in-progress"
+            },
+            {
+              "id": "inf-2",
+              "title": "Discuss dev→main sync procedure",
+              "notes": "Dev is 8+ commits ahead of main with no established promotion cadence. Agree on when and how to promote (manual trigger, promote.sh, cadence).",
+              "priority": 2,
+              "status": "pending"
+            },
+            {
+              "id": "inf-3",
+              "title": "Parking lot browser integration",
+              "notes": "Tom maintains a parking lot webpage of URLs for active work. Investigate tab export extensions (Tab Copy, OneTab, custom) that write open tabs to a local file. Claude reads the file and updates the parking lot. Goal: one action syncs the parking lot from open tabs.",
+              "priority": 4,
+              "status": "pending"
+            },
+            {
+              "id": "inf-4",
+              "title": "Installed-skills tracker skill",
+              "notes": "A skill that maintains awareness of what skills are installed, their purpose, and when they were added. Referenced by skill-finder to avoid redundant suggestions.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "inf-5",
+              "title": "Skill eval pass",
+              "notes": "Use skill-creator (Anthropic official) to evaluate and refine home-built skills: whiteboard-explainer, remotion-narrated-slides, project-report.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "inf-6",
+              "title": "Upgrade nlm to v0.3.3",
+              "notes": "Minor bugfix release, no breaking changes.",
+              "priority": 4,
+              "status": "pending"
+            },
+            {
+              "id": "inf-7",
+              "title": "nlm download video integration",
+              "notes": "Command is known and documented in CONTEXT.md. Needs wiring into the ephemeral notebook workflow.",
+              "priority": 4,
+              "status": "pending"
+            },
+            {
+              "id": "inf-8",
+              "title": "Build design docs DOC-002 through DOC-012",
+              "notes": "See ephemeral-notebook/documents/DOC-000-table-of-contents.md for the full list.",
+              "priority": 5,
+              "status": "pending"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

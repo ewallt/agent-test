@@ -1,0 +1,4633 @@
+{
+  "id": "UsTop10Cities",
+  "title": "U.S. Top 10 Cities \u2014 1960 to Present",
+  "valueSuffix": "",
+  "categories": [
+    "Northeast",
+    "Midwest",
+    "South",
+    "West"
+  ],
+  "entries": [
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1960-04-01",
+      "value": 7781984,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1960-04-01",
+      "value": 3550404,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1960-04-01",
+      "value": 2479015,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1960-04-01",
+      "value": 2002512,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1960-04-01",
+      "value": 1670144,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1960-04-01",
+      "value": 939024,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1960-04-01",
+      "value": 938219,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1960-04-01",
+      "value": 876050,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1960-04-01",
+      "value": 763956,
+      "estimated": true
+    },
+    {
+      "model": "St. Louis",
+      "lab": "Midwest",
+      "date": "1960-04-01",
+      "value": 750026,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1961-04-01",
+      "value": 7793272,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1961-04-01",
+      "value": 3532059,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1961-04-01",
+      "value": 2512720,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1961-04-01",
+      "value": 1997122,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1961-04-01",
+      "value": 1654278,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1961-04-01",
+      "value": 967733,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1961-04-01",
+      "value": 935698,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1961-04-01",
+      "value": 863535,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1961-04-01",
+      "value": 763211,
+      "estimated": true
+    },
+    {
+      "model": "Milwaukee",
+      "lab": "Midwest",
+      "date": "1961-04-01",
+      "value": 738902,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1962-04-01",
+      "value": 7804560,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1962-04-01",
+      "value": 3513715,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1962-04-01",
+      "value": 2546424,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1962-04-01",
+      "value": 1991731,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1962-04-01",
+      "value": 1638412,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1962-04-01",
+      "value": 997248,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1962-04-01",
+      "value": 932371,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1962-04-01",
+      "value": 851021,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1962-04-01",
+      "value": 762467,
+      "estimated": true
+    },
+    {
+      "model": "Milwaukee",
+      "lab": "Midwest",
+      "date": "1962-04-01",
+      "value": 736479,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1963-04-01",
+      "value": 7815847,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1963-04-01",
+      "value": 3495370,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1963-04-01",
+      "value": 2580129,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1963-04-01",
+      "value": 1986341,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1963-04-01",
+      "value": 1622545,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1963-04-01",
+      "value": 1026762,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1963-04-01",
+      "value": 929044,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1963-04-01",
+      "value": 838506,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1963-04-01",
+      "value": 761722,
+      "estimated": true
+    },
+    {
+      "model": "Milwaukee",
+      "lab": "Midwest",
+      "date": "1963-04-01",
+      "value": 734056,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1964-04-01",
+      "value": 7827135,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1964-04-01",
+      "value": 3477025,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1964-04-01",
+      "value": 2613833,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1964-04-01",
+      "value": 1980951,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1964-04-01",
+      "value": 1606679,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1964-04-01",
+      "value": 1056276,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1964-04-01",
+      "value": 925718,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1964-04-01",
+      "value": 825991,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1964-04-01",
+      "value": 760978,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1964-04-01",
+      "value": 745571,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1965-04-01",
+      "value": 7838423,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1965-04-01",
+      "value": 3458680,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1965-04-01",
+      "value": 2647538,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1965-04-01",
+      "value": 1975560,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1965-04-01",
+      "value": 1590813,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1965-04-01",
+      "value": 1085790,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1965-04-01",
+      "value": 922392,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1965-04-01",
+      "value": 813476,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1965-04-01",
+      "value": 762042,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1965-04-01",
+      "value": 760233,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1966-04-01",
+      "value": 7849711,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1966-04-01",
+      "value": 3440336,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1966-04-01",
+      "value": 2681243,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1966-04-01",
+      "value": 1970170,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1966-04-01",
+      "value": 1574947,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1966-04-01",
+      "value": 1115305,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1966-04-01",
+      "value": 919065,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1966-04-01",
+      "value": 800962,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1966-04-01",
+      "value": 778514,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1966-04-01",
+      "value": 759488,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1967-04-01",
+      "value": 7860999,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1967-04-01",
+      "value": 3421991,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1967-04-01",
+      "value": 2714947,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1967-04-01",
+      "value": 1964780,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1967-04-01",
+      "value": 1559081,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1967-04-01",
+      "value": 1144819,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1967-04-01",
+      "value": 915738,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1967-04-01",
+      "value": 794986,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1967-04-01",
+      "value": 788447,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1967-04-01",
+      "value": 758744,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1968-04-01",
+      "value": 7872286,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1968-04-01",
+      "value": 3403646,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1968-04-01",
+      "value": 2748652,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1968-04-01",
+      "value": 1959390,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1968-04-01",
+      "value": 1543214,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1968-04-01",
+      "value": 1174333,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1968-04-01",
+      "value": 912412,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1968-04-01",
+      "value": 811458,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1968-04-01",
+      "value": 775932,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1968-04-01",
+      "value": 757999,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1969-04-01",
+      "value": 7883574,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1969-04-01",
+      "value": 3385302,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1969-04-01",
+      "value": 2782356,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1969-04-01",
+      "value": 1953999,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1969-04-01",
+      "value": 1527348,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1969-04-01",
+      "value": 1203848,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1969-04-01",
+      "value": 909086,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1969-04-01",
+      "value": 827929,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1969-04-01",
+      "value": 763418,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1969-04-01",
+      "value": 757255,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1970-04-01",
+      "value": 7894862,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1970-04-01",
+      "value": 3366957,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1970-04-01",
+      "value": 2816061,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1970-04-01",
+      "value": 1948609,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1970-04-01",
+      "value": 1511482,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1970-04-01",
+      "value": 1233362,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1970-04-01",
+      "value": 905759,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1970-04-01",
+      "value": 844401,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1970-04-01",
+      "value": 756510,
+      "estimated": true
+    },
+    {
+      "model": "Cleveland",
+      "lab": "Midwest",
+      "date": "1970-04-01",
+      "value": 750903,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1971-04-01",
+      "value": 7812540,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1971-04-01",
+      "value": 3330768,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1971-04-01",
+      "value": 2831140,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1971-04-01",
+      "value": 1922569,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1971-04-01",
+      "value": 1480668,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1971-04-01",
+      "value": 1269540,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1971-04-01",
+      "value": 893861,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1971-04-01",
+      "value": 850369,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1971-04-01",
+      "value": 744692,
+      "estimated": true
+    },
+    {
+      "model": "Indianapolis",
+      "lab": "Midwest",
+      "date": "1971-04-01",
+      "value": 740242,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1972-04-01",
+      "value": 7730217,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1972-04-01",
+      "value": 3294580,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1972-04-01",
+      "value": 2846219,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1972-04-01",
+      "value": 1896529,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1972-04-01",
+      "value": 1449853,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1972-04-01",
+      "value": 1305717,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1972-04-01",
+      "value": 881962,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1972-04-01",
+      "value": 856336,
+      "estimated": true
+    },
+    {
+      "model": "Indianapolis",
+      "lab": "Midwest",
+      "date": "1972-04-01",
+      "value": 735861,
+      "estimated": true
+    },
+    {
+      "model": "Washington",
+      "lab": "South",
+      "date": "1972-04-01",
+      "value": 732875,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1973-04-01",
+      "value": 7647895,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1973-04-01",
+      "value": 3258392,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1973-04-01",
+      "value": 2861298,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1973-04-01",
+      "value": 1870489,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1973-04-01",
+      "value": 1419039,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1973-04-01",
+      "value": 1341895,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1973-04-01",
+      "value": 870064,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1973-04-01",
+      "value": 862304,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1973-04-01",
+      "value": 750400,
+      "estimated": true
+    },
+    {
+      "model": "Indianapolis",
+      "lab": "Midwest",
+      "date": "1973-04-01",
+      "value": 731479,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1974-04-01",
+      "value": 7565573,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1974-04-01",
+      "value": 3222203,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1974-04-01",
+      "value": 2876377,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1974-04-01",
+      "value": 1844449,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1974-04-01",
+      "value": 1388225,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1974-04-01",
+      "value": 1378072,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1974-04-01",
+      "value": 868272,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1974-04-01",
+      "value": 858165,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1974-04-01",
+      "value": 768277,
+      "estimated": true
+    },
+    {
+      "model": "Indianapolis",
+      "lab": "Midwest",
+      "date": "1974-04-01",
+      "value": 727097,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1975-04-01",
+      "value": 7483250,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1975-04-01",
+      "value": 3186014,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1975-04-01",
+      "value": 2891456,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1975-04-01",
+      "value": 1818410,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1975-04-01",
+      "value": 1414250,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1975-04-01",
+      "value": 1357410,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1975-04-01",
+      "value": 874240,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1975-04-01",
+      "value": 846267,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1975-04-01",
+      "value": 786154,
+      "estimated": true
+    },
+    {
+      "model": "Indianapolis",
+      "lab": "Midwest",
+      "date": "1975-04-01",
+      "value": 722716,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1976-04-01",
+      "value": 7400928,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1976-04-01",
+      "value": 3149826,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1976-04-01",
+      "value": 2906534,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1976-04-01",
+      "value": 1792370,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1976-04-01",
+      "value": 1450428,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1976-04-01",
+      "value": 1326596,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1976-04-01",
+      "value": 880207,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1976-04-01",
+      "value": 834369,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1976-04-01",
+      "value": 804030,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1976-04-01",
+      "value": 733225,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1977-04-01",
+      "value": 7318606,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1977-04-01",
+      "value": 3113638,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1977-04-01",
+      "value": 2921613,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1977-04-01",
+      "value": 1766330,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1977-04-01",
+      "value": 1486605,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1977-04-01",
+      "value": 1295782,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1977-04-01",
+      "value": 886175,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1977-04-01",
+      "value": 822470,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1977-04-01",
+      "value": 821907,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1977-04-01",
+      "value": 746404,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1978-04-01",
+      "value": 7236284,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1978-04-01",
+      "value": 3077449,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1978-04-01",
+      "value": 2936692,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1978-04-01",
+      "value": 1740290,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1978-04-01",
+      "value": 1522783,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1978-04-01",
+      "value": 1264968,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1978-04-01",
+      "value": 892143,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1978-04-01",
+      "value": 839784,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1978-04-01",
+      "value": 810572,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1978-04-01",
+      "value": 759583,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1979-04-01",
+      "value": 7153961,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1979-04-01",
+      "value": 3041260,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1979-04-01",
+      "value": 2951771,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1979-04-01",
+      "value": 1714250,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1979-04-01",
+      "value": 1558960,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1979-04-01",
+      "value": 1234153,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1979-04-01",
+      "value": 898110,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1979-04-01",
+      "value": 857661,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1979-04-01",
+      "value": 798673,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1979-04-01",
+      "value": 772761,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1980-04-01",
+      "value": 7071639,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1980-04-01",
+      "value": 3005072,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1980-04-01",
+      "value": 2966850,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1980-04-01",
+      "value": 1688210,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1980-04-01",
+      "value": 1595138,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1980-04-01",
+      "value": 1203339,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1980-04-01",
+      "value": 904078,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1980-04-01",
+      "value": 875538,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1980-04-01",
+      "value": 789704,
+      "estimated": true
+    },
+    {
+      "model": "Baltimore",
+      "lab": "South",
+      "date": "1980-04-01",
+      "value": 786775,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1981-04-01",
+      "value": 7096732,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1981-04-01",
+      "value": 3018705,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1981-04-01",
+      "value": 2982937,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1981-04-01",
+      "value": 1677947,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1981-04-01",
+      "value": 1598680,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1981-04-01",
+      "value": 1185802,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1981-04-01",
+      "value": 914358,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1981-04-01",
+      "value": 899039,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1981-04-01",
+      "value": 809074,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1981-04-01",
+      "value": 800939,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1982-04-01",
+      "value": 7121824,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1982-04-01",
+      "value": 3070560,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1982-04-01",
+      "value": 2960803,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1982-04-01",
+      "value": 1667683,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1982-04-01",
+      "value": 1602221,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1982-04-01",
+      "value": 1168266,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1982-04-01",
+      "value": 924638,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1982-04-01",
+      "value": 922540,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1982-04-01",
+      "value": 828444,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1982-04-01",
+      "value": 815939,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1983-04-01",
+      "value": 7146916,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1983-04-01",
+      "value": 3122414,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1983-04-01",
+      "value": 2938668,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1983-04-01",
+      "value": 1657420,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1983-04-01",
+      "value": 1605762,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1983-04-01",
+      "value": 1150730,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1983-04-01",
+      "value": 946041,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1983-04-01",
+      "value": 934918,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1983-04-01",
+      "value": 847814,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1983-04-01",
+      "value": 830938,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1984-04-01",
+      "value": 7172009,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1984-04-01",
+      "value": 3174269,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1984-04-01",
+      "value": 2916534,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1984-04-01",
+      "value": 1647157,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1984-04-01",
+      "value": 1609304,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1984-04-01",
+      "value": 1133193,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1984-04-01",
+      "value": 969542,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1984-04-01",
+      "value": 945198,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1984-04-01",
+      "value": 867184,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1984-04-01",
+      "value": 845937,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1985-04-01",
+      "value": 7197102,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1985-04-01",
+      "value": 3226124,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1985-04-01",
+      "value": 2894399,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1985-04-01",
+      "value": 1636894,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1985-04-01",
+      "value": 1612846,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1985-04-01",
+      "value": 1115656,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1985-04-01",
+      "value": 993044,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1985-04-01",
+      "value": 955478,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1985-04-01",
+      "value": 886554,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1985-04-01",
+      "value": 860936,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1986-04-01",
+      "value": 7222194,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1986-04-01",
+      "value": 3277979,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1986-04-01",
+      "value": 2872264,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1986-04-01",
+      "value": 1626630,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1986-04-01",
+      "value": 1616387,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1986-04-01",
+      "value": 1098120,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1986-04-01",
+      "value": 1016545,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1986-04-01",
+      "value": 965757,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1986-04-01",
+      "value": 905923,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1986-04-01",
+      "value": 875936,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1987-04-01",
+      "value": 7247286,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1987-04-01",
+      "value": 3329834,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1987-04-01",
+      "value": 2850130,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1987-04-01",
+      "value": 1619928,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1987-04-01",
+      "value": 1616367,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1987-04-01",
+      "value": 1080584,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1987-04-01",
+      "value": 1040046,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1987-04-01",
+      "value": 976037,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1987-04-01",
+      "value": 925293,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1987-04-01",
+      "value": 890935,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1988-04-01",
+      "value": 7272379,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1988-04-01",
+      "value": 3381688,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1988-04-01",
+      "value": 2827995,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1988-04-01",
+      "value": 1623470,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1988-04-01",
+      "value": 1606104,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1988-04-01",
+      "value": 1063547,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1988-04-01",
+      "value": 1063047,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1988-04-01",
+      "value": 986317,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1988-04-01",
+      "value": 944663,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1988-04-01",
+      "value": 905934,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1989-04-01",
+      "value": 7297472,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1989-04-01",
+      "value": 3433543,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1989-04-01",
+      "value": 2805861,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1989-04-01",
+      "value": 1627012,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1989-04-01",
+      "value": 1595840,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1989-04-01",
+      "value": 1087048,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1989-04-01",
+      "value": 1045510,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1989-04-01",
+      "value": 996597,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1989-04-01",
+      "value": 964033,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1989-04-01",
+      "value": 920934,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1990-04-01",
+      "value": 7322564,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1990-04-01",
+      "value": 3485398,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1990-04-01",
+      "value": 2783726,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1990-04-01",
+      "value": 1630553,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1990-04-01",
+      "value": 1585577,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1990-04-01",
+      "value": 1110549,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1990-04-01",
+      "value": 1027974,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1990-04-01",
+      "value": 1006877,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1990-04-01",
+      "value": 983403,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1990-04-01",
+      "value": 935933,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1991-04-01",
+      "value": 7391135,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1991-04-01",
+      "value": 3506340,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1991-04-01",
+      "value": 2794955,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1991-04-01",
+      "value": 1662861,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1991-04-01",
+      "value": 1578774,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1991-04-01",
+      "value": 1121834,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1991-04-01",
+      "value": 1025047,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1991-04-01",
+      "value": 1020304,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1991-04-01",
+      "value": 1017167,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1991-04-01",
+      "value": 956804,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1992-04-01",
+      "value": 7459707,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1992-04-01",
+      "value": 3527282,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1992-04-01",
+      "value": 2806184,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1992-04-01",
+      "value": 1695169,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1992-04-01",
+      "value": 1571972,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1992-04-01",
+      "value": 1133119,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1992-04-01",
+      "value": 1050931,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1992-04-01",
+      "value": 1043218,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1992-04-01",
+      "value": 1012633,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1992-04-01",
+      "value": 977676,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1993-04-01",
+      "value": 7528278,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1993-04-01",
+      "value": 3548225,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1993-04-01",
+      "value": 2817413,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1993-04-01",
+      "value": 1727476,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1993-04-01",
+      "value": 1565169,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1993-04-01",
+      "value": 1144404,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1993-04-01",
+      "value": 1084696,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1993-04-01",
+      "value": 1061388,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1993-04-01",
+      "value": 1004963,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1993-04-01",
+      "value": 998547,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1994-04-01",
+      "value": 7596850,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1994-04-01",
+      "value": 3569167,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1994-04-01",
+      "value": 2828642,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1994-04-01",
+      "value": 1759784,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1994-04-01",
+      "value": 1558366,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1994-04-01",
+      "value": 1155689,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1994-04-01",
+      "value": 1118460,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1994-04-01",
+      "value": 1079558,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1994-04-01",
+      "value": 1019418,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1994-04-01",
+      "value": 997292,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1995-04-01",
+      "value": 7665421,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1995-04-01",
+      "value": 3590109,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1995-04-01",
+      "value": 2839871,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1995-04-01",
+      "value": 1792092,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1995-04-01",
+      "value": 1551564,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1995-04-01",
+      "value": 1166974,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1995-04-01",
+      "value": 1152224,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1995-04-01",
+      "value": 1097728,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1995-04-01",
+      "value": 1040290,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1995-04-01",
+      "value": 989622,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1996-04-01",
+      "value": 7733992,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1996-04-01",
+      "value": 3611051,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1996-04-01",
+      "value": 2851100,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1996-04-01",
+      "value": 1824400,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1996-04-01",
+      "value": 1544761,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1996-04-01",
+      "value": 1185988,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1996-04-01",
+      "value": 1178260,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1996-04-01",
+      "value": 1115899,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1996-04-01",
+      "value": 1061161,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1996-04-01",
+      "value": 981952,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1997-04-01",
+      "value": 7802564,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1997-04-01",
+      "value": 3631993,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1997-04-01",
+      "value": 2862329,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1997-04-01",
+      "value": 1856708,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1997-04-01",
+      "value": 1537958,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1997-04-01",
+      "value": 1219752,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1997-04-01",
+      "value": 1189545,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1997-04-01",
+      "value": 1134069,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1997-04-01",
+      "value": 1082032,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1997-04-01",
+      "value": 974281,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1998-04-01",
+      "value": 7871135,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1998-04-01",
+      "value": 3652936,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1998-04-01",
+      "value": 2873558,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1998-04-01",
+      "value": 1889015,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1998-04-01",
+      "value": 1531155,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1998-04-01",
+      "value": 1253517,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1998-04-01",
+      "value": 1200830,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1998-04-01",
+      "value": 1152239,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1998-04-01",
+      "value": 1102903,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1998-04-01",
+      "value": 966611,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "1999-04-01",
+      "value": 7939707,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "1999-04-01",
+      "value": 3673878,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "1999-04-01",
+      "value": 2884787,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "1999-04-01",
+      "value": 1921323,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "1999-04-01",
+      "value": 1524353,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "1999-04-01",
+      "value": 1287281,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "1999-04-01",
+      "value": 1212115,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "1999-04-01",
+      "value": 1170410,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "1999-04-01",
+      "value": 1123775,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "1999-04-01",
+      "value": 958940,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2000-04-01",
+      "value": 8008278,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2000-04-01",
+      "value": 3694820,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2000-04-01",
+      "value": 2896016,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2000-04-01",
+      "value": 1953631,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2000-04-01",
+      "value": 1517550,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2000-04-01",
+      "value": 1321045,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2000-04-01",
+      "value": 1223400,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2000-04-01",
+      "value": 1188580,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2000-04-01",
+      "value": 1144646,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "2000-04-01",
+      "value": 951270,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2001-04-01",
+      "value": 8024964,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2001-04-01",
+      "value": 3704600,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2001-04-01",
+      "value": 2875974,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2001-04-01",
+      "value": 1968213,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2001-04-01",
+      "value": 1518396,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2001-04-01",
+      "value": 1333504,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2001-04-01",
+      "value": 1231800,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2001-04-01",
+      "value": 1189504,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2001-04-01",
+      "value": 1162922,
+      "estimated": true
+    },
+    {
+      "model": "Detroit",
+      "lab": "Midwest",
+      "date": "2001-04-01",
+      "value": 927521,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2002-04-01",
+      "value": 8041649,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2002-04-01",
+      "value": 3714380,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2002-04-01",
+      "value": 2855932,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2002-04-01",
+      "value": 1982795,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2002-04-01",
+      "value": 1519241,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2002-04-01",
+      "value": 1345962,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2002-04-01",
+      "value": 1240200,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2002-04-01",
+      "value": 1190427,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2002-04-01",
+      "value": 1181198,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2002-04-01",
+      "value": 905143,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2003-04-01",
+      "value": 8058334,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2003-04-01",
+      "value": 3724160,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2003-04-01",
+      "value": 2835891,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2003-04-01",
+      "value": 1997377,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2003-04-01",
+      "value": 1520087,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2003-04-01",
+      "value": 1358421,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2003-04-01",
+      "value": 1248601,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2003-04-01",
+      "value": 1199474,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2003-04-01",
+      "value": 1191351,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2003-04-01",
+      "value": 910243,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2004-04-01",
+      "value": 8075020,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2004-04-01",
+      "value": 3733940,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2004-04-01",
+      "value": 2815849,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2004-04-01",
+      "value": 2011959,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2004-04-01",
+      "value": 1520932,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2004-04-01",
+      "value": 1370880,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2004-04-01",
+      "value": 1257001,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2004-04-01",
+      "value": 1217750,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2004-04-01",
+      "value": 1192274,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2004-04-01",
+      "value": 915343,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2005-04-01",
+      "value": 8091706,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2005-04-01",
+      "value": 3743720,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2005-04-01",
+      "value": 2795807,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2005-04-01",
+      "value": 2026541,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2005-04-01",
+      "value": 1521778,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2005-04-01",
+      "value": 1383338,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2005-04-01",
+      "value": 1265401,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2005-04-01",
+      "value": 1236026,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2005-04-01",
+      "value": 1193198,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2005-04-01",
+      "value": 920442,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2006-04-01",
+      "value": 8108391,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2006-04-01",
+      "value": 3753501,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2006-04-01",
+      "value": 2775765,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2006-04-01",
+      "value": 2041123,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2006-04-01",
+      "value": 1522624,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2006-04-01",
+      "value": 1395797,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2006-04-01",
+      "value": 1273801,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2006-04-01",
+      "value": 1254303,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2006-04-01",
+      "value": 1194122,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2006-04-01",
+      "value": 925542,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2007-04-01",
+      "value": 8125076,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2007-04-01",
+      "value": 3763281,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2007-04-01",
+      "value": 2755723,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2007-04-01",
+      "value": 2055705,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2007-04-01",
+      "value": 1523469,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2007-04-01",
+      "value": 1408256,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2007-04-01",
+      "value": 1282201,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2007-04-01",
+      "value": 1272579,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2007-04-01",
+      "value": 1195045,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2007-04-01",
+      "value": 930642,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2008-04-01",
+      "value": 8141762,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2008-04-01",
+      "value": 3773061,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2008-04-01",
+      "value": 2735682,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2008-04-01",
+      "value": 2070287,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2008-04-01",
+      "value": 1524315,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2008-04-01",
+      "value": 1420715,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2008-04-01",
+      "value": 1290855,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2008-04-01",
+      "value": 1290602,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2008-04-01",
+      "value": 1195969,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2008-04-01",
+      "value": 935742,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2009-04-01",
+      "value": 8158448,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2009-04-01",
+      "value": 3782841,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2009-04-01",
+      "value": 2715640,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2009-04-01",
+      "value": 2084869,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2009-04-01",
+      "value": 1525160,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2009-04-01",
+      "value": 1433173,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2009-04-01",
+      "value": 1309131,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2009-04-01",
+      "value": 1299002,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2009-04-01",
+      "value": 1196892,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2009-04-01",
+      "value": 940842,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2010-04-01",
+      "value": 8175133,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2010-04-01",
+      "value": 3792621,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2010-04-01",
+      "value": 2695598,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2010-04-01",
+      "value": 2099451,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2010-04-01",
+      "value": 1526006,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2010-04-01",
+      "value": 1445632,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2010-04-01",
+      "value": 1327407,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2010-04-01",
+      "value": 1307402,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2010-04-01",
+      "value": 1197816,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2010-04-01",
+      "value": 945942,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2011-04-01",
+      "value": 8238039,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2011-04-01",
+      "value": 3803234,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2011-04-01",
+      "value": 2700677,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2011-04-01",
+      "value": 2119964,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2011-04-01",
+      "value": 1533785,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2011-04-01",
+      "value": 1461883,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2011-04-01",
+      "value": 1338129,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2011-04-01",
+      "value": 1315355,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2011-04-01",
+      "value": 1208472,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2011-04-01",
+      "value": 952672,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2012-04-01",
+      "value": 8300944,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2012-04-01",
+      "value": 3813846,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2012-04-01",
+      "value": 2705756,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2012-04-01",
+      "value": 2140477,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2012-04-01",
+      "value": 1541564,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2012-04-01",
+      "value": 1478133,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2012-04-01",
+      "value": 1348851,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2012-04-01",
+      "value": 1323308,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2012-04-01",
+      "value": 1219129,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2012-04-01",
+      "value": 959402,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2013-04-01",
+      "value": 8363850,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2013-04-01",
+      "value": 3824459,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2013-04-01",
+      "value": 2710835,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2013-04-01",
+      "value": 2160990,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2013-04-01",
+      "value": 1549343,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2013-04-01",
+      "value": 1494384,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2013-04-01",
+      "value": 1359572,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2013-04-01",
+      "value": 1331261,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2013-04-01",
+      "value": 1229785,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2013-04-01",
+      "value": 966131,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2014-04-01",
+      "value": 8426756,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2014-04-01",
+      "value": 3835071,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2014-04-01",
+      "value": 2715914,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2014-04-01",
+      "value": 2181503,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2014-04-01",
+      "value": 1557122,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2014-04-01",
+      "value": 1510635,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2014-04-01",
+      "value": 1370294,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2014-04-01",
+      "value": 1339214,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2014-04-01",
+      "value": 1240441,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2014-04-01",
+      "value": 972861,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2015-04-01",
+      "value": 8489662,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2015-04-01",
+      "value": 3845684,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2015-04-01",
+      "value": 2720993,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2015-04-01",
+      "value": 2202016,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2015-04-01",
+      "value": 1564902,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2015-04-01",
+      "value": 1526886,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2015-04-01",
+      "value": 1381016,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2015-04-01",
+      "value": 1347167,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2015-04-01",
+      "value": 1251098,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2015-04-01",
+      "value": 979591,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2016-04-01",
+      "value": 8552567,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2016-04-01",
+      "value": 3856297,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2016-04-01",
+      "value": 2726072,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2016-04-01",
+      "value": 2222528,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2016-04-01",
+      "value": 1572681,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2016-04-01",
+      "value": 1543136,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2016-04-01",
+      "value": 1391738,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2016-04-01",
+      "value": 1355120,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2016-04-01",
+      "value": 1261754,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2016-04-01",
+      "value": 986321,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2017-04-01",
+      "value": 8615473,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2017-04-01",
+      "value": 3866909,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2017-04-01",
+      "value": 2731151,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2017-04-01",
+      "value": 2243041,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2017-04-01",
+      "value": 1580460,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2017-04-01",
+      "value": 1559387,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2017-04-01",
+      "value": 1402460,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2017-04-01",
+      "value": 1363073,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2017-04-01",
+      "value": 1272410,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2017-04-01",
+      "value": 993051,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2018-04-01",
+      "value": 8678379,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2018-04-01",
+      "value": 3877522,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2018-04-01",
+      "value": 2736230,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2018-04-01",
+      "value": 2263554,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2018-04-01",
+      "value": 1588239,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2018-04-01",
+      "value": 1575638,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2018-04-01",
+      "value": 1413181,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2018-04-01",
+      "value": 1371026,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2018-04-01",
+      "value": 1283066,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2018-04-01",
+      "value": 999780,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2019-04-01",
+      "value": 8741284,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2019-04-01",
+      "value": 3888134,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2019-04-01",
+      "value": 2741309,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2019-04-01",
+      "value": 2284067,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2019-04-01",
+      "value": 1596018,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2019-04-01",
+      "value": 1591888,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2019-04-01",
+      "value": 1423903,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2019-04-01",
+      "value": 1378979,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2019-04-01",
+      "value": 1293723,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2019-04-01",
+      "value": 1006510,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2020-04-01",
+      "value": 8804190,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2020-04-01",
+      "value": 3898747,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2020-04-01",
+      "value": 2746388,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2020-04-01",
+      "value": 2304580,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2020-04-01",
+      "value": 1608139,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2020-04-01",
+      "value": 1603797,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2020-04-01",
+      "value": 1434625,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2020-04-01",
+      "value": 1386932,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2020-04-01",
+      "value": 1304379,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2020-04-01",
+      "value": 1013240,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2021-04-01",
+      "value": 8833352,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2021-04-01",
+      "value": 3882998,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2021-04-01",
+      "value": 2727110,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2021-04-01",
+      "value": 2319664,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2021-04-01",
+      "value": 1622511,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2021-04-01",
+      "value": 1597038,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2021-04-01",
+      "value": 1451700,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2021-04-01",
+      "value": 1393546,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2021-04-01",
+      "value": 1309503,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2021-04-01",
+      "value": 1004592,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2022-04-01",
+      "value": 8862514,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2022-04-01",
+      "value": 3867248,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2022-04-01",
+      "value": 2707833,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2022-04-01",
+      "value": 2334748,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2022-04-01",
+      "value": 1636883,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2022-04-01",
+      "value": 1590278,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2022-04-01",
+      "value": 1468775,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2022-04-01",
+      "value": 1400159,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2022-04-01",
+      "value": 1314627,
+      "estimated": true
+    },
+    {
+      "model": "San Jose",
+      "lab": "West",
+      "date": "2022-04-01",
+      "value": 995944,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2023-04-01",
+      "value": 8891676,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2023-04-01",
+      "value": 3851499,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2023-04-01",
+      "value": 2688555,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2023-04-01",
+      "value": 2349832,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2023-04-01",
+      "value": 1651256,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2023-04-01",
+      "value": 1583519,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2023-04-01",
+      "value": 1485850,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2023-04-01",
+      "value": 1406773,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2023-04-01",
+      "value": 1319752,
+      "estimated": true
+    },
+    {
+      "model": "Austin",
+      "lab": "South",
+      "date": "2023-04-01",
+      "value": 996742,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2024-04-01",
+      "value": 8920838,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2024-04-01",
+      "value": 3835749,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2024-04-01",
+      "value": 2669278,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2024-04-01",
+      "value": 2364916,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2024-04-01",
+      "value": 1665628,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2024-04-01",
+      "value": 1576759,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2024-04-01",
+      "value": 1502925,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2024-04-01",
+      "value": 1413386,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2024-04-01",
+      "value": 1324876,
+      "estimated": true
+    },
+    {
+      "model": "Austin",
+      "lab": "South",
+      "date": "2024-04-01",
+      "value": 1008371,
+      "estimated": true
+    },
+    {
+      "model": "New York",
+      "lab": "Northeast",
+      "date": "2025-04-01",
+      "value": 8950000,
+      "estimated": true
+    },
+    {
+      "model": "Los Angeles",
+      "lab": "West",
+      "date": "2025-04-01",
+      "value": 3820000,
+      "estimated": true
+    },
+    {
+      "model": "Chicago",
+      "lab": "Midwest",
+      "date": "2025-04-01",
+      "value": 2650000,
+      "estimated": true
+    },
+    {
+      "model": "Houston",
+      "lab": "South",
+      "date": "2025-04-01",
+      "value": 2380000,
+      "estimated": true
+    },
+    {
+      "model": "Phoenix",
+      "lab": "West",
+      "date": "2025-04-01",
+      "value": 1680000,
+      "estimated": true
+    },
+    {
+      "model": "Philadelphia",
+      "lab": "Northeast",
+      "date": "2025-04-01",
+      "value": 1570000,
+      "estimated": true
+    },
+    {
+      "model": "San Antonio",
+      "lab": "South",
+      "date": "2025-04-01",
+      "value": 1520000,
+      "estimated": true
+    },
+    {
+      "model": "San Diego",
+      "lab": "West",
+      "date": "2025-04-01",
+      "value": 1420000,
+      "estimated": true
+    },
+    {
+      "model": "Dallas",
+      "lab": "South",
+      "date": "2025-04-01",
+      "value": 1330000,
+      "estimated": true
+    },
+    {
+      "model": "Austin",
+      "lab": "South",
+      "date": "2025-04-01",
+      "value": 1020000,
+      "estimated": true
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import { WhiteboardVideo } from "./WhiteboardVideo";
 import { ScenesProps } from "./types";
 import exampleScenes from "../scenes.example_1.json";
 import exampleScenes2 from "../scenes.example_2.json";
+import exampleScenes3 from "../scenes.example_3.json";
 
 // Calculate total duration accounting for transition overlaps
 function totalFrames(scenes: ScenesProps["scenes"]): number {
@@ -36,6 +37,18 @@ export const RemotionRoot = () => {
         width={1920}
         height={1080}
         defaultProps={exampleScenes2 as ScenesProps}
+        calculateMetadata={({ props }) => ({
+          durationInFrames: totalFrames((props as ScenesProps).scenes),
+        })}
+      />
+      <Composition
+        id="WhiteboardExplainer-3"
+        component={WhiteboardVideo as React.ComponentType<ScenesProps>}
+        durationInFrames={totalFrames(exampleScenes3.scenes as ScenesProps["scenes"])}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={exampleScenes3 as ScenesProps}
         calculateMetadata={({ props }) => ({
           durationInFrames: totalFrames((props as ScenesProps).scenes),
         })}

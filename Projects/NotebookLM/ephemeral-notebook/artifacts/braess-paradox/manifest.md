@@ -1,0 +1,55 @@
+Global Visual Manifest
+
+Era and style tokens to append to every image prompt: 1960s technical illustration, clean line art, mid-century scientific publication style, muted earth tones and slate blues, letterpress texture, vintage transportation engineering diagram aesthetic.
+
+---
+
+Slide Structure (N=8)
+
+Slide 1
+Title: The Road That Made Things Worse
+Paragraph A: In 1968, German mathematician Dietrich Braess published a proof that stunned transportation engineers: adding a new road to a traffic network can make every driver's journey longer. Not through poor design or bad luck, but as a mathematical inevitability — the direct result of drivers making individually rational decisions.
+Paragraph B: The paradox that bears his name has since been confirmed in cities from Stuttgart to Seoul, and discovered in systems far removed from traffic. Electrical grids, internet protocols, sports teams, and biological networks all exhibit the same counterintuitive pattern: more capacity, pursued by rational individuals, can produce a collectively worse outcome.
+Image Context: A new highway on-ramp opening ceremony, ribbon cutting, cars beginning to merge, city skyline in background, 1960s technical illustration, clean line art, mid-century scientific publication style, muted earth tones and slate blues, letterpress texture, vintage transportation engineering diagram aesthetic.
+
+Slide 2
+Title: Four Nodes, One Proof
+Paragraph A: Braess's original proof used a minimal network: four nodes, two routes from source to destination, each route containing one fixed-cost segment and one congestion-dependent segment whose cost rises with the number of drivers using it. At equilibrium with 4,000 drivers, each route carries 2,000, and every journey takes 65 minutes.
+Paragraph B: A new zero-cost road is added connecting the two middle nodes. Every driver, reasoning correctly, switches to a new combined route exploiting the free link. All 4,000 drivers converge on it. Each congestion-dependent segment is now maximally loaded. Every journey now takes 80 minutes. The free road cost each driver 15 minutes.
+Image Context: Technical diagram of a four-node road network, nodes labeled source and destination, arrows showing traffic flow before and after a new central link is added, 1960s technical illustration, clean line art, mid-century scientific publication style, muted earth tones and slate blues, letterpress texture, vintage transportation engineering diagram aesthetic.
+
+Slide 3
+Title: The Nash Equilibrium Trap
+Paragraph A: Why can no driver escape the trap? Because unilaterally switching back to the old routes makes that driver worse off. This is Nash equilibrium: a state where no individual can improve their outcome by changing their own behavior alone. The only escape is collective coordination — and in open road networks, that is impossible without external intervention.
+Paragraph B: The structure mirrors the prisoner's dilemma exactly. Each driver's rational choice is to use the new road. Collectively, those rational choices produce the worst available outcome. Economists Koutsoupias and Papadimitriou later formalised this as the price of anarchy: in Braess's classic network, selfish routing is provably one-third worse than what a central planner could achieve.
+Image Context: Abstract diagram showing two paths converging on a single bottleneck node, arrows indicating traffic flow, game theory payoff matrix in corner, 1960s technical illustration, clean line art, mid-century scientific publication style, muted earth tones and slate blues, letterpress texture, vintage transportation engineering diagram aesthetic.
+
+Slide 4
+Title: Stuttgart and the Road That Closed
+Paragraph A: The first real-world confirmation came in Stuttgart, Germany in 1969. A new road opened in the city center. Traffic engineers expected relief; instead, congestion worsened across the network. City authorities made the counterintuitive decision to close the new road. Congestion improved. The paradox had manifested in a real city before the theory was widely known.
+Paragraph B: The causal link between closure and improvement was understood only in retrospect, once Braess's 1968 paper gained wider circulation. Stuttgart became the founding empirical case study — evidence that the paradox was not merely theoretical but a genuine structural property of real urban road networks under real traffic demand.
+Image Context: A 1960s German city street, a road barrier closing off a newly built urban road, traffic redirecting onto adjacent streets, documentary photography style, 1960s technical illustration, clean line art, mid-century scientific publication style, muted earth tones and slate blues, letterpress texture, vintage transportation engineering diagram aesthetic.
+
+Slide 5
+Title: Seoul Tears Down a Freeway
+Paragraph A: In 2003, Seoul demolished the Cheonggyecheon elevated freeway, which had carried 168,000 vehicles per day through the city center. Transportation planners expected catastrophic gridlock. They were wrong. Overall traffic congestion in central Seoul decreased after removal. Commuters shifted to buses and subway lines, and the Nash equilibrium of the city's network moved to a better state.
+Paragraph B: The restored Cheonggyecheon stream became a celebrated urban park. Seoul's experience sparked a global reassessment of urban freeways. San Francisco removed the Embarcadero Freeway after earthquake damage and saw similar improvements. New York studied closing segments of 42nd Street. The pattern was consistent: removing Braess-susceptible links improved network-wide performance.
+Image Context: Aerial view of Seoul's Cheonggyecheon stream restoration project, elevated freeway demolished, green riverway park below, urban traffic flowing on adjacent streets, 1960s technical illustration, clean line art, mid-century scientific publication style, muted earth tones and slate blues, letterpress texture, vintage transportation engineering diagram aesthetic.
+
+Slide 6
+Title: The Paradox in Electrical Circuits
+Paragraph A: Braess's paradox is not limited to roads. In 1969, just one year after Braess's paper, researchers demonstrated an exact electrical analogue. In a resistor network, adding a wire of zero resistance — which should help current flow — can increase the total resistance of the network. Adding a conductor made the circuit less conductive.
+Paragraph B: The mechanism is identical to the traffic case. Current distributes itself to minimise resistance locally, exactly as drivers minimise travel time locally. The new zero-resistance wire redirects current in a way that loads existing resistors more heavily, raising overall resistance. The paradox is a property of competitive flow through shared networks, regardless of whether the flow is cars or electrons.
+Image Context: An electrical circuit diagram showing resistors in a network configuration, a new wire being added, current flow arrows redistributing, laboratory setting, 1960s technical illustration, clean line art, mid-century scientific publication style, muted earth tones and slate blues, letterpress texture, vintage transportation engineering diagram aesthetic.
+
+Slide 7
+Title: Internet, Sports, and Biology
+Paragraph A: Internet routing protocols exhibit Braess-like degradation when new high-bandwidth links are added to congested backbones. TCP's congestion-avoidance logic routes traffic toward the new capacity, saturating it and reducing overall throughput. In sports, adding a ball-dominant player to a basketball team can lower team scoring by shifting teammates' shot-selection equilibrium toward excessive deference.
+Paragraph B: Biological systems are not immune. In models of muscular mechanics, adding a parallel muscle fibre reduces total force output in certain configurations because mechanical load distributes to a less efficient equilibrium. Metabolic networks show analogous effects. The paradox is a structural consequence of competitive allocation in congested systems — a pattern that recurs wherever agents compete for shared, limited resources.
+Image Context: A split illustration showing three domains side by side — an internet server rack, a basketball court, and a diagram of muscle fibres — connected by a shared network motif, 1960s technical illustration, clean line art, mid-century scientific publication style, muted earth tones and slate blues, letterpress texture, vintage transportation engineering diagram aesthetic.
+
+Slide 8
+Title: Designing for the Price of Anarchy
+Paragraph A: Braess's paradox reframes the politics of infrastructure. Adding road capacity is not always socially beneficial. Road diets — deliberately reducing lanes — sometimes improve flow. Congestion pricing changes the effective cost structure of the network, shifting the Nash equilibrium toward the social optimum. Public transit removes agents from the routing game entirely, reducing the paradox's scope.
+Paragraph B: The price of anarchy framework, developed from Braess's insight, is now standard in algorithmic game theory, applied to spectrum allocation, cloud computing, and logistics routing. Urban planners use network analysis tools to detect Braess-susceptible configurations before construction. The paradox's enduring lesson: in systems of competing rational agents, the gap between what is individually optimal and what is collectively best is a structural feature — not a failure of intelligence.
+Image Context: An urban planner's desk with city road maps, network diagrams, and a chalkboard showing game theory equations, 1960s technical illustration, clean line art, mid-century scientific publication style, muted earth tones and slate blues, letterpress texture, vintage transportation engineering diagram aesthetic.

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NotebookLM CLI — Reference</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* Header */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Layout */
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 48px; }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+  }
+  h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .card-bd { padding: 22px 24px; }
+  p { color: var(--muted); font-size: .97rem; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+
+  /* Code */
+  .code-block {
+    background: #060b15;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: .85rem;
+    line-height: 1.7;
+    margin: 14px 0;
+    overflow-x: auto;
+    padding: 16px 20px;
+    white-space: pre;
+  }
+  .code-block .cmd { color: #8bb9ff; }
+  .code-block .arg { color: #c3e88d; }
+  .code-block .comment { color: #546e7a; }
+  .code-block .flag { color: var(--yellow); }
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+
+  /* Warning / note callouts */
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: .92rem;
+  }
+  .callout.warn {
+    background: rgba(255,214,100,.07);
+    border: 1px solid rgba(255,214,100,.25);
+    color: var(--yellow);
+  }
+  .callout.info {
+    background: rgba(139,185,255,.07);
+    border: 1px solid rgba(139,185,255,.2);
+    color: var(--accent);
+  }
+  .callout.green {
+    background: rgba(124,255,178,.07);
+    border: 1px solid rgba(124,255,178,.2);
+    color: var(--green);
+  }
+  .callout strong { display: block; margin-bottom: 6px; }
+
+  /* Command group table */
+  .cmd-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .cmd-group-header {
+    background: rgba(139,185,255,.08);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cmd-group-header .label {
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .cmd-group-header .desc {
+    font-size: .85rem;
+    color: var(--muted);
+  }
+  .cmd-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 16px;
+    padding: 11px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: .88rem;
+    align-items: baseline;
+  }
+  .cmd-row:last-child { border-bottom: none; }
+  .cmd-row .cmd-name {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: .82rem;
+  }
+  .cmd-row .cmd-desc {
+    color: var(--muted);
+  }
+  .cmd-row .cmd-desc strong { color: var(--text); font-weight: 500; }
+
+  /* Option table */
+  .opt-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+    margin: 12px 0;
+  }
+  .opt-table th {
+    text-align: left;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .opt-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    vertical-align: top;
+    color: var(--muted);
+  }
+  .opt-table td:first-child {
+    font-family: var(--mono);
+    color: var(--yellow);
+    font-size: .82rem;
+    white-space: nowrap;
+  }
+  .opt-table td strong { color: var(--text); }
+  .opt-table tr:last-child td { border-bottom: none; }
+
+  /* Nav back */
+  .nav-back {
+    padding: 20px 24px 0;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .nav-back a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .87rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color .15s;
+  }
+  .nav-back a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">NotebookLM</div>
+  <h1>NotebookLM <span>CLI</span></h1>
+  <p>Command reference for <code>nlm</code> — the notebooklm-mcp-cli tool used to automate notebook creation, source management, and artifact generation.</p>
+</header>
+
+<div class="nav-back">
+  <a href="index.html">← Back to index</a>
+</div>
+
+<div class="container">
+
+  <!-- Basics -->
+  <section>
+    <h2><span class="icon">⚡</span> The Basics</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p><strong>Always use the PYTHONIOENCODING prefix.</strong> Missing it causes UnicodeEncodeError on Windows. Every command must be prefixed:</p>
+        <div class="code-block"><span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">&lt;command&gt; [options]</span></div>
+        <p><strong>Version:</strong> <code>notebooklm-mcp-cli v0.3.2</code> &nbsp;·&nbsp; <strong>Account:</strong> <code>ewalltom@gmail.com</code></p>
+        <p><strong>Sessions last ~20 minutes.</strong> Check auth before starting a run, and re-login if commands start failing mid-run.</p>
+        <div class="code-block"><span class="comment"># Check auth status</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">auth status</span>
+
+<span class="comment"># Login if expired</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">login</span></div>
+        <p><strong>Get AI-friendly docs</strong> for any command by appending <code>--ai</code>. Useful for discovering option details — but verify against actual <code>--help</code> output, as the AI docs can contain inaccuracies (e.g., slide deck format was incorrectly listed as .txt; it is PDF).</p>
+        <div class="code-block"><span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="flag">--ai</span> &gt; ai-docs.txt</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Command Groups -->
+  <section>
+    <h2><span class="icon">📋</span> Command Groups</h2>
+
+    <!-- Notebooks -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">notebook</span>
+        <span class="desc">Create and manage notebooks</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm notebook create "title"</span>
+        <span class="cmd-desc">Create a new notebook. <strong>Capture the returned notebook ID.</strong></span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm notebook list</span>
+        <span class="cmd-desc">List all notebooks with their IDs.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm notebook get &lt;id&gt;</span>
+        <span class="cmd-desc">Get details for a specific notebook.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm notebook query &lt;id&gt; "question"</span>
+        <span class="cmd-desc">Chat with notebook sources. Used in research-based pattern to inform Claude-written sources.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm notebook delete &lt;id&gt;</span>
+        <span class="cmd-desc">Permanently delete a notebook.</span>
+      </div>
+    </div>
+
+    <!-- Sources -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">source</span>
+        <span class="desc">Add and manage knowledge sources</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm source add &lt;id&gt; --file &lt;path&gt; --title "Title" --wait</span>
+        <span class="cmd-desc"><strong>Always use <code>--wait</code></strong> — blocks until the source is processed. Upload order matters: knowledge base first, then slide manifest, then web app doc.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm source list &lt;id&gt;</span>
+        <span class="cmd-desc">List sources in a notebook. Use to verify count after research import.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm source get &lt;id&gt; &lt;source-id&gt;</span>
+        <span class="cmd-desc">Get details for a specific source.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm source content &lt;id&gt; &lt;source-id&gt;</span>
+        <span class="cmd-desc">Get raw content from a source (no AI processing).</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm source delete &lt;id&gt; &lt;source-id&gt;</span>
+        <span class="cmd-desc">Permanently delete a source.</span>
+      </div>
+    </div>
+
+    <!-- Research -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">research</span>
+        <span class="desc">Discover and import sources from the web</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm research start "query" --notebook-id &lt;id&gt; --mode fast</span>
+        <span class="cmd-desc">Start a research task. Returns a task ID for status polling.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm research status &lt;id&gt; --max-wait 300</span>
+        <span class="cmd-desc">Poll until research completes (waits up to 300 seconds).</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm research import &lt;notebook-id&gt; &lt;task-id&gt;</span>
+        <span class="cmd-desc">Import discovered sources into the notebook. May time out but still succeed — verify with <code>nlm source list</code> before retrying.</span>
+      </div>
+    </div>
+
+    <!-- Artifact generation -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">video / slides / infographic / audio</span>
+        <span class="desc">Generate NotebookLM-native artifacts</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm video create &lt;id&gt; --style &lt;style&gt; --confirm</span>
+        <span class="cmd-desc">Create a video overview. Always include <code>--confirm</code>.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm slides create &lt;id&gt; --confirm</span>
+        <span class="cmd-desc">Create a slide deck. Downloads as <strong>PDF</strong>.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm infographic create &lt;id&gt; --orientation &lt;o&gt; --detail &lt;d&gt; --confirm</span>
+        <span class="cmd-desc">Create an infographic. Downloads as <strong>PNG</strong>. Options: orientation (landscape/portrait/square), detail (concise/standard/detailed), focus (free text).</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm audio create &lt;id&gt; --confirm</span>
+        <span class="cmd-desc">Create an audio overview (podcast format).</span>
+      </div>
+    </div>
+
+    <!-- Studio / Status -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">studio</span>
+        <span class="desc">Monitor artifact generation status</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm studio status &lt;id&gt;</span>
+        <span class="cmd-desc">List all studio artifacts for a notebook and their status. Poll this after triggering artifact generation. Look for <code>completed</code>.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm studio delete &lt;id&gt; &lt;artifact-id&gt;</span>
+        <span class="cmd-desc">Delete a studio artifact permanently.</span>
+      </div>
+    </div>
+
+    <!-- Download -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">download</span>
+        <span class="desc">Download completed artifacts</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm download slide-deck &lt;id&gt; --output &lt;path&gt;.pdf</span>
+        <span class="cmd-desc">Download slide deck as PDF.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm download infographic &lt;id&gt; --output &lt;path&gt;.png</span>
+        <span class="cmd-desc">Download infographic as PNG. No artifact ID needed — fetches the latest.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm download audio &lt;id&gt; --output &lt;path&gt;.mp3</span>
+        <span class="cmd-desc">Download audio overview.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm download video &lt;id&gt;</span>
+        <span class="cmd-desc">Video download via CLI is unreliable — note the artifact ID and access via NLM UI instead.</span>
+      </div>
+    </div>
+
+    <!-- Share -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">share</span>
+        <span class="desc">Notebook sharing and access control</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm share public &lt;id&gt;</span>
+        <span class="cmd-desc">Enable public link access (anyone with link can view). Run at wrap-up.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm share private &lt;id&gt;</span>
+        <span class="cmd-desc">Disable public access.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm share status &lt;id&gt;</span>
+        <span class="cmd-desc">Show current sharing status and collaborators.</span>
+      </div>
+    </div>
+
+    <!-- Other artifact types -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">report / quiz / flashcards / mindmap / data-table</span>
+        <span class="desc">Additional NLM-native artifact types</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm report create &lt;id&gt; --confirm</span>
+        <span class="cmd-desc">Create a report. Downloads as Markdown.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm quiz create &lt;id&gt; --confirm</span>
+        <span class="cmd-desc">Create a quiz from notebook sources.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm flashcards create &lt;id&gt; --confirm</span>
+        <span class="cmd-desc">Create flashcards from notebook sources.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm mindmap create &lt;id&gt; --confirm</span>
+        <span class="cmd-desc">Create a mind map. Downloads as JSON.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm data-table create &lt;id&gt; --confirm</span>
+        <span class="cmd-desc">Create a data table. Downloads as CSV.</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Artifact types at a glance -->
+  <section>
+    <h2><span class="icon">📦</span> Artifact Types at a Glance</h2>
+    <div class="card">
+      <div class="card-bd">
+        <table class="opt-table">
+          <tr>
+            <th>Artifact</th>
+            <th>Command</th>
+            <th>Output</th>
+            <th>Notes</th>
+          </tr>
+          <tr>
+            <td>Video</td>
+            <td><code>nlm video create</code></td>
+            <td>.mp4 (NLM UI)</td>
+            <td>CLI download unreliable; use UI</td>
+          </tr>
+          <tr>
+            <td>Slide deck</td>
+            <td><code>nlm slides create</code></td>
+            <td>.pdf</td>
+            <td>NLM-native; distinct from Gemini slide manifest</td>
+          </tr>
+          <tr>
+            <td>Infographic</td>
+            <td><code>nlm infographic create</code></td>
+            <td>.png</td>
+            <td>orientation + detail + focus options</td>
+          </tr>
+          <tr>
+            <td>Audio</td>
+            <td><code>nlm audio create</code></td>
+            <td>.mp3</td>
+            <td>Podcast-style overview</td>
+          </tr>
+          <tr>
+            <td>Report</td>
+            <td><code>nlm report create</code></td>
+            <td>.md</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Quiz</td>
+            <td><code>nlm quiz create</code></td>
+            <td>(download)</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Flashcards</td>
+            <td><code>nlm flashcards create</code></td>
+            <td>(download)</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Mind map</td>
+            <td><code>nlm mindmap create</code></td>
+            <td>.json</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Data table</td>
+            <td><code>nlm data-table create</code></td>
+            <td>.csv</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Gemini slide manifest</td>
+            <td>Claude writes, then <code>nlm source add</code></td>
+            <td>.md (uploaded as source)</td>
+            <td>Gemini reads sources and builds slides; not an NLM artifact</td>
+          </tr>
+          <tr>
+            <td>Web app</td>
+            <td>Claude builds HTML</td>
+            <td>.html</td>
+            <td>Standalone; not uploaded back into notebook</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typical run sequence -->
+  <section>
+    <h2><span class="icon">🔁</span> Typical Run Sequence</h2>
+    <div class="card">
+      <div class="card-bd">
+        <div class="code-block"><span class="comment"># 1. Auth check</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">auth status</span>
+
+<span class="comment"># 2. Create notebook</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">notebook create "Topic Title"</span>
+<span class="comment">#    → capture notebook ID</span>
+
+<span class="comment"># 3. Upload sources (always use --wait)</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">source add &lt;id&gt; --file staging/knowledge.txt --title "Topic" --wait</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">source add &lt;id&gt; --file slideshows/topic.md --title "Slide Manifest" --wait</span>
+
+<span class="comment"># 4. Generate artifacts</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">video create &lt;id&gt; --style cinematic --confirm</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">slides create &lt;id&gt; --confirm</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">infographic create &lt;id&gt; --orientation landscape --detail standard --confirm</span>
+
+<span class="comment"># 5. Poll until completed</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">studio status &lt;id&gt;</span>
+
+<span class="comment"># 6. Download</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">download slide-deck &lt;id&gt; --output artifacts/topic/topic-slides.pdf</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">download infographic &lt;id&gt; --output artifacts/topic/infographic.png</span>
+
+<span class="comment"># 7. Share</span>
+<span class="cmd">PYTHONIOENCODING=utf-8 nlm</span> <span class="arg">share public &lt;id&gt;</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gotchas -->
+  <section>
+    <h2><span class="icon">⚠️</span> Known Gotchas</h2>
+    <div class="callout warn">
+      <strong>Always use PYTHONIOENCODING=utf-8</strong>
+      Missing this prefix causes UnicodeEncodeError. Every single command needs it.
+    </div>
+    <div class="callout warn">
+      <strong>Always use --wait when adding sources</strong>
+      Without it, the source may not be processed before artifact generation begins.
+    </div>
+    <div class="callout warn">
+      <strong>Research import may time out but still succeed</strong>
+      Check source count with <code>nlm source list &lt;id&gt;</code> before retrying an import.
+    </div>
+    <div class="callout warn">
+      <strong>Video CLI download is unreliable</strong>
+      Note the artifact ID from <code>nlm studio status</code> and download via the NotebookLM UI instead.
+    </div>
+    <div class="callout warn">
+      <strong>Session expires in ~20 minutes</strong>
+      Re-run <code>nlm login</code> if commands start failing mid-run.
+    </div>
+    <div class="callout warn">
+      <strong>--ai docs can be inaccurate</strong>
+      The <code>--ai</code> flag is useful for discovery but verify against <code>--help</code>. Known error: slide deck listed as .txt — it is PDF.
+    </div>
+    <div class="callout info">
+      <strong>Slide deck vs. Gemini slide manifest — these are different things</strong>
+      <code>nlm slides create</code> generates a NotebookLM-native PDF deck. The Gemini slide manifest is a markdown file Claude writes and uploads as a <em>source</em> — Gemini then reads the notebook sources and builds slides from it.
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
