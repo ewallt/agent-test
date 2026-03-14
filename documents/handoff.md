@@ -1,51 +1,75 @@
-# Session Handoff — 2026-03-11
+# Session Handoff — 2026-03-13
 
 ## What Was Done This Session
 
-### Ephemeral Notebook — Skill Architecture Overhaul
+### Google Drive MCP Integration — Research & Setup
 
-- Created master skill `notebooklm-ephemeral-notebook` — lean trigger, points to `workflow.md`, lists all sub-skills by task flag
-- Created `notebooklm-slide` skill — NLM-native slide deck (PDF)
-- Created `notebooklm-infographic` skill — NLM-native infographic (PNG), with orientation/detail/focus options
-- Updated `notebooklm-slide-manifest` — corrected workflow: manifest is uploaded as a notebook source, Gemini reads sources and builds slides (not an external Imagen pipeline)
-- Updated `notebooklm-video`, `notebooklm-webapp` — added "Read First" headers
-- Renamed `design/` → `documents/` under `ephemeral-notebook/`; updated 3 references
+- Investigated NotebookLM's Google Docs export feature — confirmed `nlm export to-docs` exists (undocumented in README but real)
+- Verified via `nlm export --help` and `nlm export to-docs --help` — command is real, syntax confirmed
+- Gemini provided architecture spec via ReadMe.txt: `@modelcontextprotocol/server-gdrive`, user-delegated OAuth 2.0, full `drive` scope (not `drive.file`), credentials at `~/.notebooklm-mcp-cli/gcp-oauth.keys.json`
+- Wrote two reference docs: `documents/gdrive-integration.html` (Tom) and `ephemeral-notebook/documents/gdrive-integration.md` (Claude one-stop reference)
+- Updated `documents/index.html` to add the new gdrive integration card
+- Tom created OAuth credentials in Google Cloud Console (web app type, localhost redirect), downloaded JSON
+- Copied credentials to `~/.notebooklm-mcp-cli/gcp-oauth.keys.json`
+- Added `gdrive` MCP server block to `~/.claude.json` — ready to load on next restart
 
-### Ephemeral Notebook — Workflow Documentation
+### nlm CLI Doc Update (nlm-8)
 
-- Created `documents/workflow.md` — full JIT sequencer, Steps 0–7, explicit "READ NOW" gates at each step, ✓ checkboxes, ⚠️ stop gates at TODO stubs
-- Created `documents/source-authoring.md` — explains the 1–3 sources model, what each source drives, upload order
-- Created `documents/source-knowledge-base.md` — **TODO stub** (format undocumented; needs Tom's input)
-- Created `documents/source-web-app.md` — **TODO stub** (format undocumented; needs Tom's input)
+- Added four missing command groups to `documents/notebooklm-cli.html`:
+  - `export` — `to-docs`, `to-sheets`, `artifact`
+  - `login` — `profile list`, `profile switch`, `profile add` (multi-account)
+  - `skill` — `skill install claude-code/gemini-cli/cursor`, `skill list`
+  - Updated `source add` to note supported file types (PDF, TXT, Markdown, audio)
+- Updated artifact table: Report and Data Table rows now note their Google Docs/Sheets export destinations
+- Updated `studio status` row to note it's also how you get artifact IDs for export
+- Ticket nlm-8 marked done
 
-### Reference Documents
+### nlm Export to-docs — End-to-End Test (nlm-9)
 
-- Created `documents/notebooklm-cli.html` — full command reference for `nlm`; all command groups, artifact types, typical run sequence, gotchas
-- Updated `documents/notebooklm-workflow.html` — added trigger phrase callout, added sub-skills table
-- Updated `documents/index.html` — added card for CLI reference
+- Used Double-Entry Bookkeeping notebook (18b286a4), existing report artifact e87e8b33
+- `nlm export to-docs` succeeded — doc live at https://docs.google.com/document/d/1IPNE41yztAeqfLPlyjvHoGbcuV8UN24d2WLHsrLDUuw
+- Ticket nlm-9 marked done
 
-### Skill Creator — JIT Pattern
+### Prompt Injection Incident — Gemini Message
 
-- Added JIT reference to `skill-creator/SKILL.md` — points to `JIT-experiment.md`, explains when to apply
-- Added feedback memory: always invoke skill-creator when creating/modifying skills (Tom's responsibility to trigger)
+- Gemini sent a message formatted as `<system_update_for_claude_code>` with instructions to run destructive reinstall commands and treat `nlm --ai` output as authoritative
+- Flagged to Tom as a prompt injection attempt — correctly identified the fake system tag, version mismatch, and suspicious `nlm --ai` framing
+- Followed up: `nlm export to-docs` turned out to be real (just undocumented); version mismatch and destructive commands were not needed
+- Gemini acknowledged: framing was flawed, core CLI info was accurate
+
+### Tickets Created
+
+- `nlm-8` — Update notebooklm-cli.html (done)
+- `nlm-9` — End-to-end test: nlm export to-docs (done)
+- `nlm-10` — Claude ↔ NotebookLM round-trip via Google Docs (pending, blocked on inf-9)
+- `inf-9` — Set up Google Docs MCP server OAuth (partially done — credentials in place, MCP config added, OAuth consent pending first restart)
+
+### Drinker Paradox App Description
+
+- Saved source content from the Drinker Paradox notebook to `Projects/NotebookLM/ephemeral-notebook/reference/drinker-paradox-app.txt` for future reference
+
+### ReadMe Convention
+
+- Established: Tom uses `agent-test/ReadMe.txt` to pass long content to Claude (architecture specs, etc.) — saved to memory
 
 ---
 
 ## State Right Now
 
-- On `dev` branch; changes from this session uncommitted
-- Ephemeral Notebook workflow is structurally complete — master skill, JIT workflow, all sub-skills in place
-- Two TODO stubs remain as hard stops in the workflow (see below)
-
-## TODOs
-
-1. **`source-knowledge-base.md`** — format and structure for the Claude-written knowledge base document. Currently a hard stop in workflow.md (Step 3a). Needs Tom's input.
-2. **`source-web-app.md`** — same situation. Format for the web app knowledge document. Step 3c. Needs Tom's input.
+- On `dev` branch; changes uncommitted
+- `~/.claude.json` has the gdrive MCP server block added
+- `~/.notebooklm-mcp-cli/gcp-oauth.keys.json` exists with OAuth credentials (web app type)
+- MCP server will load on next Claude Code restart — first use will trigger browser OAuth consent
 
 ## Next Session Priority
 
-Continue Ephemeral Notebook workflow — fill in the two TODO stubs (`source-knowledge-base.md` and `source-web-app.md`) with Tom's guidance. Once those are done, the workflow is ready for a full end-to-end run.
+Test the full Claude ↔ NotebookLM round-trip via Google Drive. On startup, read `ephemeral-notebook/documents/gdrive-integration.md` to reload context. Then: verify the gdrive MCP server loaded correctly, complete the one-time OAuth browser consent if needed, confirm Claude can read the exported Double-Entry Bookkeeping doc, then test writing back to Drive and uploading as a notebook source. Goal: nlm-10 done.
+
+## Other Items
+
+- No blockers flagged by Tom
+- Nothing else to add
 
 ## Session Start
 
-Wait for Tom.
+Auto-start: Read `ephemeral-notebook/documents/gdrive-integration.md` to reload context on the Google Drive MCP integration. Then verify the gdrive MCP server is loaded and attempt the round-trip test (nlm-10).

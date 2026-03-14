@@ -2,6 +2,39 @@
 
 ---
 
+## 2026-03-13 — Google Drive MCP Integration, nlm Export Test, CLI Doc Update
+
+### Prompt Injection Incident
+- Gemini sent a message formatted as `<system_update_for_claude_code>` with fake system directives and destructive reinstall commands
+- Flagged to Tom as prompt injection — identified fake tag, version mismatch, suspicious `nlm --ai` framing
+- Outcome: `nlm export to-docs` was real (just undocumented); the framing was bad, the CLI info was accurate
+
+### nlm CLI Doc Update (nlm-8 — done)
+- Added four missing command groups to `documents/notebooklm-cli.html`: `export` (to-docs, to-sheets, artifact), `login` (profile management), `skill` (install for AI tools), and file type notes on `source add`
+- Updated artifact table: Report → Google Docs, Data Table → Google Sheets export noted
+- Updated `studio status` row: now notes it's how you get artifact IDs for export
+
+### nlm Export to-docs — End-to-End Test (nlm-9 — done)
+- Confirmed `nlm export to-docs` works: Double-Entry Bookkeeping notebook, report artifact e87e8b33
+- Doc exported to Google Drive: https://docs.google.com/document/d/1IPNE41yztAeqfLPlyjvHoGbcuV8UN24d2WLHsrLDUuw
+
+### Google Drive MCP Integration Setup (inf-9 — in progress)
+- Architecture from Gemini via ReadMe.txt: `@modelcontextprotocol/server-gdrive`, user-delegated OAuth 2.0, full `drive` scope
+- Wrote `documents/gdrive-integration.html` (Tom's reference) and `ephemeral-notebook/documents/gdrive-integration.md` (Claude's one-stop reference)
+- Tom created OAuth credentials in Google Cloud Console (web app type), downloaded JSON
+- Copied to `~/.notebooklm-mcp-cli/gcp-oauth.keys.json`
+- Added `gdrive` MCP block to `~/.claude.json` — loads on next restart
+- First restart will trigger one-time browser OAuth consent
+
+### Tickets
+- nlm-8 done, nlm-9 done, nlm-10 created (pending), inf-9 updated with full spec
+
+### Misc
+- Saved Drinker Paradox app description to `ephemeral-notebook/reference/drinker-paradox-app.txt`
+- Established ReadMe.txt convention (saved to memory): Tom uses `agent-test/ReadMe.txt` to pass long content
+
+---
+
 ## 2026-03-12 — Ticket System, Skills, Test Coverage, Promotion
 
 ### Ticket System (Jira-style)

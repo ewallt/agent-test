@@ -143,6 +143,27 @@
               "notes": "Video generated in notebook 215894d5. Confirm video renders correctly in UI, then share the notebook. Move tasks/braess-paradox.md to completed/ when done.",
               "priority": 3,
               "status": "pending"
+            },
+            {
+              "id": "nlm-8",
+              "title": "Update notebooklm-cli.html with new commands",
+              "notes": "Add four missing command groups: nlm export (to-docs, to-sheets), nlm skill install, nlm login profile (multi-account), and nlm source add file (direct file upload). Also review/update any outdated notes about UI-only downloads.",
+              "priority": 3,
+              "status": "done"
+            },
+            {
+              "id": "nlm-9",
+              "title": "End-to-end test: nlm export to-docs",
+              "notes": "Verified 2026-03-13. Used Double-Entry Bookkeeping notebook (18b286a4), report artifact e87e8b33. Exported successfully to https://docs.google.com/document/d/1IPNE41yztAeqfLPlyjvHoGbcuV8UN24d2WLHsrLDUuw",
+              "priority": 3,
+              "status": "done"
+            },
+            {
+              "id": "nlm-10",
+              "title": "Claude ↔ NotebookLM round-trip via Google Docs",
+              "notes": "Goal: NotebookLM exports a Report artifact to Google Drive (via nlm export to-docs), Claude reads the doc (via Google Docs MCP — see inf-9), edits or augments the content, and writes back to the notebook as a new source. Depends on inf-9 (Google Docs MCP setup) and nlm-9 (export to-docs verified working).",
+              "priority": 3,
+              "status": "pending"
             }
           ]
         }
@@ -211,6 +232,13 @@
               "notes": "See ephemeral-notebook/documents/DOC-000-table-of-contents.md for the full list.",
               "priority": 5,
               "status": "pending"
+            },
+            {
+              "id": "inf-9",
+              "title": "Set up Google Docs MCP server (OAuth)",
+              "notes": "MCP server: @modelcontextprotocol/server-gdrive. Credentials file: ~/.notebooklm-mcp-cli/gcp-oauth.keys.json — created 2026-03-13 (web app type, localhost redirect). gdrive block added to ~/.claude.json. Remaining: restart Claude Code to load MCP server, complete one-time browser OAuth consent. Reference doc: ephemeral-notebook/documents/gdrive-integration.md",
+              "priority": 3,
+              "status": "in-progress"
             }
           ]
         }

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Drive MCP Integration</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 48px; }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+  }
+  h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .card-bd { padding: 22px 24px; }
+  p { color: var(--muted); font-size: .97rem; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+  .code-block {
+    background: #060b15;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: .85rem;
+    line-height: 1.7;
+    margin: 14px 0;
+    overflow-x: auto;
+    padding: 16px 20px;
+    white-space: pre;
+  }
+  .code-block .cm  { color: #546e7a; }
+  .code-block .ck  { color: #8bb9ff; }
+  .code-block .cv  { color: #c3e88d; }
+  .code-block .cs  { color: #f07178; }
+
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: .92rem;
+  }
+  .callout.warn  { background: rgba(255,214,100,.07); border: 1px solid rgba(255,214,100,.25); color: var(--yellow); }
+  .callout.info  { background: rgba(139,185,255,.07); border: 1px solid rgba(139,185,255,.2);  color: var(--accent); }
+  .callout.green { background: rgba(124,255,178,.07); border: 1px solid rgba(124,255,178,.2);  color: var(--green);  }
+  .callout strong { display: block; margin-bottom: 6px; }
+
+  .step-grid { display: flex; flex-direction: column; gap: 12px; }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .step-num {
+    background: rgba(139,185,255,.15);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: .85rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 6px 0;
+  }
+  .step-body h3 { margin-bottom: 4px; }
+  .step-body p { margin-bottom: 0; font-size: .9rem; }
+
+  .dep-chain {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .dep-chip {
+    background: rgba(139,185,255,.1);
+    border: 1px solid rgba(139,185,255,.2);
+    border-radius: 8px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .82rem;
+    padding: 5px 12px;
+  }
+  .dep-arrow { color: var(--muted); font-size: .9rem; }
+
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    font-size: .88rem;
+  }
+  .ref-grid > div {
+    padding: 11px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ref-grid > div:nth-last-child(-n+2) { border-bottom: none; }
+  .ref-grid .k { font-family: var(--mono); color: var(--accent); font-size: .82rem; }
+  .ref-grid .v { color: var(--muted); }
+
+  .nav-back {
+    padding: 20px 24px 0;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .nav-back a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .87rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color .15s;
+  }
+  .nav-back a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Infrastructure</div>
+  <h1>Google Drive <span>MCP Integration</span></h1>
+  <p>Read and write Google Docs from Claude Code using the official Drive MCP server — enabling a full round-trip with NotebookLM.</p>
+</header>
+
+<div class="nav-back">
+  <a href="index.html">← Back to index</a>
+</div>
+
+<div class="container">
+
+  <!-- Goal -->
+  <section>
+    <h2><span class="icon">🎯</span> The Goal</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>Close the loop between NotebookLM and Google Drive. The round-trip looks like this:</p>
+        <div class="dep-chain" style="margin: 16px 0;">
+          <div class="dep-chip">NotebookLM generates Report</div>
+          <span class="dep-arrow">→</span>
+          <div class="dep-chip">nlm export to-docs</div>
+          <span class="dep-arrow">→</span>
+          <div class="dep-chip">Google Drive Doc</div>
+          <span class="dep-arrow">→</span>
+          <div class="dep-chip">Claude reads via MCP</div>
+          <span class="dep-arrow">→</span>
+          <div class="dep-chip">Claude writes back as new source</div>
+        </div>
+        <p>This lets Claude augment, edit, or reformat NotebookLM output and feed it back into a notebook as a new source — all without manual copy/paste.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MCP Server -->
+  <section>
+    <h2><span class="icon">🔌</span> The MCP Server</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p><strong>Package:</strong> <code>@modelcontextprotocol/server-gdrive</code> — the official Google Drive MCP server from the Model Context Protocol project. It handles OAuth token refresh automatically and translates between Google's native formats and plain text.</p>
+        <p>Add this block to <code>~/.claude.json</code> under <code>mcpServers</code>:</p>
+        <div class="code-block">{
+  <span class="ck">"mcpServers"</span>: {
+    <span class="ck">"gdrive"</span>: {
+      <span class="ck">"command"</span>: <span class="cv">"npx"</span>,
+      <span class="ck">"args"</span>: [<span class="cv">"-y"</span>, <span class="cv">"@modelcontextprotocol/server-gdrive"</span>],
+      <span class="ck">"env"</span>: {
+        <span class="ck">"GDRIVE_CREDENTIALS_PATH"</span>: <span class="cv">"&lt;ABSOLUTE_PATH_TO_HOME&gt;/.notebooklm-mcp-cli/gcp-oauth.keys.json"</span>
+      }
+    }
+  }
+}</div>
+        <div class="callout info">
+          <strong>Credentials path</strong>
+          The <code>gcp-oauth.keys.json</code> file lives in <code>~/.notebooklm-mcp-cli/</code> — the same directory the <code>nlm</code> tool uses for its auth state. It may already exist from the NotebookLM setup.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OAuth Scope -->
+  <section>
+    <h2><span class="icon">🔐</span> Authentication &amp; OAuth Scope</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p><strong>Pattern:</strong> User-delegated OAuth 2.0. A one-time browser login mints a <code>token.json</code> file containing a long-lived refresh token. After that, the MCP server handles token refresh silently — no browser popups during Claude Code execution.</p>
+        <p><strong>Required scope:</strong> <code>https://www.googleapis.com/auth/drive</code> (full Drive access).</p>
+        <div class="callout warn">
+          <strong>Do not use drive.file scope</strong>
+          The restrictive <code>drive.file</code> scope only permits access to files the application itself created. Because this workflow reads docs that Tom drafts manually in the Google Docs UI, full <code>drive</code> scope is required — otherwise file discovery will fail silently.
+        </div>
+        <p>The OAuth credentials are generated in Google Cloud Console: create a project, enable the Drive API and Docs API, set up an OAuth consent screen (External, add your account as a test user), and create a Desktop App Client ID. Download the resulting JSON as <code>gcp-oauth.keys.json</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reading -->
+  <section>
+    <h2><span class="icon">📖</span> Reading Google Docs</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>Pass the document ID to the Drive MCP. The MCP handles the format conversion automatically.</p>
+        <div class="callout info">
+          <strong>Native .gdoc files are metadata pointers, not byte streams</strong>
+          On disk, Google Docs exist as small <code>.gdoc</code> JSON pointer files — not actual text. Do not try to parse these locally. When you request a read via the MCP using the document ID, the server calls the Drive export API and returns the human-readable text content.
+        </div>
+        <p>Get the document ID from the URL: <code>docs.google.com/document/d/<strong>&lt;DOCUMENT_ID&gt;</strong>/edit</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Writing -->
+  <section>
+    <h2><span class="icon">✍️</span> Writing to Google Drive</h2>
+    <div class="card">
+      <div class="card-bd">
+        <h3>Creating a new native Google Doc</h3>
+        <p>Submit Markdown text as the payload with MIME type <code>application/vnd.google-apps.document</code>. The Drive API automatically parses the Markdown and converts it into a richly formatted native Google Doc — headings, bold, lists, and all.</p>
+        <div class="code-block"><span class="cm"># MIME type tells Drive to convert Markdown → native Doc</span>
+mimeType: <span class="cv">application/vnd.google-apps.document</span>
+payload:  <span class="cv">&lt;raw Markdown string&gt;</span></div>
+
+        <h3 style="margin-top: 16px;">Updating existing docs — use versioned files instead</h3>
+        <p>Appending to an existing native Google Doc requires complex <code>batchUpdate</code> operations via the Docs API. <strong>Don't do this.</strong> For iterations, create a new discrete file with a version suffix:</p>
+        <div class="code-block">Doodle_Script_v1   <span class="cm">← original</span>
+Doodle_Script_v2   <span class="cm">← revised by Claude</span>
+Doodle_Script_v3   <span class="cm">← further iteration</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NotebookLM side -->
+  <section>
+    <h2><span class="icon">📓</span> NotebookLM Side: Exporting to Drive</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>Use <code>nlm export to-docs</code> to push a Report artifact from NotebookLM into Google Drive as a native Doc. First get the artifact ID from <code>nlm studio status</code>.</p>
+        <div class="code-block"><span class="cm"># Step 1: Find the artifact ID</span>
+<span class="ck">PYTHONIOENCODING=utf-8 nlm</span> studio status &lt;notebook-id&gt;
+
+<span class="cm"># Step 2: Export to Google Docs</span>
+<span class="ck">PYTHONIOENCODING=utf-8 nlm</span> export to-docs &lt;notebook-id&gt; &lt;artifact-id&gt; <span class="cs">--title</span> <span class="cv">"My Report"</span></div>
+        <p>Works with: Briefing Doc, Study Guide, Blog Post, and other Report-type artifacts. For Data Tables, use <code>nlm export to-sheets</code> instead.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Setup steps -->
+  <section>
+    <h2><span class="icon">🛠️</span> Setup Steps</h2>
+    <div class="step-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>API Provisioning</h3>
+          <p>In Google Cloud Console, create or select a project. Enable both the <strong>Google Drive API</strong> and the <strong>Google Docs API</strong>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Credential Generation</h3>
+          <p>Configure the OAuth consent screen (External; add your Google account as a test user). Under Credentials, create an OAuth 2.0 Client ID for a <strong>Desktop app</strong>. Download as <code>gcp-oauth.keys.json</code> and place in <code>~/.notebooklm-mcp-cli/</code>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Token Minting</h3>
+          <p>Run the MCP server's init script locally. It opens a one-time browser session using the credentials file. After you grant permission, it writes a <code>token.json</code> containing the long-lived refresh token. This is the only time a browser is needed.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>MCP Configuration</h3>
+          <p>Add the <code>gdrive</code> block to <code>~/.claude.json</code> with <code>GDRIVE_CREDENTIALS_PATH</code> pointing to the absolute path of <code>gcp-oauth.keys.json</code>. Restart Claude Code.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dependency chain -->
+  <section>
+    <h2><span class="icon">🔗</span> Ticket Dependency Chain</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>Three tickets track this work in order:</p>
+        <div class="dep-chain" style="margin: 12px 0 16px;">
+          <div class="dep-chip">inf-9: MCP OAuth setup</div>
+          <span class="dep-arrow">→</span>
+          <div class="dep-chip">nlm-9: Export verified</div>
+          <span class="dep-arrow">→</span>
+          <div class="dep-chip">nlm-10: Full round-trip</div>
+        </div>
+        <div class="ref-grid">
+          <div class="k">inf-9</div>
+          <div class="v">Set up Google Docs MCP server — OAuth, credentials, claude.json config</div>
+          <div class="k">nlm-9</div>
+          <div class="v">End-to-end test of <code>nlm export to-docs</code> against a real notebook</div>
+          <div class="k">nlm-10</div>
+          <div class="v">Full Claude ↔ NotebookLM round-trip: export → read → augment → write back as source</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick reference -->
+  <section>
+    <h2><span class="icon">📋</span> Quick Reference</h2>
+    <div class="card">
+      <div class="ref-grid">
+        <div class="k">MCP server</div>
+        <div class="v"><code>@modelcontextprotocol/server-gdrive</code></div>
+        <div class="k">Credentials</div>
+        <div class="v"><code>~/.notebooklm-mcp-cli/gcp-oauth.keys.json</code></div>
+        <div class="k">OAuth scope</div>
+        <div class="v"><code>https://www.googleapis.com/auth/drive</code> — full Drive, not drive.file</div>
+        <div class="k">Read a doc</div>
+        <div class="v">Pass document ID to MCP — it handles .gdoc conversion</div>
+        <div class="k">Write a doc</div>
+        <div class="v">Markdown payload + MIME <code>application/vnd.google-apps.document</code></div>
+        <div class="k">Update a doc</div>
+        <div class="v">Don't patch — create versioned files (<code>Script_v2</code>, etc.)</div>
+        <div class="k">Export from NLM</div>
+        <div class="v"><code>nlm export to-docs &lt;id&gt; &lt;artifact-id&gt; --title "Title"</code></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
