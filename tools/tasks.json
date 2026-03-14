@@ -161,9 +161,9 @@
             {
               "id": "nlm-10",
               "title": "Claude ↔ NotebookLM round-trip via Google Docs",
-              "notes": "Goal: NotebookLM exports a Report artifact to Google Drive (via nlm export to-docs), Claude reads the doc (via Google Docs MCP — see inf-9), edits or augments the content, and writes back to the notebook as a new source. Depends on inf-9 (Google Docs MCP setup) and nlm-9 (export to-docs verified working).",
+              "notes": "Completed 2026-03-13. Read Double-Entry Bookkeeping manifest via gdrive MCP, Claude augmented (added Slide 6, deepened Slides 3 & 5), uploaded as source 03eca125 to notebook 18b286a4. Loop confirmed end-to-end.",
               "priority": 3,
-              "status": "pending"
+              "status": "done"
             }
           ]
         }
@@ -234,11 +234,18 @@
               "status": "pending"
             },
             {
+              "id": "inf-10",
+              "title": "Document system audit and consolidation",
+              "notes": "Two document locations now exist: project file system markdown docs (agent-test/documents/, project documents/ subfolders) and the memory directory (~/.claude/projects/.../memory/). Audit both, assess what belongs where per the fat-in-project / lean-in-memory principle established 2026-03-13, and consolidate if needed. Memory should hold only what's needed for session continuity (MEMORY.md index, feedback, session log); substantive reference docs belong in the project.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
               "id": "inf-9",
               "title": "Set up Google Docs MCP server (OAuth)",
-              "notes": "MCP server: @modelcontextprotocol/server-gdrive. Token minted 2026-03-13: ~/.notebooklm-mcp-cli/gdrive-token.json. ~/.claude.json updated with correct GDRIVE_CREDENTIALS_PATH and GDRIVE_OAUTH_PATH. Needs restart to verify. Reference doc: ephemeral-notebook/documents/gdrive-integration.md",
+              "notes": "Done. Token minted, MCP verified working 2026-03-13. mcp__gdrive__search and ReadMcpResourceTool both confirmed. Reference doc: ephemeral-notebook/documents/gdrive-integration.md and nlm-claude-feedback-loop.md.",
               "priority": 3,
-              "status": "in-progress"
+              "status": "done"
             }
           ]
         }

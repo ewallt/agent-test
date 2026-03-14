@@ -2,52 +2,62 @@
 
 ## What Was Done This Session
 
-### Google Drive OAuth — Debugging and Completion (inf-9)
+### gdrive MCP Verification + Round-Trip POC (nlm-10)
 
-Long debugging session to get the one-time OAuth consent working for `@modelcontextprotocol/server-gdrive`.
+- Session auto-started per handoff: loaded gdrive context, tested `mcp__gdrive__search`
+- Search confirmed working — found "Double-Entry Bookkeeping" doc immediately
+- Read the exported slide manifest via `ReadMcpResourceTool gdrive:///1IPNE41yztAeqfLPlyjvHoGbcuV8UN24d2WLHsrLDUuw`
+- Claude augmented the manifest: added Slide 6 (spread Venice → Antwerp → Amsterdam/VOC), deepened Slides 3 and 5
+- Saved to `ephemeral-notebook/sources/double-entry-augmented.md`
+- Uploaded as new notebook source → source ID `03eca125-e301-455f-89ec-3021b40e36da`
+- Loop confirmed end-to-end: NLM → Drive → Claude reads → Claude improves → re-upload → NLM
 
-**Env var bug fixed:**
-- `~/.claude.json` had `GDRIVE_CREDENTIALS_PATH` pointing to the OAuth key file — wrong
-- Correct split: `GDRIVE_CREDENTIALS_PATH` = token output file, `GDRIVE_OAUTH_PATH` = key file
-- Both now set correctly in `~/.claude.json`
+### Memory System Discussion
 
-**Key file fixed:**
-- `gcp-oauth.keys.json` was missing `redirect_uris` — added `["http://localhost:3000/oauth2callback"]`
-- Tom also added the URI in Google Cloud Console and added ewalltom@gmail.com as a test user on the OAuth consent screen
+- Tom discovered the memory directory (`~/.claude/projects/.../memory/`) for the first time
+- Established design principle: **fat docs in the project file system, lean in memory**
+- Memory directory: MEMORY.md index, feedback files, session log, pointers only
+- Project `documents/`: substantive reference docs, version-controlled
+- Created `inf-10` ticket: document system audit and consolidation
 
-**Port 3000 conflicts:**
-- Remotion studio was on port 3000 — killed it
-- A debug script (`res.end('test')`) got stuck on port 3000 as a background task, intercepting OAuth callbacks — stopped via TaskStop
+### Documents Created
 
-**Auth server workaround:**
-- `npx @modelcontextprotocol/server-gdrive auth` exits immediately as a background task (ESM lifecycle issue)
-- Wrote `gdrive-auth.cjs` at agent-test root — CommonJS equivalent using googleapis from npx cache
-- Ran as persistent background task; Tom completed browser OAuth flow; token saved
+- `memory/working-notes.md` — Claude's live quick-reference: active notebook IDs, gdrive status, CLI gotchas, recent source IDs
+- `ephemeral-notebook/documents/nlm-claude-feedback-loop.md` — technical reference for Claude: full loop architecture, OAuth setup steps, debugging history, POC record
+- `documents/claude-memory-system.html` — reference doc for Tom explaining the memory directory, file types, load order, how to add entries
+- `documents/nlm-feedback-loop.html` — reference doc for Tom on the feedback loop: short intro + 13 brainstormed use cases tagged by readiness
 
-**Token minted:** `~/.notebooklm-mcp-cli/gdrive-token.json`
+### Tickets
 
-### Scope Note Discovered
+- `inf-9` (gdrive OAuth): done ← verify and close
+- `nlm-10` (round-trip POC): done ← confirmed this session
+- `inf-10` (document system audit): added as new pending ticket
 
-`@modelcontextprotocol/server-gdrive` uses `drive.readonly` scope. Claude can read Drive via MCP but cannot write. The write-back step of the round-trip will need a different approach.
+### mercy.html Deployed to gh-pages
+
+- Deployed `C:/Users/tomew/Documents/Slide Shows/Sermon on the Mount/mercy.html`
+- Pushed to `gh-pages` branch under `sermon-on-the-mount/mercy.html`
+- Live at: `https://ewallt.github.io/claude-code-fun/sermon-on-the-mount/mercy.html`
 
 ---
 
 ## State Right Now
 
-- Token file exists: `~/.notebooklm-mcp-cli/gdrive-token.json`
-- `~/.claude.json` updated with correct env vars for gdrive MCP
-- `gdrive-auth.cjs` exists at agent-test root (one-time tool, can be deleted)
-- Tom is restarting Claude Code to load the updated MCP config
+- gdrive MCP fully operational; token at `~/.notebooklm-mcp-cli/gdrive-token.json`
+- `gdrive-auth.cjs` at agent-test root — can be deleted (one-time tool, no longer needed)
+- All session work on `dev` branch, not yet promoted to `main`
+- No blockers
 
 ## Next Session Priority
 
-Restart is done — verify gdrive MCP loaded correctly by running a search, then execute the nlm-10 round-trip: read the exported Double-Entry Bookkeeping doc (ID: `1IPNE41yztAeqfLPlyjvHoGbcuV8UN24d2WLHsrLDUuw`), augment it, write a new version to Drive, upload as a notebook source. Mark inf-9 and nlm-10 done. Note: write-back may need a non-MCP approach since the server is read-only.
+No specific priority set — wait for Tom to indicate what to work on.
 
 ## Other Items
 
-- No blockers
-- `gdrive-auth.cjs` can be deleted once round-trip is confirmed working
+- `gdrive-auth.cjs` deletion still pending (flagged as a loose end)
+- `gdrive-integration.md` ticket table still shows inf-9/nlm-10 as pending — needs updating
+- `inf-10` document system audit queued when time allows
 
 ## Session Start
 
-Auto-start: Read `ephemeral-notebook/documents/gdrive-integration.md` to reload context. Then immediately test `mcp__gdrive__search` for "Double-Entry Bookkeeping" to confirm auth works.
+Wait for Tom.

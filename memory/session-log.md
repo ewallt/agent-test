@@ -2,6 +2,38 @@
 
 ---
 
+## 2026-03-13 (session 3) — gdrive POC Complete, Feedback Loop Docs, Memory System Discussion
+
+### gdrive MCP Round-Trip POC (nlm-10 — done)
+- Verified `mcp__gdrive__search` works; found Double-Entry Bookkeeping doc immediately
+- Read exported slide manifest via `ReadMcpResourceTool` — full markdown returned
+- Claude augmented manifest: added Slide 6 (Venice → Antwerp → Amsterdam/VOC), deepened Slides 3 & 5
+- Uploaded as new notebook source (`03eca125`) to notebook `18b286a4`
+- Full loop confirmed end-to-end: NLM → Drive → Claude reads → improves → re-upload → NLM
+
+### Memory System Discussion
+- Tom discovered the memory directory (`~/.claude/projects/.../memory/`) for the first time
+- Established design principle: fat docs in project file system, lean in memory directory
+- Memory = MEMORY.md index + feedback + session log + pointers; project = substantive reference docs
+- Created `inf-10` ticket: document system audit and consolidation
+
+### Documents Created
+- `memory/working-notes.md` — Claude's live quick-reference (notebook IDs, gdrive status, CLI gotchas)
+- `ephemeral-notebook/documents/nlm-claude-feedback-loop.md` — technical reference for Claude: full loop architecture, OAuth debugging history, POC record, quickstart
+- `documents/claude-memory-system.html` — Tom's reference on the memory directory: file types, load order, how to add entries
+- `documents/nlm-feedback-loop.html` — Tom's reference on the feedback loop: short intro + 13 brainstormed use cases (now/near/later)
+
+### Tickets
+- inf-9 (gdrive OAuth): done
+- nlm-10 (round-trip POC): done
+- inf-10 (document system audit): added as pending
+
+### mercy.html Deployed
+- Deployed `Sermon on the Mount/mercy.html` to gh-pages branch under `sermon-on-the-mount/mercy.html`
+- Live at `https://ewallt.github.io/claude-code-fun/sermon-on-the-mount/mercy.html`
+
+---
+
 ## 2026-03-13 (session 2) — Google Drive OAuth Setup Complete
 
 ### Goal
