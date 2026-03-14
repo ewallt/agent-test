@@ -236,7 +236,7 @@
             {
               "id": "inf-9",
               "title": "Set up Google Docs MCP server (OAuth)",
-              "notes": "MCP server: @modelcontextprotocol/server-gdrive. Credentials file: ~/.notebooklm-mcp-cli/gcp-oauth.keys.json — created 2026-03-13 (web app type, localhost redirect). gdrive block added to ~/.claude.json. Remaining: restart Claude Code to load MCP server, complete one-time browser OAuth consent. Reference doc: ephemeral-notebook/documents/gdrive-integration.md",
+              "notes": "MCP server: @modelcontextprotocol/server-gdrive. Token minted 2026-03-13: ~/.notebooklm-mcp-cli/gdrive-token.json. ~/.claude.json updated with correct GDRIVE_CREDENTIALS_PATH and GDRIVE_OAUTH_PATH. Needs restart to verify. Reference doc: ephemeral-notebook/documents/gdrive-integration.md",
               "priority": 3,
               "status": "in-progress"
             }

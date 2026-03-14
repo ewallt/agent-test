@@ -2,6 +2,50 @@
 
 ---
 
+## 2026-03-13 (session 2) — Google Drive OAuth Setup Complete
+
+### Goal
+Complete OAuth consent for the gdrive MCP server and test the Claude ↔ NotebookLM round-trip (nlm-10).
+
+### What Happened
+
+**OAuth env var bug fixed:**
+- `~/.claude.json` had `GDRIVE_CREDENTIALS_PATH` pointing to the OAuth key file (`gcp-oauth.keys.json`) — wrong
+- Correct split: `GDRIVE_CREDENTIALS_PATH` = token file (output), `GDRIVE_OAUTH_PATH` = key file (input)
+- Fixed in `~/.claude.json`
+
+**redirect_uri added to key file:**
+- `gcp-oauth.keys.json` was missing `redirect_uris` field — added `["http://localhost:3000/oauth2callback"]`
+- Tom also had to add that URI to Google Cloud Console and add ewalltom@gmail.com as a test user (audience)
+
+**port 3000 conflict:**
+- Remotion bar-chart-race studio was on port 3000 — killed it
+- Debug script (`res.end('test')`) got stuck on port 3000 and intercepted early OAuth callbacks — caused confusion
+- Fixed by stopping the debug task via TaskStop
+
+**OAuth completed:**
+- Wrote `gdrive-auth.cjs` — custom CommonJS auth script using googleapis package from npx cache
+- Ran as background task; Tom opened the auth URL manually, completed sign-in, got "Authentication successful!"
+- Token saved to `~/.notebooklm-mcp-cli/gdrive-token.json`
+
+**State at end of session:**
+- Token file exists: `~/.notebooklm-mcp-cli/gdrive-token.json`
+- `~/.claude.json` updated with correct env vars (both `GDRIVE_CREDENTIALS_PATH` and `GDRIVE_OAUTH_PATH`)
+- **Needs a Claude Code restart** to pick up the fixed MCP config
+- inf-9 is now complete after restart + verification
+
+### Next Session
+1. Restart Claude Code (if not done yet) — gdrive MCP will load with correct token
+2. Test `mcp__gdrive__search` — search for "Double-Entry Bookkeeping"
+3. Read the exported doc (ID: `1IPNE41yztAeqfLPlyjvHoGbcuV8UN24d2WLHsrLDUuw`)
+4. Complete nlm-10 round-trip: Claude reads → augments → saves new version → uploads as notebook source
+
+### Tickets
+- inf-9: complete after restart verification
+- nlm-10: still pending (round-trip test)
+
+---
+
 ## 2026-03-13 — Google Drive MCP Integration, nlm Export Test, CLI Doc Update
 
 ### Prompt Injection Incident
