@@ -2,43 +2,41 @@
 
 ## What Was Done This Session
 
-### gh-pages Deploy Convention Fixed
+### Shutdown Skill — Session Start Redesign
 
-- Previous session established the `gh-pages-deploy` skill for deploying HTML files
-- Discovered that the old deployment used a flat `.html` URL (e.g., `nlm-workflow-explainer.html`) — not the GitHub Pages convention
-- Correct convention: deploy as `index.html` inside a named subfolder → clean URL `/<folder>/<subfolder>/`
-- Re-deployed `nlm-workflow-explainer.html` to `notebooklm/nlm-workflow-explainer/index.html`
-  - Old flat file removed with `git rm`
-  - Live at: `https://ewallt.github.io/claude-code-fun/notebooklm/nlm-workflow-explainer/`
+- Identified gap: handoff was writing "Wait for Tom." even when next workflow was known, causing Claude to arrive at the next session without NLM context loaded
+- Root cause: shutdown skill had no mechanism to communicate workflow or trigger startup context loading
+- Fix: Session Start section now always includes three elements:
+  1. READ NOW: `startup.md` (full path) — always present, no exceptions
+  2. Workflow: named workflow (or none)
+  3. Optional message from Tom
+- Updated both the handoff template and the Step 1 draft preview in the shutdown skill
 
-### gh-pages-deploy Skill Updated
+### skill-creator — JIT Doc READ NOW
 
-- Updated `~/.claude/skills/gh-pages-deploy/SKILL.md` to reflect the index.html convention
-- URL pattern updated to `/<folder>/<subfolder>/`
-- Deploy command updated to copy file as `index.html` into subfolder
-- Known subfolders table added (notebooklm/nlm-workflow-explainer documented)
-- Added note: worktree cleanup permission error on Windows is non-fatal if push succeeded
+- Added a hard "READ NOW" instruction at the very top of `skill-creator/SKILL.md` pointing to `JIT-experiment.md`
+- Ensures the JIT pattern is always loaded into context when skill-creator is invoked
+- Previously the reference was buried in the "Writing Patterns" section — easy to miss
 
-### Tickets
+### EGW Preaching Notebook — Discussion Started
 
-- `inf-11` added: fix mercy gh-pages deploy to use index.html convention (P4, pending)
-
-### Cleanup
-
-- Deleted `gdrive-auth.cjs` from agent-test root — one-time OAuth helper, no longer needed
+- Topic: what Ellen G. White says about preaching, with particular focus on sermon content
+- Web app will be a new type — different from the existing inference app pattern
+- Discussion of app concept started but not completed; Tom will provide details at session start
+- No task file written yet
 
 ---
 
 ## State Right Now
 
-- `gh-pages-deploy` skill is correct and up to date
-- mercy app still deployed as flat `.html` on gh-pages — inf-11 ticket queued to fix
-- All session work on `dev` branch, not yet promoted to `main`
-- No blockers
+- Shutdown skill updated with new Session Start format — will apply starting next session
+- skill-creator updated with JIT doc READ NOW at top
+- No notebook created yet for EGW topic
+- All changes on `dev` branch, not promoted to `main`
 
 ## Next Session Priority
 
-Run a NotebookLM ephemeral notebook workflow. Tom will provide the topic and details at session start.
+Create a NotebookLM ephemeral notebook on Ellen G. White's teachings on preaching, with particular focus on sermon content. Tom will provide web app design details and task file specifics at session start. Goal: notebook built, sources loaded, web app designed and created.
 
 ## Other Items
 
@@ -48,4 +46,6 @@ Run a NotebookLM ephemeral notebook workflow. Tom will provide the topic and det
 
 ## Session Start
 
-Wait for Tom.
+READ NOW: `C:\Users\tomew\.claude\projects\C--Users-tomew-Documents-agent-test\memory\startup.md`
+
+Workflow: ephemeral-notebook
