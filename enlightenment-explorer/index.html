@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philosophical Revolutions — Enlightenment</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 16px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: linear-gradient(180deg,#070c16 0%,#0b1220 50%,#070c16 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 28px 20px;
+  }
+
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  header { margin-bottom: 32px; }
+  h1 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  /* Tab bar */
+  .tab-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+  .tab-btn {
+    background: none;
+    border: 1px solid transparent;
+    border-bottom: none;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 10px 22px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    position: relative;
+    bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    background: rgba(139,185,255,.12);
+    border-color: rgba(139,185,255,.35);
+    color: var(--accent);
+    border-bottom-color: #070c16;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+
+  /* Status dot */
+  .status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .status-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+  .status-dot.loading {
+    background: var(--accent);
+    animation: pulse 1s infinite;
+  }
+  .status-dot.ready { background: var(--green); }
+  .status-dot.error { background: var(--red); }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Explorer controls */
+  label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 8px; }
+  select {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    padding: 12px 16px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a9b6cc' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+  select:focus { outline: none; border-color: rgba(139,185,255,.5); }
+  select option { background: #0f1726; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #8bb9ff, rgba(124,255,178,.92));
+    color: #08101d;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: opacity 0.18s, transform 0.12s;
+    display: inline-block;
+  }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* Explorer results */
+  #explorer-result { margin-top: 24px; display: none; }
+  #explorer-result h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .summary-text {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  /* Table */
+  .items-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin-bottom: 20px;
+  }
+  .items-table th {
+    text-align: left;
+    color: var(--muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .items-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    vertical-align: top;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .items-table td:first-child { color: var(--accent); font-weight: 500; min-width: 140px; }
+  .items-table td:nth-child(2) { color: var(--muted); font-size: 0.82rem; min-width: 120px; }
+  .items-table tr:last-child td { border-bottom: none; }
+  .items-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* Chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    background: rgba(139,185,255,.10);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 20px;
+    color: var(--accent);
+    font-size: 0.82rem;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .chip:hover { background: rgba(139,185,255,.20); border-color: rgba(139,185,255,.45); }
+
+  .error-msg {
+    color: var(--red);
+    font-size: 0.9rem;
+    padding: 12px;
+    background: rgba(255,122,138,0.08);
+    border-radius: 10px;
+    border: 1px solid rgba(255,122,138,0.2);
+    margin-top: 16px;
+  }
+
+  /* Quiz */
+  .quiz-meta {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .question-text {
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .option-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    padding: 12px 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) { background: rgba(139,185,255,.08); border-color: rgba(139,185,255,.3); }
+  .option-btn.correct { background: rgba(124,255,178,.12); border-color: rgba(124,255,178,.4); color: var(--green); }
+  .option-btn.wrong { background: rgba(255,122,138,.10); border-color: rgba(255,122,138,.3); color: var(--red); }
+  .option-btn:disabled { cursor: default; }
+
+  .explanation {
+    background: rgba(139,185,255,.07);
+    border: 1px solid rgba(139,185,255,.18);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .score-display {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .score-display span { color: var(--accent); font-weight: 600; }
+
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    height: 4px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #8bb9ff, rgba(124,255,178,.92));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  .final-score {
+    text-align: center;
+    padding: 32px 20px;
+  }
+  .final-score .big-score {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .final-score .label { color: var(--muted); font-size: 0.95rem; margin-bottom: 24px; }
+
+  #quiz-loading { display: none; text-align: center; padding: 40px; color: var(--muted); font-size: 0.95rem; }
+  #quiz-area { display: none; }
+  #quiz-start-area { text-align: center; padding: 16px 0; }
+  #quiz-start-area p { color: var(--muted); font-size: 0.92rem; margin-bottom: 20px; line-height: 1.6; }
+
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Philosophical Revolutions — Enlightenment</h1>
+    <p class="subtitle">Descartes, Hume, and Kant &nbsp;·&nbsp; AI-powered explorer &amp; quiz</p>
+  </header>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('explorer')">Explorer</button>
+    <button class="tab-btn" onclick="switchTab('quiz')">Quiz</button>
+  </div>
+
+  <!-- EXPLORER TAB -->
+  <div id="tab-explorer" class="tab-panel active">
+    <div class="card">
+      <div class="status-row">
+        <label style="margin:0">Choose a focus angle</label>
+        <div class="status-dot" id="explorer-dot"></div>
+      </div>
+      <select id="angle-select">
+        <option value="">— Select an angle —</option>
+        <option value="Descartes and Methodic Doubt">Descartes and Methodic Doubt</option>
+        <option value="The Cogito — I Think Therefore I Am">The Cogito — I Think Therefore I Am</option>
+        <option value="Mind-Body Dualism and the Role of God">Mind-Body Dualism and the Role of God</option>
+        <option value="Hume's Empiricism and the Limits of Reason">Hume's Empiricism and the Limits of Reason</option>
+        <option value="Hume's Problem of Causation and Induction">Hume's Problem of Causation and Induction</option>
+        <option value="Hume's Bundle Theory of the Self">Hume's Bundle Theory of the Self</option>
+        <option value="Kant's Copernican Revolution">Kant's Copernican Revolution</option>
+        <option value="Phenomena, Noumena, and the Limits of Knowledge">Phenomena, Noumena, and the Limits of Knowledge</option>
+        <option value="Kant and the Enlightenment — Sapere Aude">Kant and the Enlightenment — Sapere Aude</option>
+      </select>
+      <button class="btn-primary" onclick="runExplorer()" id="explore-btn">Explore</button>
+
+      <div id="explorer-error"></div>
+
+      <div id="explorer-result">
+        <div class="divider"></div>
+        <h2 id="result-title"></h2>
+        <p class="summary-text" id="result-summary"></p>
+        <table class="items-table" id="result-table">
+          <thead>
+            <tr>
+              <th>Name / Concept</th>
+              <th>Key Figure or Date</th>
+              <th>Description</th>
+              <th>Significance</th>
+            </tr>
+          </thead>
+          <tbody id="result-tbody"></tbody>
+        </table>
+        <div class="divider"></div>
+        <label>Follow-up questions</label>
+        <div class="chips" id="result-chips"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ TAB -->
+  <div id="tab-quiz" class="tab-panel">
+    <div class="card">
+      <div class="status-row">
+        <label style="margin:0">Test your knowledge</label>
+        <div class="status-dot" id="quiz-dot"></div>
+      </div>
+
+      <div id="quiz-start-area">
+        <p>Five multiple-choice questions drawn from across the entire knowledge base — Descartes, Hume, and Kant. Questions are generated fresh each round.</p>
+        <button class="btn-primary" onclick="startQuiz()">Generate Quiz</button>
+      </div>
+
+      <div id="quiz-loading">
+        <p>Generating questions…</p>
+      </div>
+
+      <div id="quiz-area">
+        <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+        <div class="quiz-meta" id="quiz-meta"></div>
+        <div class="score-display" id="score-display"></div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options" id="options-list"></div>
+        <div class="explanation" id="explanation"></div>
+        <button class="btn-primary" id="next-btn" onclick="nextQuestion()" style="display:none">Next Question</button>
+      </div>
+
+      <div id="quiz-final" style="display:none">
+        <div class="final-score">
+          <div class="big-score" id="final-score-num"></div>
+          <div class="label" id="final-score-label"></div>
+          <button class="btn-primary" onclick="startQuiz()">New Quiz</button>
+        </div>
+      </div>
+
+      <div id="quiz-error"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const PROXY = 'https://groq-proxy.ewalltom.workers.dev';
+const MODEL = 'openai/gpt-oss-120b';
+
+async function callAI(promptText) {
+  const response = await fetch(PROXY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: promptText }] }],
+      generationConfig: { responseMimeType: 'text/plain' },
+      model: MODEL
+    })
+  });
+  const raw = await response.text();
+  let data;
+  try { data = JSON.parse(raw); }
+  catch { throw new Error(`Non-JSON from proxy (HTTP ${response.status}): ${raw.slice(0,300)}`); }
+  if (!response.ok) throw new Error(data?.error?.message || `HTTP ${response.status}`);
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('No text in AI response');
+  return text;
+}
+
+function extractJson(text) {
+  let t = String(text).trim();
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fence) t = fence[1].trim();
+  const a = t.indexOf('{'), b = t.lastIndexOf('}');
+  if (a >= 0 && b > a) t = t.slice(a, b + 1);
+  try { return JSON.parse(t); } catch { return null; }
+}
+
+// ── KNOWLEDGE BASE ────────────────────────────────────────────────
+const FOCUS_PROMPTS = {
+  "Descartes and Methodic Doubt": "René Descartes, writing in his Meditations on First Philosophy (1641), set out to find a foundation for knowledge that was beyond all possible doubt. His method was radical: he would doubt everything that could possibly be doubted — the testimony of his senses, the existence of the physical world, even mathematical truths — imagining that an all-powerful evil demon might be deceiving him at every turn. He doubted whether he had a body, whether the external world existed, whether he was dreaming rather than awake. This systematic demolition of assumed certainties was not nihilism but a deliberate strategy — if anything survived the assault of total doubt, it would be truly indubitable. Descartes described this as building philosophy on entirely new foundations, stripping away every belief inherited from childhood and starting fresh.",
+
+  "The Cogito — I Think Therefore I Am": "After subjecting all knowledge to radical doubt, Descartes found one thing he could not doubt: the very act of doubting proved he existed. 'I think, therefore I am' (cogito, ergo sum) is the irreducible foundation of his system. Even if an evil demon was deceiving him about everything else, the deception itself required a thinker to be deceived. As Descartes put it: 'I have convinced myself that there is absolutely nothing in the world, no sky, no earth, no minds, no bodies. Doesn't it follow that I don't exist? No, surely I must exist if it's me who is convinced of something.' From this single certainty he defined himself as a 'thinking thing' — something that doubts, understands, affirms, denies, wills, and imagines. The cogito remains one of the most famous arguments in the history of philosophy and the starting point of modern epistemology.",
+
+  "Mind-Body Dualism and the Role of God": "Having established that he was a thinking thing, Descartes faced a problem: how could he trust his perceptions of the physical world? His solution relied on God. He argued that the idea of a perfect, infinite being must have been placed in his mind by an actually perfect being — a version of the ontological argument — and that a perfect God would not deceive him. This gave him grounds to trust his clear and distinct perceptions of the external world. Descartes also argued that mind and body are fundamentally distinct substances: the mind (res cogitans) is unextended, non-physical, and essentially thinking; the body (res extensa) is extended, physical, and essentially mechanical. This dualism raised the problem of how mind and body interact — a question that has never been fully resolved and that Descartes himself struggled to answer.",
+
+  "Hume's Empiricism and the Limits of Reason": "David Hume, writing in A Treatise of Human Nature (1739) and An Enquiry Concerning Human Understanding (1748), built a philosophy diametrically opposed to Descartes' rationalism. For Hume, all knowledge derives from sensory experience: the mind begins as a blank slate, and every idea is ultimately traceable to an impression — something directly experienced through the senses. Abstract reasoning disconnected from experience is empty and untrustworthy. Hume distinguished between 'relations of ideas' (truths that are necessarily true by definition, such as mathematics) and 'matters of fact' (truths about the world, which can only be established through experience). His most provocative conclusion was that reason alone is incapable of motivating action or grounding morality: 'Reason is, and ought only to be the slave of the passions.' Hume's empiricism challenged the entire rationalist tradition stretching back to Plato.",
+
+  "Hume's Problem of Causation and Induction": "Hume's most devastating attack on rationalism concerned causation. When we observe one billiard ball striking another, we see one event followed by another — but we never observe any 'necessary connection' between them. The idea of causation, Hume argued, is nothing more than a psychological habit formed by repeatedly observing constant conjunction: event A followed by event B so many times that we expect B whenever we see A. There is no logical or rational basis for this expectation. This leads directly to the Problem of Induction: there is no non-circular justification for believing the future will resemble the past. All our scientific laws, all our predictions, all our practical reasoning rest on an assumption that cannot itself be rationally grounded. Kant later called this Hume's great discovery — 'the problem that first interrupted my dogmatic slumber.'",
+
+  "Hume's Bundle Theory of the Self": "Hume extended his empiricism to the self, with results as destabilizing as his attack on causation. Descartes believed in a unified, enduring soul — the thinking thing that persisted through time and gave identity to the self. Hume looked inward and found no such thing. 'For my part, when I enter most intimately into what I call myself, I always stumble on some particular perception or other, of heat or cold, light or shade, love or hatred, pain or pleasure. I never can catch myself at any time without a perception.' There is no persistent self behind the perceptions — just the perceptions themselves, in constant flux. The self is a 'bundle of perceptions,' a convenient fiction we construct to make sense of a stream of experiences. Hume also extended this skepticism to religion, arguing against miracles and dismantling the argument from design.",
+
+  "Kant's Copernican Revolution": "Immanuel Kant, in the Critique of Pure Reason (1781), set out to answer Hume's skepticism without abandoning the possibility of genuine knowledge. His solution was radical: rather than assuming the mind passively receives and reflects reality, Kant argued the mind actively shapes experience. Just as Copernicus resolved astronomical problems by moving the Earth rather than the sun, Kant resolved epistemological problems by making objects conform to the structures of the mind, rather than the mind conforming to objects. The mind imposes its own forms — space and time as forms of intuition, categories such as causality and substance as forms of understanding — onto the raw data of experience. This is why mathematics and Newtonian physics are necessarily true: they describe the structure the mind itself imposes, not contingent facts about an independent world. 'Thoughts without contents are empty, perceptions without conceptions are blind.'",
+
+  "Phenomena, Noumena, and the Limits of Knowledge": "Kant's framework drew a sharp line between what we can and cannot know. We can only ever know the world as it appears to us — phenomena — filtered through the mind's innate structures of space, time, and the categories of understanding. We can never know reality as it is in itself, independent of all perception — the noumenal world, or 'thing-in-itself.' This was a direct consequence of his Copernican revolution: if the mind shapes experience, then we cannot step outside that shaping to see what is really there. For Kant, this meant that traditional metaphysical questions — the existence of God, the immortality of the soul, the nature of free will — could not be resolved by theoretical reason at all, since they concern things beyond possible experience. This limitation was not a defeat but a clarification of the proper boundaries of human knowledge.",
+
+  "Kant and the Enlightenment — Sapere Aude": "Kant's 1784 essay 'What Is Enlightenment?' is one of the defining documents of the Enlightenment project. He defined enlightenment as 'man's emergence from his self-imposed immaturity' — the failure to use one's own understanding without direction from another. The motto of the Enlightenment, he wrote, is 'Sapere Aude! — Have courage to use your own understanding!' Kant argued that most people remain immature not from lack of intelligence but from lack of courage and resolution: it is easier to let others think for you. He distinguished between the private use of reason (which can legitimately be constrained by institutional roles) and the public use of reason (which must be completely free). His own age, he acknowledged, was not yet enlightened — but it was an age of enlightenment, moving in that direction."
+};
+
+const QUIZ_SCOPE = "René Descartes and the method of radical doubt; the evil demon thought experiment; cogito ergo sum and its Latin and French formulations; res cogitans and res extensa; Descartes' mind-body dualism; his use of God to rescue external world knowledge; David Hume and his Treatise of Human Nature and Enquiry; impressions vs ideas; the distinction between relations of ideas and matters of fact; Hume's analysis of causation as constant conjunction not necessary connection; the Problem of Induction; the bundle theory of the self; Hume's argument against miracles; Immanuel Kant and the Critique of Pure Reason; the Copernican revolution in philosophy; phenomena vs noumena; the thing-in-itself; a priori vs a posteriori knowledge; synthetic a priori judgments; space and time as forms of intuition; causality as a category of understanding; the essay 'What Is Enlightenment?'; Sapere Aude; self-imposed immaturity; Kant's response to Hume's skepticism; dogmatic slumber.";
+
+// ── TAB SWITCHING ─────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── EXPLORER ──────────────────────────────────────────────────────
+function setExplorerDot(state) {
+  const dot = document.getElementById('explorer-dot');
+  dot.className = 'status-dot' + (state ? ' ' + state : '');
+}
+
+async function runExplorer(overrideAngle) {
+  const angle = overrideAngle || document.getElementById('angle-select').value;
+  if (!angle) { alert('Please select an angle first.'); return; }
+
+  const knowledge = FOCUS_PROMPTS[angle];
+  const btn = document.getElementById('explore-btn');
+  const errEl = document.getElementById('explorer-error');
+  errEl.innerHTML = '';
+  document.getElementById('explorer-result').style.display = 'none';
+  setExplorerDot('loading');
+  btn.disabled = true;
+
+  const prompt = `You are an expert on Enlightenment philosophy. Using this knowledge: ${knowledge}
+
+Provide a structured deep-dive on: ${angle}.
+
+Return JSON only — no preamble, no markdown fences:
+{
+  "title": "string",
+  "summary": "string (2-3 sentences)",
+  "items": [
+    { "name": "string", "key_figure_or_date": "string", "description": "string", "significance": "string" }
+  ],
+  "follow_up_questions": ["string", "string", "string"]
+}
+
+Request 6-8 items. follow_up_questions should be short, specific, intellectually curious questions that push deeper into this angle.`;
+
+  try {
+    const raw = await callAI(prompt);
+    const data = extractJson(raw);
+    if (!data) throw new Error('Could not parse response as JSON');
+    renderExplorerResult(data);
+    setExplorerDot('ready');
+  } catch(e) {
+    errEl.innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
+    setExplorerDot('error');
+  }
+  btn.disabled = false;
+}
+
+function renderExplorerResult(data) {
+  document.getElementById('result-title').textContent = data.title || '';
+  document.getElementById('result-summary').textContent = data.summary || '';
+
+  const tbody = document.getElementById('result-tbody');
+  tbody.innerHTML = '';
+  (data.items || []).forEach(item => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${esc(item.name)}</td><td>${esc(item.key_figure_or_date)}</td><td>${esc(item.description)}</td><td>${esc(item.significance)}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  const chips = document.getElementById('result-chips');
+  chips.innerHTML = '';
+  (data.follow_up_questions || []).forEach(q => {
+    const btn = document.createElement('button');
+    btn.className = 'chip';
+    btn.textContent = q;
+    btn.onclick = () => runExplorerFollowUp(q);
+    chips.appendChild(btn);
+  });
+
+  document.getElementById('explorer-result').style.display = 'block';
+}
+
+async function runExplorerFollowUp(question) {
+  const errEl = document.getElementById('explorer-error');
+  errEl.innerHTML = '';
+  document.getElementById('explorer-result').style.display = 'none';
+  setExplorerDot('loading');
+  document.getElementById('explore-btn').disabled = true;
+
+  const allKnowledge = Object.values(FOCUS_PROMPTS).join('\n\n');
+  const prompt = `You are an expert on Enlightenment philosophy (Descartes, Hume, Kant). Using this knowledge base: ${allKnowledge}
+
+Provide a structured deep-dive answering this question: ${question}
+
+Return JSON only — no preamble, no markdown fences:
+{
+  "title": "string",
+  "summary": "string (2-3 sentences)",
+  "items": [
+    { "name": "string", "key_figure_or_date": "string", "description": "string", "significance": "string" }
+  ],
+  "follow_up_questions": ["string", "string", "string"]
+}
+
+Request 6-8 items.`;
+
+  try {
+    const raw = await callAI(prompt);
+    const data = extractJson(raw);
+    if (!data) throw new Error('Could not parse response as JSON');
+    renderExplorerResult(data);
+    setExplorerDot('ready');
+  } catch(e) {
+    errEl.innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
+    setExplorerDot('error');
+  }
+  document.getElementById('explore-btn').disabled = false;
+}
+
+// ── QUIZ ──────────────────────────────────────────────────────────
+let quizQuestions = [];
+let currentQ = 0;
+let score = 0;
+let answered = false;
+let seenQuestions = [];
+
+function setQuizDot(state) {
+  const dot = document.getElementById('quiz-dot');
+  dot.className = 'status-dot' + (state ? ' ' + state : '');
+}
+
+async function startQuiz() {
+  document.getElementById('quiz-start-area').style.display = 'none';
+  document.getElementById('quiz-final').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('quiz-loading').style.display = 'block';
+  document.getElementById('quiz-error').innerHTML = '';
+  setQuizDot('loading');
+
+  const seenNote = seenQuestions.length > 0
+    ? ` Avoid repeating these questions already seen this session: ${seenQuestions.slice(-10).join(' | ')}`
+    : '';
+
+  const prompt = `You are an expert on Enlightenment philosophy (Descartes, Hume, Kant). Generate exactly 5 multiple-choice questions testing knowledge of: ${QUIZ_SCOPE}${seenNote}
+
+Return JSON only — no preamble, no markdown fences:
+{
+  "questions": [
+    {
+      "question": "string",
+      "options": ["A. ...", "B. ...", "C. ...", "D. ..."],
+      "correct": "A",
+      "explanation": "string"
+    }
+  ]
+}
+
+Vary difficulty from straightforward to challenging. Avoid trivial questions. Make wrong answers plausible.`;
+
+  try {
+    const raw = await callAI(prompt);
+    const data = extractJson(raw);
+    if (!data || !data.questions || data.questions.length === 0) throw new Error('Could not parse quiz questions');
+
+    quizQuestions = data.questions.map(q => {
+      // shuffle correct answer into random position
+      const correctText = q.options.find(o => o.startsWith(q.correct + '.'));
+      const others = q.options.filter(o => !o.startsWith(q.correct + '.'));
+      const letters = ['A','B','C','D'];
+      const shuffled = [...others];
+      const pos = Math.floor(Math.random() * 4);
+      shuffled.splice(pos, 0, correctText);
+      const newOptions = shuffled.map((o, i) => letters[i] + '. ' + o.slice(3));
+      const newCorrect = letters[pos];
+      return { ...q, options: newOptions, correct: newCorrect };
+    });
+
+    quizQuestions.forEach(q => seenQuestions.push(q.question));
+    currentQ = 0;
+    score = 0;
+
+    document.getElementById('quiz-loading').style.display = 'none';
+    document.getElementById('quiz-area').style.display = 'block';
+    setQuizDot('ready');
+    renderQuestion();
+  } catch(e) {
+    document.getElementById('quiz-loading').style.display = 'none';
+    document.getElementById('quiz-error').innerHTML = `<div class="error-msg">Error: ${e.message}</div>`;
+    document.getElementById('quiz-start-area').style.display = 'block';
+    setQuizDot('error');
+  }
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = quizQuestions[currentQ];
+  const total = quizQuestions.length;
+
+  document.getElementById('progress-bar').style.width = `${(currentQ / total) * 100}%`;
+  document.getElementById('quiz-meta').textContent = `Question ${currentQ + 1} of ${total}`;
+  document.getElementById('score-display').innerHTML = `Score: <span>${score}</span> / ${currentQ}`;
+  document.getElementById('question-text').textContent = q.question;
+
+  const optList = document.getElementById('options-list');
+  optList.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => selectOption(btn, opt.charAt(0), q.correct, q.explanation);
+    optList.appendChild(btn);
+  });
+
+  document.getElementById('explanation').style.display = 'none';
+  document.getElementById('explanation').textContent = '';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('next-btn').textContent = currentQ < quizQuestions.length - 1 ? 'Next Question' : 'See Results';
+}
+
+function selectOption(btn, chosen, correct, explanation) {
+  if (answered) return;
+  answered = true;
+
+  const allBtns = document.querySelectorAll('.option-btn');
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.textContent.charAt(0) === correct) b.classList.add('correct');
+  });
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    score++;
+  } else {
+    btn.classList.add('wrong');
+  }
+
+  const expEl = document.getElementById('explanation');
+  expEl.textContent = explanation;
+  expEl.style.display = 'block';
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.getElementById('score-display').innerHTML = `Score: <span>${score}</span> / ${currentQ + 1}`;
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= quizQuestions.length) {
+    showFinal();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showFinal() {
+  document.getElementById('quiz-area').style.display = 'none';
+  const total = quizQuestions.length;
+  const pct = Math.round((score / total) * 100);
+  document.getElementById('final-score-num').textContent = `${score} / ${total}`;
+  const labels = ['Keep studying — the Enlightenment awaits!', 'A decent start — Hume would approve.', 'Solid — Kant would nod.', 'Excellent — even Descartes would be convinced!'];
+  const idx = pct < 40 ? 0 : pct < 60 ? 1 : pct < 85 ? 2 : 3;
+  document.getElementById('final-score-label').textContent = labels[idx];
+  document.getElementById('quiz-final').style.display = 'block';
+  document.getElementById('progress-bar').style.width = '100%';
+  setQuizDot('ready');
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
