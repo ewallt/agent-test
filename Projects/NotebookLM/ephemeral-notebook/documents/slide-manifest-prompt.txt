@@ -1,0 +1,98 @@
+SLIDE MANIFEST DRAFTING PROMPT
+================================
+Paste this into Claude or Gemini, then paste your knowledge base below it.
+Claude Code will upload the manifest to NotebookLM; Gemini builds the slides.
+----------------------------------------------------------------
+
+I need you to write a Gemini slide manifest — a structured markdown document
+that Gemini will read to build a visual slide presentation. Please produce the
+full manifest in the exact format described below.
+
+---
+
+WHAT THE MANIFEST IS
+The manifest is a markdown file. Gemini reads it as a source and builds slides
+from the content. Each slide has a title, two paragraphs of text, and an image
+context description. The image context tells Gemini what to generate for the
+visual — it always ends with the global visual style repeated verbatim.
+
+---
+
+THE FORMAT
+
+# Slide-Ready Manifest: [Topic Title]
+
+---
+
+### Global Visual Manifest
+[One sentence describing the visual style — colors, artistic style, mood,
+texture. This phrase will be appended to every image context. Be specific:
+name an art style, color palette, and atmosphere.]
+
+---
+
+### Slide Structure (N=[number of slides])
+
+**1. Slide 1: [Short descriptor]**
+*   **Title:** [Slide title — punchy, 4–8 words]
+*   **Paragraph A:** [First paragraph — 3–4 sentences. Sets up the idea.]
+*   **Paragraph B:** [Second paragraph — 3–4 sentences. Deepens or resolves it.]
+*   **Image Context:** [Specific visual scene for this slide — 1–2 sentences
+    describing exactly what to depict. Then append the global style verbatim.]
+
+---
+
+[Repeat for each slide]
+
+---
+
+RULES FOR GOOD SLIDES
+- Each slide covers one idea fully — don't split a single point across slides
+- Paragraph A sets up; Paragraph B pays off, deepens, or contrasts
+- Image context should describe a specific scene or object, not an abstraction
+  ("A chalkboard with the equation written on it" not "a mathematical concept")
+- Titles should sound like chapter headings, not topic labels
+- The global style phrase must appear at the end of every image context, word
+  for word — Gemini uses it to maintain visual consistency across the deck
+- Slide 1 should hook the reader; the final slide should land a clear takeaway
+
+---
+
+VISUAL STYLE OPTIONS
+If I don't specify a style, choose one from this list that fits the topic:
+
+  vintage scientific illustration — engraving lines, muted earth tones,
+    19th-century naturalist aesthetic, precise hand-drawn detail
+
+  retro editorial — bold mid-century graphic design, flat color blocks,
+    clean sans-serif energy, confident and punchy
+
+  watercolor and ink — loose washes, visible brushwork, warm paper texture,
+    soft and contemplative
+
+  golden age map — aged parchment, compass roses, sea monsters, cartographic
+    detail, warm ochres and sepia
+
+  art deco — geometric symmetry, gold and black, ornate borders,
+    glamorous and authoritative
+
+  contemporary minimal — clean white space, a single accent color,
+    restrained typography, modern and precise
+
+  [or describe your own style — be specific about art style, colors, mood]
+
+---
+
+SLIDE COUNT
+Aim for 8–12 slides unless I specify otherwise. More than 12 gets unwieldy;
+fewer than 8 feels thin. A good default is 10.
+
+---
+
+NOW WRITE THE MANIFEST
+
+Here is the knowledge base. Use it as your source material.
+Slide count: [TOM: fill in, or delete this line for the default of 10]
+Visual style: [TOM: fill in from options above, or delete for Claude to choose]
+
+[PASTE KNOWLEDGE BASE HERE]

@@ -1,0 +1,91 @@
+NOTEBOOK QUERY PROMPTS FOR WEB APP KNOWLEDGE BASE
+===================================================
+Run these in the NotebookLM chat for your notebook.
+The output feeds directly into Claude Code when building the web app.
+
+Pick the prompt that matches your app type:
+  - Explorer + Quiz  →  use PROMPT A
+  - Tabbed           →  use PROMPT B
+
+==================================================================
+
+PROMPT A — EXPLORER + QUIZ APP
+--------------------------------
+Paste this into the NotebookLM chat. It extracts a structured knowledge
+base for the Explorer+Quiz web app pattern.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+I need a structured knowledge base from this notebook to use as the
+foundation for an interactive web app. Please provide the following:
+
+**1. FOCUS ANGLES (6–8 entries)**
+List 6–8 distinct aspects of this topic worth exploring in depth.
+For each angle:
+- Name: a short label (3–6 words, suitable for a dropdown menu)
+- Knowledge: a dense paragraph (5–8 sentences) covering the specific
+  people, dates, mechanisms, findings, or events for this angle.
+  Be specific — name real figures, use precise language, include
+  causes and consequences. This paragraph will be used by an AI
+  to generate deeper responses, so richness and accuracy matter.
+
+Format each entry as:
+ANGLE: [name]
+KNOWLEDGE: [paragraph]
+
+**2. QUIZ SCOPE**
+Write a single dense paragraph listing the key concepts, names, dates,
+events, mechanisms, and findings that quiz questions should draw from.
+Include 15–20 specific items. The more precise, the better the quiz.
+
+Format as:
+QUIZ SCOPE: [paragraph]
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+==================================================================
+
+PROMPT B — TABBED APP
+----------------------
+Paste this into the NotebookLM chat. It extracts a structured knowledge
+base for the Tabbed web app pattern (one major point per tab, prominent
+quote, clean layout for presentation use).
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+I need a structured knowledge base from this notebook to use as the
+foundation for a tabbed web app — one major point per tab, designed
+for presentation use. Please provide the following:
+
+**TABS (4–6 entries)**
+Identify the 4–6 most important themes or principles in this notebook.
+For each:
+- Title: a short, memorable tab label (2–5 words)
+- Quote: the single most powerful or representative quote from the
+  source material for this theme. Use exact wording from the sources.
+  If no direct quote is available, write a paraphrase clearly labeled
+  as such.
+- Explanation: 2–3 sentences explaining this theme in plain language —
+  what it means, why it matters, and how it connects to the topic.
+
+Format each entry as:
+TAB: [title]
+QUOTE: "[quote]"
+EXPLANATION: [explanation]
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+==================================================================
+
+PASSING THE OUTPUT TO CLAUDE CODE
+-----------------------------------
+When you get back to your desktop, give Claude Code the output like this:
+
+  "Here's the knowledge base for the [topic] app. App type: [Explorer+Quiz
+  or Tabbed]. Build the app using this."
+
+  [paste the NotebookLM response]
+
+Claude Code will use it to build apps/<key>.html.

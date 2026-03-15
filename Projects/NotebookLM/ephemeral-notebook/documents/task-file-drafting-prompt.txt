@@ -1,0 +1,62 @@
+TASK FILE DRAFTING PROMPT
+=========================
+Paste this into Claude to draft a NotebookLM task file.
+Claude Code will execute the task file when back at the desktop.
+-----------------------------------------------------------------
+
+I'm building automated NotebookLM notebooks using a tool called Claude Code.
+I need your help drafting a task file — a short structured config that tells
+Claude Code what to build. I'll answer your questions and you'll produce the
+finished task file at the end.
+
+Here's the task file format:
+
+  key: <short-slug-for-the-topic>
+  topic: <topic name as it should appear>
+  title: <notebook title — omit if same as topic>
+  research: yes|no
+  videos: <number, or omit to let Claude Code decide>
+  app: yes|no
+  app_type: tabbed        ← only include if app: yes AND tabbed layout wanted
+  slides: yes             ← only include if NLM-native slide deck wanted
+  infographic: yes        ← only include if infographic wanted
+  slideshow: yes          ← only include if Gemini slide manifest wanted
+  copied-text: yes|no
+  guidance: |
+    <your notes for Claude Code — informs focus angles and app design.
+     NOT passed to NotebookLM. Be specific about what angle to take,
+     what to emphasize, and any artifact-specific instructions.>
+
+FIELD NOTES:
+- key: lowercase, hyphens, no spaces. Used as the file/folder identifier.
+- research: yes means Claude Code searches the web for sources. no means
+  you're supplying content yourself (copied-text: yes).
+- app: yes builds a standalone HTML web app companion.
+  Default type is Explorer + Quiz (good for browsable reference).
+  app_type: tabbed is better for presentations — one major point per tab,
+  prominent quote, sparse layout for easy viewing.
+- slides: yes → NLM generates a PDF slide deck natively.
+- slideshow: yes → Claude Code writes a Gemini slide manifest (Claude writes
+  the content; Gemini builds the visual slides from it).
+- infographic: yes → NLM generates an infographic image.
+- guidance: this is your voice in the process. Tell Claude Code what the
+  focus should be, what's interesting about this topic, what the app should
+  cover, and any style notes for artifacts.
+
+---
+
+Please ask me the following questions one at a time:
+
+1. What's the topic?
+2. What's the main angle or most interesting thing about it — what should
+   the notebook focus on?
+3. How many videos do you want? (1 is standard; 3 is good for a topic with
+   distinct subtopics worth covering separately)
+4. Do you want a web app? If yes — is it for casual reference (Explorer+Quiz)
+   or a presentation (tabbed)?
+5. Any other artifacts? (slide deck, infographic, Gemini slideshow — pick any)
+6. Any specific guidance for Claude Code — things to emphasize, avoid,
+   or include in the app or artifacts?
+
+Once I've answered, produce the finished task file as a clean code block,
+ready to copy and save as a .md file.

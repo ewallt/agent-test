@@ -1,0 +1,107 @@
+NOTEBOOKLM FOCUS PROMPT GUIDE
+==============================
+
+THE CORE PRINCIPLE
+------------------
+The focus string becomes the organizing spine of the artifact. Everything
+NotebookLM includes or cuts is shaped by it.
+
+Formula:
+  [Specific subject] + [Surprising angle or key tension] + [Why it matters]
+
+GOOD focus: Names something specific. Has an angle. Implies a question or
+tension to resolve. Sounds like a title you'd click.
+
+BAD focus: Starts with "Overview of..." or "Introduction to...". Could
+describe any article on the topic. No angle, no tension.
+
+Key rules:
+- One sentence only — no compound ideas joined by "and also"
+- Lead with the counterintuitive or surprising angle
+- Avoid generic framing
+- Tie focus to a specific source with --source-ids for tighter output
+
+
+VIDEOS
+------
+Style options (retro_print is the proven default):
+  retro_print   Vintage print aesthetic. Works across topics.
+  whiteboard    Clean hand-drawn. Good for explanations.
+  heritage      Classic, editorial. Good for historical topics.
+  watercolor    Soft, painterly. Good for natural/cultural topics.
+  paper_craft   Cut-paper look. Distinctive.
+  kawaii/anime  Playful/illustrated. Topic-dependent.
+  classic       Standard clean style.
+  auto_select   NotebookLM picks — unpredictable, avoid.
+
+Format options:
+  explainer     Default. Full narrative arc. Best for most topics.
+  brief         Shorter, punchier. Good for a single tight insight.
+
+Real examples:
+  "Japan's strategic miscalculation at Pearl Harbor — the missing carriers,
+  the oil tanks left untouched, and why a tactical triumph became a
+  strategic catastrophe"
+
+  "Hitler's hubris and the encirclement of the 6th Army at Stalingrad —
+  why this battle is considered the single turning point of the Eastern Front"
+
+  "How Mendeleev's periodic table revealed a hidden order in nature and
+  predicted elements that didn't yet exist"
+
+  "Why Malthus's logic held for all of human history, how the Industrial
+  Revolution broke it, and why the escape's timing and location remain debated"
+
+  "How Lavoisier's discovery of oxygen killed the phlogiston theory and
+  launched modern chemistry"
+
+Pattern to notice: each example names the mechanism of change, not just
+the subject. That mechanism is the angle.
+
+
+SLIDE DECKS (NLM-native)
+------------------------
+Format options:
+  presenter_slides  One point per slide, clean. Best for live presentations.
+  detailed_deck     More content per slide. Better as a reference/leave-behind.
+
+Length options:
+  default   Standard length.
+  short     Fewer slides. Good for tight, punchy coverage.
+
+Focus works exactly the same as video — one tight sentence with a specific
+angle. presenter_slides + a focus that maps to a clear sequence (causes →
+event → consequences) produces the cleanest decks.
+
+
+INFOGRAPHICS
+------------
+Orientation options:
+  portrait    Tall. Best for timelines, lists, sequential flows. Good default.
+  landscape   Wide. Good for comparisons, side-by-side structures.
+  square      Social-friendly. Good for single central ideas.
+
+Detail options:
+  concise   Fewer elements, more white space. Good for at-a-glance.
+  standard  Balanced. Good default.
+  detailed  Dense, rich. Good for complex topics with many components.
+
+IMPORTANT: Infographic focus ≠ video focus.
+  Video focus   → names a tension or surprising angle (documentary logline)
+  Infographic   → names a structure or central organizing idea (diagram caption)
+
+Examples of infographic-style focus:
+  "The five stages of X"
+  "What EGW says preachers should prioritize"
+  "How Y changed between periods A and B"
+
+Solid default: portrait + standard for most topics.
+Use detailed when the topic has many distinct components.
+Use landscape when the structure is inherently comparative.
+
+
+QUICK REFERENCE
+---------------
+  Video        style: retro_print  |  format: explainer
+  Slide deck   format: presenter_slides  |  length: default
+  Infographic  orientation: portrait  |  detail: standard

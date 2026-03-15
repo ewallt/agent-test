@@ -164,6 +164,41 @@
               "notes": "Completed 2026-03-13. Read Double-Entry Bookkeeping manifest via gdrive MCP, Claude augmented (added Slide 6, deepened Slides 3 & 5), uploaded as source 03eca125 to notebook 18b286a4. Loop confirmed end-to-end.",
               "priority": 3,
               "status": "done"
+            },
+            {
+              "id": "nlm-11",
+              "title": "Task file drafting prompt for Claude",
+              "notes": "Write a prompt Tom can give to Claude (web/API) to collaboratively draft task files for the ephemeral notebook workflow. Output should be a ready-to-paste task file in the correct format (key, topic, research, app, etc.) that Claude Code can run on return.",
+              "priority": 2,
+              "status": "done"
+            },
+            {
+              "id": "nlm-12",
+              "title": "Notebook query prompt for web app knowledge base",
+              "notes": "Write a reusable prompt Tom can run against a NotebookLM notebook to extract a structured knowledge base suitable for feeding to Claude when building Explorer+Quiz or tabbed web apps. Prompt should produce output in the format Claude Code expects.",
+              "priority": 2,
+              "status": "done"
+            },
+            {
+              "id": "nlm-13",
+              "title": "Manual notebook tips cheat sheet",
+              "notes": "Write a concise reference for Tom to use when building notebooks manually: how to write focus prompts for videos, slide decks, and infographics. Cover what makes a good focus string, common pitfalls, and style options. Deliverable: a single reference doc or paste-ready cheat sheet.",
+              "priority": 3,
+              "status": "done"
+            },
+            {
+              "id": "nlm-14",
+              "title": "Slide manifest prompt for Claude/Gemini",
+              "notes": "Write a prompt Tom can give to an AI (Claude or Gemini) to generate a Gemini slide manifest from a knowledge base. The prompt should specify the manifest format, slide count, style guidance, and structure Claude Code uses. Tom pastes in a knowledge base; AI outputs a ready-to-use manifest.",
+              "priority": 3,
+              "status": "done"
+            },
+            {
+              "id": "nlm-15",
+              "title": "notebooklm-source-prep skill",
+              "notes": "Skill that queries a notebook and writes+uploads three source documents: Explorer+Quiz KB, Tabbed KB, Slide Manifest. Created 2026-03-15 via skill-creator. Skill at ~/.claude/skills/notebooklm-source-prep/.",
+              "priority": 3,
+              "status": "done"
             }
           ]
         }

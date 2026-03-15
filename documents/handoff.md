@@ -1,51 +1,57 @@
-# Session Handoff — 2026-03-14
+# Session Handoff — 2026-03-15
 
 ## What Was Done This Session
 
-### Shutdown Skill — Session Start Redesign
+### Source Prep — Three Notebooks
 
-- Identified gap: handoff was writing "Wait for Tom." even when next workflow was known, causing Claude to arrive at the next session without NLM context loaded
-- Root cause: shutdown skill had no mechanism to communicate workflow or trigger startup context loading
-- Fix: Session Start section now always includes three elements:
-  1. READ NOW: `startup.md` (full path) — always present, no exceptions
-  2. Workflow: named workflow (or none)
-  3. Optional message from Tom
-- Updated both the handoff template and the Step 1 draft preview in the shutdown skill
+New workflow established: query a notebook, write three source documents, upload all three.
+Pattern exercised across three existing notebooks:
 
-### skill-creator — JIT Doc READ NOW
+- **Philosophical Revolutions: Enlightenment** (67970583) — Explorer+Quiz KB, Tabbed KB, Slide Manifest
+- **Scientific Revolutions: Chemistry** (426129b8) — Explorer+Quiz KB, Tabbed KB, Slide Manifest
+- **Scientific Revolutions: Physics** (395a4ee9) — Explorer+Quiz KB, Tabbed KB, Slide Manifest
 
-- Added a hard "READ NOW" instruction at the very top of `skill-creator/SKILL.md` pointing to `JIT-experiment.md`
-- Ensures the JIT pattern is always loaded into context when skill-creator is invoked
-- Previously the reference was buried in the "Writing Patterns" section — easy to miss
+Files saved to `artifacts/<key>/` and `slideshows/<key>.md` for each. Sources uploaded and IDs recorded.
 
-### EGW Preaching Notebook — Discussion Started
+### notebooklm-source-prep Skill — CREATED
 
-- Topic: what Ellen G. White says about preaching, with particular focus on sermon content
-- Web app will be a new type — different from the existing inference app pattern
-- Discussion of app concept started but not completed; Tom will provide details at session start
-- No task file written yet
+- New skill at `~/.claude/skills/notebooklm-source-prep/`
+- Automates the three-source workflow: 2 parallel notebook queries → write Explorer+Quiz KB → write Tabbed KB → write Slide Manifest (via notebooklm-slide-manifest skill, JIT) → upload all three sequentially
+- Key gotcha documented: `nlm source add` takes notebook ID as positional arg, not `--notebook-id`
+- Ticket nlm-15 added and marked done
+
+### egw-preaching Deploy + Dashboard
+
+- `apps/egw-preaching.html` deployed to gh-pages: `notebooklm/egw-preaching/`
+- New deployed-apps dashboard created with links to all live apps
+- `philosophy1-slides.html` found in `Documents/Slide Shows/` and added to dashboard
+
+### Tickets Added
+
+Four new tickets written to `tools/tasks.json` this session (see ticket board for details).
 
 ---
 
 ## State Right Now
 
-- Shutdown skill updated with new Session Start format — will apply starting next session
-- skill-creator updated with JIT doc READ NOW at top
-- No notebook created yet for EGW topic
+- Three notebooks now have Claude-written source documents uploaded
+- `notebooklm-source-prep` skill is live and visible in the skills list
 - All changes on `dev` branch, not promoted to `main`
 
 ## Next Session Priority
 
-Create a NotebookLM ephemeral notebook on Ellen G. White's teachings on preaching, with particular focus on sermon content. Tom will provide web app design details and task file specifics at session start. Goal: notebook built, sources loaded, web app designed and created.
+Verify the handoff is working correctly — read `startup.md` and `handoff.md` at session start and confirm the session-start sequence behaves as expected before starting any new work. No workflow queued.
 
 ## Other Items
 
 - `inf-11` — fix mercy gh-pages deploy to use index.html/subfolder convention
 - `inf-10` — document system audit and consolidation (ongoing backlog)
-- `behold-your-god` app — future enhancement: richer focused questions for better quiz coverage
+- `inf-2` — discuss dev→main sync procedure
 
 ## Session Start
 
 READ NOW: `C:\Users\tomew\.claude\projects\C--Users-tomew-Documents-agent-test\memory\startup.md`
 
-Workflow: ephemeral-notebook
+Workflow: none
+
+Handoff verification session — confirm the session-start sequence is working as expected before starting any new work.
