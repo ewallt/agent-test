@@ -4,27 +4,59 @@ One-stop reference for the architecture, setup, and operation of the loop that l
 
 ---
 
-## What This Is
+## Two Loops — Query and Drive
 
-A closed loop between Claude and NotebookLM:
+There are two distinct ways Claude can access NotebookLM content. **Query is preferred for most use cases.**
 
-1. NotebookLM generates an artifact (slide manifest, briefing doc, study guide, etc.)
-2. `nlm export to-docs` pushes it to Google Drive as a native Google Doc
-3. Claude reads the doc via the Google Drive MCP server (`mcp__gdrive__search` + `ReadMcpResourceTool`)
-4. Claude augments, critiques, or rewrites the content
-5. Claude saves the improved version locally and uploads it as a new notebook source (`nlm source add --file`)
-6. NotebookLM regenerates with the enriched content grounding it
+### Loop 1 — Direct Query (preferred)
 
-This enables autonomous iteration — Claude can improve NLM's output without Tom having to review each pass.
+```
+NotebookLM (sources loaded) → nlm notebook query → Claude reads response → Claude acts
+```
+
+Claude queries the notebook directly with targeted questions. NLM synthesizes an answer from its sources and returns it. No artifact export, no Drive, no OAuth — just a command and a response.
+
+```bash
+PYTHONIOENCODING=utf-8 /c/Users/tomew/.local/bin/nlm notebook query <notebook-id> "<question>"
+```
+
+**Use this for:**
+- Populating web app FOCUS_PROMPTS before building the app
+- Getting NLM's synthesis of a topic to inform Claude-written sources
+- Exploring what the notebook knows before deciding what to build
+- Any case where you need content from the notebook, not the artifact itself
+
+You can ask as many questions as needed. Responses are rich, grounded in the sources, and available immediately — no waiting for artifact generation.
+
+**Confirmed working:** 2026-03-14. Queried "The Current State of Claude Code" notebook (post-cutoff topic). Responses included detailed feature lists, timelines, and best practices sourced from 2025–2026 articles — content Claude had no independent knowledge of.
+
+---
+
+### Loop 2 — Google Drive Export (for source augmentation)
+
+```
+NLM artifact → nlm export to-docs → Google Drive → Claude reads via gdrive MCP → Claude improves → nlm source add → NLM regenerates
+```
+
+Claude reads an exported NLM artifact from Google Drive, augments or rewrites it, and feeds it back as a new notebook source.
+
+**Use this for:**
+- Augmenting or critiquing an NLM-generated slide manifest before Gemini builds slides from it
+- Multi-pass iterative refinement of a briefing doc or study guide
+- Reading existing Google Docs that Tom has stored in Drive
+- Cross-notebook synthesis where artifact content (not just summaries) is needed
+
+**Confirmed working:** 2026-03-13. Exported Double-Entry Bookkeeping slide manifest → Claude read it → added Slide 6 + deepened two others → re-uploaded → loop closed end-to-end.
 
 ---
 
 ## Why This Matters
 
-Before this loop existed, the workflow was:
+Before the feedback loop, the workflow was:
 - Tom drops a task → Claude builds notebook → NLM generates artifacts → Tom reviews
 
 With the loop:
+- Claude can query what NLM knows and use that to build better artifacts
 - Claude can act as editor/critic between NLM passes
 - Quality gating: Claude reviews before Tom sees it
 - Iterative refinement: NLM generates draft → Claude enriches → NLM regenerates with better grounding

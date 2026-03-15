@@ -150,6 +150,14 @@ PYTHONIOENCODING=utf-8 nlm download infographic <notebook-id> --output artifacts
 
 **READ NOW:** `notebooklm-webapp` skill
 
+Before building, query the notebook to get NLM's synthesized content from the sources. Use these responses to populate FOCUS_PROMPTS — do not rely on Claude's own knowledge of the topic.
+
+```bash
+PYTHONIOENCODING=utf-8 /c/Users/tomew/.local/bin/nlm notebook query <notebook-id> "<question about main themes>"
+PYTHONIOENCODING=utf-8 /c/Users/tomew/.local/bin/nlm notebook query <notebook-id> "<question about specific angle>"
+# repeat until all focus angles are covered
+```
+
 - Output: `apps/<key>.html`
 
 ✓ Web app built  *(skip if app: no)*

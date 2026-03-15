@@ -2,6 +2,58 @@
 
 ---
 
+## 2026-03-14 (session 2) — gh-pages Convention Fix, Skill Update, Cleanup
+
+### gh-pages Deploy Convention Corrected
+- Re-deployed `nlm-workflow-explainer` using correct GitHub Pages convention: `index.html` inside a named subfolder
+- Old flat file (`notebooklm/nlm-workflow-explainer.html`) removed with `git rm`
+- New URL: `https://ewallt.github.io/claude-code-fun/notebooklm/nlm-workflow-explainer/`
+
+### gh-pages-deploy Skill Updated
+- `~/.claude/skills/gh-pages-deploy/SKILL.md` rewritten to reflect index.html convention
+- URL pattern, deploy command, and output step all updated
+- Known subfolders table added; non-fatal worktree cleanup error on Windows documented
+
+### Tickets
+- `inf-11` added: fix mercy gh-pages deploy to use index.html/subfolder convention (P4)
+
+### Cleanup
+- Deleted `gdrive-auth.cjs` from agent-test root (one-time OAuth helper, no longer needed)
+
+---
+
+## 2026-03-14 — Query Loop Discovery, Behold Your God Web App, Workflow Updates
+
+### Key Discovery: nlm notebook query replaces Google Docs for content extraction
+- Ran "The Current State of Claude Code" notebook (post-cutoff topic, 10 web research sources)
+- Queried notebook with targeted questions — responses were rich, detailed, grounded in 2025–2026 sources
+- Confirmed: `nlm notebook query` is the primary and preferred way for Claude to access NLM content
+- Google Docs export loop is still valid for source augmentation / iterative refinement, but NOT needed for web app content
+- No Drive, no OAuth, no artifact export, no artifact ID hunting — just ask and get
+
+### Behold Your God Web App (F.T. Wright)
+- Notebook: `b64c5fc6-6a75-4af7-97a0-51cb1d9f9b74` ("Behold Your God: Understanding Divine Character")
+- Queried notebook for main themes → rich response covering all illustrative concepts (Nuclear Plant, White Hat, Prodigal Son, Boeing 747, Rods and Serpents, etc.)
+- Built `apps/behold-your-god.html` — 10 themes in Explorer dropdown, FOCUS_PROMPTS grounded in notebook query content
+- Fixed chips bug (JSON in onclick attribute broke when questions contained quotes) and dropdown arrow (appearance:none with no custom arrow)
+
+### Workflow and Docs Updated
+- `ephemeral-notebook/documents/workflow.md` — Step 6 now includes query step before building web app
+- `ephemeral-notebook/documents/nlm-claude-feedback-loop.md` — rewritten: two loops documented (query primary, Drive secondary)
+- `documents/nlm-feedback-loop.html` — updated diagram, two loops, new use case card for query-based extraction
+- `notebooklm-webapp` SKILL.md — query step added as preferred knowledge source before building
+
+### Order of Operations Fix (lesson learned)
+- Video should be triggered LAST (fire and forget) — not before exporting/querying
+- Briefing doc artifact doesn't appear in `nlm studio status` — slides artifact is what `nlm export to-docs` needs
+- But for web app content, query is better than export in every way — no artifact needed at all
+
+### Claude Code Notebook (test vehicle, not wrapped up)
+- Notebook: `4872a2c8-2066-4df2-8d4f-564e7c531c90` ("The Current State of Claude Code")
+- 10 web research sources; video and slide deck generated; not shared or run-logged
+
+---
+
 ## 2026-03-13 (session 3) — gdrive POC Complete, Feedback Loop Docs, Memory System Discussion
 
 ### gdrive MCP Round-Trip POC (nlm-10 — done)

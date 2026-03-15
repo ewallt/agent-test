@@ -206,7 +206,32 @@
 
   <!-- The basics -->
   <section>
-    <h2><span class="icon">⚡</span> The Basics</h2>
+    <h2><span class="icon">⚡</span> Two Loops</h2>
+
+    <h3 style="color:var(--accent); font-size:.95rem; margin-bottom:12px; margin-top:4px;">Loop 1 — Direct Query (preferred)</h3>
+    <div class="card">
+      <div class="loop">
+        <div class="loop-node highlight">NotebookLM<span>sources loaded</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node highlight">nlm notebook query<span>targeted question</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node highlight">Claude reads<span>synthesized answer</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node highlight">Claude builds<span>web app / sources</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-bd">
+        <p>Claude queries the notebook directly with targeted questions. NLM synthesizes answers from its sources and returns them immediately — no artifact export, no Drive, no OAuth. Ask as many questions as needed.</p>
+        <p>This is the right approach for populating web app FOCUS_PROMPTS, exploring what the notebook knows, and getting NLM's synthesis on any topic — especially post-cutoff topics where Claude has no independent knowledge.</p>
+      </div>
+    </div>
+    <div class="callout green">
+      <strong>Confirmed working: 2026-03-14</strong>
+      Queried "The Current State of Claude Code" notebook (post-cutoff). Responses included detailed 2025–2026 feature lists and timelines sourced from current articles. Used to build a web app with dense, accurate FOCUS_PROMPTS.
+    </div>
+
+    <h3 style="color:var(--accent); font-size:.95rem; margin-bottom:12px; margin-top:24px;">Loop 2 — Google Drive Export (for source augmentation)</h3>
     <div class="card">
       <div class="loop">
         <div class="loop-node">NotebookLM<span>generates artifact</span></div>
@@ -224,13 +249,12 @@
     </div>
     <div class="card">
       <div class="card-bd">
-        <p>NotebookLM exports a report artifact to Google Drive. Claude reads it via the Google Drive MCP server — no copy-paste, no manual handoff. Claude edits or augments the content and re-uploads it as a new notebook source. NotebookLM now has Claude's improved version as grounding material and can regenerate any artifact from it.</p>
-        <p>The loop is closed. Tom doesn't need to be in the middle.</p>
+        <p>NotebookLM exports an artifact to Google Drive. Claude reads it via the Google Drive MCP server, edits or augments it, and re-uploads it as a new notebook source. Use this when you need to work with the artifact itself — not just its content — such as critiquing a slide manifest before Gemini builds slides from it, or running multi-pass iterative refinement on a briefing doc.</p>
       </div>
     </div>
     <div class="callout green">
-      <strong>POC status: working</strong>
-      Completed 2026-03-13. gdrive MCP reads docs, Claude augmented a 5-slide manifest (added Slide 6, deepened two others), re-uploaded successfully. End-to-end loop confirmed.
+      <strong>Confirmed working: 2026-03-13</strong>
+      Exported Double-Entry Bookkeeping slide manifest → Claude read it → added Slide 6 + deepened two others → re-uploaded. End-to-end loop confirmed.
     </div>
   </section>
 
@@ -242,6 +266,18 @@
       <span class="use-case-tag tag-near" style="margin:0 4px;">near</span> needs some build &nbsp;·&nbsp;
       <span class="use-case-tag tag-far" style="margin:0 4px;">later</span> bigger lift
     </p>
+
+    <!-- Query-based extraction -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">💬</div>
+        <div class="use-case-title">Query-Based Content Extraction</div>
+        <span class="use-case-tag tag-now">now</span>
+      </div>
+      <div class="use-case-bd">
+        <p>Before building a web app or Claude-written source, query the notebook with targeted questions. NLM synthesizes answers from its sources — rich, grounded, and immediately available. No artifact export or Drive plumbing required. Ask one question per focus angle; repeat until all FOCUS_PROMPTS are populated. This replaces the Google Docs export approach for web app content extraction and works especially well for post-cutoff topics where Claude has no independent knowledge.</p>
+      </div>
+    </div>
 
     <!-- Refinement -->
     <div class="use-case">

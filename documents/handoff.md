@@ -1,62 +1,50 @@
-# Session Handoff — 2026-03-13
+# Session Handoff — 2026-03-14
 
 ## What Was Done This Session
 
-### gdrive MCP Verification + Round-Trip POC (nlm-10)
+### gh-pages Deploy Convention Fixed
 
-- Session auto-started per handoff: loaded gdrive context, tested `mcp__gdrive__search`
-- Search confirmed working — found "Double-Entry Bookkeeping" doc immediately
-- Read the exported slide manifest via `ReadMcpResourceTool gdrive:///1IPNE41yztAeqfLPlyjvHoGbcuV8UN24d2WLHsrLDUuw`
-- Claude augmented the manifest: added Slide 6 (spread Venice → Antwerp → Amsterdam/VOC), deepened Slides 3 and 5
-- Saved to `ephemeral-notebook/sources/double-entry-augmented.md`
-- Uploaded as new notebook source → source ID `03eca125-e301-455f-89ec-3021b40e36da`
-- Loop confirmed end-to-end: NLM → Drive → Claude reads → Claude improves → re-upload → NLM
+- Previous session established the `gh-pages-deploy` skill for deploying HTML files
+- Discovered that the old deployment used a flat `.html` URL (e.g., `nlm-workflow-explainer.html`) — not the GitHub Pages convention
+- Correct convention: deploy as `index.html` inside a named subfolder → clean URL `/<folder>/<subfolder>/`
+- Re-deployed `nlm-workflow-explainer.html` to `notebooklm/nlm-workflow-explainer/index.html`
+  - Old flat file removed with `git rm`
+  - Live at: `https://ewallt.github.io/claude-code-fun/notebooklm/nlm-workflow-explainer/`
 
-### Memory System Discussion
+### gh-pages-deploy Skill Updated
 
-- Tom discovered the memory directory (`~/.claude/projects/.../memory/`) for the first time
-- Established design principle: **fat docs in the project file system, lean in memory**
-- Memory directory: MEMORY.md index, feedback files, session log, pointers only
-- Project `documents/`: substantive reference docs, version-controlled
-- Created `inf-10` ticket: document system audit and consolidation
-
-### Documents Created
-
-- `memory/working-notes.md` — Claude's live quick-reference: active notebook IDs, gdrive status, CLI gotchas, recent source IDs
-- `ephemeral-notebook/documents/nlm-claude-feedback-loop.md` — technical reference for Claude: full loop architecture, OAuth setup steps, debugging history, POC record
-- `documents/claude-memory-system.html` — reference doc for Tom explaining the memory directory, file types, load order, how to add entries
-- `documents/nlm-feedback-loop.html` — reference doc for Tom on the feedback loop: short intro + 13 brainstormed use cases tagged by readiness
+- Updated `~/.claude/skills/gh-pages-deploy/SKILL.md` to reflect the index.html convention
+- URL pattern updated to `/<folder>/<subfolder>/`
+- Deploy command updated to copy file as `index.html` into subfolder
+- Known subfolders table added (notebooklm/nlm-workflow-explainer documented)
+- Added note: worktree cleanup permission error on Windows is non-fatal if push succeeded
 
 ### Tickets
 
-- `inf-9` (gdrive OAuth): done ← verify and close
-- `nlm-10` (round-trip POC): done ← confirmed this session
-- `inf-10` (document system audit): added as new pending ticket
+- `inf-11` added: fix mercy gh-pages deploy to use index.html convention (P4, pending)
 
-### mercy.html Deployed to gh-pages
+### Cleanup
 
-- Deployed `C:/Users/tomew/Documents/Slide Shows/Sermon on the Mount/mercy.html`
-- Pushed to `gh-pages` branch under `sermon-on-the-mount/mercy.html`
-- Live at: `https://ewallt.github.io/claude-code-fun/sermon-on-the-mount/mercy.html`
+- Deleted `gdrive-auth.cjs` from agent-test root — one-time OAuth helper, no longer needed
 
 ---
 
 ## State Right Now
 
-- gdrive MCP fully operational; token at `~/.notebooklm-mcp-cli/gdrive-token.json`
-- `gdrive-auth.cjs` at agent-test root — can be deleted (one-time tool, no longer needed)
+- `gh-pages-deploy` skill is correct and up to date
+- mercy app still deployed as flat `.html` on gh-pages — inf-11 ticket queued to fix
 - All session work on `dev` branch, not yet promoted to `main`
 - No blockers
 
 ## Next Session Priority
 
-No specific priority set — wait for Tom to indicate what to work on.
+Run a NotebookLM ephemeral notebook workflow. Tom will provide the topic and details at session start.
 
 ## Other Items
 
-- `gdrive-auth.cjs` deletion still pending (flagged as a loose end)
-- `gdrive-integration.md` ticket table still shows inf-9/nlm-10 as pending — needs updating
-- `inf-10` document system audit queued when time allows
+- `inf-11` — fix mercy gh-pages deploy to use index.html/subfolder convention
+- `inf-10` — document system audit and consolidation (ongoing backlog)
+- `behold-your-god` app — future enhancement: richer focused questions for better quiz coverage
 
 ## Session Start
 

@@ -241,6 +241,13 @@
               "status": "pending"
             },
             {
+              "id": "inf-11",
+              "title": "Fix mercy gh-pages deploy to use index.html convention",
+              "notes": "The mercy app was deployed as a flat .html file (old convention). Re-deploy it as index.html inside a named subfolder, matching the convention established 2026-03-14. Old flat file can be removed or left in place.",
+              "priority": 4,
+              "status": "pending"
+            },
+            {
               "id": "inf-9",
               "title": "Set up Google Docs MCP server (OAuth)",
               "notes": "Done. Token minted, MCP verified working 2026-03-13. mcp__gdrive__search and ReadMcpResourceTool both confirmed. Reference doc: ephemeral-notebook/documents/gdrive-integration.md and nlm-claude-feedback-loop.md.",
