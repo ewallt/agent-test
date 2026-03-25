@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EGW on Preaching — Flashcard Deck</title>
+  <style>
+    :root {
+      --bg: #070c16; --surface: #0f1726; --border: rgba(255,255,255,.10);
+      --text: #e6edf7; --muted: #a9b6cc; --accent: #8bb9ff;
+      --green: rgba(124,255,178,.92); --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 16px; --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--sans);
+      background: linear-gradient(180deg, #070c16 0%, #0b1220 50%, #070c16 100%);
+      color: var(--text); min-height: 100vh; padding: 28px 20px;
+    }
+    .wrap { max-width: 700px; margin: 0 auto; }
+    h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+    .progress-track { height: 3px; background: rgba(255,255,255,.08); border-radius: 999px; overflow: hidden; margin-bottom: 22px; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 999px; transition: width .4s ease; }
+    .card-counter { text-align: center; font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+    .flip-container { width: 100%; height: 300px; perspective: 1000px; cursor: pointer; margin-bottom: 22px; }
+    .flip-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .55s cubic-bezier(.4,0,.2,1); }
+    .flip-inner.flipped { transform: rotateY(180deg); }
+    .flip-front, .flip-back {
+      position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+      -webkit-backface-visibility: hidden; border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 28px;
+      display: flex; flex-direction: column;
+    }
+    .flip-front { background: rgba(255,255,255,.03); }
+    .flip-back { background: rgba(139,185,255,.05); border-color: rgba(139,185,255,.2); transform: rotateY(180deg); }
+    .card-label { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 16px; }
+    .flip-front .card-label { color: var(--accent); }
+    .flip-back .card-label { color: rgba(124,255,178,.7); }
+    .quote-text { font-size: 16px; line-height: 1.7; font-style: italic; color: var(--text); flex: 1; display: flex; align-items: center; }
+    .context-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .context-text { font-size: 13px; line-height: 1.65; color: var(--muted); flex: 1; }
+    .flip-hint { font-size: 11px; color: rgba(255,255,255,.22); text-align: right; margin-top: 12px; }
+    .nav-row { display: flex; gap: 10px; align-items: center; justify-content: center; }
+    button { cursor: pointer; border: none; border-radius: 12px; padding: 10px 20px; font-family: var(--sans); font-size: 14px; font-weight: 650; }
+    .btn-primary { background: linear-gradient(135deg, rgba(139,185,255,1), rgba(124,255,178,.92)); color: #08101d; box-shadow: var(--shadow); }
+    .btn-secondary { background: rgba(255,255,255,.06); color: var(--text); border: 1px solid var(--border); }
+    button:disabled { opacity: .35; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ellen G. White on Preaching</h1>
+  <div class="sub">Ten counsels on the art and spirit of preaching · Click the card to reveal context</div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+  <div class="card-counter" id="cardCounter">Card 1 of 10</div>
+  <div class="flip-container" onclick="flipCard()">
+    <div class="flip-inner" id="flipInner">
+      <div class="flip-front">
+        <div class="card-label">Quote</div>
+        <div class="quote-text" id="quoteText"></div>
+        <div class="flip-hint">click to reveal context →</div>
+      </div>
+      <div class="flip-back">
+        <div class="card-label">Context &amp; Significance</div>
+        <div class="context-title" id="contextTitle"></div>
+        <div class="context-text" id="contextText"></div>
+        <div class="flip-hint">click to flip back</div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn-secondary" id="prevBtn" onclick="navigate(-1)">← Prev</button>
+    <button class="btn-secondary" onclick="shuffleCards()">Shuffle</button>
+    <button class="btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+  </div>
+</div>
+<script>
+const CARDS = [
+  {
+    quote: '"Jesus is the living center of everything. Put Christ into every sermon. Let the preciousness, mercy, and glory of Jesus Christ be dwelt upon until Christ is formed within, the hope of glory."',
+    title: "Christ as the Living Center",
+    context: "White observed that many sermons in the church were 'dry and Christless,' barely mentioning Jesus. She insisted that lifting up Christ was essential to soften souls, bring spiritual life to the discourse, and keep the preacher's own personality out of sight. This was her most urgent and most frequently repeated directive."
+  },
+  {
+    quote: '"Dare not to preach another discourse until you know, by your own experience, what Christ is to you."',
+    title: "The Prerequisite of Personal Experience",
+    context: "White believed a minister cannot lead others to a Savior they do not personally know. She issued this as a solemn challenge to ministers whose sermons sounded correct doctrinally but lacked the ring of personal conviction. True preaching translates a living relationship with Jesus into living testimony for the congregation."
+  },
+  {
+    quote: '"Let the Word of God speak to the people. Let those who have heard only traditions and maxims of men, hear the voice of God."',
+    title: "The Supreme Authority of Scripture",
+    context: "White warned against replacing biblical authority with human ideas, current events, or newspaper headlines. Ministers who 'evade the truth' or rely on 'the assertions of man' act as false shepherds. The Bible must remain the unadulterated foundation of every sermon, not a proof-text for the preacher's own opinions."
+  },
+  {
+    quote: '"The preaching of the word should appeal to the intellect and should impart knowledge, but it should do more than this. The minister\'s utterances, to be effectual, must reach the hearts of his hearers."',
+    title: "Intellect and Heart Together",
+    context: "White acknowledged that a sermon must convey knowledge — but a sermon that stops at intellectual persuasion is a failure. True preaching requires the Holy Spirit to prepare the hearts of listeners, ensuring the message leads to genuine spiritual transformation. She urged preachers to make fervent appeals for hearers to forsake sin before the meeting closes."
+  },
+  {
+    quote: '"He who in his preaching makes eloquence his highest aim, causes the people to forget the truth that is mingled with his oratory."',
+    title: "Against Eloquence as an End",
+    context: "White cautioned heavily against preaching that prioritizes rhetorical flair over the plain gospel. When the emotional high fades, the truth fails to fasten on the mind, leaving audiences 'unimpressed and unfed,' treating the minister like a mere stage actor. The craft of language must serve the message — never overshadow it."
+  },
+  {
+    quote: '"A man may preach in a spirited manner and please the ear, but convey no new idea or real intelligence to the mind. The impressions received through such preaching last no longer than while the speaker\'s voice is heard."',
+    title: "Substance Over Style",
+    context: "White warned against loud or 'spirited' preaching that lacks solid biblical substance. The excitement of the moment cannot substitute for content that bears lasting fruit. She urged ministers to ensure their messages bring real spiritual intelligence to the congregation — something that remains after the voice has fallen silent."
+  },
+  {
+    quote: '"Oratorical display, flashy rhetoric, and fine gestures do not constitute a fine discourse... in intensely earnest tones, He assured them of the truths of the life to come."',
+    title: "The Master Teacher as Model",
+    context: "White directed preachers to look away from worldly standards of oratory and instead imitate Jesus. His simple, earnest, and deeply serious approach contrasted sharply with theatrical or formal preaching. The Master Teacher's style was not performance but testimony — speaking as one who had personally seen and experienced what He described."
+  },
+  {
+    quote: '"He should not bring amusing stories into his preaching. He must strive to understand the soul\'s great need and longing."',
+    title: "No Entertainment from the Pulpit",
+    context: "White reminded ministers that congregations are often filled with people wrestling with deep doubt, despair, and severe temptation. Using the pulpit for entertainment or inappropriate humor betrays the urgency of the congregation's spiritual need. The preacher who understands the weight of eternity will not trivialize the sacred hour."
+  },
+  {
+    quote: '"Let them leave out of their discourses matters of minor consequence and present the truths that will decide the destiny of souls."',
+    title: "Focus on Eternal Weight",
+    context: "White wanted the focus of the pulpit to remain strictly on matters of eternal importance. Omitting trivial issues and speculative theories ensures that the life-and-death weight of the gospel message is actually felt. A preacher who buries the gospel under secondary concerns has failed in the most important task entrusted to him."
+  },
+  {
+    quote: '"Let the science of salvation be the burden of every sermon, the theme of every song... Bring nothing into your preaching to supplement Christ, the wisdom and power of God."',
+    title: "The Science of Salvation as Burden",
+    context: "White gave this counsel to guard against speculative preaching and ensure the cross remained at the forefront. The 'science of salvation' — the plan of redemption, Christ's atonement, and the path from sin to wholeness — is the singular theme that never exhausts itself. Everything else in a sermon is secondary; Christ alone is sufficient."
+  }
+];
+
+let order = CARDS.map((_, i) => i);
+let current = 0;
+let isFlipped = false;
+
+function render() {
+  const card = CARDS[order[current]];
+  document.getElementById('quoteText').textContent = card.quote;
+  document.getElementById('contextTitle').textContent = card.title;
+  document.getElementById('contextText').textContent = card.context;
+  document.getElementById('cardCounter').textContent = `Card ${current + 1} of ${CARDS.length}`;
+  document.getElementById('progressFill').style.width = `${((current + 1) / CARDS.length) * 100}%`;
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === CARDS.length - 1;
+  isFlipped = false;
+  document.getElementById('flipInner').classList.remove('flipped');
+}
+
+function flipCard() {
+  isFlipped = !isFlipped;
+  document.getElementById('flipInner').classList.toggle('flipped', isFlipped);
+}
+
+function navigate(dir) {
+  current = Math.max(0, Math.min(CARDS.length - 1, current + dir));
+  render();
+}
+
+function shuffleCards() {
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  current = 0;
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
