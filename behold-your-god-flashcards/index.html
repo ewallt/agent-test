@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Behold Your God — Flashcards</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --shadow: 0 12px 40px rgba(0,0,0,.5);
+    --radius: 18px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 50%, #070c16 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+    max-width: 600px;
+    width: 100%;
+  }
+  header h1 { font-size: clamp(1.5rem, 4vw, 2.1rem); font-weight: 700; letter-spacing: -.03em; margin-bottom: 6px; }
+  header h1 span { color: var(--accent); }
+  .sub { color: var(--muted); font-size: .9rem; }
+
+  /* Progress */
+  .progress-bar-wrap {
+    width: 100%; max-width: 600px;
+    height: 4px; background: rgba(255,255,255,.07);
+    border-radius: 99px; margin-bottom: 28px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: var(--accent);
+    border-radius: 99px; transition: width .3s ease;
+  }
+  .progress-label {
+    font-size: .8rem; color: var(--muted);
+    margin-bottom: 12px; text-align: center;
+  }
+
+  /* Card scene */
+  .scene {
+    width: 100%; max-width: 600px;
+    height: 340px;
+    perspective: 1200px;
+    cursor: pointer;
+    margin-bottom: 28px;
+  }
+  .card-inner {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform .5s cubic-bezier(.4,0,.2,1);
+  }
+  .card-inner.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute; inset: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .card-face.back {
+    transform: rotateY(180deg);
+    background: var(--surface2);
+    text-align: left;
+    justify-content: flex-start;
+    overflow-y: auto;
+  }
+
+  .card-tag {
+    font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 20px; opacity: .7;
+  }
+  .card-question {
+    font-size: 1.2rem; font-weight: 700; line-height: 1.5;
+    color: var(--text);
+  }
+  .card-hint {
+    margin-top: 20px; font-size: .8rem; color: var(--muted);
+    opacity: .6;
+  }
+
+  .card-theme {
+    font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 14px; opacity: .7;
+  }
+  .card-answer {
+    font-size: .95rem; line-height: 1.7; color: var(--text);
+    flex: 1;
+  }
+  .card-answer strong { color: var(--accent); }
+
+  /* Controls */
+  .controls {
+    display: flex; gap: 12px; align-items: center;
+    max-width: 600px; width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  button {
+    padding: 11px 24px; border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    font-size: .9rem; font-weight: 600; cursor: pointer;
+    transition: all .15s;
+  }
+  button:hover { border-color: rgba(255,255,255,.25); color: var(--text); }
+  button.primary {
+    background: linear-gradient(135deg, rgba(139,185,255,1), rgba(124,255,178,.92));
+    color: #08101d; border: none;
+  }
+  button.primary:hover { opacity: .88; }
+  button:disabled { opacity: .3; cursor: not-allowed; }
+
+  .btn-nav { min-width: 90px; }
+
+  /* Status chips */
+  .status-row {
+    display: flex; gap: 10px; margin-top: 20px;
+    max-width: 600px; width: 100%; justify-content: center;
+    flex-wrap: wrap;
+  }
+  .chip {
+    font-size: .75rem; font-weight: 600;
+    padding: 5px 14px; border-radius: 99px;
+    border: 1px solid;
+  }
+  .chip.known { border-color: rgba(124,255,178,.35); color: var(--green); background: rgba(124,255,178,.07); }
+  .chip.learning { border-color: rgba(255,214,100,.3); color: var(--yellow); background: rgba(255,214,100,.06); }
+  .chip.unseen { border-color: var(--border); color: var(--muted); }
+
+  /* Keyboard hint */
+  .kbd-hint {
+    margin-top: 24px; font-size: .78rem; color: rgba(169,182,204,.4);
+    text-align: center;
+  }
+  kbd {
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 4px; padding: 1px 6px; font-size: .75rem;
+  }
+
+  @media (max-height: 600px) {
+    .scene { height: 260px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Behold <span>Your God</span></h1>
+  <p class="sub">F.T. Wright's illustrations — flashcard review</p>
+</header>
+
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="progressFill"></div>
+</div>
+<div class="progress-label" id="progressLabel"></div>
+
+<div class="scene" id="scene" onclick="flipCard()">
+  <div class="card-inner" id="cardInner">
+    <div class="card-face front" id="cardFront">
+      <div class="card-tag" id="frontTag"></div>
+      <div class="card-question" id="frontQ"></div>
+      <div class="card-hint">Tap to reveal answer</div>
+    </div>
+    <div class="card-face back" id="cardBack">
+      <div class="card-theme" id="backTheme"></div>
+      <div class="card-answer" id="backA"></div>
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <button class="btn-nav" id="btnPrev" onclick="prevCard()">← Prev</button>
+  <button class="primary" onclick="markKnown()">✓ Got it</button>
+  <button onclick="markLearning()">↻ Still learning</button>
+  <button class="btn-nav" id="btnNext" onclick="nextCard()">Next →</button>
+</div>
+
+<div class="status-row">
+  <span class="chip known" id="chipKnown">✓ 0 known</span>
+  <span class="chip learning" id="chipLearning">↻ 0 learning</span>
+  <span class="chip unseen" id="chipUnseen">0 unseen</span>
+</div>
+
+<div style="margin-top:20px; max-width:600px; width:100%; text-align:center;">
+  <button onclick="shuffleCards()" style="margin-right:8px">Shuffle</button>
+  <button onclick="resetAll()">Reset all</button>
+</div>
+
+<div class="kbd-hint">
+  <kbd>Space</kbd> flip &nbsp; <kbd>←</kbd> prev &nbsp; <kbd>→</kbd> next &nbsp; <kbd>K</kbd> got it &nbsp; <kbd>L</kbd> still learning
+</div>
+
+<script>
+const CARDS = [
+  // ── God is Not a Criminal ──────────────────────────────────────────────────
+  {
+    theme: "God Is Not a Criminal",
+    q: "What is F.T. Wright's 'criminal' argument about God?",
+    a: "God <strong>never operates like a crime syndicate</strong> — He does not demand tribute and use violence or the threat of violence to force compliance. His governance is built entirely on love and freedom. Even when humans reject Him, God does not retaliate with force."
+  },
+  {
+    theme: "God Is Not a Criminal",
+    q: "How does Wright contrast God's government with human ideas of authority?",
+    a: "Humans often justify violence for a 'good cause' — the end justifies the means. Wright insists <strong>God never operates this way</strong>. He wins allegiance only through revelation of His character, not through coercion or the threat of punishment."
+  },
+  // ── Nuclear Power Plant ────────────────────────────────────────────────────
+  {
+    theme: "The Nuclear Power Plant",
+    q: "Describe the Nuclear Power Plant illustration. What does the technician represent?",
+    a: "A skilled technician maintains a dangerous plant near a town that despises him. He stays because <strong>his presence prevents catastrophe</strong>. When the townspeople force him out and the plant explodes, <em>he</em> is not the destroyer — he was prevented from saving them. The technician represents God."
+  },
+  {
+    theme: "The Nuclear Power Plant",
+    q: "What does 'God destroys' really mean according to this illustration?",
+    a: "When Scripture says 'God destroys,' it means God <strong>reluctantly withdrew His protective presence</strong> in response to sustained human rejection, allowing sin's natural self-destructive consequences to unfold. God is always the one being pushed out, never the aggressor."
+  },
+  // ── White Hat, Black Hat ───────────────────────────────────────────────────
+  {
+    theme: "White Hat, Black Hat",
+    q: "What is the 'White Hat, Black Hat' Hollywood Western illustration?",
+    a: "The villain lies, steals, and kills. The hero stops him — but by also lying, stealing, and killing. The audience cheers, absorbing <strong>Satan's philosophy: the end justifies the means</strong>. God never breaks His own law to enforce it. He never uses deception or force to achieve righteous ends."
+  },
+  {
+    theme: "White Hat, Black Hat",
+    q: "What does the cross reveal in contrast to the 'White Hat' problem?",
+    a: "The cross is the supreme demonstration that God does not use evil methods to achieve good ends. <strong>God absorbed violence rather than retaliating with it</strong>. He would not sin to stop sin — not even to save the world."
+  },
+  // ── Father, Son, and the Gun ───────────────────────────────────────────────
+  {
+    theme: "The Father, the Son, and the Gun",
+    q: "Why did God give Israel rules of warfare in the Old Testament?",
+    a: "When Israel rejected God's non-violent governance and demanded to fight like other nations, God — like a father whose son insists on owning a rifle — <strong>went the 'second mile.'</strong> Rather than abandoning them to unrestrained violence, He gave them rules of warfare to <strong>minimize the evil they had chosen.</strong> This reveals mercy, not approval of war."
+  },
+  {
+    theme: "The Father, the Son, and the Gun",
+    q: "What does this illustration say about how God works with human choices He doesn't approve of?",
+    a: "God does not force compliance, but He does not abandon people who make bad choices either. He works <strong>within human stubbornness</strong> to limit damage. The OT laws reflect God's mercy inside Israel's chosen violence, not His ideal will."
+  },
+  // ── Prodigal Son ──────────────────────────────────────────────────────────
+  {
+    theme: "The Father of the Prodigal Son",
+    q: "What does the Prodigal Son parable reveal about God's justice?",
+    a: "When the son returns, the father does not lecture him, extract confession, or impose probation. He <strong>runs to meet him and restores him immediately and fully</strong>. Wright calls this <em>restorative</em> justice — not retributive. God's justice does not require suffering before restoration."
+  },
+  {
+    theme: "The Father of the Prodigal Son",
+    q: "Who does the older brother represent in Wright's reading?",
+    a: "The older brother's anger mirrors the theological assumption that <strong>justice requires suffering before restoration</strong>. His reaction reflects the popular but mistaken view that God cannot forgive until someone has paid. Wright argues this is a misreading of God's character."
+  },
+  // ── Rods and Serpents ─────────────────────────────────────────────────────
+  {
+    theme: "Rods and Serpents",
+    q: "What did the rod-becoming-a-serpent before Pharaoh illustrate?",
+    a: "While Aaron held the rod, it was a harmless staff. Released from his grasp, it became a devouring serpent. This warned Pharaoh: <strong>the forces of nature are safe only while held in God's directing hand.</strong> Released by His withdrawal, they become chaotic and destructive."
+  },
+  {
+    theme: "Rods and Serpents",
+    q: "How does Wright reframe the plagues of Egypt using this illustration?",
+    a: "The plagues were not God actively afflicting Egypt with violence. They were God <strong>progressively withdrawing His restraining protection</strong> in response to Pharaoh's repeated rejection, allowing natural chaos to fill the vacuum. The serpent didn't need to be made dangerous — only released."
+  },
+  // ── Boeing 747 ────────────────────────────────────────────────────────────
+  {
+    theme: "The Boeing 747",
+    q: "What does the Boeing 747 illustration teach about the human condition?",
+    a: "If an untrained passenger overpowers the pilot, the plane will crash — <strong>not because the pilot retaliates, but because the one capable of flying has been removed.</strong> God is the only one capable of sustaining the forces of life. When humanity displaces God, disaster follows as a natural consequence, not a punitive judgment."
+  },
+  {
+    theme: "The Boeing 747",
+    q: "In the 747 illustration, who is the 'pilot' and who is the 'untrained passenger'?",
+    a: "The <strong>pilot is God</strong> — the only one capable of sustaining the complex forces of existence. The <strong>untrained passenger is humanity</strong> (aligned with Satan) who seizes control. The 'crash' that follows is the inevitable result of removing the sustaining presence, not a punishment imposed from outside."
+  },
+  // ── Cross as Dividing Line ────────────────────────────────────────────────
+  {
+    theme: "The Cross as Dividing Line",
+    q: "What are the 'two crosses' Wright identifies?",
+    a: "<strong>Satan's cross (the cross of Babylon)</strong>: operates on self-service at the expense of others — control, compulsion, and suffering to secure obedience. <strong>Christ's cross</strong>: self-sacrificing service for others at ultimate cost, with no coercion and no retaliation. Both are revealed simultaneously at Calvary."
+  },
+  {
+    theme: "The Cross as Dividing Line",
+    q: "What did Calvary prove simultaneously about both characters?",
+    a: "Satan demonstrated there is <strong>no limit to how far he will go</strong> — he moved all of human and religious power to destroy the Son of God. God demonstrated there is <strong>no limit to how far He will go in love</strong> — absorbing violence without retaliating, forgiving His executioners, dying to reveal truth rather than extract payment."
+  },
+  // ── God's Destruction ─────────────────────────────────────────────────────
+  {
+    theme: "Interpreting God's 'Destruction'",
+    q: "What is Wright's central hermeneutical thesis about biblical destruction texts?",
+    a: "When Scripture attributes destruction to God, it means God <strong>reluctantly withdrew His protective presence</strong> in response to sustained rejection, allowing sin's natural self-destructive consequences to take their course. God does not actively rain down violence — He holds back chaos, and when He withdraws, chaos fills the space."
+  },
+  {
+    theme: "Interpreting God's 'Destruction'",
+    q: "How does Wright apply this to the Flood and the destruction of Sodom?",
+    a: "In each case — the Flood, Sodom, Egypt's plagues, the wilderness deaths — Wright argues a careful reading shows <strong>God warning, pleading, and delaying</strong>. Destruction follows only after sustained rejection. <strong>God is always the one being expelled, not the one attacking.</strong>"
+  },
+  // ── Law as God's Character ────────────────────────────────────────────────
+  {
+    theme: "The Law as God's Character",
+    q: "What is God's law, according to Wright?",
+    a: "God's law is not an arbitrary set of rules protecting His authority. <strong>The law is the transcript of God's character</strong> — it describes how love behaves in relationship. Because God is perfect love, He never uses compelling force to secure obedience to that law."
+  },
+  {
+    theme: "The Law as God's Character",
+    q: "Why can't God violate His own law to enforce it?",
+    a: "<strong>Obedience obtained by force or fear is not the obedience the law describes</strong> — it is a contradiction in terms. This means God cannot threaten violence for compliance (the Criminal problem), cannot use evil means for good ends (the White Hat problem), and cannot demand suffering before forgiving (the Prodigal Son problem)."
+  },
+  // ── Big Picture ───────────────────────────────────────────────────────────
+  {
+    theme: "The Great Controversy",
+    q: "What is the great controversy about, in Wright's framework?",
+    a: "The great controversy is fundamentally about <strong>God's character</strong> — whether He governs by love or by force. Every illustration in the book is a facet of this single question. Calvary is the ultimate answer: God governs by self-sacrificing love, never by coercion."
+  },
+  {
+    theme: "The Great Controversy",
+    q: "How does Satan's 'educational' strategy work, according to Wright?",
+    a: "Satan convinces humanity that <strong>the end justifies the means</strong> — that good can use evil methods, that law must be broken to uphold it. The Hollywood Western is his most successful classroom. Christ's life and cross utterly rejected this framework, revealing a God who absorbs violence rather than returning it."
+  }
+];
+
+let deck = [...CARDS];
+let current = 0;
+let flipped = false;
+let status = new Array(CARDS.length).fill('unseen'); // 'unseen' | 'known' | 'learning'
+let indexMap = [...Array(CARDS.length).keys()]; // maps deck position → original index
+
+function render() {
+  const card = deck[current];
+  const origIdx = indexMap[current];
+
+  document.getElementById('frontTag').textContent = card.theme;
+  document.getElementById('frontQ').textContent = card.q;
+  document.getElementById('backTheme').textContent = card.theme;
+  document.getElementById('backA').innerHTML = card.a;
+
+  // Reset flip
+  flipped = false;
+  document.getElementById('cardInner').classList.remove('flipped');
+
+  // Progress
+  const pct = Math.round(((current + 1) / deck.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Card ${current + 1} of ${deck.length}`;
+
+  // Nav buttons
+  document.getElementById('btnPrev').disabled = current === 0;
+  document.getElementById('btnNext').disabled = current === deck.length - 1;
+
+  updateCounts();
+}
+
+function updateCounts() {
+  const known = status.filter(s => s === 'known').length;
+  const learning = status.filter(s => s === 'learning').length;
+  const unseen = status.filter(s => s === 'unseen').length;
+  document.getElementById('chipKnown').textContent = `✓ ${known} known`;
+  document.getElementById('chipLearning').textContent = `↻ ${learning} learning`;
+  document.getElementById('chipUnseen').textContent = `${unseen} unseen`;
+}
+
+function flipCard() {
+  flipped = !flipped;
+  document.getElementById('cardInner').classList.toggle('flipped', flipped);
+}
+
+function nextCard() {
+  if (current < deck.length - 1) { current++; render(); }
+}
+
+function prevCard() {
+  if (current > 0) { current--; render(); }
+}
+
+function markKnown() {
+  status[indexMap[current]] = 'known';
+  updateCounts();
+  if (current < deck.length - 1) { current++; render(); }
+  else updateCounts();
+}
+
+function markLearning() {
+  status[indexMap[current]] = 'learning';
+  updateCounts();
+  if (current < deck.length - 1) { current++; render(); }
+  else updateCounts();
+}
+
+function shuffleCards() {
+  // Fisher-Yates shuffle of index pairs
+  const combined = deck.map((c, i) => ({ card: c, orig: indexMap[i] }));
+  for (let i = combined.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [combined[i], combined[j]] = [combined[j], combined[i]];
+  }
+  deck = combined.map(x => x.card);
+  indexMap = combined.map(x => x.orig);
+  current = 0;
+  render();
+}
+
+function resetAll() {
+  deck = [...CARDS];
+  indexMap = [...Array(CARDS.length).keys()];
+  status = new Array(CARDS.length).fill('unseen');
+  current = 0;
+  render();
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+  if (e.key === 'ArrowRight') nextCard();
+  if (e.key === 'ArrowLeft') prevCard();
+  if (e.key === 'k' || e.key === 'K') markKnown();
+  if (e.key === 'l' || e.key === 'L') markLearning();
+});
+
+// Init
+render();
+</script>
+</body>
+</html>
