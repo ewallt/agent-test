@@ -1,0 +1,6 @@
+After producing the HTML, provide a GitHub deployment link in this format:
+
+https://github.com/ewallt/claude-code-fun/new/gh-pages?filename=FOLDER/index.html
+
+Replace FOLDER with the folder name I give you. Output the link on its own line,
+clearly labeled, so I can copy and paste it directly into a browser.

@@ -143,6 +143,62 @@
               "notes": "Video generated in notebook 215894d5. Confirm video renders correctly in UI, then share the notebook. Move tasks/braess-paradox.md to completed/ when done.",
               "priority": 3,
               "status": "pending"
+            },
+            {
+              "id": "nlm-8",
+              "title": "Update notebooklm-cli.html with new commands",
+              "notes": "Add four missing command groups: nlm export (to-docs, to-sheets), nlm skill install, nlm login profile (multi-account), and nlm source add file (direct file upload). Also review/update any outdated notes about UI-only downloads.",
+              "priority": 3,
+              "status": "done"
+            },
+            {
+              "id": "nlm-9",
+              "title": "End-to-end test: nlm export to-docs",
+              "notes": "Verified 2026-03-13. Used Double-Entry Bookkeeping notebook (18b286a4), report artifact e87e8b33. Exported successfully to https://docs.google.com/document/d/1IPNE41yztAeqfLPlyjvHoGbcuV8UN24d2WLHsrLDUuw",
+              "priority": 3,
+              "status": "done"
+            },
+            {
+              "id": "nlm-10",
+              "title": "Claude ↔ NotebookLM round-trip via Google Docs",
+              "notes": "Completed 2026-03-13. Read Double-Entry Bookkeeping manifest via gdrive MCP, Claude augmented (added Slide 6, deepened Slides 3 & 5), uploaded as source 03eca125 to notebook 18b286a4. Loop confirmed end-to-end.",
+              "priority": 3,
+              "status": "done"
+            },
+            {
+              "id": "nlm-11",
+              "title": "Task file drafting prompt for Claude",
+              "notes": "Write a prompt Tom can give to Claude (web/API) to collaboratively draft task files for the ephemeral notebook workflow. Output should be a ready-to-paste task file in the correct format (key, topic, research, app, etc.) that Claude Code can run on return.",
+              "priority": 2,
+              "status": "done"
+            },
+            {
+              "id": "nlm-12",
+              "title": "Notebook query prompt for web app knowledge base",
+              "notes": "Write a reusable prompt Tom can run against a NotebookLM notebook to extract a structured knowledge base suitable for feeding to Claude when building Explorer+Quiz or tabbed web apps. Prompt should produce output in the format Claude Code expects.",
+              "priority": 2,
+              "status": "done"
+            },
+            {
+              "id": "nlm-13",
+              "title": "Manual notebook tips cheat sheet",
+              "notes": "Write a concise reference for Tom to use when building notebooks manually: how to write focus prompts for videos, slide decks, and infographics. Cover what makes a good focus string, common pitfalls, and style options. Deliverable: a single reference doc or paste-ready cheat sheet.",
+              "priority": 3,
+              "status": "done"
+            },
+            {
+              "id": "nlm-14",
+              "title": "Slide manifest prompt for Claude/Gemini",
+              "notes": "Write a prompt Tom can give to an AI (Claude or Gemini) to generate a Gemini slide manifest from a knowledge base. The prompt should specify the manifest format, slide count, style guidance, and structure Claude Code uses. Tom pastes in a knowledge base; AI outputs a ready-to-use manifest.",
+              "priority": 3,
+              "status": "done"
+            },
+            {
+              "id": "nlm-15",
+              "title": "notebooklm-source-prep skill",
+              "notes": "Skill that queries a notebook and writes+uploads three source documents: Explorer+Quiz KB, Tabbed KB, Slide Manifest. Created 2026-03-15 via skill-creator. Skill at ~/.claude/skills/notebooklm-source-prep/.",
+              "priority": 3,
+              "status": "done"
             }
           ]
         }
@@ -161,7 +217,7 @@
               "title": "Task manager web app",
               "notes": "This app. Located at tools/. Now the primary home for pending items (replaces pending.md).",
               "priority": 1,
-              "status": "in-progress"
+              "status": "done"
             },
             {
               "id": "inf-2",
@@ -211,6 +267,27 @@
               "notes": "See ephemeral-notebook/documents/DOC-000-table-of-contents.md for the full list.",
               "priority": 5,
               "status": "pending"
+            },
+            {
+              "id": "inf-10",
+              "title": "Document system audit and consolidation",
+              "notes": "Two document locations now exist: project file system markdown docs (agent-test/documents/, project documents/ subfolders) and the memory directory (~/.claude/projects/.../memory/). Audit both, assess what belongs where per the fat-in-project / lean-in-memory principle established 2026-03-13, and consolidate if needed. Memory should hold only what's needed for session continuity (MEMORY.md index, feedback, session log); substantive reference docs belong in the project.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "inf-11",
+              "title": "Fix mercy gh-pages deploy to use index.html convention",
+              "notes": "The mercy app was deployed as a flat .html file (old convention). Re-deploy it as index.html inside a named subfolder, matching the convention established 2026-03-14. Old flat file can be removed or left in place.",
+              "priority": 4,
+              "status": "pending"
+            },
+            {
+              "id": "inf-9",
+              "title": "Set up Google Docs MCP server (OAuth)",
+              "notes": "Done. Token minted, MCP verified working 2026-03-13. mcp__gdrive__search and ReadMcpResourceTool both confirmed. Reference doc: ephemeral-notebook/documents/gdrive-integration.md and nlm-claude-feedback-loop.md.",
+              "priority": 3,
+              "status": "done"
             }
           ]
         }

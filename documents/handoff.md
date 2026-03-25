@@ -1,51 +1,57 @@
-# Session Handoff — 2026-03-11
+# Session Handoff — 2026-03-15
 
 ## What Was Done This Session
 
-### Ephemeral Notebook — Skill Architecture Overhaul
+### Source Prep — Three Notebooks
 
-- Created master skill `notebooklm-ephemeral-notebook` — lean trigger, points to `workflow.md`, lists all sub-skills by task flag
-- Created `notebooklm-slide` skill — NLM-native slide deck (PDF)
-- Created `notebooklm-infographic` skill — NLM-native infographic (PNG), with orientation/detail/focus options
-- Updated `notebooklm-slide-manifest` — corrected workflow: manifest is uploaded as a notebook source, Gemini reads sources and builds slides (not an external Imagen pipeline)
-- Updated `notebooklm-video`, `notebooklm-webapp` — added "Read First" headers
-- Renamed `design/` → `documents/` under `ephemeral-notebook/`; updated 3 references
+New workflow established: query a notebook, write three source documents, upload all three.
+Pattern exercised across three existing notebooks:
 
-### Ephemeral Notebook — Workflow Documentation
+- **Philosophical Revolutions: Enlightenment** (67970583) — Explorer+Quiz KB, Tabbed KB, Slide Manifest
+- **Scientific Revolutions: Chemistry** (426129b8) — Explorer+Quiz KB, Tabbed KB, Slide Manifest
+- **Scientific Revolutions: Physics** (395a4ee9) — Explorer+Quiz KB, Tabbed KB, Slide Manifest
 
-- Created `documents/workflow.md` — full JIT sequencer, Steps 0–7, explicit "READ NOW" gates at each step, ✓ checkboxes, ⚠️ stop gates at TODO stubs
-- Created `documents/source-authoring.md` — explains the 1–3 sources model, what each source drives, upload order
-- Created `documents/source-knowledge-base.md` — **TODO stub** (format undocumented; needs Tom's input)
-- Created `documents/source-web-app.md` — **TODO stub** (format undocumented; needs Tom's input)
+Files saved to `artifacts/<key>/` and `slideshows/<key>.md` for each. Sources uploaded and IDs recorded.
 
-### Reference Documents
+### notebooklm-source-prep Skill — CREATED
 
-- Created `documents/notebooklm-cli.html` — full command reference for `nlm`; all command groups, artifact types, typical run sequence, gotchas
-- Updated `documents/notebooklm-workflow.html` — added trigger phrase callout, added sub-skills table
-- Updated `documents/index.html` — added card for CLI reference
+- New skill at `~/.claude/skills/notebooklm-source-prep/`
+- Automates the three-source workflow: 2 parallel notebook queries → write Explorer+Quiz KB → write Tabbed KB → write Slide Manifest (via notebooklm-slide-manifest skill, JIT) → upload all three sequentially
+- Key gotcha documented: `nlm source add` takes notebook ID as positional arg, not `--notebook-id`
+- Ticket nlm-15 added and marked done
 
-### Skill Creator — JIT Pattern
+### egw-preaching Deploy + Dashboard
 
-- Added JIT reference to `skill-creator/SKILL.md` — points to `JIT-experiment.md`, explains when to apply
-- Added feedback memory: always invoke skill-creator when creating/modifying skills (Tom's responsibility to trigger)
+- `apps/egw-preaching.html` deployed to gh-pages: `notebooklm/egw-preaching/`
+- New deployed-apps dashboard created with links to all live apps
+- `philosophy1-slides.html` found in `Documents/Slide Shows/` and added to dashboard
+
+### Tickets Added
+
+Four new tickets written to `tools/tasks.json` this session (see ticket board for details).
 
 ---
 
 ## State Right Now
 
-- On `dev` branch; changes from this session uncommitted
-- Ephemeral Notebook workflow is structurally complete — master skill, JIT workflow, all sub-skills in place
-- Two TODO stubs remain as hard stops in the workflow (see below)
-
-## TODOs
-
-1. **`source-knowledge-base.md`** — format and structure for the Claude-written knowledge base document. Currently a hard stop in workflow.md (Step 3a). Needs Tom's input.
-2. **`source-web-app.md`** — same situation. Format for the web app knowledge document. Step 3c. Needs Tom's input.
+- Three notebooks now have Claude-written source documents uploaded
+- `notebooklm-source-prep` skill is live and visible in the skills list
+- All changes on `dev` branch, not promoted to `main`
 
 ## Next Session Priority
 
-Continue Ephemeral Notebook workflow — fill in the two TODO stubs (`source-knowledge-base.md` and `source-web-app.md`) with Tom's guidance. Once those are done, the workflow is ready for a full end-to-end run.
+Verify the handoff is working correctly — read `startup.md` and `handoff.md` at session start and confirm the session-start sequence behaves as expected before starting any new work. No workflow queued.
+
+## Other Items
+
+- `inf-11` — fix mercy gh-pages deploy to use index.html/subfolder convention
+- `inf-10` — document system audit and consolidation (ongoing backlog)
+- `inf-2` — discuss dev→main sync procedure
 
 ## Session Start
 
-Wait for Tom.
+READ NOW: `C:\Users\tomew\.claude\projects\C--Users-tomew-Documents-agent-test\memory\startup.md`
+
+Workflow: none
+
+Handoff verification session — confirm the session-start sequence is working as expected before starting any new work.

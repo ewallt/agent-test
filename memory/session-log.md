@@ -2,6 +2,201 @@
 
 ---
 
+## 2026-03-14 (session 2) — gh-pages Convention Fix, Skill Update, Cleanup
+
+### gh-pages Deploy Convention Corrected
+- Re-deployed `nlm-workflow-explainer` using correct GitHub Pages convention: `index.html` inside a named subfolder
+- Old flat file (`notebooklm/nlm-workflow-explainer.html`) removed with `git rm`
+- New URL: `https://ewallt.github.io/claude-code-fun/notebooklm/nlm-workflow-explainer/`
+
+### gh-pages-deploy Skill Updated
+- `~/.claude/skills/gh-pages-deploy/SKILL.md` rewritten to reflect index.html convention
+- URL pattern, deploy command, and output step all updated
+- Known subfolders table added; non-fatal worktree cleanup error on Windows documented
+
+### Tickets
+- `inf-11` added: fix mercy gh-pages deploy to use index.html/subfolder convention (P4)
+
+### Cleanup
+- Deleted `gdrive-auth.cjs` from agent-test root (one-time OAuth helper, no longer needed)
+
+---
+
+## 2026-03-14 — Query Loop Discovery, Behold Your God Web App, Workflow Updates
+
+### Key Discovery: nlm notebook query replaces Google Docs for content extraction
+- Ran "The Current State of Claude Code" notebook (post-cutoff topic, 10 web research sources)
+- Queried notebook with targeted questions — responses were rich, detailed, grounded in 2025–2026 sources
+- Confirmed: `nlm notebook query` is the primary and preferred way for Claude to access NLM content
+- Google Docs export loop is still valid for source augmentation / iterative refinement, but NOT needed for web app content
+- No Drive, no OAuth, no artifact export, no artifact ID hunting — just ask and get
+
+### Behold Your God Web App (F.T. Wright)
+- Notebook: `b64c5fc6-6a75-4af7-97a0-51cb1d9f9b74` ("Behold Your God: Understanding Divine Character")
+- Queried notebook for main themes → rich response covering all illustrative concepts (Nuclear Plant, White Hat, Prodigal Son, Boeing 747, Rods and Serpents, etc.)
+- Built `apps/behold-your-god.html` — 10 themes in Explorer dropdown, FOCUS_PROMPTS grounded in notebook query content
+- Fixed chips bug (JSON in onclick attribute broke when questions contained quotes) and dropdown arrow (appearance:none with no custom arrow)
+
+### Workflow and Docs Updated
+- `ephemeral-notebook/documents/workflow.md` — Step 6 now includes query step before building web app
+- `ephemeral-notebook/documents/nlm-claude-feedback-loop.md` — rewritten: two loops documented (query primary, Drive secondary)
+- `documents/nlm-feedback-loop.html` — updated diagram, two loops, new use case card for query-based extraction
+- `notebooklm-webapp` SKILL.md — query step added as preferred knowledge source before building
+
+### Order of Operations Fix (lesson learned)
+- Video should be triggered LAST (fire and forget) — not before exporting/querying
+- Briefing doc artifact doesn't appear in `nlm studio status` — slides artifact is what `nlm export to-docs` needs
+- But for web app content, query is better than export in every way — no artifact needed at all
+
+### Claude Code Notebook (test vehicle, not wrapped up)
+- Notebook: `4872a2c8-2066-4df2-8d4f-564e7c531c90` ("The Current State of Claude Code")
+- 10 web research sources; video and slide deck generated; not shared or run-logged
+
+---
+
+## 2026-03-13 (session 3) — gdrive POC Complete, Feedback Loop Docs, Memory System Discussion
+
+### gdrive MCP Round-Trip POC (nlm-10 — done)
+- Verified `mcp__gdrive__search` works; found Double-Entry Bookkeeping doc immediately
+- Read exported slide manifest via `ReadMcpResourceTool` — full markdown returned
+- Claude augmented manifest: added Slide 6 (Venice → Antwerp → Amsterdam/VOC), deepened Slides 3 & 5
+- Uploaded as new notebook source (`03eca125`) to notebook `18b286a4`
+- Full loop confirmed end-to-end: NLM → Drive → Claude reads → improves → re-upload → NLM
+
+### Memory System Discussion
+- Tom discovered the memory directory (`~/.claude/projects/.../memory/`) for the first time
+- Established design principle: fat docs in project file system, lean in memory directory
+- Memory = MEMORY.md index + feedback + session log + pointers; project = substantive reference docs
+- Created `inf-10` ticket: document system audit and consolidation
+
+### Documents Created
+- `memory/working-notes.md` — Claude's live quick-reference (notebook IDs, gdrive status, CLI gotchas)
+- `ephemeral-notebook/documents/nlm-claude-feedback-loop.md` — technical reference for Claude: full loop architecture, OAuth debugging history, POC record, quickstart
+- `documents/claude-memory-system.html` — Tom's reference on the memory directory: file types, load order, how to add entries
+- `documents/nlm-feedback-loop.html` — Tom's reference on the feedback loop: short intro + 13 brainstormed use cases (now/near/later)
+
+### Tickets
+- inf-9 (gdrive OAuth): done
+- nlm-10 (round-trip POC): done
+- inf-10 (document system audit): added as pending
+
+### mercy.html Deployed
+- Deployed `Sermon on the Mount/mercy.html` to gh-pages branch under `sermon-on-the-mount/mercy.html`
+- Live at `https://ewallt.github.io/claude-code-fun/sermon-on-the-mount/mercy.html`
+
+---
+
+## 2026-03-13 (session 2) — Google Drive OAuth Setup Complete
+
+### Goal
+Complete OAuth consent for the gdrive MCP server and test the Claude ↔ NotebookLM round-trip (nlm-10).
+
+### What Happened
+
+**OAuth env var bug fixed:**
+- `~/.claude.json` had `GDRIVE_CREDENTIALS_PATH` pointing to the OAuth key file (`gcp-oauth.keys.json`) — wrong
+- Correct split: `GDRIVE_CREDENTIALS_PATH` = token file (output), `GDRIVE_OAUTH_PATH` = key file (input)
+- Fixed in `~/.claude.json`
+
+**redirect_uri added to key file:**
+- `gcp-oauth.keys.json` was missing `redirect_uris` field — added `["http://localhost:3000/oauth2callback"]`
+- Tom also had to add that URI to Google Cloud Console and add ewalltom@gmail.com as a test user (audience)
+
+**port 3000 conflict:**
+- Remotion bar-chart-race studio was on port 3000 — killed it
+- Debug script (`res.end('test')`) got stuck on port 3000 and intercepted early OAuth callbacks — caused confusion
+- Fixed by stopping the debug task via TaskStop
+
+**OAuth completed:**
+- Wrote `gdrive-auth.cjs` — custom CommonJS auth script using googleapis package from npx cache
+- Ran as background task; Tom opened the auth URL manually, completed sign-in, got "Authentication successful!"
+- Token saved to `~/.notebooklm-mcp-cli/gdrive-token.json`
+
+**State at end of session:**
+- Token file exists: `~/.notebooklm-mcp-cli/gdrive-token.json`
+- `~/.claude.json` updated with correct env vars (both `GDRIVE_CREDENTIALS_PATH` and `GDRIVE_OAUTH_PATH`)
+- **Needs a Claude Code restart** to pick up the fixed MCP config
+- inf-9 is now complete after restart + verification
+
+### Next Session
+1. Restart Claude Code (if not done yet) — gdrive MCP will load with correct token
+2. Test `mcp__gdrive__search` — search for "Double-Entry Bookkeeping"
+3. Read the exported doc (ID: `1IPNE41yztAeqfLPlyjvHoGbcuV8UN24d2WLHsrLDUuw`)
+4. Complete nlm-10 round-trip: Claude reads → augments → saves new version → uploads as notebook source
+
+### Tickets
+- inf-9: complete after restart verification
+- nlm-10: still pending (round-trip test)
+
+---
+
+## 2026-03-13 — Google Drive MCP Integration, nlm Export Test, CLI Doc Update
+
+### Prompt Injection Incident
+- Gemini sent a message formatted as `<system_update_for_claude_code>` with fake system directives and destructive reinstall commands
+- Flagged to Tom as prompt injection — identified fake tag, version mismatch, suspicious `nlm --ai` framing
+- Outcome: `nlm export to-docs` was real (just undocumented); the framing was bad, the CLI info was accurate
+
+### nlm CLI Doc Update (nlm-8 — done)
+- Added four missing command groups to `documents/notebooklm-cli.html`: `export` (to-docs, to-sheets, artifact), `login` (profile management), `skill` (install for AI tools), and file type notes on `source add`
+- Updated artifact table: Report → Google Docs, Data Table → Google Sheets export noted
+- Updated `studio status` row: now notes it's how you get artifact IDs for export
+
+### nlm Export to-docs — End-to-End Test (nlm-9 — done)
+- Confirmed `nlm export to-docs` works: Double-Entry Bookkeeping notebook, report artifact e87e8b33
+- Doc exported to Google Drive: https://docs.google.com/document/d/1IPNE41yztAeqfLPlyjvHoGbcuV8UN24d2WLHsrLDUuw
+
+### Google Drive MCP Integration Setup (inf-9 — in progress)
+- Architecture from Gemini via ReadMe.txt: `@modelcontextprotocol/server-gdrive`, user-delegated OAuth 2.0, full `drive` scope
+- Wrote `documents/gdrive-integration.html` (Tom's reference) and `ephemeral-notebook/documents/gdrive-integration.md` (Claude's one-stop reference)
+- Tom created OAuth credentials in Google Cloud Console (web app type), downloaded JSON
+- Copied to `~/.notebooklm-mcp-cli/gcp-oauth.keys.json`
+- Added `gdrive` MCP block to `~/.claude.json` — loads on next restart
+- First restart will trigger one-time browser OAuth consent
+
+### Tickets
+- nlm-8 done, nlm-9 done, nlm-10 created (pending), inf-9 updated with full spec
+
+### Misc
+- Saved Drinker Paradox app description to `ephemeral-notebook/reference/drinker-paradox-app.txt`
+- Established ReadMe.txt convention (saved to memory): Tom uses `agent-test/ReadMe.txt` to pass long content
+
+---
+
+## 2026-03-12 — Ticket System, Skills, Test Coverage, Promotion
+
+### Ticket System (Jira-style)
+- Created `ticket-tracker` skill — reads/writes `tools/tasks.json`, triggers on "jira", "ticket", ticket IDs, shutdown Step 4
+- Reconciled `tasks.json` with `pending.md`: renamed `completed` → `done`, added 6 missing tickets (we-4, nlm-2 revised, nlm-3/4/6/7, inf-2/3), fixed status/HTML mismatch
+- Updated `tasks.html`: added `blocked` status (red dot), fixed summary counter, centered layout
+- Updated shutdown skill Step 4 to use correct status values and reference ticket-tracker
+- `memory/pending.md` marked as superseded — `tasks.json` is now source of truth
+- Added `project_ticket_tracker.md` memory file; updated `MEMORY.md` session startup note
+
+### doc-writer Skill
+- Created `doc-writer` skill — writes styled HTML reference docs in the established dark theme
+- Skill embeds full CSS; knows to update `documents/index.html` when saving to `agent-test/documents/`
+- Description tuned to avoid competing with `doc-coauthoring` and `frontend-design`
+- Refined via skill-creator (no formal evals — subjective output)
+
+### Ticket Board Reference Doc
+- Wrote `documents/ticket-board.html` — covers schema, statuses, ID prefixes, JSON structure, how Claude manages tickets, history
+- Updated `documents/index.html`: replaced stale "Pending Items" card with "Ticket Board" card
+
+### Structural Test Coverage
+- Whiteboard Explainer: added `QuoteScene`, `StatScene`, `FlowChartScene`, `scenes.example_3.json` (25 tests, +4)
+- Bar Chart Race: added `BarChartRaceSimultaneous.tsx`, `data/index.ts`, `us-cities`, `us-top-10-cities` (55 tests, +12)
+- Simple Narrated Slides: no changes needed
+
+### Promotion
+- Committed session work to dev, ran promote.sh — all 115 tests passed, merged dev → main
+- Large batch: first promotion in several sessions, brought in everything since last merge
+
+### Servers
+- Started all four servers: ports 3000 (BCR), 3001 (SNS), 3002 (WE), 3010 (task board via Python http.server)
+
+---
+
 ## 2026-03-11 — Ephemeral Notebook Skill Architecture Overhaul
 
 ### Master Skill + Sub-skills

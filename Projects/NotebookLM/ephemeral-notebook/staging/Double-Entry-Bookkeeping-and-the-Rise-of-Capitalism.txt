@@ -1,8 +1,0 @@
-key: double-entry-bookkeeping
-topic: Double-Entry Bookkeeping and the Rise of Capitalism
-pattern: 003
-videos: 1
-app: yes
-slideshow: yes
-guidance: Focus on the invention and spread of double-entry bookkeeping — who developed it, how it changed merchant thinking, and how it enabled the kind of abstract financial reasoning that made capitalism possible. Pacioli and Venice are the anchor.
-

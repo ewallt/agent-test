@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude ↔ NotebookLM Feedback Loop</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 48px; }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+  }
+  h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .card-bd { padding: 22px 24px; }
+  p { color: var(--muted); font-size: .95rem; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: .92rem;
+  }
+  .callout.info  { background: rgba(139,185,255,.07); border: 1px solid rgba(139,185,255,.2);  color: var(--accent); }
+  .callout.green { background: rgba(124,255,178,.07); border: 1px solid rgba(124,255,178,.2);  color: var(--green); }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  /* Loop diagram */
+  .loop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: wrap;
+    padding: 28px 24px;
+    row-gap: 12px;
+  }
+  .loop-node {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+    min-width: 110px;
+  }
+  .loop-node span {
+    display: block;
+    font-size: .72rem;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .loop-node.highlight {
+    background: rgba(139,185,255,.1);
+    border-color: rgba(139,185,255,.35);
+    color: var(--accent);
+  }
+  .loop-arrow {
+    color: var(--muted);
+    font-size: 1.1rem;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* Use case cards */
+  .use-case {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .use-case-hd {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .use-case-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .use-case-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .use-case-tag {
+    margin-left: auto;
+    font-size: .72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 99px;
+    flex-shrink: 0;
+  }
+  .tag-now   { background: rgba(124,255,178,.12); color: var(--green); border: 1px solid rgba(124,255,178,.25); }
+  .tag-near  { background: rgba(139,185,255,.12); color: var(--accent); border: 1px solid rgba(139,185,255,.25); }
+  .tag-far   { background: rgba(255,255,255,.06); color: var(--muted); border: 1px solid var(--border); }
+  .use-case-bd { padding: 16px 22px; }
+  .use-case-bd p { font-size: .92rem; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">NotebookLM</div>
+  <h1>Claude ↔ NotebookLM <span>Feedback Loop</span></h1>
+  <p>Claude can read what NotebookLM produces, improve it, and feed it back in — closing a loop that enables autonomous iteration.</p>
+</header>
+
+<div class="container">
+
+  <!-- The basics -->
+  <section>
+    <h2><span class="icon">⚡</span> Two Loops</h2>
+
+    <h3 style="color:var(--accent); font-size:.95rem; margin-bottom:12px; margin-top:4px;">Loop 1 — Direct Query (preferred)</h3>
+    <div class="card">
+      <div class="loop">
+        <div class="loop-node highlight">NotebookLM<span>sources loaded</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node highlight">nlm notebook query<span>targeted question</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node highlight">Claude reads<span>synthesized answer</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node highlight">Claude builds<span>web app / sources</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-bd">
+        <p>Claude queries the notebook directly with targeted questions. NLM synthesizes answers from its sources and returns them immediately — no artifact export, no Drive, no OAuth. Ask as many questions as needed.</p>
+        <p>This is the right approach for populating web app FOCUS_PROMPTS, exploring what the notebook knows, and getting NLM's synthesis on any topic — especially post-cutoff topics where Claude has no independent knowledge.</p>
+      </div>
+    </div>
+    <div class="callout green">
+      <strong>Confirmed working: 2026-03-14</strong>
+      Queried "The Current State of Claude Code" notebook (post-cutoff). Responses included detailed 2025–2026 feature lists and timelines sourced from current articles. Used to build a web app with dense, accurate FOCUS_PROMPTS.
+    </div>
+
+    <h3 style="color:var(--accent); font-size:.95rem; margin-bottom:12px; margin-top:24px;">Loop 2 — Google Drive Export (for source augmentation)</h3>
+    <div class="card">
+      <div class="loop">
+        <div class="loop-node">NotebookLM<span>generates artifact</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node">nlm export<span>to Google Drive</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node highlight">Claude reads<span>via gdrive MCP</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node highlight">Claude improves<span>edits / augments</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node">nlm source add<span>back into notebook</span></div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-node">NotebookLM<span>regenerates</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-bd">
+        <p>NotebookLM exports an artifact to Google Drive. Claude reads it via the Google Drive MCP server, edits or augments it, and re-uploads it as a new notebook source. Use this when you need to work with the artifact itself — not just its content — such as critiquing a slide manifest before Gemini builds slides from it, or running multi-pass iterative refinement on a briefing doc.</p>
+      </div>
+    </div>
+    <div class="callout green">
+      <strong>Confirmed working: 2026-03-13</strong>
+      Exported Double-Entry Bookkeeping slide manifest → Claude read it → added Slide 6 + deepened two others → re-uploaded. End-to-end loop confirmed.
+    </div>
+  </section>
+
+  <!-- Use cases -->
+  <section>
+    <h2><span class="icon">💡</span> Use Cases — Brainstorm</h2>
+    <p style="color:var(--muted); font-size:.9rem; margin-bottom:20px;">
+      Tags: <span class="use-case-tag tag-now" style="margin:0 4px;">now</span> works today &nbsp;·&nbsp;
+      <span class="use-case-tag tag-near" style="margin:0 4px;">near</span> needs some build &nbsp;·&nbsp;
+      <span class="use-case-tag tag-far" style="margin:0 4px;">later</span> bigger lift
+    </p>
+
+    <!-- Query-based extraction -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">💬</div>
+        <div class="use-case-title">Query-Based Content Extraction</div>
+        <span class="use-case-tag tag-now">now</span>
+      </div>
+      <div class="use-case-bd">
+        <p>Before building a web app or Claude-written source, query the notebook with targeted questions. NLM synthesizes answers from its sources — rich, grounded, and immediately available. No artifact export or Drive plumbing required. Ask one question per focus angle; repeat until all FOCUS_PROMPTS are populated. This replaces the Google Docs export approach for web app content extraction and works especially well for post-cutoff topics where Claude has no independent knowledge.</p>
+      </div>
+    </div>
+
+    <!-- Refinement -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🔁</div>
+        <div class="use-case-title">Iterative Refinement</div>
+        <span class="use-case-tag tag-now">now</span>
+      </div>
+      <div class="use-case-bd">
+        <p>NLM generates a first draft. Claude reads it, identifies thin sections, adds depth, corrects errors, and re-uploads. NLM generates a second pass grounded in the enriched source. Repeat until quality threshold is met. Each pass is better than the last with no human involvement between rounds.</p>
+      </div>
+    </div>
+
+    <!-- Quality gating -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🛡️</div>
+        <div class="use-case-title">Quality Gating</div>
+        <span class="use-case-tag tag-now">now</span>
+      </div>
+      <div class="use-case-bd">
+        <p>Claude reviews NLM's output before Tom ever sees it. Checks for: factual gaps, weak sections, logical inconsistencies, coverage of the topic. If it passes, Claude delivers. If it doesn't, Claude triggers a redo — uploading a critique document as a source and asking NLM to regenerate with that feedback. Tom only sees finished work.</p>
+      </div>
+    </div>
+
+    <!-- Slide manifest critique -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🎞️</div>
+        <div class="use-case-title">Slide Manifest Critique and Rewrite</div>
+        <span class="use-case-tag tag-now">now</span>
+      </div>
+      <div class="use-case-bd">
+        <p>Claude reads a Gemini slide manifest and evaluates it against slide design principles: narrative arc, slide count, balance between paragraphs, visual context specificity. It rewrites weak slides, adds missing ones, tightens image prompts. The improved manifest goes back into the notebook — Gemini builds slides from a better brief.</p>
+      </div>
+    </div>
+
+    <!-- Cross-notebook synthesis -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🔗</div>
+        <div class="use-case-title">Cross-Notebook Synthesis</div>
+        <span class="use-case-tag tag-near">near</span>
+      </div>
+      <div class="use-case-bd">
+        <p>Read briefing docs from two or more related notebooks (e.g. WW2 Eastern Front + Western Europe), synthesize the key threads, write a combined analysis, and upload it as a source to a new synthesis notebook. Claude acts as the connective tissue between separate bodies of NLM research.</p>
+      </div>
+    </div>
+
+    <!-- Fully autonomous runs -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🤖</div>
+        <div class="use-case-title">Fully Autonomous Research Runs</div>
+        <span class="use-case-tag tag-near">near</span>
+      </div>
+      <div class="use-case-bd">
+        <p>Tom drops a task file. Claude creates the notebook, builds sources, uploads them, triggers artifact generation, reads the outputs, improves them, re-uploads, triggers regeneration — and delivers finished artifacts. The entire pipeline runs without Tom touching anything between task drop and delivery.</p>
+      </div>
+    </div>
+
+    <!-- Fact checking -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🔍</div>
+        <div class="use-case-title">Fact-Checking and Gap Detection</div>
+        <span class="use-case-tag tag-near">near</span>
+      </div>
+      <div class="use-case-bd">
+        <p>Claude reads a briefing doc and compares it against its own knowledge of the topic. Flags claims it can't verify, spots missing context, notes where NLM has oversimplified. Writes a "gap report" and uploads it as a source, prompting NLM to address the gaps in its next artifact generation.</p>
+      </div>
+    </div>
+
+    <!-- Remotion pipeline -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🎬</div>
+        <div class="use-case-title">NLM → Claude → Remotion Pipeline</div>
+        <span class="use-case-tag tag-near">near</span>
+      </div>
+      <div class="use-case-bd">
+        <p>NLM generates a study guide or briefing doc. Claude reads it and converts the content into a Remotion composition script — structured data for a narrated slide video or whiteboard explainer. Claude then generates ElevenLabs narration from the same content. A research notebook becomes a produced video with no manual reformatting step.</p>
+      </div>
+    </div>
+
+    <!-- Adaptive depth -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">📐</div>
+        <div class="use-case-title">Adaptive Depth Control</div>
+        <span class="use-case-tag tag-near">near</span>
+      </div>
+      <div class="use-case-bd">
+        <p>Claude reads an NLM briefing doc and judges which sections are too shallow for the intended audience. It writes expanded treatments of those sections and uploads them as supplementary sources. On the next artifact generation, NLM has richer grounding for the areas that needed depth — without Claude having to rewrite the whole doc.</p>
+      </div>
+    </div>
+
+    <!-- Series consistency -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">📚</div>
+        <div class="use-case-title">Isomorphic Series Consistency</div>
+        <span class="use-case-tag tag-near">near</span>
+      </div>
+      <div class="use-case-bd">
+        <p>For a series of notebooks on related topics (e.g. WW2 battle theaters), Claude reads all the briefing docs and checks for structural consistency — same sections covered, comparable depth, consistent framing. Writes a consistency report and targeted gap-fillers for each notebook. The series ships as a coherent set rather than a patchwork.</p>
+      </div>
+    </div>
+
+    <!-- Persona tuning -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🎭</div>
+        <div class="use-case-title">Audience Persona Rewriting</div>
+        <span class="use-case-tag tag-near">near</span>
+      </div>
+      <div class="use-case-bd">
+        <p>NLM generates content at its default register. Claude reads it and rewrites it for a specific audience — a non-expert, a student, a subject-matter expert wanting concision. The rewritten version goes back in as a source; NLM generates artifacts (audio overview, study guide) pitched at that audience's level.</p>
+      </div>
+    </div>
+
+    <!-- Scheduled refresh -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🕐</div>
+        <div class="use-case-title">Scheduled Content Refresh</div>
+        <span class="use-case-tag tag-far">later</span>
+      </div>
+      <div class="use-case-bd">
+        <p>A cron job triggers Claude periodically. Claude reads the latest export from a notebook on an evolving topic (AI models, geopolitics, markets), searches for new developments, writes an update document, and uploads it as a source. The notebook stays current without Tom manually adding new sources.</p>
+      </div>
+    </div>
+
+    <!-- Multi-agent parallel refinement -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">⚡</div>
+        <div class="use-case-title">Multi-Agent Parallel Refinement</div>
+        <span class="use-case-tag tag-far">later</span>
+      </div>
+      <div class="use-case-bd">
+        <p>Claude spawns subagents, each reading the same NLM output but improving a different dimension simultaneously — one deepens the historical context, one strengthens the narrative arc, one tightens the image prompts, one adds counterarguments. All four upload their contributions as sources. NLM regenerates with four parallel enrichments as grounding.</p>
+      </div>
+    </div>
+
+    <!-- Audio overview steering -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🎙️</div>
+        <div class="use-case-title">Audio Overview Steering</div>
+        <span class="use-case-tag tag-far">later</span>
+      </div>
+      <div class="use-case-bd">
+        <p>NLM generates a first audio overview. Claude reads the transcript (once export supports it) or the source materials used, identifies what the hosts missed or glossed over, writes a "focus brief" that steers the next generation toward those gaps, uploads it as a source with a custom focus prompt. The second audio overview covers what the first one didn't.</p>
+      </div>
+    </div>
+
+    <!-- Web app feedback -->
+    <div class="use-case">
+      <div class="use-case-hd">
+        <div class="use-case-icon">🌐</div>
+        <div class="use-case-title">Web App ↔ Notebook Feedback</div>
+        <span class="use-case-tag tag-far">later</span>
+      </div>
+      <div class="use-case-bd">
+        <p>The companion web app (Explorer + Quiz) captures which topics the user clicks on and which quiz questions they struggle with. Claude reads that interaction data, infers what the user found confusing or compelling, writes a "user signal" source document, and uploads it to the notebook. NLM regenerates a study guide or audio overview weighted toward what that user actually needs.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- What makes this different -->
+  <section>
+    <h2><span class="icon">🔭</span> What This Changes</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>Before the feedback loop, the workflow was <strong>linear</strong>: Tom drops a task → Claude builds a notebook → NLM generates → Tom reviews. Claude and NLM were separated by Tom at every handoff.</p>
+        <p>With the loop, Claude becomes a <strong>peer process</strong> to NotebookLM rather than just its setup crew. Claude can read what NLM produces, reason about whether it's good, improve it, and close the cycle — without Tom in the middle. Tom's role shifts from managing handoffs to setting goals and reviewing finished work.</p>
+        <p>The bigger shift: NLM's outputs are no longer terminal. Every artifact is a draft that Claude can iterate on. The question changes from "is this good enough?" to "how many passes does it need?"</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

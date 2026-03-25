@@ -319,7 +319,7 @@
       </div>
       <div class="cmd-row">
         <span class="cmd-name">nlm source add &lt;id&gt; --file &lt;path&gt; --title "Title" --wait</span>
-        <span class="cmd-desc"><strong>Always use <code>--wait</code></strong> — blocks until the source is processed. Upload order matters: knowledge base first, then slide manifest, then web app doc.</span>
+        <span class="cmd-desc"><strong>Always use <code>--wait</code></strong> — blocks until the source is processed. Upload order matters: knowledge base first, then slide manifest, then web app doc. Supported file types: <strong>PDF, TXT, Markdown, audio files</strong> — uploaded directly via HTTP, no browser automation required.</span>
       </div>
       <div class="cmd-row">
         <span class="cmd-name">nlm source list &lt;id&gt;</span>
@@ -391,11 +391,31 @@
       </div>
       <div class="cmd-row">
         <span class="cmd-name">nlm studio status &lt;id&gt;</span>
-        <span class="cmd-desc">List all studio artifacts for a notebook and their status. Poll this after triggering artifact generation. Look for <code>completed</code>.</span>
+        <span class="cmd-desc">List all studio artifacts for a notebook and their status. Poll this after triggering artifact generation. Look for <code>completed</code>. <strong>Also use this to get artifact IDs for export.</strong></span>
       </div>
       <div class="cmd-row">
         <span class="cmd-name">nlm studio delete &lt;id&gt; &lt;artifact-id&gt;</span>
         <span class="cmd-desc">Delete a studio artifact permanently.</span>
+      </div>
+    </div>
+
+    <!-- Export -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">export</span>
+        <span class="desc">Push Studio artifacts to Google Docs or Google Sheets</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm export to-docs &lt;id&gt; &lt;artifact-id&gt; --title "Title"</span>
+        <span class="cmd-desc">Export a Report artifact (Briefing Doc, Study Guide, Blog Post, etc.) to Google Docs. <strong>Get the artifact ID from <code>nlm studio status</code> first.</strong></span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm export to-sheets &lt;id&gt; &lt;artifact-id&gt; --title "Title"</span>
+        <span class="cmd-desc">Export a Data Table artifact to Google Sheets.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm export artifact &lt;id&gt; &lt;artifact-id&gt;</span>
+        <span class="cmd-desc">Generic export — routes to Docs or Sheets automatically based on artifact type.</span>
       </div>
     </div>
 
@@ -440,6 +460,54 @@
       <div class="cmd-row">
         <span class="cmd-name">nlm share status &lt;id&gt;</span>
         <span class="cmd-desc">Show current sharing status and collaborators.</span>
+      </div>
+    </div>
+
+    <!-- Login / multi-profile -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">login</span>
+        <span class="desc">Authentication and multi-account management</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm login</span>
+        <span class="cmd-desc">Authenticate (or re-authenticate) the default profile. Run this when commands start failing mid-session.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm login profile list</span>
+        <span class="cmd-desc">List all saved profiles (e.g., work, personal).</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm login profile switch &lt;name&gt;</span>
+        <span class="cmd-desc">Switch to a named profile. Useful for managing multiple Google accounts (e.g., personal vs. work).</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm login profile add &lt;name&gt;</span>
+        <span class="cmd-desc">Add a new named profile backed by a separate Chrome session.</span>
+      </div>
+    </div>
+
+    <!-- Skill installer -->
+    <div class="cmd-group">
+      <div class="cmd-group-header">
+        <span class="label">skill</span>
+        <span class="desc">Install nlm as a skill for AI coding tools</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm skill install claude-code</span>
+        <span class="cmd-desc">Install NotebookLM as a skill for Claude Code. Registers the MCP server and skill configuration.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm skill install gemini-cli</span>
+        <span class="cmd-desc">Install for Gemini CLI.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm skill install cursor</span>
+        <span class="cmd-desc">Install for Cursor.</span>
+      </div>
+      <div class="cmd-row">
+        <span class="cmd-name">nlm skill list</span>
+        <span class="cmd-desc">Show available skills and installation status.</span>
       </div>
     </div>
 
@@ -513,7 +581,7 @@
             <td>Report</td>
             <td><code>nlm report create</code></td>
             <td>.md</td>
-            <td></td>
+            <td>Exportable to Google Docs via <code>nlm export to-docs</code></td>
           </tr>
           <tr>
             <td>Quiz</td>
@@ -537,7 +605,7 @@
             <td>Data table</td>
             <td><code>nlm data-table create</code></td>
             <td>.csv</td>
-            <td></td>
+            <td>Exportable to Google Sheets via <code>nlm export to-sheets</code></td>
           </tr>
           <tr>
             <td>Gemini slide manifest</td>

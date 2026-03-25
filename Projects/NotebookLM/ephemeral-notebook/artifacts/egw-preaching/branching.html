@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EGW on Preaching — Branching Scenario</title>
+  <style>
+    :root {
+      --bg: #070c16; --border: rgba(255,255,255,.10);
+      --text: #e6edf7; --muted: #a9b6cc; --accent: #8bb9ff;
+      --green: rgba(124,255,178,.92); --red: rgba(255,122,138,.9);
+      --amber: rgba(255,196,80,.9);
+      --shadow: 0 12px 30px rgba(0,0,0,.35); --radius: 16px;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); background: linear-gradient(180deg,#070c16 0%,#0b1220 50%,#070c16 100%); color: var(--text); min-height: 100vh; padding: 28px 20px; }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+
+    /* Progress */
+    .progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .step-dots { display: flex; gap: 6px; }
+    .step-dot { width: 10px; height: 10px; border-radius: 999px; background: rgba(255,255,255,.12); transition: background .3s; }
+    .step-dot.done { background: var(--green); }
+    .step-dot.active { background: var(--accent); box-shadow: 0 0 0 3px rgba(139,185,255,.2); }
+    .step-label { font-size: 12px; color: var(--muted); }
+
+    /* Cards */
+    .card { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; }
+    .card.affirm { border-color: rgba(124,255,178,.3); background: rgba(124,255,178,.03); }
+    .card.caution { border-color: rgba(255,196,80,.3); background: rgba(255,196,80,.025); }
+    .card.correct { border-color: rgba(255,122,138,.3); background: rgba(255,122,138,.025); }
+
+    .scenario-label { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .scenario-text { font-size: 15px; line-height: 1.7; color: var(--text); margin-bottom: 22px; }
+
+    /* Choices */
+    .choices { display: flex; flex-direction: column; gap: 10px; }
+    .choice-btn {
+      text-align: left; padding: 14px 18px; border-radius: 12px;
+      border: 1px solid var(--border); background: rgba(255,255,255,.04);
+      color: var(--text); font-family: var(--sans); font-size: 14px;
+      font-weight: 500; cursor: pointer; transition: border-color .15s, background .15s;
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .choice-btn:hover:not(:disabled) { border-color: rgba(139,185,255,.45); background: rgba(139,185,255,.07); }
+    .choice-btn:disabled { cursor: default; opacity: .5; }
+    .choice-letter { font-weight: 700; color: var(--accent); min-width: 20px; flex-shrink: 0; }
+
+    /* Feedback */
+    .feedback { display: none; }
+    .feedback.show { display: block; }
+    .verdict-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 999px; margin-bottom: 14px;
+    }
+    .badge-affirm { background: rgba(124,255,178,.15); color: rgba(124,255,178,.9); }
+    .badge-caution { background: rgba(255,196,80,.15); color: rgba(255,196,80,.9); }
+    .badge-correct { background: rgba(255,122,138,.15); color: rgba(255,122,138,.9); }
+
+    .consequence-text { font-size: 14px; line-height: 1.65; color: var(--text); margin-bottom: 16px; }
+    .white-quote {
+      padding: 14px 18px; border-radius: 12px;
+      background: rgba(255,255,255,.04); border-left: 3px solid rgba(139,185,255,.4);
+      font-style: italic; font-size: 13px; line-height: 1.65; color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .white-verdict { font-size: 13px; line-height: 1.6; color: var(--text); margin-bottom: 20px; }
+
+    /* Buttons */
+    button.btn-primary { cursor: pointer; border: none; border-radius: 12px; padding: 11px 22px; font-family: var(--sans); font-size: 14px; font-weight: 650; background: linear-gradient(135deg,rgba(139,185,255,1),rgba(124,255,178,.92)); color: #08101d; box-shadow: var(--shadow); }
+    button.btn-secondary { cursor: pointer; border: 1px solid var(--border); border-radius: 12px; padding: 11px 22px; font-family: var(--sans); font-size: 14px; font-weight: 650; background: rgba(255,255,255,.06); color: var(--text); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* Status */
+    .status { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); margin-top: 14px; }
+    .dot { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.2); flex-shrink: 0; }
+    .dot.live { background: var(--accent); box-shadow: 0 0 0 3px rgba(139,185,255,.18); animation: pulse 1.4s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+    /* Final summary */
+    .final-summary { font-size: 14px; line-height: 1.7; color: var(--text); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+
+    /* Start screen */
+    #startScreen { text-align: center; padding: 40px 20px; }
+    .start-tagline { font-size: 15px; line-height: 1.7; color: var(--muted); max-width: 480px; margin: 0 auto 28px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ellen G. White on Preaching</h1>
+  <div class="sub">A branching scenario · Five decisions, one sermon · Guided by White's counsel</div>
+
+  <!-- Start screen -->
+  <div id="startScreen">
+    <div class="card">
+      <p class="start-tagline">
+        You are a young Adventist minister in 1895, preparing your first camp meeting sermon. Two hundred people have traveled miles to attend. Your mentor has just told you: "Make it count." <br><br>
+        Over the next five decisions, you will shape the sermon you preach. After each choice, Ellen White will have something to say about it.
+      </p>
+      <button class="btn-primary" onclick="startScenario()">Begin the Scenario</button>
+    </div>
+  </div>
+
+  <!-- Game area -->
+  <div id="gameArea" style="display:none">
+    <div class="progress-row">
+      <div class="step-dots" id="stepDots"></div>
+      <div class="step-label" id="stepLabel">Decision 1 of 5</div>
+    </div>
+
+    <!-- Scenario + choices -->
+    <div class="card" id="scenarioCard">
+      <div class="scenario-label" id="scenarioLabel">Your Situation</div>
+      <div class="scenario-text" id="scenarioText"></div>
+      <div class="choices" id="choicesContainer"></div>
+      <div class="status"><span class="dot live" id="loadDot" style="display:none"></span><span id="loadStatus"></span></div>
+    </div>
+
+    <!-- Feedback -->
+    <div class="card" id="feedbackCard" style="display:none">
+      <div class="verdict-badge" id="verdictBadge"></div>
+      <div class="consequence-text" id="consequenceText"></div>
+      <div class="white-quote" id="whiteQuote"></div>
+      <div class="white-verdict" id="whiteVerdict"></div>
+      <div class="btn-row">
+        <button class="btn-primary" id="continueBtn" onclick="loadNextStep()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Final summary -->
+    <div class="card" id="summaryCard" style="display:none">
+      <div class="scenario-label">White's Assessment</div>
+      <div class="final-summary" id="summaryText"></div>
+      <div class="btn-row" style="margin-top:20px">
+        <button class="btn-primary" onclick="restartScenario()">Start Over</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROXY = 'https://groq-proxy.ewalltom.workers.dev';
+const MODEL = 'openai/gpt-oss-120b';
+
+const EGWCONTEXT = `You are simulating Ellen G. White's pastoral counsel on preaching. You know her actual writings deeply.
+
+KEY TEACHINGS:
+1. CHRIST-CENTERED: Every sermon must have Jesus as the living center. "There have been entire discourses, dry and Christless, in which Jesus has scarcely been named." Command: "Put Christ into every sermon."
+2. WORD OVER FEELING: Preach from Scripture, not impressions or newspaper headlines. "Impressions and feelings are no sure evidence that a person is led by the Lord." No oratorical display, flashy rhetoric, amusing stories, or theatrical gestures.
+3. LAW AND GOSPEL TOGETHER: The 1888 message of Righteousness by Faith (E. J. Waggoner and A. T. Jones at Minneapolis) corrected legalism. "The law is the gospel embodied and the gospel is the law unfolded."
+4. REACH THE HEART: "The minister's utterances, to be effectual, must reach the hearts of his hearers." Intellect alone is not enough — make fervent appeals.
+5. PERSONAL EXPERIENCE: "Dare not to preach another discourse until you know, by your own experience, what Christ is to you."
+6. DIGNITY AND RESTRAINT: True revival is marked by "calmness and dignity and godly fear," not noise, jumping, or speaking in tongues (she called the 1908 Ralph Mackin tongues episode "unmeaning gibberish").
+7. FOCUS ON ETERNAL THINGS: "Leave out matters of minor consequence and present the truths that will decide the destiny of souls."
+8. HEALING THROUGH PREACHING: Christ-centered preaching heals divided congregations and dispels the "I am holier than thou" spirit.`;
+
+const INITIAL_SCENARIO = {
+  label: "Decision 1 — Your Theme",
+  text: "You sit at your desk the night before the camp meeting sermon. The congregation expects something substantive. What will be the organizing center of your message?",
+  choices: [
+    { letter: "A", text: "The Sabbath — the distinctive Adventist truth that sets your church apart from Sunday-keeping Christians" },
+    { letter: "B", text: "The grace and love of Jesus Christ — make Him the living center, and let every doctrine illuminate Him" },
+    { letter: "C", text: "A recent news story about moral decline — you believe it powerfully illustrates the signs of the times" }
+  ]
+};
+
+let history = [];
+let step = 0;
+const MAX_STEPS = 5;
+let awaitingNext = false;
+let pendingNextData = null;
+
+function buildStepDots() {
+  const container = document.getElementById('stepDots');
+  container.innerHTML = '';
+  for (let i = 0; i < MAX_STEPS; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i < step ? ' done' : i === step ? ' active' : '');
+    container.appendChild(dot);
+  }
+}
+
+function startScenario() {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('gameArea').style.display = '';
+  step = 0; history = []; pendingNextData = null;
+  buildStepDots();
+  renderScenario(INITIAL_SCENARIO);
+}
+
+function restartScenario() {
+  document.getElementById('summaryCard').style.display = 'none';
+  document.getElementById('feedbackCard').style.display = 'none';
+  startScenario();
+}
+
+function renderScenario(data) {
+  document.getElementById('scenarioLabel').textContent = data.label || `Decision ${step + 1} of ${MAX_STEPS}`;
+  document.getElementById('scenarioText').textContent = data.text;
+  document.getElementById('stepLabel').textContent = `Decision ${step + 1} of ${MAX_STEPS}`;
+  buildStepDots();
+
+  const container = document.getElementById('choicesContainer');
+  container.innerHTML = '';
+  (data.choices || []).forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="choice-letter">${c.letter}</span><span>${c.text}</span>`;
+    btn.onclick = () => makeChoice(c, data, btn);
+    container.appendChild(btn);
+  });
+
+  document.getElementById('scenarioCard').style.display = '';
+  document.getElementById('feedbackCard').style.display = 'none';
+  document.getElementById('loadDot').style.display = 'none';
+  document.getElementById('loadStatus').textContent = '';
+}
+
+async function makeChoice(choice, scenario, clickedBtn) {
+  // Disable all choices
+  document.querySelectorAll('.choice-btn').forEach(b => { b.disabled = true; });
+  document.getElementById('loadDot').style.display = '';
+  document.getElementById('loadStatus').textContent = 'Consulting White\'s counsel…';
+
+  history.push({ scenario: scenario.text, choice: choice.letter, choice_text: choice.text });
+  const isFinal = step === MAX_STEPS - 1;
+
+  const historyStr = history.map((h, i) => `Decision ${i+1}: ${h.scenario} → Chose ${h.choice}: "${h.choice_text}"`).join('\n');
+
+  const schema = isFinal
+    ? { consequence: '', white_quote: '', white_verdict: '', verdict_type: 'affirm', final_summary: '', is_final: true }
+    : { consequence: '', white_quote: '', white_verdict: '', verdict_type: 'affirm', next_decision: { label: '', text: '', choices: [{letter:'A',text:''},{letter:'B',text:''},{letter:'C',text:''}] }, is_final: false };
+
+  const prompt = [
+    'Return ONLY valid JSON matching the schema. No markdown, no backticks.',
+    '', 'SCHEMA:', JSON.stringify(schema, null, 2), '',
+    'CONTEXT:', EGWCONTEXT, '',
+    'HISTORY OF DECISIONS SO FAR:', historyStr, '',
+    'INSTRUCTIONS:',
+    `The minister just made Decision ${step+1}: "${choice.text}"`,
+    'consequence: 2-3 sentences describing what happens in the sermon as a result of this choice. Be specific and realistic.',
+    'white_quote: A real or plausible quote from White\'s writings directly relevant to this choice. Keep it under 50 words.',
+    'white_verdict: 2-3 sentences of White\'s perspective — affirming if it aligns with her counsel, corrective if it does not. Be honest and specific.',
+    'verdict_type: "affirm" if the choice clearly matches White\'s counsel, "caution" if mixed/partial, "correct" if it goes against her counsel.',
+    isFinal
+      ? 'final_summary: 3-4 sentences summarizing the overall sermon this minister built across all 5 decisions, and White\'s overall assessment of it. Reference specific choices made.'
+      : `next_decision: Present the NEXT situation this minister faces — a different aspect of sermon preparation or delivery. Must be distinct from all previous decisions. 3 choices (A, B, C). label: "Decision ${step+2} — [topic]". Make choices genuinely distinct — not obviously one right answer.`,
+  ].join('\n');
+
+  try {
+    const text = await callAI(prompt);
+    const data = extractJson(text);
+    if (!data) throw new Error('Could not parse AI response.');
+
+    document.getElementById('loadDot').style.display = 'none';
+    document.getElementById('loadStatus').textContent = '';
+
+    // Show feedback
+    const feedbackCard = document.getElementById('feedbackCard');
+    feedbackCard.className = 'card ' + (data.verdict_type || 'caution');
+
+    const badge = document.getElementById('verdictBadge');
+    const labels = { affirm: '✓ Good Choice', caution: '⚠ Mixed Result', correct: '✗ White Would Correct This' };
+    const classes = { affirm: 'verdict-badge badge-affirm', caution: 'verdict-badge badge-caution', correct: 'verdict-badge badge-correct' };
+    badge.textContent = labels[data.verdict_type] || labels.caution;
+    badge.className = classes[data.verdict_type] || classes.caution;
+
+    document.getElementById('consequenceText').textContent = data.consequence || '';
+    document.getElementById('whiteQuote').textContent = '"' + (data.white_quote || '') + '"';
+    document.getElementById('whiteVerdict').textContent = data.white_verdict || '';
+
+    if (isFinal) {
+      document.getElementById('continueBtn').textContent = 'See Final Assessment';
+      pendingNextData = { final_summary: data.final_summary };
+    } else {
+      document.getElementById('continueBtn').textContent = 'Continue →';
+      pendingNextData = data.next_decision;
+    }
+
+    feedbackCard.style.display = '';
+    step++;
+    buildStepDots();
+
+  } catch (err) {
+    document.getElementById('loadDot').style.display = 'none';
+    document.getElementById('loadStatus').textContent = 'Error: ' + err.message.slice(0, 140);
+    document.querySelectorAll('.choice-btn').forEach(b => { b.disabled = false; });
+  }
+}
+
+function loadNextStep() {
+  if (!pendingNextData) return;
+
+  if (pendingNextData.final_summary) {
+    document.getElementById('feedbackCard').style.display = 'none';
+    document.getElementById('scenarioCard').style.display = 'none';
+    document.getElementById('summaryText').textContent = pendingNextData.final_summary;
+    document.getElementById('summaryCard').style.display = '';
+    buildStepDots();
+  } else {
+    document.getElementById('feedbackCard').style.display = 'none';
+    renderScenario(pendingNextData);
+    pendingNextData = null;
+  }
+}
+
+async function callAI(promptText) {
+  const response = await fetch(PROXY, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: promptText }] }], generationConfig: { responseMimeType: 'text/plain' }, model: MODEL })
+  });
+  const raw = await response.text();
+  let data;
+  try { data = JSON.parse(raw); } catch { throw new Error(`Non-JSON from proxy (HTTP ${response.status}): ${raw.slice(0,300)}`); }
+  if (!response.ok) throw new Error(data?.error?.message || `HTTP ${response.status}`);
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('No text in AI response');
+  return text;
+}
+
+function extractJson(text) {
+  let t = String(text).trim();
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fence) t = fence[1].trim();
+  const a = t.indexOf('{'), b = t.lastIndexOf('}');
+  if (a >= 0 && b > a) t = t.slice(a, b + 1);
+  try { return JSON.parse(t); } catch { return null; }
+}
+</script>
+</body>
+</html>

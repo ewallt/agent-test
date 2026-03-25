@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code + NotebookLM — Workflow Explainer</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 50%, #070c16 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px 36px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  header h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    margin-bottom: 12px;
+  }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--muted); font-size: 1rem; max-width: 560px; margin: 0 auto; line-height: 1.6; }
+
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* Tabs */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    padding: 24px 0 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    transition: color .15s, border-color .15s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Panels */
+  .panel { display: none; padding: 40px 0; }
+  .panel.active { display: block; }
+
+  /* Content blocks */
+  h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; margin-bottom: 8px; }
+  h2 span { color: var(--accent); }
+  .lead { color: var(--muted); font-size: 1rem; line-height: 1.7; margin-bottom: 32px; max-width: 680px; }
+
+  h3 { font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 10px; margin-top: 28px; }
+  p { color: var(--muted); font-size: .93rem; line-height: 1.75; margin-bottom: 14px; }
+  p strong { color: var(--text); font-weight: 600; }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-title .icon { font-size: 1.2rem; }
+  .card p { margin-bottom: 0; }
+
+  /* Flow diagram */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    row-gap: 10px;
+    padding: 24px 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+  }
+  .flow-node {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: .83rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+    min-width: 100px;
+  }
+  .flow-node small {
+    display: block;
+    font-size: .72rem;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .flow-node.hi {
+    background: rgba(139,185,255,.1);
+    border-color: rgba(139,185,255,.35);
+    color: var(--accent);
+  }
+  .flow-node.hi small { color: rgba(139,185,255,.7); }
+  .flow-node.green {
+    background: rgba(124,255,178,.08);
+    border-color: rgba(124,255,178,.3);
+    color: var(--green);
+  }
+  .flow-arr { color: var(--muted); font-size: 1rem; padding: 0 8px; flex-shrink: 0; }
+
+  /* Code block */
+  pre {
+    background: #060c18;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-family: var(--mono);
+    font-size: .83rem;
+    color: #c9d8f0;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    line-height: 1.65;
+  }
+  pre .cm { color: #4a6680; }
+  pre .kw { color: var(--accent); }
+  pre .st { color: var(--green); }
+  pre .hl { color: var(--yellow); }
+
+  /* Callout */
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    font-size: .9rem;
+    line-height: 1.65;
+  }
+  .callout.blue  { background: rgba(139,185,255,.07); border: 1px solid rgba(139,185,255,.2); color: var(--accent); }
+  .callout.green { background: rgba(124,255,178,.07); border: 1px solid rgba(124,255,178,.2); color: var(--green); }
+  .callout.yellow{ background: rgba(255,214,100,.07); border: 1px solid rgba(255,214,100,.2); color: var(--yellow); }
+  .callout strong { display: block; margin-bottom: 4px; font-weight: 700; }
+  .callout p { margin-bottom: 0; color: inherit; font-size: inherit; }
+
+  /* Two-col grid */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  @media (max-width: 600px) { .grid2 { grid-template-columns: 1fr; } }
+
+  /* Tag pill */
+  .tag {
+    display: inline-block;
+    font-size: .72rem; font-weight: 700;
+    letter-spacing: .07em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 99px; margin-left: 8px;
+  }
+  .tag-now   { background: rgba(124,255,178,.12); color: var(--green);  border: 1px solid rgba(124,255,178,.25); }
+  .tag-old   { background: rgba(255,122,138,.10); color: var(--red);    border: 1px solid rgba(255,122,138,.2); }
+  .tag-new   { background: rgba(139,185,255,.12); color: var(--accent); border: 1px solid rgba(139,185,255,.25); }
+
+  /* Example boxes */
+  .example {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .example-hd {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .example-bd { padding: 18px 20px; }
+  .example-bd p { margin-bottom: 8px; }
+  .example-bd p:last-child { margin-bottom: 0; }
+
+  /* VS comparison */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  @media (max-width: 580px) { .vs { grid-template-columns: 1fr; } }
+  .vs-col { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .vs-hd { padding: 12px 18px; font-size: .82rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .vs-hd.old { background: rgba(255,122,138,.07); color: var(--red); }
+  .vs-hd.new { background: rgba(124,255,178,.07); color: var(--green); }
+  .vs-bd { padding: 16px 18px; }
+  .vs-bd li { font-size: .88rem; color: var(--muted); line-height: 1.7; margin-left: 18px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Workflow Explainer</div>
+  <h1>Claude Code <span>+</span> NotebookLM</h1>
+  <p>How Claude Code orchestrates NotebookLM — creating notebooks, reading their content, and building companion apps from what NLM knows.</p>
+</header>
+
+<div class="wrap">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="show('workflow')">The Workflow</button>
+    <button class="tab-btn" onclick="show('setup')">Claude + NLM Setup</button>
+    <button class="tab-btn" onclick="show('reading')">Reading NLM</button>
+    <button class="tab-btn" onclick="show('examples')">Why It Matters</button>
+    <button class="tab-btn" onclick="show('possible')">What's Possible</button>
+  </div>
+
+  <!-- ── TAB 1: THE WORKFLOW ─────────────────────────────────────────── -->
+  <div id="panel-workflow" class="panel active">
+    <h2>The <span>Notebook</span> Workflow</h2>
+    <p class="lead">Claude Code acts as an orchestrator — it creates a NotebookLM notebook, populates it with sources, triggers artifact generation, reads what NLM produces, and builds a companion web app. You drop a topic; Claude handles the rest.</p>
+
+    <h3>End-to-End Flow</h3>
+    <div class="flow">
+      <div class="flow-node hi">Claude Code<small>receives topic</small></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node">nlm notebook create<small>fresh notebook</small></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node">nlm research start<small>web sources</small></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node">nlm research import<small>10 sources</small></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node hi">nlm notebook query<small>Claude reads NLM</small></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node green">Web App Built<small>grounded content</small></div>
+      <div class="flow-arr">→</div>
+      <div class="flow-node">nlm video create<small>fire & forget</small></div>
+    </div>
+
+    <h3>What Claude Handles Autonomously</h3>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><span class="icon">🔬</span> Research</div>
+        <p>Claude triggers NLM's web research, waits for completion, and imports sources — typically 8–10 current articles found automatically.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">💬</span> Querying</div>
+        <p>Claude asks the notebook targeted questions and uses the synthesized answers to build content — no copy-paste, no manual handoff.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🌐</span> Web App</div>
+        <p>Claude writes a single-file HTML companion app with an Explorer (focus angles + follow-up chips) and a Quiz grounded in the notebook's content.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🎬</span> Video</div>
+        <p>Claude triggers NLM's Video Overview generation last — it takes several minutes, so it runs in the background while other work completes.</p>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <strong>The key insight</strong>
+      <p>Claude Code is not just a setup script for NotebookLM. It reads what NLM produces and uses that content to build better artifacts. The query mechanism is the bridge that makes this possible.</p>
+    </div>
+  </div>
+
+  <!-- ── TAB 2: SETUP ────────────────────────────────────────────────── -->
+  <div id="panel-setup" class="panel">
+    <h2>Claude Code <span>+ NLM</span> Setup</h2>
+    <p class="lead">Claude Code controls NotebookLM through a command-line tool called <code style="color:var(--accent);font-family:var(--mono)">nlm</code> — the NotebookLM MCP CLI. All operations go through this tool: creating notebooks, adding sources, generating artifacts, querying, and exporting.</p>
+
+    <h3>The nlm CLI</h3>
+    <div class="card">
+      <div class="card-title"><span class="icon">⌨️</span> notebooklm-mcp-cli (nlm)</div>
+      <p>A Python-based CLI that provides programmatic access to NotebookLM. Claude Code issues commands; NLM executes them against a real notebook in the Google NotebookLM backend. Auth is OAuth-based and sessions last ~20 minutes.</p>
+    </div>
+
+    <pre><span class="cm"># Always prefix — prevents Unicode errors on Windows</span>
+<span class="kw">PYTHONIOENCODING</span>=utf-8 nlm notebook create <span class="st">"The Drinker Paradox"</span>
+<span class="cm"># → Notebook ID: cce55efb-9728-41ec-8ea5-3686f47f9f23</span>
+
+<span class="kw">PYTHONIOENCODING</span>=utf-8 nlm research start <span class="st">"Claude Code features 2025 2026"</span> \
+  --notebook-id cce55efb --mode fast
+
+<span class="kw">PYTHONIOENCODING</span>=utf-8 nlm research import cce55efb &lt;task-id&gt;
+
+<span class="kw">PYTHONIOENCODING</span>=utf-8 nlm notebook query cce55efb \
+  <span class="st">"What are the main themes and arguments?"</span></pre>
+
+    <h3>Source Patterns</h3>
+    <p>Three ways to populate a notebook with knowledge:</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><span class="icon">🌐</span> Web Research</div>
+        <p>NLM fetches 8–10 current web sources automatically. Best for recent topics or anything where freshness matters.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🤖</span> Claude as Source</div>
+        <p>Claude writes the knowledge base and uploads it as a text file. Best for well-defined topics where Claude's training is sufficient.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">📋</span> Copied Text</div>
+        <p>Tom pastes in a transcript, document, or article. Claude uploads it. Best for specific source material Tom already has.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">📄</span> File Upload</div>
+        <p>Local files (markdown, text) uploaded directly as sources. Used when Claude writes a knowledge base or slide manifest that feeds back into the notebook.</p>
+      </div>
+    </div>
+
+    <h3>Auth and Sessions</h3>
+    <div class="callout yellow">
+      <strong>Session limit: ~20 minutes</strong>
+      <p>NLM auth sessions expire. Claude checks auth before every run and prompts for re-login when needed. The <code style="font-family:var(--mono)">nlm login</code> command opens a browser flow — takes about 30 seconds.</p>
+    </div>
+
+    <h3>Google Drive Integration (optional)</h3>
+    <p>NLM can export artifacts directly to Google Drive as native Google Docs. With a separate OAuth setup, Claude can also read those docs — enabling an iterative loop where Claude improves NLM's output and feeds it back in as a new source. Useful for multi-pass refinement of slide manifests, briefing docs, and study guides.</p>
+  </div>
+
+  <!-- ── TAB 3: READING NLM ──────────────────────────────────────────── -->
+  <div id="panel-reading" class="panel">
+    <h2>Reading <span>NLM Content</span></h2>
+    <p class="lead">Claude Code can query any NotebookLM notebook directly — asking targeted questions and getting synthesized answers grounded in the notebook's sources. No artifact export needed, no extra setup. Just ask.</p>
+
+    <h3>How the Query Works</h3>
+    <p>Once sources are imported, NLM has synthesized them into its knowledge graph. A query asks NLM to draw on that synthesis to answer a specific question. The response is grounded in the actual sources — not NLM's general training, and not Claude's training. It's what the sources say.</p>
+
+    <pre><span class="kw">PYTHONIOENCODING</span>=utf-8 nlm notebook query 4872a2c8 \
+  <span class="st">"What are the most recent major features of Claude Code as of 2025-2026?"</span>
+
+<span class="cm"># Response (excerpt):</span>
+<span class="hl"># Recent Features: February – March 2026 (v2.1.69–2.1.71)</span>
+<span class="cm"># • /loop Command: recurring task feature — "cron for your AI agent"</span>
+<span class="cm"># • Remote Control: start a terminal session locally, continue from mobile</span>
+<span class="cm"># • Claude Code Security: built-in codebase vulnerability scanner</span>
+<span class="cm"># • Version 2.1.0 (Jan 2026): skill hot-reload, context forking, bash wildcards</span></pre>
+
+    <h3>Why Query Is Better for Web Apps</h3>
+    <p>When Claude builds a web app companion, it needs to populate <strong>FOCUS_PROMPTS</strong> — dense knowledge paragraphs for each Explorer focus angle. Without querying, Claude guesses from its own training. With querying, Claude gets NLM's synthesis of the actual sources. The difference is especially dramatic for:</p>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><span class="icon">📅</span> Post-Cutoff Topics</div>
+        <p>Claude's training has a knowledge cutoff. For anything more recent, NLM's web research sources are the only reliable ground truth. Query extracts that knowledge directly.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">📚</span> Niche Books and Works</div>
+        <p>For a book like <em>Behold Your God</em> by F.T. Wright — a specific work Claude doesn't know well — query gives the actual arguments and illustrations from the text, not guesses.</p>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <strong>Confirmed: 2026-03-14</strong>
+      <p>Queried "The Current State of Claude Code" notebook (10 web research sources, post-cutoff topic). Responses included version numbers, feature names, and release dates from 2025–2026 — content Claude had no independent knowledge of. Used those responses to build a web app with accurate FOCUS_PROMPTS.</p>
+    </div>
+  </div>
+
+  <!-- ── TAB 4: WHY IT MATTERS ───────────────────────────────────────── -->
+  <div id="panel-examples" class="panel">
+    <h2>Why It <span>Matters</span></h2>
+    <p class="lead">The ability to query NotebookLM directly changes what Claude can build. Here are concrete examples where it makes a meaningful difference.</p>
+
+    <div class="example">
+      <div class="example-hd"><span>📅</span> Post-Cutoff Topics <span class="tag tag-new">new</span></div>
+      <div class="example-bd">
+        <p><strong>The problem:</strong> Claude's training has a knowledge cutoff (August 2025). Ask Claude to build a web app about "The Current State of Claude Code" in March 2026 and it will guess — and guess wrong about anything released in the last 7 months.</p>
+        <p><strong>With query:</strong> Claude runs NLM web research (10 current sources found automatically), then queries the notebook. The responses include version numbers, feature names, and release dates Claude has never seen. The FOCUS_PROMPTS in the web app are accurate to the actual current state — not Claude's stale memory.</p>
+        <p><strong>Example query used:</strong> <em>"What are the most recent major features and updates to Claude Code as of 2025–2026?"</em> — Response included /loop command, Remote Control, Claude Code Security (v2.1.71), skill hot-reload (v2.1.0), and context forking.</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-hd"><span>📖</span> Niche Books and Specific Works <span class="tag tag-new">new</span></div>
+      <div class="example-bd">
+        <p><strong>The problem:</strong> Build a web app about <em>Behold Your God: Understanding Divine Character</em> by F.T. Wright — a specific theological book Claude doesn't know well. Without querying, Claude fills FOCUS_PROMPTS with generic theology, missing the book's actual arguments entirely.</p>
+        <p><strong>With query:</strong> Claude queries the notebook loaded with the book's content. The response names every illustrative concept: the Nuclear Power Plant Technician, the Hollywood Western (White Hat/Black Hat), the Father and the Son and the Gun, Rods and Serpents, the Boeing 747 Pilot. Claude builds FOCUS_PROMPTS from the actual book — the AI in the web app elaborates on what the sources say, not what it guessed.</p>
+        <p><strong>The result:</strong> A web app that genuinely knows the book. The Explorer explains Wright's arguments accurately. The quiz asks questions about his specific illustrations, not generic theology.</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-hd"><span>🎙️</span> YouTube Video Companions <span class="tag tag-new">new</span></div>
+      <div class="example-bd">
+        <p><strong>The use case:</strong> A YouTube video covers a specific topic with a specific angle. The companion web app should match the video's content — not generic background on the topic.</p>
+        <p><strong>With query:</strong> Claude queries the same notebook that grounded the video's content. The focus angles in the Explorer match the video's focus angles. The quiz tests what the video taught, not what Claude thinks is interesting about the topic. The app and the video are coherent because they draw from the same source.</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="example-hd"><span>🔁</span> Iterative Refinement via Google Drive</div>
+      <div class="example-bd">
+        <p>NLM can export artifacts directly to Google Drive. With the Drive integration enabled, Claude can read those exports, improve them — deepening thin sections, strengthening narrative arcs — and re-upload the improved version as a new notebook source. NLM regenerates from a better brief. This is a separate capability from querying: querying reads NLM's synthesis; Drive export reads the artifact itself and feeds an improved version back in.</p>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <strong>The shift in mental model</strong>
+      <p>Before: Claude builds the notebook and NLM generates outputs. Claude never sees what NLM produced.<br><br>
+      After: Claude builds the notebook, queries it to read NLM's synthesis, and uses that synthesis to build better outputs. Claude and NLM are collaborators, not pipeline stages.</p>
+    </div>
+  </div>
+
+  <!-- ── TAB 5: WHAT'S POSSIBLE ──────────────────────────────────────── -->
+  <div id="panel-possible" class="panel">
+    <h2>What's <span>Possible</span></h2>
+    <p class="lead">The current workflow is working but still early. Here's where it stands and where it's going.</p>
+
+    <h3>Working Today</h3>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><span class="icon">✅</span> Web Research</div>
+        <p>NLM finds and imports 10 current web sources automatically. Claude doesn't need to know the topic — NLM does the research.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">✅</span> Direct Query</div>
+        <p>Claude queries any notebook and gets synthesized answers. Multiple questions per run, rich responses, grounded in sources.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">✅</span> Web App Generation</div>
+        <p>Single-file HTML companion app: Explorer with follow-up chips, quiz with score tracking. Grounded in notebook query content.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">✅</span> Video Overview</div>
+        <p>NLM generates a video overview. Claude triggers it last (fire and forget) — it runs while Claude finishes other artifacts.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">✅</span> Slide Deck (PDF)</div>
+        <p>NLM generates a downloadable slide deck. Confirmed working. CLI download reliable; accessible in NLM UI as backup.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">✅</span> Google Drive Loop</div>
+        <p>NLM exports to Drive → Claude reads → Claude improves → re-uploads as source. Confirmed end-to-end for source augmentation.</p>
+      </div>
+    </div>
+
+    <h3>Coming Next</h3>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><span class="icon">🔍</span> Quality Gating</div>
+        <p>Claude queries the notebook, evaluates whether the content meets quality criteria, and triggers a redo if it doesn't — before Tom sees it.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🔗</span> Cross-Notebook Synthesis</div>
+        <p>Query multiple notebooks on related topics, synthesize the key threads, write a combined analysis, and feed a new synthesis notebook.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">🎬</span> NLM → Remotion Pipeline</div>
+        <p>Query a notebook, convert the synthesized content into a Remotion composition, generate ElevenLabs narration. Research notebook becomes a produced video.</p>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">⚡</span> Parallel Runs</div>
+        <p>Claude spawns subagents to run multiple notebooks in parallel — one per topic in a series. All notebooks built, queried, and wrapped up simultaneously.</p>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <strong>The bigger picture</strong>
+      <p>Claude Code and NotebookLM are becoming a two-AI system — one that researches and synthesizes (NLM), one that orchestrates and builds (Claude). The query mechanism is what connects them. Tom's role shifts from managing handoffs to setting topics and reviewing finished work.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function show(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+Web App Build Prompt — Tabbed Layout
+=====================================
+
+Build a single-file HTML web app on the topic described in the knowledge
+base. The app presents the topic's major points as navigable tabs — one
+tab per point — with all content embedded directly in the HTML.
+
+No AI proxy or API calls. Content is static, built from the knowledge base.
+
+---
+
+APP STRUCTURE
+
+Horizontal tab bar at the top. One tab per major point (4–6 tabs).
+Clicking a tab shows that point's content. Active tab is clearly
+distinguished. Clean, uncluttered layout — a viewer should land on
+any tab and immediately grasp the point.
+
+---
+
+KNOWLEDGE BASE → APP MAPPING
+
+From the knowledge base, extract:
+
+1. TOPIC TITLE — used as the page <h1>
+2. SUBTITLE — one short line describing the topic
+3. TABS — 4–6 major themes or principles. For each tab:
+   - Tab label: short, 2–5 words
+   - Heading: slightly longer than the label, sets up the content
+   - Quote: the most powerful or representative statement on this theme.
+     Pull exact wording from the knowledge base where possible.
+   - Explanation: 2–4 sentences in plain language — what it means,
+     why it matters, how it connects to the topic
+
+---
+
+TAB CONTENT LAYOUT
+
+Each tab panel contains:
+  - A prominent pull quote, visually set apart (large, styled distinctly)
+  - A heading
+  - The explanation paragraph(s)
+
+The quote should be the first thing the eye lands on. Keep each tab
+sparse — one strong idea, one quote, one explanation. Do not crowd it.
+
+---
+
+DESIGN TOKENS (use exactly)
+
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 16px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+            Helvetica, Arial;
+  }
+  body {
+    font-family: var(--sans);
+    background: linear-gradient(180deg,#070c16 0%,#0b1220 50%,#070c16 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 28px 20px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+Active tab: background rgba(139,185,255,.12); border-color rgba(139,185,255,.35); color var(--accent)
+Quote style: large font size, italic, color var(--accent), left border accent line
+
+---
+
+OUTPUT
+
+Produce a single complete .html file with no external dependencies.
+All styles inline in <style>. All scripts inline in <script>.

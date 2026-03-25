@@ -1,0 +1,169 @@
+WEB APP BUILD PROMPT — EXPLORER + QUIZ
+=======================================
+Give this prompt to Claude or Gemini along with a knowledge base.
+The AI will produce a single self-contained HTML file.
+---------------------------------------------------------------
+
+Build a single-file HTML web app on the topic described in the knowledge
+base below. The app has two tabs: an Explorer and a Quiz.
+
+---
+
+APP STRUCTURE
+
+Two tabs at the top:
+  - Explorer: user selects a focus angle from a dropdown, AI returns a
+    structured deep-dive rendered as a summary, a detail table, and
+    clickable follow-up chips
+  - Quiz: AI generates 5 multiple-choice questions; user answers one at
+    a time; score tracked; explanation shown after each answer
+
+---
+
+KNOWLEDGE BASE → APP MAPPING
+
+From the knowledge base, extract:
+
+1. TOPIC TITLE — used as the page <h1>
+2. SUBTITLE — one short line: "[topic description] · AI-powered explorer & quiz"
+3. FOCUS ANGLES — 5–8 named angles. For each, write a dense knowledge
+   paragraph (5–8 sentences, specific names/dates/mechanisms) that becomes
+   the context string in FOCUS_PROMPTS.
+4. QUIZ SCOPE — a dense paragraph listing the key concepts, names, dates,
+   and mechanisms quiz questions should draw from.
+
+---
+
+AI INFRASTRUCTURE
+
+Use this exact proxy and model — do not change:
+
+  const PROXY = 'https://groq-proxy.ewalltom.workers.dev';
+  const MODEL = 'openai/gpt-oss-120b';
+
+  async function callAI(promptText) {
+    const response = await fetch(PROXY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: promptText }] }],
+        generationConfig: { responseMimeType: 'text/plain' },
+        model: MODEL
+      })
+    });
+    const raw = await response.text();
+    let data;
+    try { data = JSON.parse(raw); }
+    catch { throw new Error(`Non-JSON from proxy (HTTP ${response.status}): ${raw.slice(0,300)}`); }
+    if (!response.ok) throw new Error(data?.error?.message || `HTTP ${response.status}`);
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) throw new Error('No text in AI response');
+    return text;
+  }
+
+  function extractJson(text) {
+    let t = String(text).trim();
+    const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    if (fence) t = fence[1].trim();
+    const a = t.indexOf('{'), b = t.lastIndexOf('}');
+    if (a >= 0 && b > a) t = t.slice(a, b + 1);
+    try { return JSON.parse(t); } catch { return null; }
+  }
+
+---
+
+EXPLORER TAB
+
+The FOCUS_PROMPTS object maps angle keys to knowledge strings:
+
+  const FOCUS_PROMPTS = {
+    "Angle Name": "Dense knowledge paragraph...",
+    ...
+  };
+
+Explorer AI prompt (send knowledge string + user selection):
+
+  "You are an expert on [topic]. Using this knowledge: [knowledge string].
+   Provide a structured deep-dive on: [selected angle].
+   Return JSON: {
+     title: string,
+     summary: string,
+     items: [{ name, key_figure_or_date, description, significance }],
+     follow_up_questions: [string, string, string]
+   }
+   Request 6–8 items. follow_up_questions become clickable chips that
+   re-run the explorer with that question as the new focus."
+
+Render response as: title → summary paragraph → table of items →
+row of clickable chip buttons for follow-up questions.
+
+---
+
+QUIZ TAB
+
+Quiz AI prompt (embed the quiz scope):
+
+  "You are an expert on [topic]. Generate exactly 5 multiple-choice
+   questions testing knowledge of: [quiz scope paragraph].
+   Return JSON: {
+     questions: [{
+       question: string,
+       options: ['A. ...', 'B. ...', 'C. ...', 'D. ...'],
+       correct: 'A'|'B'|'C'|'D',
+       explanation: string
+     }]
+   }
+   Vary difficulty. Avoid trivial questions."
+
+- Show one question at a time
+- Shuffle correct answer into a random position before rendering
+- Show explanation after each answer
+- Track score; show final score at end
+- "New Quiz" button generates a fresh batch; avoid repeating questions
+  already seen this session
+
+---
+
+STATUS INDICATOR
+
+Both tabs have a small status dot in the top-right corner:
+  - Pulsing blue = loading
+  - Green = ready / success
+  - Red = error
+
+---
+
+DESIGN TOKENS (use exactly)
+
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 16px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+            Helvetica, Arial;
+  }
+  body {
+    font-family: var(--sans);
+    background: linear-gradient(180deg,#070c16 0%,#0b1220 50%,#070c16 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 28px 20px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+Active tab: background rgba(139,185,255,.12); border-color rgba(139,185,255,.35); color var(--accent)
+Primary button: background linear-gradient(135deg, #8bb9ff, rgba(124,255,178,.92)); color #08101d
+
+---
+
+OUTPUT
+
+Produce a single complete .html file with no external dependencies.
+All styles inline in <style>. All scripts inline in <script>.

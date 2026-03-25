@@ -250,3 +250,18 @@
 - Hiccups: Video status reported as "unknown" after generation — download failed via CLI (known issue). Video accessible in NotebookLM UI. Slide deck downloaded successfully as PDF. nlm slides create produces a PDF, not the Gemini manifest — manifest must be written by Claude directly (new pattern, captured in notebooklm-slide-manifest skill).
 
 ---
+
+## 2026-03-14 22:03 | Ephemeral Notebook | "Ellen G. White on Preaching"
+- Notebook ID: aaeab32a-4fad-436c-abd4-3afac5bae92b
+- URL: https://notebooklm.google.com/notebook/aaeab32a-4fad-436c-abd4-3afac5bae92b
+- Pattern: Research-based — 10 sources imported
+- Videos: 1 | Style: retro_print | Artifact ID: bfbb2954-8859-42ee-bbb0-a2ef84536fc0
+- Slides: presenter_slides | Artifact ID: 637060a1-c63f-4a26-990a-4366e6febecc
+- Infographic: portrait, detailed | Artifact ID: 8604f00f-65db-41da-b6a4-39515728723c
+- App: apps/egw-preaching.html — 5 tabs (Christ at the Center, The Word as Foundation, Law & Gospel Together, Reach the Heart, Herald the Second Coming)
+- App type: notebooklm-webapp-tabbed (first run of new skill)
+- Elapsed: ~15m
+- Intervention: None observed
+- Hiccups: none
+
+---

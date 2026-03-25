@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ellen G. White on Preaching</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --gold: rgba(255,210,120,.92);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 16px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 50%, #070c16 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 36px 20px 60px;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; }
+
+  /* Header */
+  header { text-align: center; margin-bottom: 40px; }
+  header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    color: var(--text);
+  }
+  header .sub {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: .95rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .divider {
+    width: 48px; height: 2px;
+    background: var(--accent);
+    margin: 16px auto 0;
+    border-radius: 2px;
+    opacity: .5;
+  }
+
+  /* Tab bar */
+  .tab-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    flex: 1 1 auto;
+    min-width: 120px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: .85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .18s ease;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .tab-btn:hover {
+    border-color: rgba(139,185,255,.25);
+    color: var(--text);
+  }
+  .tab-btn.active {
+    background: rgba(139,185,255,.12);
+    border-color: rgba(139,185,255,.35);
+    color: var(--accent);
+  }
+
+  /* Tab panels */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .panel-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 44px 48px;
+    box-shadow: var(--shadow);
+  }
+
+  /* Quote block */
+  .quote-block {
+    border-left: 3px solid var(--gold);
+    padding-left: 24px;
+    margin-bottom: 36px;
+  }
+  .quote-text {
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--gold);
+    font-style: italic;
+  }
+  .quote-attr {
+    margin-top: 12px;
+    font-size: .82rem;
+    color: var(--muted);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  /* Explanation */
+  .explanation {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--muted);
+    max-width: 680px;
+  }
+  .explanation strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Tab number badge */
+  .tab-num {
+    display: block;
+    font-size: .7rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    opacity: .6;
+  }
+
+  @media (max-width: 600px) {
+    .panel-card { padding: 28px 22px; }
+    .quote-text { font-size: 1.1rem; }
+    header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Ellen G. White on Preaching</h1>
+    <p class="sub">What the Word Says About the Word</p>
+    <div class="divider"></div>
+  </header>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="show(0)">
+      <span class="tab-num">01</span>Christ at the Center
+    </button>
+    <button class="tab-btn" onclick="show(1)">
+      <span class="tab-num">02</span>The Word as Foundation
+    </button>
+    <button class="tab-btn" onclick="show(2)">
+      <span class="tab-num">03</span>Law &amp; Gospel Together
+    </button>
+    <button class="tab-btn" onclick="show(3)">
+      <span class="tab-num">04</span>Reach the Heart
+    </button>
+    <button class="tab-btn" onclick="show(4)">
+      <span class="tab-num">05</span>Herald the Second Coming
+    </button>
+  </div>
+
+  <!-- Tab 1: Christ at the Center -->
+  <div class="tab-panel active" id="panel-0">
+    <div class="panel-card">
+      <div class="quote-block">
+        <p class="quote-text">"Jesus is the living center of everything. Put Christ into every sermon. Let the preciousness, mercy, and glory of Jesus Christ be dwelt upon until Christ is formed within, the hope of glory."</p>
+        <p class="quote-attr">— Ellen G. White</p>
+      </div>
+      <p class="explanation">
+        White taught that every sermon, whatever its topic, must have Christ as its living center. Doctrinal arguments without Christ fail to soften the soul. She warned against "dry and Christless" discourses, insisting that even when presenting the law, <strong>Christ must remain the great center of attraction</strong>. The burden of every message is "the science of salvation" — Christ crucified, risen, ascended, and coming again.
+      </p>
+    </div>
+  </div>
+
+  <!-- Tab 2: The Word as Foundation -->
+  <div class="tab-panel" id="panel-1">
+    <div class="panel-card">
+      <div class="quote-block">
+        <p class="quote-text">"It is through the Word — not feeling, not excitement — that we want to influence the people to obey the truth. On the platform of God's Word we can stand with safety."</p>
+        <p class="quote-attr">— Ellen G. White</p>
+      </div>
+      <p class="explanation">
+        The Bible is the preacher's sole authority. White cautioned against stripping verses from context, interpreting symbols by personal imagination, or substituting human tradition and opinion for Scripture. She urged ministers to <strong>let the Word speak to the people</strong> rather than relying on ecstatic experience or emotional fervor. The living Word carries its own power — the preacher's task is to proclaim it faithfully.
+      </p>
+    </div>
+  </div>
+
+  <!-- Tab 3: Law & Gospel Together -->
+  <div class="tab-panel" id="panel-2">
+    <div class="panel-card">
+      <div class="quote-block">
+        <p class="quote-text">"No man can rightly present the law of God without the gospel, or the gospel without the law."</p>
+        <p class="quote-attr">— Ellen G. White</p>
+      </div>
+      <p class="explanation">
+        White saw the law and the gospel as inseparable partners in faithful preaching. The law reveals sin and drives the sinner to the Savior; the gospel provides the righteousness of Christ. To preach one without the other is to preach incompletely. She urged ministers to help sinners recognize their transgression of the law <strong>while exercising faith in Jesus</strong> — the old gospel doctrine of sorrow for sin, repentance, and confession.
+      </p>
+    </div>
+  </div>
+
+  <!-- Tab 4: Reach the Heart -->
+  <div class="tab-panel" id="panel-3">
+    <div class="panel-card">
+      <div class="quote-block">
+        <p class="quote-text">"The preaching of the word should appeal to the intellect and should impart knowledge, but it should do more than this. The minister's utterances, to be effectual, must reach the hearts of his hearers."</p>
+        <p class="quote-attr">— Ellen G. White</p>
+      </div>
+      <p class="explanation">
+        Information alone does not transform. White taught that while preaching must engage the mind, its ultimate aim is the heart. She warned against relying on amusing stories, sensationalism, or oratorical display — eloquence pursued for its own sake causes the truth to slip away. What the pulpit calls for is <strong>sincerity and deep earnestness</strong>, the minister standing as a voice from God, calm and dignified, speaking as one who believes every word.
+      </p>
+    </div>
+  </div>
+
+  <!-- Tab 5: Herald the Second Coming -->
+  <div class="tab-panel" id="panel-4">
+    <div class="panel-card">
+      <div class="quote-block">
+        <p class="quote-text">"Ministers should present the sure word of prophecy, as the foundation of the faith of Seventh-day Adventists. The prophecies of Daniel and the Revelation should be carefully studied… We are today living in the time when the predictions of this chapter are fulfilling."</p>
+        <p class="quote-attr">— Ellen G. White</p>
+      </div>
+      <p class="explanation">
+        White called ministers to be heralds of the Second Coming. The prophetic books — Daniel, Revelation, Matthew 24 — are not optional additions to the preaching calendar but essential content for the last days. She urged ministers to <strong>explain the prophecies to those they instruct</strong>, helping believers understand the time they live in. The return of Christ is the horizon that gives every sermon its urgency.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function show(index) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.tab-panel').forEach((p, i) => {
+      p.classList.toggle('active', i === index);
+    });
+  }
+</script>
+</body>
+</html>
