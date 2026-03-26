@@ -56,7 +56,16 @@
       "Bash(npm install @remotion/media-utils@4.0.432)",
       "Bash(node -e \":*)",
       "Bash(dir /s /b \"C:\\\\Users\\\\tomew\\\\Documents\\\\agent-test\\\\model-collapse\")",
-      "Bash(dir \"C:\\\\Users\\\\tomew\\\\.claude\\\\skills\" /b)"
+      "Bash(dir \"C:\\\\Users\\\\tomew\\\\.claude\\\\skills\" /b)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git rm:*)",
+      "Bash(git ls-tree:*)",
+      "Skill(claude-api)",
+      "Skill(claude-api:*)"
     ]
   }
 }

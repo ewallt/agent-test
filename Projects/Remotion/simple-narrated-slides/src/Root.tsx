@@ -4,8 +4,10 @@ import { ModelCollapse } from "./ModelCollapse";
 import { HelloWorld } from "./HelloWorld";
 import { Britain1940, type Britain1940Props } from "./Britain1940";
 import { BattleOfAtlantic, type BattleOfAtlanticProps } from "./BattleOfAtlantic";
+import { NuclearPlant, type NuclearPlantProps } from "./NuclearPlant";
 import { SLIDE_DURATIONS_S } from "./slide-durations";
 import { ATLANTIC_BULLET_DURATIONS_S } from "./atlantic-durations";
+import { NUCLEAR_SLIDE_DURATIONS_S } from "./nuclear-durations";
 import {
   SLIDE_INTRO_FRAMES as ATL_INTRO_FRAMES,
   BULLET_GAP_FRAMES  as ATL_GAP_FRAMES,
@@ -15,6 +17,12 @@ import {
 const FPS = 30;
 const TITLE_FRAMES = 120;       // 4s opening card — accommodates ~3.5s title audio
 const SLIDE_BUFFER_FRAMES = 60; // 2s of silence after each slide's audio ends
+
+// ── NuclearPlant ──────────────────────────────────────────────────────────────
+const NP_SLIDE_FRAMES = NUCLEAR_SLIDE_DURATIONS_S.map(
+  (s) => Math.ceil(s * FPS) + SLIDE_BUFFER_FRAMES
+);
+const NP_TOTAL = TITLE_FRAMES + NP_SLIDE_FRAMES.reduce((a, b) => a + b, 0);
 
 // ── Britain1940 ───────────────────────────────────────────────────────────────
 const B40_SLIDE_FRAMES = SLIDE_DURATIONS_S.map(
@@ -72,6 +80,15 @@ export const Root: React.FC = () => {
         width={1920}
         height={1080}
         defaultProps={{ bulletDurationsFrames: ATL_BULLET_FRAMES }}
+      />
+      <Composition<NuclearPlantProps>
+        id="NuclearPlant"
+        component={NuclearPlant}
+        durationInFrames={NP_TOTAL}
+        fps={FPS}
+        width={1920}
+        height={1080}
+        defaultProps={{ slideDurations: NP_SLIDE_FRAMES }}
       />
     </>
   );

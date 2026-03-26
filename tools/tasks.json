@@ -48,6 +48,27 @@
               "notes": "Currently uses per-slide architecture (one MP3 per slide). BattleOfAtlantic already uses the newer per-bullet pattern — Britain1940 needs to match it.",
               "priority": 4,
               "status": "pending"
+            },
+            {
+              "id": "sns-2",
+              "title": "Re-render NuclearPlant after Windows reboot",
+              "notes": "Windows audio driver issue blocks Chrome Web Audio API — affects both studio preview and headless render. Fix: reboot. Then run: npx remotion render NuclearPlant out/nuclear-plant.mp4. Audio files already exist in public/audio/nuclear/.",
+              "priority": 1,
+              "status": "blocked"
+            },
+            {
+              "id": "sns-3",
+              "title": "Deploy NuclearPlant MP4 to gh-pages + wire Illustrations tab link",
+              "notes": "After re-render: deploy via gh-pages-deploy skill, then update the '▶ Watch' link in behold-your-god.html Illustrations tab to the live URL. Depends on sns-2.",
+              "priority": 1,
+              "status": "pending"
+            },
+            {
+              "id": "sns-4",
+              "title": "Build BYG Illustrations 02–10 videos",
+              "notes": "Nine remaining F.T. Wright illustration videos for Behold Your God. Update Illustrations tab as each completes.",
+              "priority": 3,
+              "status": "pending"
             }
           ]
         },

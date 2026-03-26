@@ -2,6 +2,35 @@
 
 ---
 
+## 2026-03-25 — Repo Sync, dev→main Promotion, BYG Flashcard App
+
+### Repo Sync
+- Session run via web interface (CLI login unavailable)
+- 13 commits pushed to `origin/dev`; `dev` merged into `main` — first promotion in several sessions
+- `inf-2` resolved
+
+### Web App Expansion Direction Established
+- Tom reviewed the "Architecture of Engagement" NotebookLM report (in `ReadMe.txt`)
+- Goal: identify new interactive web app types to add to the workflow
+- Current lineup: Explorer+Quiz, Tabbed (throwaway), Gemini Slides
+- Behold Your God chosen as test vehicle for new app types
+
+### BYG Flashcard App Shipped
+- `apps/byg-flashcards.html` built and deployed to `behold-your-god-flashcards/`
+- 22 cards: 10 themes × 2 + 2 Great Controversy synthesis cards
+- Content derived from `behold-your-god.html` FOCUS_PROMPTS
+- Features: flip, shuffle, Got It / Still Learning tracking, keyboard shortcuts, Reset All
+- Alignment fix: removed `flex:1` from `.card-answer`; back face set to `justify-content: center`
+- Version number added inline (v1.2 at end of session)
+- Added to dashboard
+
+### Not Done Yet
+- Flashcard skill not formalized
+- Documentation for the app not written
+- Next app type not decided (Connections game or Chat Tutor are top candidates)
+
+---
+
 ## 2026-03-14 (session 2) — gh-pages Convention Fix, Skill Update, Cleanup
 
 ### gh-pages Deploy Convention Corrected
