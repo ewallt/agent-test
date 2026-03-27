@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Nuclear Power Plant — Behold Your God</title>
+<style>
+:root {
+  --bg: #070c16;
+  --surface: #0f1726;
+  --surface2: #131e30;
+  --border: rgba(255,255,255,.10);
+  --text: #e6edf7;
+  --muted: #a9b6cc;
+  --accent: #22d3ee;
+  --accent-dim: #0e7490;
+  --shadow: 0 12px 40px rgba(0,0,0,.5);
+  --radius: 14px;
+  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 20px 48px;
+}
+
+.breadcrumb {
+  font-size: 0.75rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 28px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.breadcrumb a:hover { color: var(--accent); }
+.breadcrumb .sep { opacity: .4; }
+
+header {
+  text-align: center;
+  max-width: 720px;
+  margin-bottom: 36px;
+}
+
+.series-label {
+  font-size: 0.72rem;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+h1 .key { color: var(--accent); }
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.video-wrap {
+  width: 100%;
+  max-width: 900px;
+  background: #000;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow), 0 0 0 1px var(--border);
+  margin-bottom: 40px;
+}
+
+video {
+  width: 100%;
+  display: block;
+}
+
+.description {
+  max-width: 680px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 40px;
+}
+
+.description h2 {
+  font-size: 0.7rem;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  margin-bottom: 14px;
+}
+
+.description p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.back-link {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: color .15s, border-color .15s;
+}
+.back-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+</style>
+</head>
+<body>
+
+<nav class="breadcrumb">
+  <a href="../behold-your-god/">Behold Your God</a>
+  <span class="sep">›</span>
+  <span>Illustrations</span>
+  <span class="sep">›</span>
+  <span>No. 01</span>
+  <span class="sep">·</span>
+  <span style="color: var(--accent); opacity: .7;">v1.2</span>
+</nav>
+
+<div class="video-wrap">
+  <video controls autoplay>
+    <source src="nuclear-plant-v5.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<div class="description">
+  <h2>About This Illustration</h2>
+  <p>
+    F.T. Wright uses the image of a nuclear power plant to reframe how we read biblical "destruction" texts.
+    When the townspeople expel the technician whose constant vigilance kept the reactor safe,
+    the explosion that follows is not his retaliation — it is simply what happens in his absence.
+    Wright sees God in that technician: expelled, not retaliating; absent, not attacking.
+  </p>
+</div>
+
+<a class="back-link" href="../behold-your-god/">← Back to Behold Your God</a>
+
+</body>
+</html>

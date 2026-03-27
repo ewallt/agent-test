@@ -52,21 +52,28 @@
             {
               "id": "sns-2",
               "title": "Re-render NuclearPlant after Windows reboot",
-              "notes": "Windows audio driver issue blocks Chrome Web Audio API — affects both studio preview and headless render. Fix: reboot. Then run: npx remotion render NuclearPlant out/nuclear-plant.mp4. Audio files already exist in public/audio/nuclear/.",
+              "notes": "Resolved 2026-03-27. Was PEBCAK, not a Windows audio issue. Rendered through v5 with animated doodles.",
               "priority": 1,
-              "status": "blocked"
+              "status": "done"
             },
             {
               "id": "sns-3",
               "title": "Deploy NuclearPlant MP4 to gh-pages + wire Illustrations tab link",
-              "notes": "After re-render: deploy via gh-pages-deploy skill, then update the '▶ Watch' link in behold-your-god.html Illustrations tab to the live URL. Depends on sns-2.",
+              "notes": "Done 2026-03-27. nuclear-plant-v5.mp4 deployed. byg-nuclear-plant.html v1.2 live. behold-your-god.html Watch link already wired in previous session.",
+              "priority": 1,
+              "status": "done"
+            },
+            {
+              "id": "sns-5",
+              "title": "Define Behold Your God project",
+              "notes": "No formal project definition yet. Scope: what BYG is, the 10 illustrations, folder structure, workflow for building 02–10, documentation home. Next session priority.",
               "priority": 1,
               "status": "pending"
             },
             {
               "id": "sns-4",
               "title": "Build BYG Illustrations 02–10 videos",
-              "notes": "Nine remaining F.T. Wright illustration videos for Behold Your God. Update Illustrations tab as each completes.",
+              "notes": "Nine remaining F.T. Wright illustration videos for Behold Your God. Update Illustrations tab as each completes. Depends on sns-5 (project definition).",
               "priority": 3,
               "status": "pending"
             }
