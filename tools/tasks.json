@@ -332,6 +332,27 @@
               "status": "pending"
             },
             {
+              "id": "inf-12",
+              "title": "Infrastructure project setup",
+              "notes": "Created Projects/Infrastructure/ folder and documents/. Wrote project-definition.md and infrastructure-project-doc.html. Updated overview.md and documents/index.html. Completed 2026-03-28.",
+              "priority": 1,
+              "status": "done"
+            },
+            {
+              "id": "inf-13",
+              "title": "Conduct Review 1 — Redundancy and Cleanup",
+              "notes": "Audit the repo for redundant files, stale docs, overlapping tooling, and things that exist in two forms. Capture findings as tickets.",
+              "priority": 2,
+              "status": "pending"
+            },
+            {
+              "id": "inf-14",
+              "title": "Conduct Review 2 — Software Shop Standards",
+              "notes": "Assess against a software shop checklist: CI/CD, test coverage, documentation coverage, deployment procedures, monitoring, change management. Capture gaps as tickets.",
+              "priority": 2,
+              "status": "pending"
+            },
+            {
               "id": "inf-9",
               "title": "Set up Google Docs MCP server (OAuth)",
               "notes": "Done. Token minted, MCP verified working 2026-03-13. mcp__gdrive__search and ReadMcpResourceTool both confirmed. Reference doc: ephemeral-notebook/documents/gdrive-integration.md and nlm-claude-feedback-loop.md.",

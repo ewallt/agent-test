@@ -72,13 +72,16 @@ Flashcard tabs. Illustration 01 (Nuclear Power Plant) is complete.
 ---
 
 ### 6. Infrastructure
-Cross-cutting tools and meta-work. Includes the task manager web app, git/dev-prod
-setup, Claude Code skills, and workflow tooling. No sub-workflows.
+Cross-cutting tools, meta-processes, and housekeeping. Covers anything that applies
+across multiple projects rather than belonging to one: tooling, standards, documentation
+quality, and periodic cleanup.
 
+- Project definition: `Projects/Infrastructure/documents/project-definition.md`
 - Task manager: `tools/tasks.html` (served on localhost:3010)
 - Task data: `tools/tasks.json` — update this when task status changes
 - Git: `main` (production) and `dev` (working). Promote via `bash promote.sh`.
 - Structural tests: 99 tests across all three Remotion projects (`npm test` in each)
+- Two planned reviews: redundancy/cleanup audit + software shop standards gap analysis
 
 ---
 

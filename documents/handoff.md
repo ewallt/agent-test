@@ -2,33 +2,24 @@
 
 ## What Was Done This Session
 
-### sns-8 Complete — Edge TTS Integration
-- All four sub-items of ticket sns-8 are now done; ticket marked `done`
-- **byg-edge-tts skill created** at `~/.claude/skills/byg-edge-tts/SKILL.md` — covers setup, running scripts, adding audio to new compositions, voice options, troubleshooting, and JIT read gates for the "new composition" workflow
-- **remotion-narrated-slides skill updated** — description now notes BYG compositions use edge-tts (not ElevenLabs) and defers to `byg-edge-tts` skill
-- **byg-project-doc.html updated** — edge-tts added to reference table; new Step 4 "Generate audio" inserted in the workflow (steps renumbered 1–10)
-- JIT gates added to byg-edge-tts skill: "READ NOW" instructions before editing the copied script and before creating the placeholder durations file
-
-### index.html — Pending Items → Ticket Board
-- Replaced the "Pending Items" card in `documents/index.html` with a "Ticket Board" card linking to `http://localhost:3010/tasks.html`
-- `pending.html` is the old static list — superseded by the live ticket board; card now points to the right place
-
-### Skill-Creator Process Discussion
-- Clarified that invoking skill-creator means following the full process (draft → test → eval → iterate), not just writing SKILL.md directly
-- JIT pattern is the key thing to apply when designing workflow skills — instructions delivered at the moment of use, not loaded upfront
+### Infrastructure Project — Established
+- Created `Projects/Infrastructure/` folder and `documents/` subfolder
+- Wrote `Projects/Infrastructure/documents/project-definition.md` — defines the project across three areas (tooling, process/standards, housekeeping), documents the two planned reviews, and lists action items
+- Updated `documents/overview.md` — fleshed out the Infrastructure entry to match the depth of the other five groups; added pointer to project-definition.md
+- Wrote `Projects/Infrastructure/documents/infrastructure-project-doc.html` — full reference doc covering what the project is, key locations table, the two planned reviews (redundancy/cleanup + software shop standards) with checklists, action items, and current state of the shop
+- Updated `documents/index.html` — added Infrastructure column (6-column grid) with a card linking to the new doc
 
 ---
 
 ## State Right Now
 
-- On `dev` branch, clean working tree (as of session start)
-- sns-8 fully complete; all edge-tts work shipped
-- byg-edge-tts skill is live and available in the skill list
-- `documents/index.html` updated — Ticket Board card now links to localhost:3010
+- On `dev` branch
+- Infrastructure project is set up and documented; no actual infrastructure work has been done yet
+- Both planned reviews (redundancy/cleanup, software shop standards) are documented but not yet executed
 
 ## Next Session Priority
 
-Start a new Infrastructure project. Tom will provide the details at session start — wait for him to brief you before doing anything. The goal for the session is to define what the Infrastructure project is and get it established.
+Behold Your God — Scrollytelling. Tom is bringing a new concept to discuss and implement. Wait for him to brief you before doing anything.
 
 ## Other Items
 
@@ -40,6 +31,6 @@ Start a new Infrastructure project. Tom will provide the details at session star
 
 READ NOW: `C:\Users\tomew\.claude\projects\C--Users-tomew-Documents-agent-test\memory\startup.md`
 
-Workflow: None
+Workflow: Behold Your God
 
-Tom is bringing details for a new Infrastructure project — wait for him to brief you before doing anything.
+Tom is bringing a new concept — Scrollytelling — to discuss and implement. Wait for him to brief you before doing anything.
