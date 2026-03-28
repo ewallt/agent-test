@@ -66,8 +66,22 @@
             {
               "id": "sns-5",
               "title": "Define Behold Your God project",
-              "notes": "No formal project definition yet. Scope: what BYG is, the 10 illustrations, folder structure, workflow for building 02–10, documentation home. Next session priority.",
+              "notes": "Completed 2026-03-27. project-definition.md, knowledge-base.md, todo.md, byg-project-doc.html all written. byg startup skill created.",
               "priority": 1,
+              "status": "done"
+            },
+            {
+              "id": "sns-6",
+              "title": "Deploy behold-your-god.html v1.1 to gh-pages",
+              "notes": "Quotes tab added in this session (v1.1). Not yet deployed. Use gh-pages-deploy skill.",
+              "priority": 1,
+              "status": "pending"
+            },
+            {
+              "id": "sns-7",
+              "title": "Build Illustration 00 video — The King They Made and Killed",
+              "notes": "Notes ready at Projects/BYG/illustrations/00-king-they-made-and-killed/notes.md. Copy NuclearPlant.tsx as template, adapt for 5 bullet beats.",
+              "priority": 2,
               "status": "pending"
             },
             {

@@ -54,13 +54,14 @@
 
 <div class="app-header">
   <h1>Behold <span>Your God</span></h1>
-  <p class="app-sub">F.T. Wright · AI-powered explorer, quiz & flashcards <span style="opacity:.4">v1.0</span></p>
+  <p class="app-sub">F.T. Wright · AI-powered explorer, quiz, flashcards & quotes <span style="opacity:.4">v1.1</span></p>
 </div>
 
 <nav class="tab-nav">
   <button class="tab-btn active" onclick="showTab('illustrations',this)">Illustrations</button>
   <button class="tab-btn" onclick="showTab('explorer',this)">Explorer</button>
   <button class="tab-btn" onclick="showTab('flashcard',this)">Flashcards</button>
+  <button class="tab-btn" onclick="showTab('quotes',this)">Quotes</button>
 </nav>
 
 
@@ -848,8 +849,126 @@ const FlashcardTab = {
 <!-- ═══════════════════════════════════════════════════════════
      COORDINATOR
      ═══════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════
+     QUOTES TAB
+     ═══════════════════════════════════════════════════════════ -->
+<section id="quotes-tab" class="tab-section">
+<style>
+  #quotes-tab { padding: 40px 20px 60px; }
+  #quotes-tab .q-wrap { max-width: 780px; margin: 0 auto; }
+  #quotes-tab .q-intro { color: var(--muted); font-size: .93rem; line-height: 1.7; margin-bottom: 40px; text-align: center; }
+  #quotes-tab .q-group { margin-bottom: 44px; }
+  #quotes-tab .q-group-label {
+    font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent); opacity: .7; margin-bottom: 14px; padding-left: 2px;
+  }
+  #quotes-tab .q-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+  #quotes-tab .q-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 22px 24px; display: flex; flex-direction: column; gap: 12px;
+    transition: border-color .15s;
+  }
+  #quotes-tab .q-card:hover { border-color: rgba(139,185,255,.3); }
+  #quotes-tab .q-text {
+    font-size: .97rem; line-height: 1.65; color: var(--text);
+    font-style: italic; flex: 1;
+  }
+  #quotes-tab .q-text::before { content: '\201C'; color: var(--accent); opacity: .5; font-size: 1.3em; font-style: normal; margin-right: 2px; }
+  #quotes-tab .q-text::after  { content: '\201D'; color: var(--accent); opacity: .5; font-size: 1.3em; font-style: normal; margin-left: 2px; }
+  #quotes-tab .q-attr { font-size: .78rem; color: var(--muted); }
+</style>
+<div class="q-wrap">
+  <p class="q-intro">Key statements from F.T. Wright's <em>Behold Your God</em>, organized by theme.</p>
+
+  <div class="q-group">
+    <div class="q-group-label">On God's Character</div>
+    <div class="q-grid">
+      <div class="q-card">
+        <div class="q-text">The great controversy is about God's character — whether He governs by force or by self-giving love.</div>
+        <div class="q-attr">F.T. Wright</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">To know God is life eternal, and life eternal is to know God.</div>
+        <div class="q-attr">F.T. Wright</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">All that man needs to know or can know of God has been revealed in the life and character of His Son.</div>
+        <div class="q-attr">Ellen White · Testimonies, vol. 8, p. 286</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">God is a Saviour and a Saviour only.</div>
+        <div class="q-attr">F.T. Wright</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-label">On God's Law and Government</div>
+    <div class="q-grid">
+      <div class="q-card">
+        <div class="q-text">His law is a transcript of His own character, and it is the standard of all character.</div>
+        <div class="q-attr">Ellen White · Christ's Object Lessons, p. 315</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">Compelling power is found only under Satan's government. The Lord's principles are not of this order.</div>
+        <div class="q-attr">Ellen White · The Desire of Ages, p. 759</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">The exercise of force is contrary to the principles of God's government; He desires only the service of love; and love cannot be commanded.</div>
+        <div class="q-attr">Ellen White · The Desire of Ages, p. 22</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-label">On Destruction and Salvation</div>
+    <div class="q-grid">
+      <div class="q-card">
+        <div class="q-text">Satan is the destroyer; God is the restorer.</div>
+        <div class="q-attr">Ellen White · The Ministry of Healing, p. 113</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">God destroys no man. Everyone who is destroyed will have destroyed himself.</div>
+        <div class="q-attr">Ellen White · Christ's Object Lessons, p. 84</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">God does not stand toward the sinner as an executioner of the sentence against transgression; but He leaves the rejecters of His mercy to themselves, to reap that which they have sown.</div>
+        <div class="q-attr">Ellen White · The Great Controversy, p. 36</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">God destroys by trying to save.</div>
+        <div class="q-attr">F.T. Wright</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="q-group">
+    <div class="q-group-label">On the Cross</div>
+    <div class="q-grid">
+      <div class="q-card">
+        <div class="q-text">The mystery of the cross explains all other mysteries.</div>
+        <div class="q-attr">Ellen White · The Great Controversy, p. 652</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">The cross is God's personal demonstration of the way in which He deals with those who refuse to give up sin.</div>
+        <div class="q-attr">F.T. Wright</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">In order to be rightly understood and appreciated, every truth in the Word of God must be studied in the light which streams from the cross of Calvary.</div>
+        <div class="q-attr">Ellen White · SDA Bible Commentary, vol. 5, p. 1137</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">When the character of Christ shall be perfectly reproduced in His people, then He will come to claim them as His own.</div>
+        <div class="q-attr">Ellen White · Christ's Object Lessons, p. 69</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
 <script>
-const _tabInited = { illustrations: true, explorer: false, flashcard: false };
+const _tabInited = { illustrations: true, explorer: false, flashcard: false, quotes: true };
 
 function showTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));

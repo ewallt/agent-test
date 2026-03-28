@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Behold Your God — Project Reference</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 { font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 700; letter-spacing: -.03em; margin-bottom: 14px; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 52px; }
+  h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+  h2 .icon { background: rgba(139,185,255,.12); border-radius: 8px; color: var(--accent); font-size: 1rem; padding: 6px 9px; }
+  h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 16px; overflow: hidden; }
+  .card-bd { padding: 22px 24px; }
+  p { color: var(--muted); font-size: .97rem; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+  ul { color: var(--muted); font-size: .95rem; padding-left: 20px; }
+  ul li { margin-bottom: 6px; }
+  ul li strong { color: var(--text); }
+
+  code { background: rgba(139,185,255,.1); border-radius: 5px; color: var(--accent); font-family: var(--mono); font-size: .85em; padding: 2px 7px; }
+  .code-block { background: #060b15; border: 1px solid var(--border); border-radius: 10px; font-family: var(--mono); font-size: .85rem; line-height: 1.7; margin: 14px 0; overflow-x: auto; padding: 16px 20px; white-space: pre; }
+
+  .callout { border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: .92rem; }
+  .callout.info  { background: rgba(139,185,255,.07); border: 1px solid rgba(139,185,255,.2); color: var(--accent); }
+  .callout.green { background: rgba(124,255,178,.07); border: 1px solid rgba(124,255,178,.2); color: var(--green); }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  /* Two-tone reference table */
+  .ref-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  .ref-table th { background: var(--surface2); color: var(--accent); font-weight: 600; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; }
+  .ref-table td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.05); color: var(--muted); vertical-align: top; }
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table td:first-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+  .ref-table td code { font-size: .82em; }
+
+  /* Illustrations table */
+  .ill-table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+  .ill-table th { background: var(--surface2); color: var(--accent); font-weight: 600; padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; }
+  .ill-table td { padding: 11px 12px; border-bottom: 1px solid rgba(255,255,255,.05); color: var(--muted); vertical-align: top; }
+  .ill-table tr:last-child td { border-bottom: none; }
+  .ill-table .num { color: var(--accent); font-family: var(--mono); font-weight: 700; white-space: nowrap; }
+  .ill-table .title { color: var(--text); font-weight: 600; }
+  .ill-table .ch { color: var(--muted); font-family: var(--mono); font-size: .82em; white-space: nowrap; }
+  .ill-table .arg { font-size: .83rem; }
+  .ill-table .time-slot { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); border-radius: 6px; min-width: 52px; text-align: center; color: rgba(255,255,255,.2); font-size: .8rem; padding: 4px 8px; }
+  .status-done { color: var(--green); font-weight: 600; font-size: .82rem; white-space: nowrap; }
+  .status-todo { color: rgba(255,255,255,.25); font-size: .82rem; white-space: nowrap; }
+
+  /* Steps */
+  .steps { counter-reset: step; display: flex; flex-direction: column; gap: 12px; }
+  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; display: flex; gap: 16px; align-items: flex-start; }
+  .step-num { background: rgba(139,185,255,.12); border-radius: 50%; color: var(--accent); font-size: .8rem; font-weight: 700; min-width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-body { font-size: .92rem; color: var(--muted); }
+  .step-body strong { color: var(--text); display: block; margin-bottom: 3px; }
+
+  /* To-do list */
+  .todo-group { margin-bottom: 28px; }
+  .todo-group-title { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); opacity: .7; margin-bottom: 10px; }
+  .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.04); font-size: .92rem; color: var(--muted); }
+  .todo-item:last-child { border-bottom: none; }
+  .todo-box { width: 16px; height: 16px; border: 1px solid rgba(255,255,255,.2); border-radius: 4px; flex-shrink: 0; margin-top: 3px; }
+
+  /* Future ideas */
+  .idea-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 14px; }
+  .idea-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+  .idea-title { font-size: .97rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .idea-body { font-size: .88rem; color: var(--muted); line-height: 1.6; }
+  .idea-stat { display: inline-block; margin-top: 10px; background: rgba(124,255,178,.08); border: 1px solid rgba(124,255,178,.2); border-radius: 6px; color: var(--green); font-size: .75rem; font-weight: 600; padding: 3px 10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Project Reference</div>
+  <h1>Behold <span>Your God</span></h1>
+  <p>Video series and companion web app based on F.T. Wright's <em>Behold Your God</em> — 11 animated illustration videos paired with an interactive study app.</p>
+</header>
+
+<div class="container">
+
+  <!-- ── What the Project Is ── -->
+  <section>
+    <h2><span class="icon">📖</span> What the Project Is</h2>
+    <div class="card"><div class="card-bd">
+      <p>BYG is two things built together. First, a series of <strong>11 short animated videos</strong> — one per illustration from Wright's book. Each video takes a concrete story or analogy Wright uses and renders it as an animated SVG doodle composition: dark background, spring-animated drawings, per-bullet reveals. Second, a <strong>companion web app</strong> that ties the videos together with interactive study tools.</p>
+      <p>The videos are built in Remotion inside the <code>simple-narrated-slides</code> project (studio at <code>localhost:3001</code>). Each illustration becomes a <code>.tsx</code> file, rendered to MP4, and deployed with a wrapper HTML page to gh-pages.</p>
+      <p>The web app is a single bundled HTML file (<code>behold-your-god.html</code>) with four tabs: Illustrations, Explorer, Flashcards, and Quotes. It lives in the NotebookLM apps folder and is also deployed to gh-pages.</p>
+    </div></div>
+
+    <div class="card">
+      <table class="ref-table">
+        <tr><th>Item</th><th>Value</th></tr>
+        <tr><td>Web app</td><td><code>Projects/NotebookLM/ephemeral-notebook/apps/behold-your-god.html</code></td></tr>
+        <tr><td>Video source</td><td><code>Projects/Remotion/simple-narrated-slides/src/</code></td></tr>
+        <tr><td>Remotion studio</td><td><code>localhost:3001</code></td></tr>
+        <tr><td>Project definition</td><td><code>Projects/BYG/documents/project-definition.md</code></td></tr>
+        <tr><td>Knowledge base</td><td><code>Projects/BYG/documents/knowledge-base.md</code></td></tr>
+        <tr><td>Illustration notes</td><td><code>Projects/BYG/illustrations/{nn}-{slug}/notes.md</code></td></tr>
+        <tr><td>gh-pages deploy</td><td><code>gh-pages-deploy</code> skill</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── The 11 Illustrations ── -->
+  <section>
+    <h2><span class="icon">🎬</span> The 11 Illustrations</h2>
+    <p style="margin-bottom:16px;">Each illustration maps to a chapter in the book and makes a specific theological argument. The Illustrations tab in the web app is the only place the list is publicly displayed — Explorer, Flashcards, and Quotes tabs run off their own embedded content.</p>
+    <div class="card" style="overflow-x:auto;">
+      <table class="ill-table">
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Ch.</th>
+          <th>Key Argument</th>
+          <th>Video (min)</th>
+          <th>Narration (min)</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td class="num">00</td>
+          <td class="title">The King They Made and Killed</td>
+          <td class="ch">Ch. 1</td>
+          <td class="arg">Israel tried to force Jesus into kingship, then killed Him for it — all from a false concept of God</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-todo">Not started</td>
+        </tr>
+        <tr>
+          <td class="num">01</td>
+          <td class="title">The Nuclear Power Plant</td>
+          <td class="ch">Ch. 14</td>
+          <td class="arg">God's withdrawal is not vengeance — destruction follows from unmanaged forces when He is driven away</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-done">✅ Complete (v5)</td>
+        </tr>
+        <tr>
+          <td class="num">02</td>
+          <td class="title">God Is Not a Criminal</td>
+          <td class="ch">Ch. 22</td>
+          <td class="arg">God never uses coercive force; doing so would make Him no better than a criminal syndicate</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-todo">Not started</td>
+        </tr>
+        <tr>
+          <td class="num">03</td>
+          <td class="title">White Hat, Black Hat</td>
+          <td class="ch">Ch. 17</td>
+          <td class="arg">Satan claims the law must be broken to be maintained; Christ never breaks His law to enforce it</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-todo">Not started</td>
+        </tr>
+        <tr>
+          <td class="num">04</td>
+          <td class="title">The Father, the Son, and the Gun</td>
+          <td class="ch">Ch. 31</td>
+          <td class="arg">God doesn't stop wrong choices by force; He acts as Savior to minimize the damage</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-todo">Not started</td>
+        </tr>
+        <tr>
+          <td class="num">05</td>
+          <td class="title">The Father of the Prodigal Son</td>
+          <td class="ch">Ch. 31</td>
+          <td class="arg">God accepts the repentant completely — no penalty, no penance, no period of punishment</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-todo">Not started</td>
+        </tr>
+        <tr>
+          <td class="num">06</td>
+          <td class="title">Rods and Serpents</td>
+          <td class="ch">Ch. 23</td>
+          <td class="arg">Nature's powers are blessings under God's hand; rejected, they become destructive forces</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-todo">Not started</td>
+        </tr>
+        <tr>
+          <td class="num">07</td>
+          <td class="title">The Boeing 747</td>
+          <td class="ch">Ch. 9</td>
+          <td class="arg">The universe requires God's intelligence to sustain it; rejection leads to inevitable disaster</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-todo">Not started</td>
+        </tr>
+        <tr>
+          <td class="num">08</td>
+          <td class="title">The Cross as the Dividing Line</td>
+          <td class="ch">Ch. 21</td>
+          <td class="arg">Two crosses: self-renouncing love (Christ) vs. total selfishness and coercion (Satan)</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-todo">Not started</td>
+        </tr>
+        <tr>
+          <td class="num">09</td>
+          <td class="title">Interpreting God's "Destruction"</td>
+          <td class="ch">Ch. 14</td>
+          <td class="arg">The same love that melts ice hardens clay — God destroys only by trying to save</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-todo">Not started</td>
+        </tr>
+        <tr>
+          <td class="num">10</td>
+          <td class="title">The Law as God's Character</td>
+          <td class="ch">Ch. 8</td>
+          <td class="arg">The law is a transcript of God's character — not external constraint but what He is</td>
+          <td><div class="time-slot">—</div></td>
+          <td><div class="time-slot">—</div></td>
+          <td class="status-todo">Not started</td>
+        </tr>
+      </table>
+    </div>
+    <div class="callout info"><strong>Note</strong> Video Build Time and Narration Time are tracked manually. Fill in the slots above after each completed illustration.</div>
+  </section>
+
+  <!-- ── The Web App ── -->
+  <section>
+    <h2><span class="icon">🌐</span> The Web App</h2>
+    <div class="card"><div class="card-bd">
+      <p><strong>File:</strong> <code>Projects/NotebookLM/ephemeral-notebook/apps/behold-your-god.html</code> — currently v1.1. A single bundled HTML file with four top-level tabs.</p>
+      <ul>
+        <li><strong>Illustrations</strong> — Lists all 11 videos with status badges (▶ Watch or Coming Attraction). Links to wrapper pages for completed videos. This is the only tab driven by the illustration list.</li>
+        <li><strong>Explorer</strong> — AI-generated knowledge explorer and quiz. Runs off embedded content (standalone, not linked to the illustrations list).</li>
+        <li><strong>Flashcards</strong> — Card-based review of key concepts. Runs off embedded content.</li>
+        <li><strong>Quotes</strong> — 15 key quotes from the book organized by theme, with proper attribution (F.T. Wright originals and Ellen White sources). Added in v1.1.</li>
+      </ul>
+    </div></div>
+    <div class="callout green"><strong>Deploying</strong> Use the <code>gh-pages-deploy</code> skill to push <code>behold-your-god.html</code> to gh-pages. When a new video is completed, also deploy the MP4 and wrapper HTML to <code>notebooklm/byg-{slug}/</code>.</div>
+  </section>
+
+  <!-- ── Naming Conventions ── -->
+  <section>
+    <h2><span class="icon">📁</span> Folder &amp; Naming Conventions</h2>
+    <div class="card">
+      <table class="ref-table">
+        <tr><th>Artifact</th><th>Pattern</th><th>Example</th></tr>
+        <tr><td>Remotion TSX</td><td><code>{PascalCaseName}.tsx</code> in <code>simple-narrated-slides/src/</code></td><td><code>GodNotCriminal.tsx</code></td></tr>
+        <tr><td>Wrapper HTML</td><td><code>ephemeral-notebook/apps/byg-{slug}.html</code></td><td><code>byg-god-not-criminal.html</code></td></tr>
+        <tr><td>MP4</td><td><code>{slug}-v{n}.mp4</code> — version-bumped on every deploy</td><td><code>god-not-criminal-v1.mp4</code></td></tr>
+        <tr><td>gh-pages subfolder</td><td><code>notebooklm/byg-{slug}/</code></td><td><code>notebooklm/byg-god-not-criminal/</code></td></tr>
+        <tr><td>Illustration folder</td><td><code>Projects/BYG/illustrations/{nn}-{slug}/</code></td><td><code>02-god-not-criminal/</code></td></tr>
+        <tr><td>Illustration notes</td><td><code>illustrations/{nn}-{slug}/notes.md</code></td><td><code>00-king-they-made-and-killed/notes.md</code></td></tr>
+      </table>
+    </div>
+    <div class="callout info"><strong>Version bumping</strong> Always use a new versioned filename for MP4 updates (e.g. <code>-v2.mp4</code>). CDN caches the old file indefinitely — a new filename is the only reliable way to bust the cache.</div>
+  </section>
+
+  <!-- ── Workflow ── -->
+  <section>
+    <h2><span class="icon">⚙️</span> Workflow — Building a New Illustration Video</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Read the notes</strong> Open <code>illustrations/{nn}-{slug}/notes.md</code> — it contains the illustration story, the theological argument, bullet beats with narration text, and doodle concepts for each beat.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Create the TSX file</strong> Copy <code>NuclearPlant.tsx</code> as the template. Adapt for the new illustration's content, doodle components, and bullet sequence. Save as <code>Projects/Remotion/simple-narrated-slides/src/{Name}.tsx</code>.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Register in Root.tsx</strong> Add the new composition to <code>simple-narrated-slides/src/Root.tsx</code>.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Preview</strong> Check at <code>localhost:3001</code> in Remotion Studio.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Render</strong>
+        <div class="code-block">npx remotion render {CompositionId} {slug}-v1.mp4</div>
+      </div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><strong>Create wrapper HTML</strong> Copy <code>byg-nuclear-plant.html</code> as the template. Update the title, description, and MP4 src. Save as <code>ephemeral-notebook/apps/byg-{slug}.html</code>.</div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-body"><strong>Deploy to gh-pages</strong> Use the <code>gh-pages-deploy</code> skill to push both the MP4 and wrapper HTML to <code>notebooklm/byg-{slug}/</code>.</div></div>
+      <div class="step"><div class="step-num">8</div><div class="step-body"><strong>Update the web app</strong> In <code>behold-your-god.html</code>, change the illustration's badge from "Coming Attraction" to "▶ Watch" and add the link to the wrapper page.</div></div>
+      <div class="step"><div class="step-num">9</div><div class="step-body"><strong>Update status</strong> Mark the illustration complete in <code>project-definition.md</code> and fill in the build time slots in this document.</div></div>
+    </div>
+  </section>
+
+  <!-- ── Knowledge Base ── -->
+  <section>
+    <h2><span class="icon">📚</span> Knowledge Base</h2>
+    <div class="card"><div class="card-bd">
+      <p><strong>File:</strong> <code>Projects/BYG/documents/knowledge-base.md</code></p>
+      <p>The content reference for building videos and updating the web app. Sourced from the NotebookLM notebook <em>Behold Your God: Understanding Divine Character</em> (<code>b64c5fc6</code>).</p>
+      <p><strong>Contains:</strong></p>
+      <ul>
+        <li>Central thesis and six-block book structure summary</li>
+        <li>All 39 chapters with core ideas and full argument outlines</li>
+        <li>Per-illustration reference table with correct chapter mappings</li>
+        <li>Full illustration details — the story and theological argument for each of the 11</li>
+        <li>15 key quotes with attribution (F.T. Wright originals and Ellen White sources with page numbers)</li>
+      </ul>
+    </div></div>
+    <div class="callout info"><strong>Querying the notebook</strong> Use <code>nlm query notebook b64c5fc6 "your question"</code> to pull additional content from the book. The notebook has 11 sources including the full text.</div>
+  </section>
+
+  <!-- ── To Do ── -->
+  <section>
+    <h2><span class="icon">✅</span> To Do</h2>
+
+    <div class="card"><div class="card-bd">
+
+      <div class="todo-group">
+        <div class="todo-group-title">Videos</div>
+        <div class="todo-item"><div class="todo-box"></div><span>Build Illustration 00 — The King They Made and Killed (script ready in <code>illustrations/00-king-they-made-and-killed/notes.md</code>)</span></div>
+        <div class="todo-item"><div class="todo-box"></div><span>Build Illustrations 02–10 (one by one; see workflow above)</span></div>
+        <div class="todo-item"><div class="todo-box"></div><span>Add Illustration 00 to the Illustrations tab in <code>behold-your-god.html</code></span></div>
+      </div>
+
+      <div class="todo-group">
+        <div class="todo-group-title">Web App</div>
+        <div class="todo-item"><div class="todo-box"></div><span>Wire Explorer/Quiz content to illustrations (currently runs off standalone embedded content)</span></div>
+        <div class="todo-item"><div class="todo-box"></div><span>Deploy <code>behold-your-god.html</code> v1.1 (Quotes tab added) to gh-pages</span></div>
+        <div class="todo-item"><div class="todo-box"></div><span>Add Branching Scenario tab — interactive "Challenge, Choice, Consequence"</span></div>
+        <div class="todo-item"><div class="todo-box"></div><span>Add Connections Game tab — group illustrations/quotes by theme (NYT Connections-style)</span></div>
+        <div class="todo-item"><div class="todo-box"></div><span>Add Scrollytelling "Controversy Arc" tab — scroll-driven narrative through the great controversy</span></div>
+        <div class="todo-item"><div class="todo-box"></div><span>Update Illustrations tab badge (Coming Attraction → ▶ Watch) as each video is completed</span></div>
+      </div>
+
+      <div class="todo-group">
+        <div class="todo-group-title">Knowledge Base</div>
+        <div class="todo-item"><div class="todo-box"></div><span>Add additional quotes as more videos are built and content deepens</span></div>
+        <div class="todo-item"><div class="todo-box"></div><span>Add per-illustration notes for 02–10 as videos are built</span></div>
+      </div>
+
+      <div class="todo-group" style="margin-bottom:0;">
+        <div class="todo-group-title">Documentation</div>
+        <div class="todo-item"><div class="todo-box"></div><span>Keep illustration status table current as videos are completed</span></div>
+      </div>
+
+    </div></div>
+  </section>
+
+  <!-- ── Future Web App Ideas ── -->
+  <section>
+    <h2><span class="icon">💡</span> Future Web App Ideas</h2>
+    <div class="idea-grid">
+      <div class="idea-card">
+        <div class="idea-title">Branching Scenario</div>
+        <div class="idea-body">Drop the user into a scene — Palm Sunday, the crowd wants to make Jesus king — and let their choice reveal the irony. "Challenge, Choice, Consequence" cycle. Illustration 00 is the prime candidate. Can be extended to other illustrations as they're built.</div>
+        <span class="idea-stat">+45% interaction rate</span>
+      </div>
+      <div class="idea-card">
+        <div class="idea-title">Connections Game</div>
+        <div class="idea-body">Group the 11 illustrations into hidden categories (e.g. "How God Destroys", "God's Law", "The Cross", "God's Character"). Users drag and drop to find the groupings. Engages pattern recognition and reinforces the book's thematic structure. Content is already in the knowledge base.</div>
+      </div>
+      <div class="idea-card">
+        <div class="idea-title">Scrollytelling Controversy Arc</div>
+        <div class="idea-body">A scroll-driven narrative through the great controversy: Lucifer's misrepresentation → Eden → Cross → Final Message → Vindication. Dynamic reveals and transitions tied to scroll position. Best suited for the dense theological overview.</div>
+        <span class="idea-stat">+62% dwell time · +317% scroll depth</span>
+      </div>
+      <div class="idea-card">
+        <div class="idea-title">Wire Explorer/Quiz to Illustrations</div>
+        <div class="idea-body">Currently the Explorer and Quiz tabs run off standalone embedded content. Future: generate Explorer/Quiz content per-illustration so users can dive deeper into any specific video's argument after watching it.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

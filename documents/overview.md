@@ -5,7 +5,7 @@ For depth on any area, follow the pointers below.
 
 ---
 
-## The Five Groups
+## The Six Groups
 
 ### 1. Remotion — Bar Chart Race
 Animated bar chart race videos rendered with Remotion. A generic engine (`src/engine/`)
@@ -58,7 +58,20 @@ per topic, purpose-built and disposable.
 
 ---
 
-### 5. Infrastructure
+### 5. BYG — Behold Your God
+Video series + companion web app based on F.T. Wright's *Behold Your God*. Ten illustrated
+animated videos (dark background, SVG doodle format), each with a wrapper page deployed to
+gh-pages. The web app bundles all 10 into a single page with Illustrations, Explorer, and
+Flashcard tabs. Illustration 01 (Nuclear Power Plant) is complete.
+
+- Project definition: `Projects/BYG/documents/project-definition.md`
+- Web app: `Projects/NotebookLM/ephemeral-notebook/apps/behold-your-god.html`
+- Videos: `Projects/Remotion/simple-narrated-slides/` (studio: localhost:3001)
+- Knowledge base: `Projects/BYG/documents/knowledge-base.md`
+
+---
+
+### 6. Infrastructure
 Cross-cutting tools and meta-work. Includes the task manager web app, git/dev-prod
 setup, Claude Code skills, and workflow tooling. No sub-workflows.
 
