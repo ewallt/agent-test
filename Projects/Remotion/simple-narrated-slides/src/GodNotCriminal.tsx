@@ -11,7 +11,7 @@ import {
 } from "remotion";
 import { GOD_NOT_CRIMINAL_DURATIONS_S } from "./god-not-criminal-durations";
 
-const TITLE_FRAMES = 120;
+const TITLE_FRAMES = 150;
 const SLIDE_BUFFER_FRAMES = 60;
 const TOTAL_SLIDES = 4;
 

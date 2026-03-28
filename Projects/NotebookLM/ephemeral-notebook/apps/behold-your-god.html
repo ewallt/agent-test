@@ -54,11 +54,12 @@
 
 <div class="app-header">
   <h1>Behold <span>Your God</span></h1>
-  <p class="app-sub">F.T. Wright · AI-powered explorer, quiz, flashcards & quotes <span style="opacity:.4">v1.1</span></p>
+  <p class="app-sub">F.T. Wright · AI-powered explorer, quiz, flashcards & quotes <span style="opacity:.4">v2.0</span></p>
 </div>
 
 <nav class="tab-nav">
-  <button class="tab-btn active" onclick="showTab('illustrations',this)">Illustrations</button>
+  <button class="tab-btn active" onclick="showTab('story',this)">The Arc</button>
+  <button class="tab-btn" onclick="showTab('illustrations',this)">Illustrations</button>
   <button class="tab-btn" onclick="showTab('explorer',this)">Explorer</button>
   <button class="tab-btn" onclick="showTab('flashcard',this)">Flashcards</button>
   <button class="tab-btn" onclick="showTab('quotes',this)">Quotes</button>
@@ -68,7 +69,7 @@
 <!-- ═══════════════════════════════════════════════════════════
      ILLUSTRATIONS TAB
      ═══════════════════════════════════════════════════════════ -->
-<section id="illustrations-tab" class="tab-section active">
+<section id="illustrations-tab" class="tab-section">
 <style>
   #illustrations-tab { padding: 40px 20px 60px; }
   #illustrations-tab .ill-wrap { max-width: 680px; margin: 0 auto; }
@@ -115,7 +116,7 @@
   <p class="ill-intro">Each of F.T. Wright's ten illustrations explores a facet of God's character.<br>Select one to watch.</p>
   <div class="ill-list">
 
-    <a class="ill-item available" href="https://ewallt.github.io/claude-code-fun/notebooklm/byg-nuclear-plant/" target="_blank">
+    <a class="ill-item available" href="https://ewallt.github.io/claude-code-fun/notebooklm/byg-nuclear-plant/">
       <span class="ill-num">01</span>
       <div class="ill-body">
         <div class="ill-title">The Nuclear Power Plant</div>
@@ -124,14 +125,14 @@
       <span class="ill-badge badge-watch">▶ Watch</span>
     </a>
 
-    <div class="ill-item coming">
+    <a class="ill-item available" href="https://ewallt.github.io/claude-code-fun/notebooklm/byg-god-not-criminal/">
       <span class="ill-num">02</span>
       <div class="ill-body">
         <div class="ill-title">God Is Not a Criminal</div>
         <div class="ill-desc">God never operates like a crime syndicate demanding tribute under threat of violence.</div>
       </div>
-      <span class="ill-badge badge-coming">Coming Attraction</span>
-    </div>
+      <span class="ill-badge badge-watch">▶ Watch</span>
+    </a>
 
     <div class="ill-item coming">
       <span class="ill-num">03</span>
@@ -967,8 +968,178 @@ const FlashcardTab = {
 </div>
 </section>
 
+<!-- ═══════════════════════════════════════════════════════════
+     STORY TAB — The Arc
+     ═══════════════════════════════════════════════════════════ -->
+<section id="story-tab" class="tab-section active">
+<style>
+  #story-tab { padding: 40px 20px 80px; }
+
+  .arc-wrap { max-width: 660px; margin: 0 auto; }
+
+  .arc-intro {
+    text-align: center;
+    color: var(--muted);
+    font-size: .95rem;
+    line-height: 1.75;
+    margin-bottom: 64px;
+    padding: 0 16px;
+  }
+  .arc-intro strong { color: var(--text); }
+
+  /* Timeline */
+  .arc-timeline {
+    position: relative;
+    padding-left: 44px;
+  }
+  .arc-timeline::before {
+    content: '';
+    position: absolute;
+    left: 9px; top: 12px; bottom: 12px;
+    width: 1px;
+    background: linear-gradient(180deg,
+      transparent 0%,
+      rgba(139,185,255,.2) 8%,
+      rgba(139,185,255,.2) 92%,
+      transparent 100%);
+  }
+
+  /* Beat */
+  .arc-beat {
+    position: relative;
+    margin-bottom: 72px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .65s ease, transform .65s ease;
+  }
+  .arc-beat.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* Dot */
+  .arc-beat::before {
+    content: '';
+    position: absolute;
+    left: -39px; top: 7px;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    border: 2px solid rgba(139,185,255,.3);
+    background: var(--bg);
+    transition: border-color .5s, background .5s;
+  }
+  .arc-beat.is-visible::before {
+    border-color: var(--accent);
+    background: rgba(139,185,255,.12);
+  }
+
+  .beat-label {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: .65;
+    margin-bottom: 10px;
+  }
+  .beat-heading {
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -.025em;
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .beat-body {
+    font-size: .93rem;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .beat-quote {
+    margin: 0;
+    padding: 4px 0 4px 18px;
+    border-left: 2px solid rgba(139,185,255,.3);
+    font-style: italic;
+    font-size: .88rem;
+    line-height: 1.65;
+    color: rgba(230,237,247,.5);
+  }
+
+  /* Closing */
+  .arc-closing {
+    margin-top: 20px;
+    padding: 28px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+    color: var(--muted);
+    font-size: .93rem;
+    line-height: 1.75;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .65s ease, transform .65s ease;
+  }
+  .arc-closing.is-visible { opacity: 1; transform: translateY(0); }
+  .arc-closing em { color: var(--text); font-style: italic; }
+</style>
+
+<div class="arc-wrap">
+
+  <p class="arc-intro">
+    <strong>The great controversy</strong> is the story running beneath all of history —
+    a dispute about God's character that began before earth existed and will not end
+    until every question has been answered before the entire universe. This is its arc.
+  </p>
+
+  <div class="arc-timeline">
+
+    <div class="arc-beat">
+      <div class="beat-label">Before Time</div>
+      <h2 class="beat-heading">The Lie That Started Everything</h2>
+      <p class="beat-body">Long before earth's history began, a conflict arose in heaven. Lucifer — the highest of created beings — began to misrepresent God's character. His claim: that God's government was based on arbitrary authority and force. That obedience to His law was servitude, not freedom. That God was holding something back. The distrust spread. A question was planted in the universe that would take millennia to answer.</p>
+      <blockquote class="beat-quote">"Compelling power is found only under Satan's government. The Lord's principles are not of this order."</blockquote>
+    </div>
+
+    <div class="arc-beat">
+      <div class="beat-label">Eden</div>
+      <h2 class="beat-heading">The Same Lie, a New World</h2>
+      <p class="beat-body">The controversy reached earth through the same method: misrepresentation. In Eden, Satan portrayed God as withholding, threatened by human potential, governing through prohibition rather than love. Humanity accepted the false picture. The relationship was severed — not because God withdrew in anger, but because sin cannot coexist with the Source of life. Humanity chose to walk away from the only One who could sustain them.</p>
+      <blockquote class="beat-quote">"God destroys no man. Everyone who is destroyed will have destroyed himself."</blockquote>
+    </div>
+
+    <div class="arc-beat">
+      <div class="beat-label">Calvary</div>
+      <h2 class="beat-heading">The Answer</h2>
+      <p class="beat-body">At the cross, God answered the lie — not with argument, but with action. He absorbed the full consequences of humanity's rejection without retaliating, without forcing, without ceasing to love. Both governments were revealed at Calvary simultaneously: Satan's method of coercion and destruction exposed; God's method of self-giving love demonstrated in full. The cross is not a legal transaction. It is the decisive revelation of what God is like.</p>
+      <blockquote class="beat-quote">"The mystery of the cross explains all other mysteries."</blockquote>
+    </div>
+
+    <div class="arc-beat">
+      <div class="beat-label">The Last Days</div>
+      <h2 class="beat-heading">The Character Reproduced</h2>
+      <p class="beat-body">The controversy does not end with the cross alone. It ends when God's character is fully reproduced in His people — when a generation, facing the same pressures that crucified Christ, reflects His love without compromise. The final message to the world is not primarily spoken. It is lived. The earth is lightened with His glory — and "glory," in Scripture, means character.</p>
+      <blockquote class="beat-quote">"When the character of Christ shall be perfectly reproduced in His people, then He will come to claim them as His own."</blockquote>
+    </div>
+
+    <div class="arc-beat">
+      <div class="beat-label">The End</div>
+      <h2 class="beat-heading">Every Knee, Freely</h2>
+      <p class="beat-body">The controversy closes not by force but by evidence. Every intelligent being in the universe — even those who opposed God — freely acknowledges that His government is just, His character is love, and His way was right. Not compelled. Not coerced. Freely. The question Lucifer raised is answered once and for all. And because it is answered so completely, rebellion will never rise again.</p>
+      <blockquote class="beat-quote">"The great controversy is about God's character — whether He governs by force or by self-giving love."</blockquote>
+    </div>
+
+  </div><!-- /.arc-timeline -->
+
+  <div class="arc-closing">
+    This is what F.T. Wright's <em>Behold Your God</em> argues, chapter by chapter,
+    illustration by illustration: that the central question of history is not what God has done —
+    it is what God is <em>like</em>.
+  </div>
+
+</div><!-- /.arc-wrap -->
+</section>
+
+
 <script>
-const _tabInited = { illustrations: true, explorer: false, flashcard: false, quotes: true };
+const _tabInited = { story: true, illustrations: true, explorer: false, flashcard: false, quotes: true };
 
 function showTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -979,8 +1150,20 @@ function showTab(name, btn) {
     _tabInited[name] = true;
     if (name === 'explorer') ExplorerTab.init();
     if (name === 'flashcard') FlashcardTab.init();
+    if (name === 'story') StoryTab.init();
   }
 }
+
+const StoryTab = {
+  init() {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('#story-tab .arc-beat, #story-tab .arc-closing')
+      .forEach(el => observer.observe(el));
+  }
+};
+StoryTab.init();
 </script>
 
 </body>

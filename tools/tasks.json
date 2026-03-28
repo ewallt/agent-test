@@ -1,6 +1,25 @@
 {
   "groups": [
     {
+      "id": "byg",
+      "label": "Behold Your God",
+      "workflows": [
+        {
+          "id": "byg",
+          "label": "",
+          "tasks": [
+            {
+              "id": "byg-1",
+              "title": "BYG publish pipeline",
+              "notes": "Define and build the end-to-end publish pipeline for BYG — covering local, dev, and main levels, all file types (TSX, HTML, MP4), and all testing involved.",
+              "priority": 3,
+              "status": "pending"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "remotion",
       "label": "Remotion",
       "workflows": [
@@ -73,9 +92,9 @@
             {
               "id": "sns-6",
               "title": "Deploy behold-your-god.html v1.1 to gh-pages",
-              "notes": "Quotes tab added in this session (v1.1). Not yet deployed. Use gh-pages-deploy skill.",
+              "notes": "Superseded — v2.0 deployed 2026-03-28 with The Arc tab, Illustration 02 live, same-tab navigation.",
               "priority": 1,
-              "status": "pending"
+              "status": "done"
             },
             {
               "id": "sns-7",
@@ -93,8 +112,21 @@
             },
             {
               "id": "sns-4",
-              "title": "Build BYG Illustrations 02–10 videos",
-              "notes": "Nine remaining F.T. Wright illustration videos for Behold Your God. Update Illustrations tab as each completes. Depends on sns-5 (project definition).",
+              "title": "Build BYG Illustrations 03–10 videos",
+              "notes": "Eight remaining F.T. Wright illustration videos for Behold Your God (02 complete). Update Illustrations tab as each completes.",
+              "priority": 3,
+              "status": "in-progress"
+            }
+          ]
+        },
+        {
+          "id": "remotion-pipeline",
+          "label": "Remotion (project level)",
+          "tasks": [
+            {
+              "id": "rem-1",
+              "title": "Remotion publish pipeline",
+              "notes": "Define and build the end-to-end publish pipeline for Remotion — covering local, dev, and main levels, all file types, and all testing involved. Applies across bar-chart-race, simple-narrated-slides, and whiteboard-explainer.",
               "priority": 3,
               "status": "pending"
             }
@@ -144,6 +176,13 @@
           "id": "ephemeral-notebook",
           "label": "Ephemeral Notebook",
           "tasks": [
+            {
+              "id": "nlm-16",
+              "title": "NotebookLM publish pipeline",
+              "notes": "Define and build the end-to-end publish pipeline for NotebookLM — covering local, dev, and main levels, all file types (HTML apps), and all testing involved.",
+              "priority": 3,
+              "status": "pending"
+            },
             {
               "id": "nlm-1",
               "title": "Unified artifact workflow",
@@ -262,6 +301,13 @@
           "label": "",
           "tasks": [
             {
+              "id": "inf-16",
+              "title": "Infrastructure publish pipeline",
+              "notes": "Define and build the end-to-end publish pipeline for Infrastructure — covering local, dev, and main levels, all file types (docs, tools, scripts), and all testing involved.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
               "id": "inf-1",
               "title": "Task manager web app",
               "notes": "This app. Located at tools/. Now the primary home for pending items (replaces pending.md).",
@@ -350,6 +396,13 @@
               "title": "Conduct Review 2 — Software Shop Standards",
               "notes": "Assess against a software shop checklist: CI/CD, test coverage, documentation coverage, deployment procedures, monitoring, change management. Capture gaps as tickets.",
               "priority": 2,
+              "status": "pending"
+            },
+            {
+              "id": "inf-15",
+              "title": "Add durations.test.ts to simple-narrated-slides",
+              "notes": "Cross-check BYG durations files against audio file presence and approximate size. Catch title frame underruns (e.g. TITLE_FRAMES too short for audio). See Projects/Infrastructure/documents/testing.md priority 2.",
+              "priority": 3,
               "status": "pending"
             },
             {

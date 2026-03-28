@@ -97,16 +97,18 @@ The argument: if God's relationship to humanity worked the same way (obey or I d
 - [x] Durations file created (placeholder — run audio script to update)
 - [x] Audio script created (`generate-god-not-criminal-audio.mjs`)
 - [x] Registered in `Root.tsx`
-- [ ] Audio generated (`$env:ELEVENLABS_API_KEY=...; node scripts/generate-god-not-criminal-audio.mjs`)
-- [ ] Previewed in Studio (localhost:3001)
-- [ ] Rendered (`npx remotion render GodNotCriminal god-not-criminal-v1.mp4`)
-- [ ] Wrapper HTML created (`byg-god-not-criminal.html`)
-- [ ] Deployed to gh-pages
-- [ ] Web app updated (behold-your-god.html)
-- [ ] Status marked complete in project-definition.md
+- [x] Audio generated (Edge TTS — all 5 MP3s present in `public/audio/god-not-criminal/`)
+- [x] Previewed in Studio (localhost:3001)
+- [x] Rendered (`npx remotion render GodNotCriminal god-not-criminal-v1.mp4`)
+- [x] Wrapper HTML created (`byg-god-not-criminal.html`)
+- [x] Deployed to gh-pages (`notebooklm/byg-god-not-criminal/`)
+- [x] Web app updated (behold-your-god.html)
+- [x] Status marked complete in project-definition.md
 
 ---
 
 ## Render / Deploy Log
 
-*(fill in after render)*
+- 2026-03-28 — Rendered `god-not-criminal-v1.mp4` (9.1 MB, 2643 frames, ~88s)
+- 2026-03-28 — Deployed to `https://ewallt.github.io/claude-code-fun/notebooklm/byg-god-not-criminal/`
+- 2026-03-28 — Web app updated; Illustration 02 badge changed to ▶ Watch

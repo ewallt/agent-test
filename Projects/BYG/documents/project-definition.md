@@ -28,7 +28,7 @@ A two-part delivery:
 |---|-------|------|--------|
 | 00 | The King They Made and Killed | `king-they-made-and-killed` | ⬜ Not started |
 | 01 | The Nuclear Power Plant | `nuclear-plant` | ✅ Complete (v5) |
-| 02 | God Is Not a Criminal | `god-not-criminal` | ⬜ Not started |
+| 02 | God Is Not a Criminal | `god-not-criminal` | ✅ Complete (v1) |
 | 03 | White Hat, Black Hat | `white-hat-black-hat` | ⬜ Not started |
 | 04 | The Father, the Son, and the Gun | `father-son-gun` | ⬜ Not started |
 | 05 | The Father of the Prodigal Son | `father-prodigal-son` | ⬜ Not started |
