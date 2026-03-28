@@ -1,65 +1,45 @@
-# Session Handoff — 2026-03-27
+# Session Handoff — 2026-03-28
 
 ## What Was Done This Session
 
-### BYG Project Definition
-- Created `Projects/BYG/documents/project-definition.md` — full project definition: what BYG is, 11 illustrations table (00–10), folder structure, naming conventions, 9-step video build workflow, future work, related files
-- Confirmed BYG has **11** illustrations (not 10) — added Illustration 00 "The King They Made and Killed" (Ch. 1)
-- Updated `documents/overview.md` — renamed to "Six Groups", added BYG as Group 5
+### sns-8 Complete — Edge TTS Integration
+- All four sub-items of ticket sns-8 are now done; ticket marked `done`
+- **byg-edge-tts skill created** at `~/.claude/skills/byg-edge-tts/SKILL.md` — covers setup, running scripts, adding audio to new compositions, voice options, troubleshooting, and JIT read gates for the "new composition" workflow
+- **remotion-narrated-slides skill updated** — description now notes BYG compositions use edge-tts (not ElevenLabs) and defers to `byg-edge-tts` skill
+- **byg-project-doc.html updated** — edge-tts added to reference table; new Step 4 "Generate audio" inserted in the workflow (steps renumbered 1–10)
+- JIT gates added to byg-edge-tts skill: "READ NOW" instructions before editing the copied script and before creating the placeholder durations file
 
-### Knowledge Base
-- Created `Projects/BYG/documents/knowledge-base.md` from 3 pasted NotebookLM sources + 2 live queries to "Behold Your God: Understanding Divine Character" notebook (`b64c5fc6`)
-- Sections: Central Thesis, Six-Block Book Structure, Chapter-by-Chapter Reference (all 39 chapters), Per-Illustration Reference table, Illustration Details (story + argument for each of 11), Key Quotes (15 quotes with attribution)
+### index.html — Pending Items → Ticket Board
+- Replaced the "Pending Items" card in `documents/index.html` with a "Ticket Board" card linking to `http://localhost:3010/tasks.html`
+- `pending.html` is the old static list — superseded by the live ticket board; card now points to the right place
 
-### Illustration 00 — The King They Made and Killed
-- Created `Projects/BYG/illustrations/00-king-they-made-and-killed/notes.md`
-- Full video production notes: 3 ironies, theological argument, 5 bullet beats with narration + doodle concepts, key quotes, build checklist
-
-### Quotes Tab — behold-your-god.html v1.1
-- Added Quotes tab to `Projects/NotebookLM/ephemeral-notebook/apps/behold-your-god.html`
-- 15 quotes in 4 themed groups; EGW quotes attributed "Ellen White · [Book, p. X]", Wright originals attributed "F.T. Wright"
-- Version bumped to v1.1
-
-### BYG Startup Skill
-- Created `~/.claude/skills/byg/SKILL.md` — session context loader for BYG
-- Steps: read project-definition.md → read knowledge-base.md → orient on illustration status
-- Lists on-demand skills: gh-pages-deploy, remotion-narrated-slides
-
-### Shutdown Skill Update
-- Added Q4 "What workflow should I set for next session?" to Step 1 handoff questions
-- `Workflow:` field in handoff template now set from Tom's answer to Q4 (not a hardcoded list)
-
-### To-Do List
-- Created `Projects/BYG/documents/todo.md` — categories: Videos, Web App, Knowledge Base, Documentation
-
-### HTML Reference Document
-- Created `Projects/BYG/documents/byg-project-doc.html` — full styled HTML reference doc
-- Covers: 11 illustrations table (with Video/Narration time slots), web app structure, naming conventions, workflow, knowledge base description, to-do list with checkboxes, future web app ideas grid
-
-### Memory / Startup Updates
-- Added BYG section to `memory/MEMORY.md`
-- Added "Behold Your God" case to `memory/startup.md`
-- Updated `handoff.md` workflow from `remotion` → `Behold Your God`
+### Skill-Creator Process Discussion
+- Clarified that invoking skill-creator means following the full process (draft → test → eval → iterate), not just writing SKILL.md directly
+- JIT pattern is the key thing to apply when designing workflow skills — instructions delivered at the moment of use, not loaded upfront
 
 ---
 
 ## State Right Now
 
-- `behold-your-god.html` is at v1.1 with Quotes tab — **not yet deployed to gh-pages**
-- Illustration 00 notes are ready; video build not started
-- All BYG documentation is in place: project-definition.md, knowledge-base.md, todo.md, byg-project-doc.html
-- On `dev` branch; changes uncommitted
+- On `dev` branch, clean working tree (as of session start)
+- sns-8 fully complete; all edge-tts work shipped
+- byg-edge-tts skill is live and available in the skill list
+- `documents/index.html` updated — Ticket Board card now links to localhost:3010
 
 ## Next Session Priority
 
-Continue BYG. First task: deploy `behold-your-god.html` v1.1 (Quotes tab) to gh-pages. Second: build Illustration 00 video using notes at `illustrations/00-king-they-made-and-killed/notes.md`.
+Start a new Infrastructure project. Tom will provide the details at session start — wait for him to brief you before doing anything. The goal for the session is to define what the Infrastructure project is and get it established.
 
 ## Other Items
 
-Nothing blocked or unresolved.
+- sns-6: Deploy `behold-your-god.html` v1.1 (Quotes tab) to gh-pages — still pending
+- sns-7: Build Illustration 00 video — The King They Made and Killed — still pending
+- inf-2: dev→main sync procedure — still pending
 
 ## Session Start
 
 READ NOW: `C:\Users\tomew\.claude\projects\C--Users-tomew-Documents-agent-test\memory\startup.md`
 
-Workflow: Behold Your God
+Workflow: None
+
+Tom is bringing details for a new Infrastructure project — wait for him to brief you before doing anything.

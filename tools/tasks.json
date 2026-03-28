@@ -85,6 +85,13 @@
               "status": "pending"
             },
             {
+              "id": "sns-8",
+              "title": "Edge TTS: free ElevenLabs replacement for BYG narration",
+              "notes": "Replaced ElevenLabs (10K char/month limit) with Microsoft Edge TTS (free, no key, comparable quality). Voice: en-GB-RyanNeural.\n\na. [DONE] POC implemented — slide-4.mp3 for GodNotCriminal generated successfully using edge-tts Python package + generate-god-not-criminal-audio-edge.mjs script.\nb. [DONE] Documentation written — Projects/BYG/documents/edge-tts-guide.html (covers setup, usage, voice options, troubleshooting, how to add to new compositions).\nc. [DONE] byg-edge-tts skill created (~/.claude/skills/byg-edge-tts/). remotion-narrated-slides skill updated to note BYG uses edge-tts.\nd. [DONE] byg-project-doc.html updated — edge-tts added to reference table and workflow (new Step 4 for audio generation).",
+              "priority": 2,
+              "status": "done"
+            },
+            {
               "id": "sns-4",
               "title": "Build BYG Illustrations 02–10 videos",
               "notes": "Nine remaining F.T. Wright illustration videos for Behold Your God. Update Illustrations tab as each completes. Depends on sns-5 (project definition).",

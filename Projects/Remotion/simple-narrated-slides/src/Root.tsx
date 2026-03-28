@@ -5,9 +5,11 @@ import { HelloWorld } from "./HelloWorld";
 import { Britain1940, type Britain1940Props } from "./Britain1940";
 import { BattleOfAtlantic, type BattleOfAtlanticProps } from "./BattleOfAtlantic";
 import { NuclearPlant, type NuclearPlantProps } from "./NuclearPlant";
+import { GodNotCriminal, type GodNotCriminalProps } from "./GodNotCriminal";
 import { SLIDE_DURATIONS_S } from "./slide-durations";
 import { ATLANTIC_BULLET_DURATIONS_S } from "./atlantic-durations";
 import { NUCLEAR_SLIDE_DURATIONS_S } from "./nuclear-durations";
+import { GOD_NOT_CRIMINAL_DURATIONS_S } from "./god-not-criminal-durations";
 import {
   SLIDE_INTRO_FRAMES as ATL_INTRO_FRAMES,
   BULLET_GAP_FRAMES  as ATL_GAP_FRAMES,
@@ -17,6 +19,12 @@ import {
 const FPS = 30;
 const TITLE_FRAMES = 120;       // 4s opening card — accommodates ~3.5s title audio
 const SLIDE_BUFFER_FRAMES = 60; // 2s of silence after each slide's audio ends
+
+// ── GodNotCriminal ────────────────────────────────────────────────────────────
+const GNC_SLIDE_FRAMES = GOD_NOT_CRIMINAL_DURATIONS_S.map(
+  (s) => Math.ceil(s * FPS) + SLIDE_BUFFER_FRAMES
+);
+const GNC_TOTAL = TITLE_FRAMES + GNC_SLIDE_FRAMES.reduce((a, b) => a + b, 0);
 
 // ── NuclearPlant ──────────────────────────────────────────────────────────────
 const NP_SLIDE_FRAMES = NUCLEAR_SLIDE_DURATIONS_S.map(
@@ -89,6 +97,15 @@ export const Root: React.FC = () => {
         width={1920}
         height={1080}
         defaultProps={{ slideDurations: NP_SLIDE_FRAMES }}
+      />
+      <Composition<GodNotCriminalProps>
+        id="GodNotCriminal"
+        component={GodNotCriminal}
+        durationInFrames={GNC_TOTAL}
+        fps={FPS}
+        width={1920}
+        height={1080}
+        defaultProps={{ slideDurations: GNC_SLIDE_FRAMES }}
       />
     </>
   );

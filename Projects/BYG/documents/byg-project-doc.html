@@ -147,6 +147,7 @@
         <tr><td>Project definition</td><td><code>Projects/BYG/documents/project-definition.md</code></td></tr>
         <tr><td>Knowledge base</td><td><code>Projects/BYG/documents/knowledge-base.md</code></td></tr>
         <tr><td>Illustration notes</td><td><code>Projects/BYG/illustrations/{nn}-{slug}/notes.md</code></td></tr>
+        <tr><td>Audio tool</td><td>Edge TTS (<code>edge-tts</code> Python package, <code>en-GB-RyanNeural</code> voice) — free, no API key. See <a href="edge-tts-guide.html" style="color:var(--accent);">Edge TTS Guide</a>.</td></tr>
         <tr><td>gh-pages deploy</td><td><code>gh-pages-deploy</code> skill</td></tr>
       </table>
     </div>
@@ -163,8 +164,8 @@
           <th>Title</th>
           <th>Ch.</th>
           <th>Key Argument</th>
+          <th>Doodle (min)</th>
           <th>Video (min)</th>
-          <th>Narration (min)</th>
           <th>Status</th>
         </tr>
         <tr>
@@ -268,7 +269,7 @@
         </tr>
       </table>
     </div>
-    <div class="callout info"><strong>Note</strong> Video Build Time and Narration Time are tracked manually. Fill in the slots above after each completed illustration.</div>
+    <div class="callout info"><strong>Note</strong> Doodle Build Time and Video Build Time are tracked manually. Fill in the slots above after each completed illustration.</div>
   </section>
 
   <!-- ── The Web App ── -->
@@ -310,14 +311,18 @@
       <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Read the notes</strong> Open <code>illustrations/{nn}-{slug}/notes.md</code> — it contains the illustration story, the theological argument, bullet beats with narration text, and doodle concepts for each beat.</div></div>
       <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Create the TSX file</strong> Copy <code>NuclearPlant.tsx</code> as the template. Adapt for the new illustration's content, doodle components, and bullet sequence. Save as <code>Projects/Remotion/simple-narrated-slides/src/{Name}.tsx</code>.</div></div>
       <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Register in Root.tsx</strong> Add the new composition to <code>simple-narrated-slides/src/Root.tsx</code>.</div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Preview</strong> Check at <code>localhost:3001</code> in Remotion Studio.</div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Render</strong>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Generate audio</strong> Copy <code>scripts/generate-god-not-criminal-audio-edge.mjs</code>, rename for the new slug, update the <code>NARRATIONS</code> array, <code>OUTPUT_DIR</code>, and durations file path. Run from <code>simple-narrated-slides/</code>:
+        <div class="code-block">node scripts/generate-{slug}-audio-edge.mjs</div>
+        This produces the MP3s and writes real durations to <code>src/{slug}-durations.ts</code>. See <a href="edge-tts-guide.html" style="color:var(--accent);">Edge TTS Guide</a> for full details.
+      </div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Preview</strong> Check at <code>localhost:3001</code> in Remotion Studio.</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><strong>Render</strong>
         <div class="code-block">npx remotion render {CompositionId} {slug}-v1.mp4</div>
       </div></div>
-      <div class="step"><div class="step-num">6</div><div class="step-body"><strong>Create wrapper HTML</strong> Copy <code>byg-nuclear-plant.html</code> as the template. Update the title, description, and MP4 src. Save as <code>ephemeral-notebook/apps/byg-{slug}.html</code>.</div></div>
-      <div class="step"><div class="step-num">7</div><div class="step-body"><strong>Deploy to gh-pages</strong> Use the <code>gh-pages-deploy</code> skill to push both the MP4 and wrapper HTML to <code>notebooklm/byg-{slug}/</code>.</div></div>
-      <div class="step"><div class="step-num">8</div><div class="step-body"><strong>Update the web app</strong> In <code>behold-your-god.html</code>, change the illustration's badge from "Coming Attraction" to "▶ Watch" and add the link to the wrapper page.</div></div>
-      <div class="step"><div class="step-num">9</div><div class="step-body"><strong>Update status</strong> Mark the illustration complete in <code>project-definition.md</code> and fill in the build time slots in this document.</div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-body"><strong>Create wrapper HTML</strong> Copy <code>byg-nuclear-plant.html</code> as the template. Update the title, description, and MP4 src. Save as <code>ephemeral-notebook/apps/byg-{slug}.html</code>.</div></div>
+      <div class="step"><div class="step-num">8</div><div class="step-body"><strong>Deploy to gh-pages</strong> Use the <code>gh-pages-deploy</code> skill to push both the MP4 and wrapper HTML to <code>notebooklm/byg-{slug}/</code>.</div></div>
+      <div class="step"><div class="step-num">9</div><div class="step-body"><strong>Update the web app</strong> In <code>behold-your-god.html</code>, change the illustration's badge from "Coming Attraction" to "▶ Watch" and add the link to the wrapper page.</div></div>
+      <div class="step"><div class="step-num">10</div><div class="step-body"><strong>Update status</strong> Mark the illustration complete in <code>project-definition.md</code> and fill in the build time slots in this document.</div></div>
     </div>
   </section>
 

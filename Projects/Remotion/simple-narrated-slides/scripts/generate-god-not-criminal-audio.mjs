@@ -1,0 +1,141 @@
+/**
+ * generate-god-not-criminal-audio.mjs
+ * Generates ElevenLabs narration for the GodNotCriminal composition.
+ *
+ * Usage:
+ *   $env:ELEVENLABS_API_KEY="your_key_here"; node scripts/generate-god-not-criminal-audio.mjs
+ *
+ * Outputs:
+ *   public/audio/god-not-criminal/title.mp3
+ *   public/audio/god-not-criminal/slide-1.mp3  ...  public/audio/god-not-criminal/slide-4.mp3
+ *   src/god-not-criminal-durations.ts  (auto-generated, do not edit)
+ *
+ * Voice: George (British male, calm and authoritative)
+ */
+
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const API_KEY = process.env.ELEVENLABS_API_KEY;
+if (!API_KEY) {
+  console.error("❌  Set ELEVENLABS_API_KEY environment variable first.");
+  console.error("    PowerShell: $env:ELEVENLABS_API_KEY=\"sk-...\"");
+  process.exit(1);
+}
+
+// George — British male, calm and authoritative
+const VOICE_ID = "JBFqnCBsd6RMkjVDRZzb";
+const MODEL_ID = "eleven_multilingual_v2";
+
+const NARRATIONS = [
+  {
+    id: "title",
+    text: "God Is Not a Criminal. What if God used force to compel obedience?",
+  },
+  {
+    id: "slide-1",
+    text: "Imagine a crime syndicate operating in a small city. One day, they send an enforcer to a local business owner. The message is simple: pay protection money, or face consequences. The owner refuses. He will not be intimidated, and he will not be extorted. The enforcer leaves — but not empty-handed. He leaves with a warning.",
+  },
+  {
+    id: "slide-2",
+    text: "The consequences begin. First the windows are smashed. Then the warehouse burns. Then come threats against his family. Each act of escalating violence has one purpose: to break the owner's will through fear and pain. Comply, or we will hurt you more. This is the logic of coercion — of a power that rules through force.",
+  },
+  {
+    id: "slide-3",
+    text: "Now apply that same logic to God. Obey me — or I will destroy you. Plagues on Egypt. Flood on the world. Fire on Sodom. Wielded as enforcement tools to compel submission. Wright puts the question plainly: if that is how God operates, what kind of God is this? That god is not a protector. That god is running a protection racket.",
+  },
+  {
+    id: "slide-4",
+    text: "F.T. Wright's answer is unequivocal: God is not a criminal. God never uses compulsion — His only method is self-giving love. A god who destroys to compel obedience is not the God of Scripture. He operates on Satan's principle, not God's. As Ellen White wrote: Compelling power is found only under Satan's government. The Lord's principles are not of this order. God wins through revelation, through love — never through force.",
+  },
+];
+
+const OUTPUT_DIR = path.resolve("public/audio/god-not-criminal");
+fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+
+// ── List voices (optional) ────────────────────────────────────────────────────
+if (process.argv.includes("--list-voices")) {
+  const res = await fetch("https://api.elevenlabs.io/v1/voices", {
+    headers: { "xi-api-key": API_KEY },
+  });
+  const { voices } = await res.json();
+  console.log("\nAvailable voices:");
+  for (const v of voices) {
+    console.log(`  ${v.voice_id}  ${v.name}  (${v.labels?.accent ?? ""} ${v.labels?.gender ?? ""})`);
+  }
+  process.exit(0);
+}
+
+// ── Generate audio ────────────────────────────────────────────────────────────
+console.log(`\nGenerating ${NARRATIONS.length} audio clips...\n`);
+
+for (const { id, text } of NARRATIONS) {
+  const outPath = path.join(OUTPUT_DIR, `${id}.mp3`);
+  process.stdout.write(`  ${id} ... `);
+
+  const res = await fetch(
+    `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
+    {
+      method: "POST",
+      headers: {
+        "xi-api-key": API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text,
+        model_id: MODEL_ID,
+        voice_settings: {
+          stability: 0.55,
+          similarity_boost: 0.75,
+          style: 0.2,
+          use_speaker_boost: true,
+        },
+      }),
+    }
+  );
+
+  if (!res.ok) {
+    const err = await res.text();
+    console.error(`FAILED (${res.status}): ${err}`);
+    continue;
+  }
+
+  const buffer = Buffer.from(await res.arrayBuffer());
+  fs.writeFileSync(outPath, buffer);
+  console.log(`✓  saved (${(buffer.length / 1024).toFixed(0)} KB)`);
+}
+
+// ── Write god-not-criminal-durations.ts ──────────────────────────────────────
+const BITRATE_BPS = 128_000;
+const CORRECTION = 0.974;
+
+const slideIds = NARRATIONS.filter((n) => n.id !== "title").map((n) => n.id);
+const durationsS = slideIds.map((id) => {
+  const file = path.join(OUTPUT_DIR, `${id}.mp3`);
+  const bytes = fs.statSync(file).size;
+  return parseFloat(((bytes * 8) / BITRATE_BPS * CORRECTION).toFixed(3));
+});
+
+const today = new Date().toISOString().slice(0, 10);
+const tsContent = `/**
+ * AUTO-GENERATED by scripts/generate-god-not-criminal-audio.mjs — do not edit manually.
+ * Re-run the script after regenerating audio to update these values.
+ * Last generated: ${today} (George voice, eleven_multilingual_v2)
+ */
+
+// Estimated durations in seconds (file size ÷ 128kbps × 0.974 correction).
+export const GOD_NOT_CRIMINAL_DURATIONS_S: number[] = [
+${slideIds.map((id, i) => {
+  const slide = NARRATIONS.find((n) => n.id === id);
+  return `  ${durationsS[i]}, // ${id} — ${slide?.text.split(" ").slice(0, 5).join(" ")}...`;
+}).join("\n")}
+];
+`;
+
+const durationsFile = path.resolve(__dirname, "../src/god-not-criminal-durations.ts");
+fs.writeFileSync(durationsFile, tsContent);
+console.log(`\n✅  Done. Durations written to src/god-not-criminal-durations.ts`);
+console.log("    The dev server will hot-reload automatically.\n");
