@@ -285,3 +285,13 @@
 - Use case: Query when building web apps, designing interfaces
 - Artifacts: none
 - Hiccups: none
+
+## 2026-03-29 | Meta Notebook | "Claude AI Capabilities — Bridging the Knowledge Cutoff"
+- Notebook ID: 9fece757-6ffb-4fb8-a03e-94481ee70574
+- URL: https://notebooklm.google.com/notebook/9fece757-6ffb-4fb8-a03e-94481ee70574
+- Pattern: Research-based (deep mode) — 53 sources imported
+- Type: Meta notebook — for Claude to query on demand, no artifacts
+- Topic: Claude's recent capabilities, model releases (Claude 3.x, 4.x), Claude Code, extended thinking, tool use, computer use, Cowork, benchmarks, Anthropic announcements through March 2026
+- Use case: Bridge Claude's knowledge cutoff — query when uncertain about own abilities, new features, or the current AI landscape
+- Artifacts: none
+- Hiccups: none

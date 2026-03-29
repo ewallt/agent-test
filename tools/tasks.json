@@ -413,6 +413,13 @@
               "status": "done"
             },
             {
+              "id": "inf-18",
+              "title": "Review skill-oiler for additional universal concerns",
+              "notes": "Assess whether anything beyond the current capabilities reference (claude-capabilities knowledge base path) belongs in skill-oiler. Also wire doodle animation and UX/design meta notebooks into their respective skills (whiteboard-explainer, notebooklm-webapp).",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
               "id": "inf-9",
               "title": "Set up Google Docs MCP server (OAuth)",
               "notes": "Done. Token minted, MCP verified working 2026-03-13. mcp__gdrive__search and ReadMcpResourceTool both confirmed. Reference doc: ephemeral-notebook/documents/gdrive-integration.md and nlm-claude-feedback-loop.md.",

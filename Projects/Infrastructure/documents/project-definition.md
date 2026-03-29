@@ -49,6 +49,7 @@ These are open questions and next steps — to be refined into tickets when work
 - [ ] Conduct Review 1 (redundancy/cleanup) and capture findings as tickets
 - [ ] Conduct Review 2 (software shop standards) and capture findings as tickets
 - [ ] Prioritize the resulting backlog
+- [ ] Review `skill-oiler` — assess whether any additional universal concerns belong there beyond the current capabilities reference
 
 ---
 
