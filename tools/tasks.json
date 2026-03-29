@@ -406,6 +406,13 @@
               "status": "pending"
             },
             {
+              "id": "inf-17",
+              "title": "Test Playwright MCP end-to-end",
+              "notes": "Start a fresh Claude Code session and verify a visible Chrome window opens to example.com. Then explore browser control for iterative HTML app development. Config fixed 2026-03-28 (removed bare --codegen flag).",
+              "priority": 1,
+              "status": "pending"
+            },
+            {
               "id": "inf-9",
               "title": "Set up Google Docs MCP server (OAuth)",
               "notes": "Done. Token minted, MCP verified working 2026-03-13. mcp__gdrive__search and ReadMcpResourceTool both confirmed. Reference doc: ephemeral-notebook/documents/gdrive-integration.md and nlm-claude-feedback-loop.md.",
