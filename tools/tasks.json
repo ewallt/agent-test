@@ -408,9 +408,9 @@
             {
               "id": "inf-17",
               "title": "Test Playwright MCP end-to-end",
-              "notes": "Start a fresh Claude Code session and verify a visible Chrome window opens to example.com. Then explore browser control for iterative HTML app development. Config fixed 2026-03-28 (removed bare --codegen flag).",
+              "notes": "Done 2026-03-29. Confirmed working — Chrome opens, navigates, snapshots, screenshots all verified. Findings documented in documents/playwright-mcp-findings.html.",
               "priority": 1,
-              "status": "pending"
+              "status": "done"
             },
             {
               "id": "inf-9",

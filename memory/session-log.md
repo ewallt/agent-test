@@ -2,6 +2,34 @@
 
 ---
 
+## 2026-03-29 — Playwright MCP Findings, BYG Theme Switcher, Methodology Research
+
+### Playwright MCP Confirmed & Understood
+- End-to-end test passed: navigate → snapshot → screenshot all working
+- file:// URLs blocked; must use local HTTP server on port 8765
+- Server must run as foreground process in background task (no `&`)
+- Chrome window closing kills session; next navigate restores it
+- Key cost insight: snapshots return automatically on every action (2K–5K tokens each)
+
+### BYG Global Theme Switcher
+- Gear icon (⚙) added to app header top-right
+- Popover: Default, Explorer, Archives, High-Command
+- Theme applies globally to `body` class — all 5 tabs re-theme via CSS variable overrides
+- Explorer theme: hardcoded navy rgba values overridden across all tabs via `body.theme-explorer #tab-id .selector` pattern
+- Visual audit of tabs 1–3; fixes applied to tabs 4–5 from subagent CSS extraction
+- Watch badge fix applied but not visually confirmed at shutdown
+
+### Methodology Research — Visual Iteration vs. Spec-Driven
+- Token cost: ~10K per round, ~114K per full session; not viable on $20/month Pro
+- Effectiveness finding: spec-driven (audit → one-pass overrides → grep verify) beats screenshot iteration for CSS theming
+- Visual iteration useful only for end-of-session sanity check
+- Reference doc written: `documents/playwright-mcp-findings.html`, added to index
+
+### Dev Synced
+- Merged main into dev cleanly at session start
+
+---
+
 ## 2026-03-28 — Playwright MCP Test, BYG Theme Switcher
 
 ### Playwright MCP Confirmed Working
