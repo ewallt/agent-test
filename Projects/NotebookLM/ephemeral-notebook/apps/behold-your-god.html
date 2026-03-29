@@ -3,19 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Behold Your God</title>
+<title>Behold Your God — Explorer & Quiz</title>
 <style>
-  /* ── Global tokens ── */
   :root {
     --bg: #070c16;
     --surface: #0f1726;
-    --surface2: #131e30;
     --border: rgba(255,255,255,.10);
     --text: #e6edf7;
     --muted: #a9b6cc;
     --accent: #8bb9ff;
     --green: rgba(124,255,178,.92);
-    --yellow: rgba(255,214,100,.9);
     --red: rgba(255,122,138,.95);
     --shadow: 0 12px 30px rgba(0,0,0,.35);
     --radius: 16px;
@@ -27,513 +24,271 @@
     background: linear-gradient(180deg, #070c16 0%, #0b1220 50%, #070c16 100%);
     color: var(--text);
     min-height: 100vh;
-    transition: background-color .35s ease, color .25s ease;
+    padding: 28px 20px;
   }
+  .wrap { max-width: 900px; margin: 0 auto; }
 
-  /* ── Global themes ── */
-  body.theme-explorer {
-    --bg: #e8dcc8; --surface: #1a1815; --border: rgba(90,80,65,.35);
-    --text: #2c2416; --muted: #6b5d4f; --accent: #d4a574;
-    background: #e8dcc8; color: #2c2416;
-  }
-  body.theme-archives {
-    --bg: #f5f5f4; --surface: #e7e5e4; --border: rgba(41,37,36,.15);
-    --text: #292524; --muted: #57534e; --accent: #0f766e;
-    background: #f5f5f4; color: #292524;
-  }
-  body.theme-high-command {
-    --bg: #022c22; --surface: #064e3b; --border: rgba(254,240,138,.15);
-    --text: #ecfdf5; --muted: #6ee7b7; --accent: #fef08a;
-    background: #022c22; color: #ecfdf5;
-  }
+  header { text-align: center; margin-bottom: 32px; }
+  header h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700; letter-spacing: -.03em; margin-bottom: 8px; }
+  header h1 span { color: var(--accent); }
+  .sub { color: var(--muted); font-size: .95rem; }
 
-  /* ── Explorer: global hardcoded overrides ── */
-  body.theme-explorer .tab-btn.active { background: rgba(212,165,116,.15); border-color: rgba(212,165,116,.4); }
-  body.theme-explorer .tab-btn:hover { border-color: rgba(90,80,65,.4); }
-  body.theme-explorer .beat-label { opacity: 1; }
-  /* Tab 2 — Illustrations */
-  body.theme-explorer #illustrations-tab .badge-watch { background: rgba(212,165,116,.18); border-color: rgba(212,165,116,.45); color: #2c2416; }
-  body.theme-explorer .ill-item:hover { border-color: rgba(212,165,116,.5); background: rgba(212,165,116,.06); }
-  /* Tab 3 — Explorer */
-  body.theme-explorer .subtab.active { background: rgba(212,165,116,.15); border-color: rgba(212,165,116,.4); }
-  body.theme-explorer .subtab:hover:not(.active) { border-color: rgba(90,80,65,.35); }
-  body.theme-explorer select { background: #26231f; color: #faf8f3; border-color: rgba(90,80,65,.5); }
-  body.theme-explorer select:focus { border-color: rgba(212,165,116,.6); }
-  body.theme-explorer #explorer-tab button.primary { background: #d4a574; color: #1a1815; }
-  body.theme-explorer .chip { background: rgba(212,165,116,.08); border-color: rgba(212,165,116,.3); }
-  body.theme-explorer .chip:hover { background: rgba(212,165,116,.18); border-color: rgba(212,165,116,.55); }
-  body.theme-explorer .option:hover:not(:disabled) { background: rgba(212,165,116,.07); border-color: rgba(212,165,116,.4); }
-  body.theme-explorer .explanation { background: rgba(212,165,116,.07); border-color: rgba(212,165,116,.2); }
-  body.theme-explorer td { border-bottom-color: rgba(90,80,65,.2); }
-  /* Tab 4 — Flashcards */
-  body.theme-explorer .fc-progress-wrap { background: rgba(90,80,65,.2); }
-  body.theme-explorer #flashcard-tab button:hover { border-color: rgba(90,80,65,.45); }
-  body.theme-explorer #flashcard-tab button.primary { background: #d4a574; color: #1a1815; }
-  body.theme-explorer kbd { background: rgba(90,80,65,.15); border-color: rgba(90,80,65,.3); color: #2c2416; }
-  body.theme-explorer .kbd-hint { color: rgba(107,93,79,.7); }
-  /* Tab 5 — Quotes */
-  body.theme-explorer .q-card:hover { border-color: rgba(212,165,116,.4); }
-  /* Arc tab hardcoded overrides */
-  body.theme-explorer .beat-quote { color: rgba(44,36,22,.55); border-left-color: rgba(212,165,116,.45); }
-  body.theme-explorer .arc-timeline::before { background: linear-gradient(180deg, transparent 0%, rgba(212,165,116,.3) 8%, rgba(212,165,116,.3) 92%, transparent 100%); }
-  body.theme-explorer .arc-beat::before { border-color: rgba(212,165,116,.3); }
-  body.theme-explorer .arc-beat.is-visible::before { background: rgba(212,165,116,.15); }
-  body.theme-explorer .arc-closing { color: #faf8f3; }
-  body.theme-explorer .arc-closing em { color: #faf8f3; }
-
-  body.theme-archives .beat-quote { color: rgba(41,37,36,.5); border-left-color: rgba(15,118,110,.35); }
-  body.theme-archives .arc-timeline::before { background: linear-gradient(180deg, transparent 0%, rgba(15,118,110,.2) 8%, rgba(15,118,110,.2) 92%, transparent 100%); }
-  body.theme-archives .arc-beat::before { border-color: rgba(15,118,110,.3); }
-  body.theme-archives .arc-beat.is-visible::before { background: rgba(15,118,110,.1); }
-
-  body.theme-high-command .beat-quote { color: rgba(236,253,245,.5); border-left-color: rgba(254,240,138,.3); }
-  body.theme-high-command .arc-timeline::before { background: linear-gradient(180deg, transparent 0%, rgba(254,240,138,.15) 8%, rgba(254,240,138,.15) 92%, transparent 100%); }
-  body.theme-high-command .arc-beat::before { border-color: rgba(254,240,138,.25); }
-  body.theme-high-command .arc-beat.is-visible::before { background: rgba(254,240,138,.08); }
-
-  /* ── App shell ── */
-  .app-header { text-align: center; padding: 32px 20px 0; position: relative; }
-  .app-header h1 { font-size: clamp(1.6rem,4vw,2.2rem); font-weight: 700; letter-spacing: -.03em; margin-bottom: 8px; }
-  .app-header h1 span { color: var(--accent); }
-  .app-sub { color: var(--muted); font-size: .9rem; }
-
-  /* ── Top-level tab nav ── */
-  .tab-nav { display: flex; justify-content: center; gap: 8px; padding: 24px 20px 0; }
-  .tab-btn {
-    padding: 9px 22px; border-radius: 10px;
-    border: 1px solid var(--border); background: transparent;
-    color: var(--muted); font-size: .9rem; font-weight: 600; cursor: pointer; transition: all .15s;
-  }
-  .tab-btn:hover { border-color: rgba(255,255,255,.25); color: var(--text); }
-  .tab-btn.active { background: rgba(139,185,255,.12); border-color: rgba(139,185,255,.35); color: var(--accent); }
-
-  /* ── Section visibility ── */
-  .tab-section { display: none; }
-  .tab-section.active { display: block; }
-
-  /* ── Theme gear ── */
-  .theme-gear-btn {
-    position: absolute; top: 32px; right: 20px;
-    background: transparent; border: 1px solid var(--border);
-    border-radius: 8px; color: var(--muted);
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; cursor: pointer;
-    transition: color .15s, border-color .15s;
-  }
-  .theme-gear-btn:hover { color: var(--text); border-color: var(--accent); }
-  .theme-popover {
-    position: absolute; top: 76px; right: 20px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 8px;
-    display: none; flex-direction: column; gap: 4px;
-    z-index: 100; min-width: 150px;
-    box-shadow: var(--shadow);
-  }
-  .theme-popover.open { display: flex; }
-  .theme-opt {
-    padding: 8px 14px; border-radius: 8px;
-    border: none; background: transparent;
-    color: var(--muted); font-size: .82rem; font-weight: 600;
-    text-align: left; cursor: pointer;
-    transition: background .12s, color .12s;
-  }
-  .theme-opt:hover { background: rgba(128,128,128,.12); color: var(--text); }
-  .theme-opt.active { color: var(--accent); }
-</style>
-</head>
-<body>
-
-<div class="app-header">
-  <h1>Behold <span>Your God</span></h1>
-  <p class="app-sub">F.T. Wright · AI-powered explorer, quiz, flashcards & quotes <span style="opacity:.4">v2.0</span></p>
-  <button class="theme-gear-btn" onclick="ThemeSwitcher.toggle()" title="Change theme">⚙</button>
-  <div class="theme-popover" id="theme-popover">
-    <button class="theme-opt active" data-theme="" onclick="ThemeSwitcher.set('',this)">Default</button>
-    <button class="theme-opt" data-theme="explorer" onclick="ThemeSwitcher.set('explorer',this)">Explorer</button>
-    <button class="theme-opt" data-theme="archives" onclick="ThemeSwitcher.set('archives',this)">Archives</button>
-    <button class="theme-opt" data-theme="high-command" onclick="ThemeSwitcher.set('high-command',this)">High-Command</button>
-  </div>
-</div>
-
-<nav class="tab-nav">
-  <button class="tab-btn active" onclick="showTab('story',this)">The Arc</button>
-  <button class="tab-btn" onclick="showTab('illustrations',this)">Illustrations</button>
-  <button class="tab-btn" onclick="showTab('explorer',this)">Explorer</button>
-  <button class="tab-btn" onclick="showTab('flashcard',this)">Flashcards</button>
-  <button class="tab-btn" onclick="showTab('quotes',this)">Quotes</button>
-</nav>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     ILLUSTRATIONS TAB
-     ═══════════════════════════════════════════════════════════ -->
-<section id="illustrations-tab" class="tab-section">
-<style>
-  #illustrations-tab { padding: 40px 20px 60px; }
-  #illustrations-tab .ill-wrap { max-width: 680px; margin: 0 auto; }
-  #illustrations-tab .ill-intro {
-    color: var(--muted); font-size: .93rem; line-height: 1.7;
-    margin-bottom: 36px; text-align: center;
-  }
-  #illustrations-tab .ill-list { display: flex; flex-direction: column; gap: 12px; }
-
-  #illustrations-tab .ill-item {
-    display: flex; align-items: center; gap: 16px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 18px 22px;
-    text-decoration: none; color: var(--text);
-    transition: border-color .15s, background .15s;
-  }
-  #illustrations-tab .ill-item:hover {
-    border-color: rgba(139,185,255,.35);
-    background: rgba(139,185,255,.05);
-  }
-  #illustrations-tab .ill-item.available:hover { cursor: pointer; }
-  #illustrations-tab .ill-item.coming { opacity: .5; cursor: default; pointer-events: none; }
-
-  #illustrations-tab .ill-num {
-    font-size: .75rem; font-weight: 700; color: var(--accent);
-    opacity: .5; min-width: 24px; letter-spacing: .05em;
-  }
-  #illustrations-tab .ill-body { flex: 1; }
-  #illustrations-tab .ill-title { font-size: 1rem; font-weight: 600; margin-bottom: 3px; }
-  #illustrations-tab .ill-desc { font-size: .82rem; color: var(--muted); line-height: 1.5; }
-
-  #illustrations-tab .ill-badge {
-    font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-    padding: 4px 10px; border-radius: 99px; white-space: nowrap;
-  }
-  #illustrations-tab .badge-watch {
-    background: rgba(139,185,255,.15); border: 1px solid rgba(139,185,255,.35); color: var(--accent);
-  }
-  #illustrations-tab .badge-coming {
-    background: rgba(255,255,255,.04); border: 1px solid var(--border); color: var(--muted);
-  }
-</style>
-<div class="ill-wrap">
-  <p class="ill-intro">Each of F.T. Wright's ten illustrations explores a facet of God's character.<br>Select one to watch.</p>
-  <div class="ill-list">
-
-    <a class="ill-item available" href="https://ewallt.github.io/claude-code-fun/notebooklm/byg-nuclear-plant/">
-      <span class="ill-num">01</span>
-      <div class="ill-body">
-        <div class="ill-title">The Nuclear Power Plant</div>
-        <div class="ill-desc">What does it mean when God "destroys"? A technician, a hostile town, and a preventable explosion.</div>
-      </div>
-      <span class="ill-badge badge-watch">▶ Watch</span>
-    </a>
-
-    <a class="ill-item available" href="https://ewallt.github.io/claude-code-fun/notebooklm/byg-god-not-criminal/">
-      <span class="ill-num">02</span>
-      <div class="ill-body">
-        <div class="ill-title">God Is Not a Criminal</div>
-        <div class="ill-desc">God never operates like a crime syndicate demanding tribute under threat of violence.</div>
-      </div>
-      <span class="ill-badge badge-watch">▶ Watch</span>
-    </a>
-
-    <div class="ill-item coming">
-      <span class="ill-num">03</span>
-      <div class="ill-body">
-        <div class="ill-title">White Hat, Black Hat</div>
-        <div class="ill-desc">Hollywood's most effective theology lesson — and why God refuses to play by its rules.</div>
-      </div>
-      <span class="ill-badge badge-coming">Coming Attraction</span>
-    </div>
-
-    <div class="ill-item coming">
-      <span class="ill-num">04</span>
-      <div class="ill-body">
-        <div class="ill-title">The Father, the Son, and the Gun</div>
-        <div class="ill-desc">Why did God give Israel rules of warfare? A father, a rifle, and the second mile.</div>
-      </div>
-      <span class="ill-badge badge-coming">Coming Attraction</span>
-    </div>
-
-    <div class="ill-item coming">
-      <span class="ill-num">05</span>
-      <div class="ill-body">
-        <div class="ill-title">The Father of the Prodigal Son</div>
-        <div class="ill-desc">Restorative justice: the father runs, restores, and asks nothing in return.</div>
-      </div>
-      <span class="ill-badge badge-coming">Coming Attraction</span>
-    </div>
-
-    <div class="ill-item coming">
-      <span class="ill-num">06</span>
-      <div class="ill-body">
-        <div class="ill-title">Rods and Serpents</div>
-        <div class="ill-desc">The forces of nature are only safe while held in God's directing hand.</div>
-      </div>
-      <span class="ill-badge badge-coming">Coming Attraction</span>
-    </div>
-
-    <div class="ill-item coming">
-      <span class="ill-num">07</span>
-      <div class="ill-body">
-        <div class="ill-title">The Boeing 747</div>
-        <div class="ill-desc">What happens when the untrained passenger overpowers the only pilot who can fly?</div>
-      </div>
-      <span class="ill-badge badge-coming">Coming Attraction</span>
-    </div>
-
-    <div class="ill-item coming">
-      <span class="ill-num">08</span>
-      <div class="ill-body">
-        <div class="ill-title">The Cross as the Dividing Line</div>
-        <div class="ill-desc">Two crosses revealed simultaneously at Calvary — one of domination, one of love.</div>
-      </div>
-      <span class="ill-badge badge-coming">Coming Attraction</span>
-    </div>
-
-    <div class="ill-item coming">
-      <span class="ill-num">09</span>
-      <div class="ill-body">
-        <div class="ill-title">Interpreting God's "Destruction"</div>
-        <div class="ill-desc">The Flood, Sodom, Egypt — God is always the one being expelled, never the attacker.</div>
-      </div>
-      <span class="ill-badge badge-coming">Coming Attraction</span>
-    </div>
-
-    <div class="ill-item coming">
-      <span class="ill-num">10</span>
-      <div class="ill-body">
-        <div class="ill-title">The Law as God's Character</div>
-        <div class="ill-desc">The law is not a rulebook — it is the transcript of how love behaves in relationship.</div>
-      </div>
-      <span class="ill-badge badge-coming">Coming Attraction</span>
-    </div>
-
-  </div>
-</div>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     EXPLORER TAB
-     ═══════════════════════════════════════════════════════════ -->
-<section id="explorer-tab" class="tab-section">
-<style>
-  #explorer-tab { padding: 24px 20px 60px; }
-  #explorer-tab .wrap { max-width: 900px; margin: 0 auto; }
-
-  #explorer-tab .subtabs { display: flex; gap: 8px; margin-bottom: 24px; }
-  #explorer-tab .subtab {
+  .tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+  .tab {
     padding: 10px 22px; border-radius: 99px; border: 1px solid var(--border);
     background: transparent; color: var(--muted); cursor: pointer;
     font-size: .9rem; font-weight: 600; transition: all .15s;
   }
-  #explorer-tab .subtab.active { background: rgba(139,185,255,.12); border-color: rgba(139,185,255,.35); color: var(--accent); }
-  #explorer-tab .subtab:hover:not(.active) { border-color: rgba(255,255,255,.2); color: var(--text); }
-
-  #explorer-tab .panel { display: none; }
-  #explorer-tab .panel.active { display: block; }
-
-  #explorer-tab .card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 24px; margin-bottom: 16px;
+  .tab.active {
+    background: rgba(139,185,255,.12);
+    border-color: rgba(139,185,255,.35);
+    color: var(--accent);
   }
-  #explorer-tab label {
-    display: block; font-size: .85rem; font-weight: 600; color: var(--muted);
-    margin-bottom: 8px; text-transform: uppercase; letter-spacing: .07em;
+  .tab:hover:not(.active) { border-color: rgba(255,255,255,.2); color: var(--text); }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 16px;
   }
-  #explorer-tab .select-wrap { position: relative; margin-bottom: 16px; }
-  #explorer-tab .select-wrap::after {
+
+  label { display: block; font-size: .85rem; font-weight: 600; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .07em; }
+  .select-wrap { position: relative; margin-bottom: 16px; }
+  .select-wrap::after {
     content: '▾'; position: absolute; right: 14px; top: 50%;
-    transform: translateY(-50%); color: var(--muted); pointer-events: none;
+    transform: translateY(-50%); color: var(--muted);
+    pointer-events: none; font-size: 1rem;
   }
-  #explorer-tab select {
+  select {
     width: 100%; padding: 12px 36px 12px 16px; border-radius: 10px;
     background: #0b1422; border: 1px solid var(--border);
-    color: var(--text); font-size: 1rem; appearance: none; cursor: pointer;
+    color: var(--text); font-size: 1rem;
+    appearance: none; cursor: pointer;
   }
-  #explorer-tab select:focus { outline: none; border-color: rgba(139,185,255,.4); }
+  select:focus { outline: none; border-color: rgba(139,185,255,.4); }
 
-  #explorer-tab button.primary {
-    background: linear-gradient(135deg,rgba(139,185,255,1),rgba(124,255,178,.92));
+  button.primary {
+    background: linear-gradient(135deg, rgba(139,185,255,1), rgba(124,255,178,.92));
     color: #08101d; border: none; border-radius: 10px;
-    padding: 12px 28px; font-size: .95rem; font-weight: 700; cursor: pointer; transition: opacity .15s;
+    padding: 12px 28px; font-size: .95rem; font-weight: 700;
+    cursor: pointer; transition: opacity .15s;
   }
-  #explorer-tab button.primary:hover { opacity: .88; }
-  #explorer-tab button.primary:disabled { opacity: .4; cursor: not-allowed; }
+  button.primary:hover { opacity: .88; }
+  button.primary:disabled { opacity: .4; cursor: not-allowed; }
 
-  #explorer-tab .status { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--muted); margin-top: 14px; }
-  #explorer-tab .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
-  #explorer-tab .dot.live { background: var(--accent); animation: ePulse 1.2s infinite; }
-  #explorer-tab .dot.ok { background: var(--green); }
-  #explorer-tab .dot.bad { background: var(--red); }
-  @keyframes ePulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .status { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--muted); margin-top: 14px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+  .dot.live { background: var(--accent); animation: pulse 1.2s infinite; }
+  .dot.ok { background: var(--green); }
+  .dot.bad { background: var(--red); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-  #explorer-tab .result { margin-top: 20px; }
-  #explorer-tab .result-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
-  #explorer-tab .result-summary { color: var(--muted); line-height: 1.7; margin-bottom: 18px; font-size: .95rem; }
+  .result { margin-top: 20px; }
+  .result-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; color: var(--accent); }
+  .result-summary { color: var(--muted); line-height: 1.7; margin-bottom: 18px; font-size: .95rem; }
 
-  #explorer-tab table { width: 100%; border-collapse: collapse; font-size: .88rem; margin-bottom: 18px; }
-  #explorer-tab th { text-align: left; color: var(--muted); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .07em; padding: 0 12px 10px; border-bottom: 1px solid var(--border); }
-  #explorer-tab td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.05); line-height: 1.5; vertical-align: top; }
-  #explorer-tab tr:last-child td { border-bottom: none; }
-  #explorer-tab td:first-child { color: var(--accent); font-weight: 600; white-space: nowrap; }
-  #explorer-tab tr:hover td { color: var(--accent); transition: color .15s; }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; margin-bottom: 18px; }
+  th { text-align: left; color: var(--muted); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .07em; padding: 0 12px 10px; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.05); line-height: 1.5; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { color: var(--accent); font-weight: 600; white-space: nowrap; }
 
-  #explorer-tab .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-  #explorer-tab .chip {
-    padding: 7px 14px; border-radius: 99px; border: 1px solid rgba(139,185,255,.25);
-    background: rgba(139,185,255,.07); color: var(--accent); font-size: .82rem; cursor: pointer; transition: all .15s;
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .chip {
+    padding: 7px 14px; border-radius: 99px;
+    border: 1px solid rgba(139,185,255,.25);
+    background: rgba(139,185,255,.07);
+    color: var(--accent); font-size: .82rem; cursor: pointer;
+    transition: all .15s;
   }
-  #explorer-tab .chip:hover { background: rgba(139,185,255,.15); border-color: rgba(139,185,255,.45); }
-  #explorer-tab .chips-label { font-size: .78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
+  .chip:hover { background: rgba(139,185,255,.15); border-color: rgba(139,185,255,.45); }
 
-  #explorer-tab .question-text { font-size: 1.05rem; font-weight: 600; line-height: 1.6; margin-bottom: 18px; }
-  #explorer-tab .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
-  #explorer-tab .option {
-    padding: 13px 16px; border-radius: 10px; border: 1px solid var(--border);
-    background: transparent; color: var(--text); text-align: left; cursor: pointer; font-size: .93rem; transition: all .15s;
+  .chips-label { font-size: .78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
+
+  /* Quiz */
+  .question-text { font-size: 1.05rem; font-weight: 600; line-height: 1.6; margin-bottom: 18px; }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+  .option {
+    padding: 13px 16px; border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--text);
+    text-align: left; cursor: pointer; font-size: .93rem;
+    transition: all .15s;
   }
-  #explorer-tab .option:hover:not(:disabled) { border-color: rgba(139,185,255,.35); background: rgba(139,185,255,.06); }
-  #explorer-tab .option.correct { border-color: var(--green); background: rgba(124,255,178,.08); color: var(--green); }
-  #explorer-tab .option.wrong { border-color: var(--red); background: rgba(255,122,138,.08); color: var(--red); }
-  #explorer-tab .option:disabled { cursor: default; }
-  #explorer-tab .explanation {
-    background: rgba(139,185,255,.07); border: 1px solid rgba(139,185,255,.18);
-    border-radius: 10px; padding: 14px 16px; font-size: .88rem; color: var(--muted); line-height: 1.65; margin-bottom: 16px;
+  .option:hover:not(:disabled) { border-color: rgba(139,185,255,.35); background: rgba(139,185,255,.06); }
+  .option.correct { border-color: var(--green); background: rgba(124,255,178,.08); color: var(--green); }
+  .option.wrong { border-color: var(--red); background: rgba(255,122,138,.08); color: var(--red); }
+  .option:disabled { cursor: default; }
+
+  .explanation {
+    background: rgba(139,185,255,.07);
+    border: 1px solid rgba(139,185,255,.18);
+    border-radius: 10px; padding: 14px 16px;
+    font-size: .88rem; color: var(--muted); line-height: 1.65;
+    margin-bottom: 16px;
   }
-  #explorer-tab .score-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; font-size: .88rem; color: var(--muted); }
-  #explorer-tab .score-val { font-weight: 700; color: var(--accent); font-size: 1rem; }
-  #explorer-tab .e-progress { font-size: .82rem; color: var(--muted); margin-bottom: 14px; }
-  #explorer-tab .error { color: var(--red); font-size: .88rem; margin-top: 10px; }
+
+  .score-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px; font-size: .88rem; color: var(--muted);
+  }
+  .score-val { font-weight: 700; color: var(--accent); font-size: 1rem; }
+
+  .progress { font-size: .82rem; color: var(--muted); margin-bottom: 14px; }
+
+  .error { color: var(--red); font-size: .88rem; margin-top: 10px; }
 </style>
-
+</head>
+<body>
 <div class="wrap">
-  <div class="subtabs">
-    <button class="subtab active" onclick="ExplorerTab.switchSub('byg-explorer-panel')">Explorer</button>
-    <button class="subtab" onclick="ExplorerTab.switchSub('byg-quiz-panel')">Quiz</button>
+
+  <header>
+    <h1>Behold <span>Your God</span></h1>
+    <p class="sub">Understanding divine character through F.T. Wright's framework · AI-powered explorer & quiz</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('explorer')">Explorer</button>
+    <button class="tab" onclick="switchTab('quiz')">Quiz</button>
   </div>
 
-  <div id="byg-explorer-panel" class="panel active">
+  <!-- EXPLORER -->
+  <div id="explorer" class="panel active">
     <div class="card">
-      <label for="byg-focus">Choose a theme</label>
+      <label for="focus">Choose a theme</label>
       <div class="select-wrap">
-        <select id="byg-focus">
-          <option value="god-not-criminal">God is Not a Criminal</option>
-          <option value="nuclear-plant">The Nuclear Power Plant Technician</option>
-          <option value="white-hat">White Hat, Black Hat</option>
-          <option value="father-son-gun">The Father, the Son, and the Gun</option>
-          <option value="prodigal-son">The Father of the Prodigal Son</option>
-          <option value="rods-serpents">Rods and Serpents</option>
-          <option value="boeing-747">The Boeing 747 Pilot</option>
-          <option value="cross-dividing-line">The Cross as the Dividing Line</option>
-          <option value="gods-destruction">Interpreting God's "Destruction"</option>
-          <option value="law-character">The Law as God's Character</option>
-        </select>
+      <select id="focus">
+        <option value="god-not-criminal">God is Not a Criminal</option>
+        <option value="nuclear-plant">The Nuclear Power Plant Technician</option>
+        <option value="white-hat">White Hat, Black Hat</option>
+        <option value="father-son-gun">The Father, the Son, and the Gun</option>
+        <option value="prodigal-son">The Father of the Prodigal Son</option>
+        <option value="rods-serpents">Rods and Serpents</option>
+        <option value="boeing-747">The Boeing 747 Pilot</option>
+        <option value="cross-dividing-line">The Cross as the Dividing Line</option>
+        <option value="gods-destruction">Interpreting God's "Destruction"</option>
+        <option value="law-character">The Law as God's Character</option>
+      </select>
       </div>
-      <button class="primary" id="byg-exploreBtn" onclick="ExplorerTab.runExplorer()">Explore</button>
+      <button class="primary" id="exploreBtn" onclick="runExplorer()">Explore</button>
       <div class="status">
-        <div class="dot" id="byg-eDot"></div>
-        <span id="byg-eStatus">Ready</span>
+        <div class="dot" id="eDot"></div>
+        <span id="eStatus">Ready</span>
       </div>
     </div>
-    <div id="byg-explorerResult"></div>
+
+    <div id="explorerResult"></div>
   </div>
 
-  <div id="byg-quiz-panel" class="panel">
+  <!-- QUIZ -->
+  <div id="quiz" class="panel">
     <div class="card">
       <div class="score-bar">
         <span>Score</span>
-        <span class="score-val" id="byg-scoreDisplay">0 / 0</span>
+        <span class="score-val" id="scoreDisplay">0 / 0</span>
       </div>
-      <button class="primary" id="byg-quizBtn" onclick="ExplorerTab.startQuiz()">New Quiz</button>
+      <button class="primary" id="quizBtn" onclick="startQuiz()">New Quiz</button>
       <div class="status">
-        <div class="dot" id="byg-qDot"></div>
-        <span id="byg-qStatus">Ready</span>
+        <div class="dot" id="qDot"></div>
+        <span id="qStatus">Ready</span>
       </div>
     </div>
-    <div id="byg-quizArea"></div>
+    <div id="quizArea"></div>
   </div>
+
 </div>
 
 <script>
-const ExplorerTab = {
-  _chipQuestions: [],
-  _quizState: { score:0, total:0, questions:[], current:0, answered:false, askedQuestions:[] },
-  PROXY: 'https://groq-proxy.ewalltom.workers.dev',
-  MODEL: 'openai/gpt-oss-120b',
+const PROXY = 'https://groq-proxy.ewalltom.workers.dev';
+const MODEL = 'openai/gpt-oss-120b';
 
-  async callAI(promptText) {
-    const response = await fetch(this.PROXY, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ contents:[{role:'user',parts:[{text:promptText}]}], generationConfig:{responseMimeType:'text/plain'}, model:this.MODEL })
-    });
-    const raw = await response.text();
-    let data;
-    try { data = JSON.parse(raw); } catch { throw new Error(`Non-JSON from proxy (HTTP ${response.status}): ${raw.slice(0,300)}`); }
-    if (!response.ok) throw new Error(data?.error?.message || `HTTP ${response.status}`);
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) throw new Error('No text in AI response');
-    return text;
-  },
+async function callAI(promptText) {
+  const response = await fetch(PROXY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: promptText }] }],
+      generationConfig: { responseMimeType: 'text/plain' },
+      model: MODEL
+    })
+  });
+  const raw = await response.text();
+  let data;
+  try { data = JSON.parse(raw); }
+  catch { throw new Error(`Non-JSON from proxy (HTTP ${response.status}): ${raw.slice(0,300)}`); }
+  if (!response.ok) throw new Error(data?.error?.message || `HTTP ${response.status}`);
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('No text in AI response');
+  return text;
+}
 
-  extractJson(text) {
-    let t = String(text).trim();
-    const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
-    if (fence) t = fence[1].trim();
-    const a = t.indexOf('{'), b = t.lastIndexOf('}');
-    if (a >= 0 && b > a) t = t.slice(a, b+1);
-    try { return JSON.parse(t); } catch { return null; }
-  },
+function extractJson(text) {
+  let t = String(text).trim();
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fence) t = fence[1].trim();
+  const a = t.indexOf('{'), b = t.lastIndexOf('}');
+  if (a >= 0 && b > a) t = t.slice(a, b + 1);
+  try { return JSON.parse(t); } catch { return null; }
+}
 
-  FOCUS_PROMPTS: {
-    'god-not-criminal': `In "Behold Your God: Understanding Divine Character," F.T. Wright argues that God does not operate like a crime syndicate that demands tribute and violently destroys property or lives if people refuse to comply. The central argument is that God never uses criminal or coercive force to extract obedience. While humans often justify violence for a "good cause," Wright insists the end never justifies the means — and God never operates this way. God's governance is built entirely on love and freedom, not compulsion. Even when humans reject Him, God does not retaliate with force or threaten punishment as a means of securing compliance. This theme challenges the popular conception of God as a divine enforcer whose wrath must be appeased, replacing it with a picture of a God who wins allegiance only through revelation of His character.`,
-    'nuclear-plant': `F.T. Wright uses the illustration of a nuclear power plant technician to explain how God "destroys" by withdrawing protection rather than by active violence. In the story, a skilled technician faithfully maintains a dangerous nuclear facility near a hostile town whose residents despise him. Despite their hatred, he stays at his post because his presence prevents catastrophe. Only when the townspeople physically force him out does he leave. When the plant subsequently explodes, the technician is not the destroyer — he was prevented from saving them. Wright applies this directly to God: when Scripture says "God destroys," it means God reluctantly withdrew His protective presence in response to human rejection, allowing sin's natural self-destructive consequences to unfold. God is always the one being pushed out, never the aggressor.`,
-    'white-hat': `F.T. Wright uses the Hollywood Western as an illustration of how Satan educates humanity about the nature of power and law. In the typical Western, the villain (dressed in dark clothes) lies, steals, and kills. The hero arrives and stops him — but does so by also lying, stealing, and killing. The audience cheers, unconsciously absorbing Satan's core philosophy: that the law must be broken in order to uphold the law, that the end justifies the means, that good can use evil methods. Wright argues this is Satan's most successful educational tool. Christ utterly rejected this framework. God never breaks His own law to enforce it. He never uses deception, manipulation, or force to achieve righteous ends. The cross itself is the supreme demonstration: God absorbed violence rather than retaliating with it.`,
-    'father-son-gun': `To explain why a non-violent God gave laws permitting warfare and punishment in the Old Testament, F.T. Wright tells the story of a non-hunting father whose son insists on buying a rifle against his father's wishes. Unable to forcibly remove the weapon without violating his son's freedom, the father acts as a "saviour" by teaching the boy to use it safely — minimizing the damage the son has stubbornly chosen to bring into his life. Wright applies this to Israel: when Israel rejected God's non-violent theocratic protection and demanded to be like other nations — taking up the sword — God went the "second mile." Rather than abandoning them to unrestrained violence, He gave them rules of warfare, proportional justice, and protective laws to minimize the evil they had chosen. These laws reveal God's mercy within human stubbornness, not His approval of violence.`,
-    'prodigal-son': `Wright uses the Parable of the Prodigal Son to illustrate God's restorative character — specifically His eagerness to forgive without demanding penance, payment, or that the sinner "pay their debt to society." When the wayward son returns, the father does not lecture him, extract confession in detail, or impose a probationary period. He runs to meet him and restores him immediately and fully, as if the rebellion had never occurred. Wright contrasts this with the human instinct for revenge and proportional punishment. The older brother's anger mirrors the theological assumption that justice requires suffering before restoration can occur. God's justice, Wright argues, is restorative not retributive. The father's response is not a suspension of justice — it is the truest expression of it.`,
-    'rods-serpents': `When Aaron cast Moses' rod before Pharaoh and it became a serpent, Wright sees an acted parable about the nature of God's protective hold on creation. While Aaron held the rod, it remained a harmless staff. Released from his grasp, it became a devouring serpent. Wright argues this warned Pharaoh — and warns us — that the mighty forces of nature are safe only while held in God's directing hand. When God is rejected and forced to withdraw, those same forces become chaotic and destructive. This reframes the plagues of Egypt: not as God actively afflicting Egypt with violence, but as God progressively withdrawing His restraining protection in response to Pharaoh's repeated rejection, allowing natural chaos to fill the vacuum. The serpent didn't need to be made dangerous — it only needed to be released.`,
-    'boeing-747': `F.T. Wright uses the image of a Boeing 747 to illustrate humanity's total dependence on God and the inevitable consequences of displacing Him. If an untrained passenger overpowers a highly skilled pilot mid-flight, the plane will crash — not because the pilot retaliates, but because the passenger has removed the one person capable of safely operating the aircraft. Wright applies this to the human condition: God is the only one capable of sustaining the complex forces of life and existence. When humanity chooses Satan as its ruler — displacing God — disaster becomes inevitable, not as a punishment imposed from outside but as the natural result of removing the one sustaining presence. The crash is not God's judgment in the punitive sense; it is the predictable outcome of rejecting the only pilot who can fly.`,
-    'cross-dividing-line': `The cross is the supreme dividing line between God's character and Satan's in Wright's framework. Wright identifies two crosses: Satan's counterfeit cross (the cross of Babylon) operates on the principle of self-service at the expense of others — using control, compulsion, and the threat of suffering to secure obedience. This is the cross of domination. The cross of Christ reveals the opposite: God's self-sacrificing service for others at the ultimate cost to Himself, with no coercion and no retaliation. At Calvary, Satan demonstrated there is no limit to how far he will go — he moved all of human and religious power to destroy the Son of God. God demonstrated there is no limit to how far He will go in love — absorbing that violence without retaliating, forgiving His executioners, and dying to reveal truth rather than to extract a legal payment. The cross proves both characters simultaneously.`,
-    'gods-destruction': `One of the central hermeneutical reframings in "Behold Your God" is the reinterpretation of biblical language about God destroying or killing. Wright's thesis is that when Scripture attributes destruction to God, it means God reluctantly withdrew His protective presence in response to sustained human rejection, allowing sin's natural, self-destructive consequences to take their course. God does not actively rain down violence — He holds back chaos, and when He is rejected and forced to withdraw, chaos fills the space He vacated. This reframing applies to the Flood, the destruction of Sodom, the plagues of Egypt, and the deaths in the wilderness. In each case, Wright argues, reading the text carefully reveals God warning, pleading, and delaying — and destruction following only after sustained rejection. God is always the one being expelled, not the one attacking.`,
-    'law-character': `Wright argues that God's law is not an arbitrary set of rules designed to protect His authority or secure His honor. The law is the very transcript of God's character — it describes how love behaves in relationship. Because God is perfect love and values absolute freedom, He never uses compelling force or coercion to secure obedience to that law. Obedience obtained by force or fear is not the obedience the law describes — it is a contradiction in terms. This means God cannot violate His own law to enforce it (the White Hat problem), cannot threaten violence to achieve compliance (the Criminal problem), and cannot demand suffering as satisfaction before forgiving (the Prodigal Son problem). Every apparent exception in Scripture must be reread in light of this foundational principle.`
-  },
+// ── FOCUS PROMPTS ─────────────────────────────────────────────────────────────
 
-  QUIZ_SCOPE: `The book "Behold Your God: Understanding Divine Character" by F.T. Wright covers these key arguments and themes:
-- God never uses coercive force, compulsion, or violence to secure obedience — His law is a transcript of His love.
-- When the Bible says "God destroys," it means God withdrew His protection, allowing sin's natural consequences.
-- The Nuclear Power Plant illustration: God is like a technician forced out by hostile people; the resulting explosion is not His doing.
-- The "God is Not a Criminal" argument: God never operates like a crime syndicate demanding tribute under threat of violence.
-- White Hat, Black Hat (Hollywood Western): Satan's philosophy says the end justifies the means; God never breaks His law to enforce it.
-- The Father, the Son, and the Gun: God gave Israel rules of warfare not because He approved of war but to minimize evil they had chosen.
-- The Father of the Prodigal Son: God restores without demanding penance, payment, or probationary periods — restoration is immediate.
-- Rods and Serpents: forces of nature are safe in God's hand; released by His withdrawal, they become destructive.
-- The Boeing 747: humanity's rejection of God removes the only one capable of sustaining life's complex forces.
-- The Cross: Satan's cross uses compulsion and self-service; Christ's cross reveals self-sacrificing love with no retaliation.
-- The great controversy is about God's character — whether He governs by love or by force.`,
+const FOCUS_PROMPTS = {
+  'god-not-criminal': `In "Behold Your God: Understanding Divine Character," F.T. Wright argues that God does not operate like a crime syndicate that demands tribute and violently destroys property or lives if people refuse to comply. The central argument is that God never uses criminal or coercive force to extract obedience. While humans often justify violence for a "good cause," Wright insists the end never justifies the means — and God never operates this way. God's governance is built entirely on love and freedom, not compulsion. Even when humans reject Him, God does not retaliate with force or threaten punishment as a means of securing compliance. This theme challenges the popular conception of God as a divine enforcer whose wrath must be appeased, replacing it with a picture of a God who wins allegiance only through revelation of His character.`,
 
-  switchSub(panelId) {
-    const section = document.getElementById('explorer-tab');
-    section.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    section.querySelectorAll('.subtab').forEach(t => t.classList.remove('active'));
-    document.getElementById(panelId).classList.add('active');
-    const label = panelId === 'byg-explorer-panel' ? 'Explorer' : 'Quiz';
-    section.querySelectorAll('.subtab').forEach(t => { if (t.textContent === label) t.classList.add('active'); });
-  },
+  'nuclear-plant': `F.T. Wright uses the illustration of a nuclear power plant technician to explain how God "destroys" by withdrawing protection rather than by active violence. In the story, a skilled technician faithfully maintains a dangerous nuclear facility near a hostile town whose residents despise him. Despite their hatred, he stays at his post because his presence prevents catastrophe. Only when the townspeople physically force him out does he leave. When the plant subsequently explodes, the technician is not the destroyer — he was prevented from saving them. Wright applies this directly to God: when Scripture says "God destroys," it means God reluctantly withdrew His protective presence in response to human rejection, allowing sin's natural self-destructive consequences to unfold. God is always the one being pushed out, never the aggressor.`,
 
-  setEStatus(state, msg) {
-    document.getElementById('byg-eDot').className = 'dot ' + state;
-    document.getElementById('byg-eStatus').textContent = msg;
-  },
+  'white-hat': `F.T. Wright uses the Hollywood Western as an illustration of how Satan educates humanity about the nature of power and law. In the typical Western, the villain (dressed in dark clothes) lies, steals, and kills. The hero arrives and stops him — but does so by also lying, stealing, and killing. The audience cheers, unconsciously absorbing Satan's core philosophy: that the law must be broken in order to uphold the law, that the end justifies the means, that good can use evil methods. Wright argues this is Satan's most successful educational tool. Christ utterly rejected this framework. God never breaks His own law to enforce it. He never uses deception, manipulation, or force to achieve righteous ends. The cross itself is the supreme demonstration: God absorbed violence rather than retaliating with it.`,
 
-  async runExplorer(overrideQuestion) {
-    const sel = document.getElementById('byg-focus');
-    const key = sel.value;
-    const knowledge = this.FOCUS_PROMPTS[key];
-    const focusLabel = sel.options[sel.selectedIndex].text;
-    const question = overrideQuestion || `Explain the theme "${focusLabel}" as presented in this book.`;
+  'father-son-gun': `To explain why a non-violent God gave laws permitting warfare and punishment in the Old Testament, F.T. Wright tells the story of a non-hunting father whose son insists on buying a rifle against his father's wishes. Unable to forcibly remove the weapon without violating his son's freedom, the father acts as a "saviour" by teaching the boy to use it safely — minimizing the damage the son has stubbornly chosen to bring into his life. Wright applies this to Israel: when Israel rejected God's non-violent theocratic protection and demanded to be like other nations — taking up the sword — God went the "second mile." Rather than abandoning them to unrestrained violence, He gave them rules of warfare, proportional justice, and protective laws to minimize the evil they had chosen. These laws reveal God's mercy within human stubbornness, not His approval of violence.`,
 
-    document.getElementById('byg-exploreBtn').disabled = true;
-    this.setEStatus('live', 'Thinking…');
-    document.getElementById('byg-explorerResult').innerHTML = '';
+  'prodigal-son': `Wright uses the Parable of the Prodigal Son to illustrate God's restorative character — specifically His eagerness to forgive without demanding penance, payment, or that the sinner "pay their debt to society." When the wayward son returns, the father does not lecture him, extract confession in detail, or impose a probationary period. He runs to meet him and restores him immediately and fully, as if the rebellion had never occurred. Wright contrasts this with the human instinct for revenge and proportional punishment. The older brother's anger mirrors the theological assumption that justice requires suffering before restoration can occur. God's justice, Wright argues, is restorative not retributive. The father's response is not a suspension of justice — it is the truest expression of it.`,
 
-    const prompt = `You are an expert on the book "Behold Your God: Understanding Divine Character" by F.T. Wright.
+  'rods-serpents': `When Aaron cast Moses' rod before Pharaoh and it became a serpent, Wright sees an acted parable about the nature of God's protective hold on creation. While Aaron held the rod, it remained a harmless staff. Released from his grasp, it became a devouring serpent. Wright argues this warned Pharaoh — and warns us — that the mighty forces of nature are safe only while held in God's directing hand. When God is rejected and forced to withdraw, those same forces become chaotic and destructive. This reframes the plagues of Egypt: not as God actively afflicting Egypt with violence, but as God progressively withdrawing His restraining protection in response to Pharaoh's repeated rejection, allowing natural chaos to fill the vacuum. The serpent didn't need to be made dangerous — it only needed to be released.`,
+
+  'boeing-747': `F.T. Wright uses the image of a Boeing 747 to illustrate humanity's total dependence on God and the inevitable consequences of displacing Him. If an untrained passenger overpowers a highly skilled pilot mid-flight, the plane will crash — not because the pilot retaliates, but because the passenger has removed the one person capable of safely operating the aircraft. Wright applies this to the human condition: God is the only one capable of sustaining the complex forces of life and existence. When humanity chooses Satan as its ruler — displacing God — disaster becomes inevitable, not as a punishment imposed from outside but as the natural result of removing the one sustaining presence. The crash is not God's judgment in the punitive sense; it is the predictable outcome of rejecting the only pilot who can fly.`,
+
+  'cross-dividing-line': `The cross is the supreme dividing line between God's character and Satan's in Wright's framework. Wright identifies two crosses: Satan's counterfeit cross (the cross of Babylon) operates on the principle of self-service at the expense of others — using control, compulsion, and the threat of suffering to secure obedience. This is the cross of domination. The cross of Christ reveals the opposite: God's self-sacrificing service for others at the ultimate cost to Himself, with no coercion and no retaliation. At Calvary, Satan demonstrated there is no limit to how far he will go — he moved all of human and religious power to destroy the Son of God. God demonstrated there is no limit to how far He will go in love — absorbing that violence without retaliating, forgiving His executioners, and dying to reveal truth rather than to extract a legal payment. The cross proves both characters simultaneously.`,
+
+  'gods-destruction': `One of the central hermeneutical reframings in "Behold Your God" is the reinterpretation of biblical language about God destroying or killing. Wright's thesis is that when Scripture attributes destruction to God, it means God reluctantly withdrew His protective presence in response to sustained human rejection, allowing sin's natural, self-destructive consequences to take their course. God does not actively rain down violence — He holds back chaos, and when He is rejected and forced to withdraw, chaos fills the space He vacated. This reframing applies to the Flood, the destruction of Sodom, the plagues of Egypt, and the deaths in the wilderness. In each case, Wright argues, reading the text carefully reveals God warning, pleading, and delaying — and destruction following only after sustained rejection. God is always the one being expelled, not the one attacking.`,
+
+  'law-character': `Wright argues that God's law is not an arbitrary set of rules designed to protect His authority or secure His honor. The law is the very transcript of God's character — it describes how love behaves in relationship. Because God is perfect love and values absolute freedom, He never uses compelling force or coercion to secure obedience to that law. Obedience obtained by force or fear is not the obedience the law describes — it is a contradiction in terms. This means God cannot violate His own law to enforce it (the White Hat problem), cannot threaten violence to achieve compliance (the Criminal problem), and cannot demand suffering as satisfaction before forgiving (the Prodigal Son problem). Every apparent exception in Scripture — every moment where God seems to command violence, demand death, or withhold forgiveness — must be reread in light of this foundational principle.`
+};
+
+// ── TAB SWITCHING ──────────────────────────────────────────────────────────────
+
+function switchTab(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => {
+    if (t.textContent.toLowerCase().includes(name === 'explorer' ? 'explorer' : 'quiz')) t.classList.add('active');
+  });
+}
+
+// ── EXPLORER ──────────────────────────────────────────────────────────────────
+
+function setEStatus(state, msg) {
+  document.getElementById('eDot').className = 'dot ' + state;
+  document.getElementById('eStatus').textContent = msg;
+}
+
+async function runExplorer(overrideQuestion) {
+  const key = document.getElementById('focus').value;
+  const knowledge = FOCUS_PROMPTS[key];
+  const focusLabel = document.getElementById('focus').options[document.getElementById('focus').selectedIndex].text;
+  const question = overrideQuestion || `Explain the theme "${focusLabel}" as presented in this book.`;
+
+  document.getElementById('exploreBtn').disabled = true;
+  setEStatus('live', 'Thinking…');
+  document.getElementById('explorerResult').innerHTML = '';
+
+  const prompt = `You are an expert on the book "Behold Your God: Understanding Divine Character" by F.T. Wright.
 Use ONLY the following source knowledge to answer. Do not add outside information.
 
 SOURCE KNOWLEDGE:
@@ -552,734 +307,188 @@ Respond in this exact JSON format:
 }
 Return 6-8 items. Make the follow-up questions probing and specific to this book's framework.`;
 
-    try {
-      const raw = await this.callAI(prompt);
-      const data = this.extractJson(raw);
-      if (!data) throw new Error('Could not parse response');
-      this.renderExplorerResult(data);
-      this.setEStatus('ok', 'Done');
-    } catch(e) {
-      this.setEStatus('bad', 'Error: ' + e.message);
-      document.getElementById('byg-explorerResult').innerHTML = `<p class="error">${e.message}</p>`;
-    }
-    document.getElementById('byg-exploreBtn').disabled = false;
-  },
+  try {
+    const raw = await callAI(prompt);
+    const data = extractJson(raw);
+    if (!data) throw new Error('Could not parse response');
+    renderExplorerResult(data, knowledge);
+    setEStatus('ok', 'Done');
+  } catch(e) {
+    setEStatus('bad', 'Error: ' + e.message);
+    document.getElementById('explorerResult').innerHTML = `<p class="error">${e.message}</p>`;
+  }
+  document.getElementById('exploreBtn').disabled = false;
+}
 
-  renderExplorerResult(data) {
-    this._chipQuestions = data.follow_up_questions || [];
-    const items = (data.items||[]).map(it => `<tr><td>${it.name||''}</td><td>${it.key_figure_or_date||'—'}</td><td>${it.description||''}</td><td>${it.significance||''}</td></tr>`).join('');
-    const chips = this._chipQuestions.map((q,i) => `<button class="chip" onclick="ExplorerTab.runExplorer(ExplorerTab._chipQuestions[${i}])">${q}</button>`).join('');
-    document.getElementById('byg-explorerResult').innerHTML = `
-      <div class="card result">
-        <div class="result-title">${data.title||''}</div>
-        <div class="result-summary">${data.summary||''}</div>
-        <table><thead><tr><th>Concept</th><th>Key Detail</th><th>Description</th><th>Significance</th></tr></thead><tbody>${items}</tbody></table>
-        <div class="chips-label">Explore further</div>
-        <div class="chips">${chips}</div>
-      </div>`;
-  },
+let _chipQuestions = [];
 
-  setQStatus(state, msg) {
-    document.getElementById('byg-qDot').className = 'dot ' + state;
-    document.getElementById('byg-qStatus').textContent = msg;
-  },
+function renderExplorerResult(data, knowledge) {
+  const items = (data.items || []).map(it => `
+    <tr>
+      <td>${it.name || ''}</td>
+      <td>${it.key_figure_or_date || '—'}</td>
+      <td>${it.description || ''}</td>
+      <td>${it.significance || ''}</td>
+    </tr>`).join('');
 
-  updateScore() {
-    document.getElementById('byg-scoreDisplay').textContent = `${this._quizState.score} / ${this._quizState.total}`;
-  },
+  _chipQuestions = data.follow_up_questions || [];
+  const chips = _chipQuestions.map((q, i) =>
+    `<button class="chip" onclick="runExplorerChip(${i})">${q}</button>`
+  ).join('');
 
-  async startQuiz() {
-    document.getElementById('byg-quizBtn').disabled = true;
-    this.setQStatus('live', 'Generating questions…');
-    document.getElementById('byg-quizArea').innerHTML = '';
+  document.getElementById('explorerResult').innerHTML = `
+    <div class="card result">
+      <div class="result-title">${data.title || ''}</div>
+      <div class="result-summary">${data.summary || ''}</div>
+      <table>
+        <thead><tr><th>Concept</th><th>Key Detail</th><th>Description</th><th>Significance</th></tr></thead>
+        <tbody>${items}</tbody>
+      </table>
+      <div class="chips-label">Explore further</div>
+      <div class="chips">${chips}</div>
+    </div>`;
+}
 
-    const avoidStr = this._quizState.askedQuestions.length
-      ? `\n\nAvoid repeating these questions:\n${this._quizState.askedQuestions.slice(-15).join('\n')}` : '';
+function runExplorerChip(idx) {
+  runExplorer(_chipQuestions[idx]);
+}
 
-    const prompt = `You are a quiz master for the book "Behold Your God: Understanding Divine Character" by F.T. Wright.
+// ── QUIZ ──────────────────────────────────────────────────────────────────────
+
+let quizState = { score: 0, total: 0, questions: [], current: 0, answered: false, askedQuestions: [] };
+
+function setQStatus(state, msg) {
+  document.getElementById('qDot').className = 'dot ' + state;
+  document.getElementById('qStatus').textContent = msg;
+}
+
+function updateScore() {
+  document.getElementById('scoreDisplay').textContent = `${quizState.score} / ${quizState.total}`;
+}
+
+const QUIZ_SCOPE = `The book "Behold Your God: Understanding Divine Character" by F.T. Wright covers these key arguments and themes:
+- God never uses coercive force, compulsion, or violence to secure obedience — His law is a transcript of His love.
+- When the Bible says "God destroys," it means God withdrew His protection, allowing sin's natural consequences.
+- The Nuclear Power Plant illustration: God is like a technician forced out by hostile people; the resulting explosion is not His doing.
+- The "God is Not a Criminal" argument: God never operates like a crime syndicate demanding tribute under threat of violence.
+- White Hat, Black Hat (Hollywood Western): Satan's philosophy says the end justifies the means; God never breaks His law to enforce it.
+- The Father, the Son, and the Gun: God gave Israel rules of warfare not because He approved of war but to minimize evil they had chosen.
+- The Father of the Prodigal Son: God restores without demanding penance, payment, or probationary periods — restoration is immediate.
+- Rods and Serpents: forces of nature are safe in God's hand; released by His withdrawal, they become destructive.
+- The Boeing 747: humanity's rejection of God removes the only one capable of sustaining life's complex forces.
+- The Cross: Satan's cross uses compulsion and self-service; Christ's cross reveals self-sacrificing love with no retaliation.
+- The great controversy is about God's character — whether He governs by love or by force.`;
+
+async function startQuiz() {
+  document.getElementById('quizBtn').disabled = true;
+  setQStatus('live', 'Generating questions…');
+  document.getElementById('quizArea').innerHTML = '';
+
+  const avoidStr = quizState.askedQuestions.length
+    ? `\n\nAvoid repeating these questions:\n${quizState.askedQuestions.slice(-15).join('\n')}`
+    : '';
+
+  const prompt = `You are a quiz master for the book "Behold Your God: Understanding Divine Character" by F.T. Wright.
 Generate 5 multiple-choice questions based on this knowledge scope:
 
-${this.QUIZ_SCOPE}${avoidStr}
+${QUIZ_SCOPE}${avoidStr}
 
 Return ONLY valid JSON in this exact format:
 {
   "questions": [
-    { "question": "question text", "options": ["A. option","B. option","C. option","D. option"], "correct": "A", "explanation": "why this is correct and what the book says" }
+    {
+      "question": "question text",
+      "options": ["A. option", "B. option", "C. option", "D. option"],
+      "correct": "A",
+      "explanation": "why this is correct and what the book says"
+    }
   ]
 }
 Make questions specific to the book's unique arguments and illustrations, not generic theology.`;
 
-    try {
-      const raw = await this.callAI(prompt);
-      const data = this.extractJson(raw);
-      if (!data || !data.questions) throw new Error('Could not parse questions');
-      const questions = data.questions.map(q => {
-        const letters = ['A','B','C','D'];
-        const ci = letters.indexOf(q.correct);
-        if (ci < 0) return q;
-        const np = Math.floor(Math.random()*4);
-        const opts = [...q.options];
-        [opts[ci], opts[np]] = [opts[np], opts[ci]];
-        return { ...q, options:opts, correct:letters[np] };
-      });
-      this._quizState.questions = questions;
-      this._quizState.current = 0;
-      this._quizState.answered = false;
-      this._quizState.askedQuestions.push(...questions.map(q => q.question));
-      this.renderQuestion();
-      this.setQStatus('ok', 'Ready');
-    } catch(e) {
-      this.setQStatus('bad', 'Error: ' + e.message);
-      document.getElementById('byg-quizArea').innerHTML = `<p class="error">${e.message}</p>`;
-    }
-    document.getElementById('byg-quizBtn').disabled = false;
-  },
+  try {
+    const raw = await callAI(prompt);
+    const data = extractJson(raw);
+    if (!data || !data.questions) throw new Error('Could not parse questions');
 
-  renderQuestion() {
-    const q = this._quizState.questions[this._quizState.current];
-    if (!q) return;
-    const letters = ['A','B','C','D'];
-    const opts = q.options.map((o,i) => `<button class="option" onclick="ExplorerTab.answerQuestion('${letters[i]}')" id="byg-opt-${letters[i]}">${o}</button>`).join('');
-    document.getElementById('byg-quizArea').innerHTML = `
-      <div class="card">
-        <div class="e-progress">Question ${this._quizState.current+1} of ${this._quizState.questions.length}</div>
-        <div class="question-text">${q.question}</div>
-        <div class="options">${opts}</div>
-        <div id="byg-explanation"></div>
-        <div id="byg-nextWrap"></div>
-      </div>`;
-  },
-
-  answerQuestion(chosen) {
-    if (this._quizState.answered) return;
-    this._quizState.answered = true;
-    const q = this._quizState.questions[this._quizState.current];
-    const correct = q.correct;
-    this._quizState.total++; if (chosen === correct) this._quizState.score++;
-    this.updateScore();
-    ['A','B','C','D'].forEach(l => {
-      const btn = document.getElementById('byg-opt-'+l); if (!btn) return;
-      btn.disabled = true;
-      if (l === correct) btn.classList.add('correct');
-      else if (l === chosen) btn.classList.add('wrong');
+    // Shuffle correct answer into random position
+    const questions = data.questions.map(q => {
+      const letters = ['A','B','C','D'];
+      const correctIdx = letters.indexOf(q.correct);
+      if (correctIdx < 0) return q;
+      const correctText = q.options[correctIdx];
+      const newPos = Math.floor(Math.random() * 4);
+      const opts = [...q.options];
+      // swap correct to newPos
+      [opts[correctIdx], opts[newPos]] = [opts[newPos], opts[correctIdx]];
+      return { ...q, options: opts, correct: letters[newPos], correctText };
     });
-    document.getElementById('byg-explanation').innerHTML = `<div class="explanation">${q.explanation||''}</div>`;
-    const isLast = this._quizState.current >= this._quizState.questions.length - 1;
-    document.getElementById('byg-nextWrap').innerHTML = isLast
-      ? `<button class="primary" onclick="ExplorerTab.startQuiz()">New Quiz</button>`
-      : `<button class="primary" onclick="ExplorerTab.nextQuestion()">Next Question</button>`;
-  },
 
-  nextQuestion() {
-    this._quizState.current++; this._quizState.answered = false; this.renderQuestion();
-  },
+    quizState.questions = questions;
+    quizState.current = 0;
+    quizState.answered = false;
+    quizState.askedQuestions.push(...questions.map(q => q.question));
 
-  init() { /* HTML already rendered, nothing to initialize */ }
-};
-</script>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     FLASHCARD TAB
-     ═══════════════════════════════════════════════════════════ -->
-<section id="flashcard-tab" class="tab-section">
-<style>
-  #flashcard-tab .fc-inner {
-    padding: 32px 20px 60px;
-    display: flex; flex-direction: column; align-items: center;
+    renderQuestion();
+    setQStatus('ok', 'Ready');
+  } catch(e) {
+    setQStatus('bad', 'Error: ' + e.message);
+    document.getElementById('quizArea').innerHTML = `<p class="error">${e.message}</p>`;
   }
-  #flashcard-tab .fc-progress-wrap {
-    width: 100%; max-width: 600px; height: 4px;
-    background: rgba(255,255,255,.07); border-radius: 99px; margin-bottom: 28px; overflow: hidden;
-  }
-  #flashcard-tab .fc-progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .3s ease; }
-  #flashcard-tab .fc-progress-label { font-size: .8rem; color: var(--muted); margin-bottom: 12px; text-align: center; }
-
-  #flashcard-tab .scene {
-    width: 100%; max-width: 600px; height: 340px;
-    perspective: 1200px; cursor: pointer; margin-bottom: 28px;
-  }
-  #flashcard-tab .card-inner {
-    width: 100%; height: 100%; position: relative;
-    transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1);
-  }
-  #flashcard-tab .card-inner.flipped { transform: rotateY(180deg); }
-
-  #flashcard-tab .card-face {
-    position: absolute; inset: 0;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 18px; box-shadow: 0 12px 40px rgba(0,0,0,.5);
-    backface-visibility: hidden; -webkit-backface-visibility: hidden;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    padding: 36px 32px; text-align: center;
-  }
-  #flashcard-tab .card-face.back {
-    transform: rotateY(180deg); background: var(--surface2);
-    text-align: left; justify-content: center; overflow-y: auto;
-  }
-  #flashcard-tab .card-tag {
-    font-size: .72rem; font-weight: 700; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 20px; opacity: .7;
-  }
-  #flashcard-tab .card-question { font-size: 1.2rem; font-weight: 700; line-height: 1.5; }
-  #flashcard-tab .card-hint { margin-top: 20px; font-size: .8rem; color: var(--muted); opacity: .6; }
-  #flashcard-tab .card-theme {
-    font-size: .72rem; font-weight: 700; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 14px; opacity: .7;
-  }
-  #flashcard-tab .card-answer { font-size: .95rem; line-height: 1.7; }
-  #flashcard-tab .card-answer strong { color: var(--accent); }
-
-  #flashcard-tab .fc-controls {
-    display: flex; gap: 12px; align-items: center;
-    max-width: 600px; width: 100%; justify-content: center; flex-wrap: wrap;
-  }
-  #flashcard-tab button {
-    padding: 11px 24px; border-radius: 10px; border: 1px solid var(--border);
-    background: transparent; color: var(--muted); font-size: .9rem; font-weight: 600;
-    cursor: pointer; transition: all .15s;
-  }
-  #flashcard-tab button:hover { border-color: rgba(255,255,255,.25); color: var(--text); }
-  #flashcard-tab button.primary {
-    background: linear-gradient(135deg,rgba(139,185,255,1),rgba(124,255,178,.92));
-    color: #08101d; border: none;
-  }
-  #flashcard-tab button.primary:hover { opacity: .88; }
-  #flashcard-tab button:disabled { opacity: .3; cursor: not-allowed; }
-  #flashcard-tab .btn-nav { min-width: 90px; }
-
-  #flashcard-tab .status-row {
-    display: flex; gap: 10px; margin-top: 20px;
-    max-width: 600px; width: 100%; justify-content: center; flex-wrap: wrap;
-  }
-  #flashcard-tab .chip {
-    font-size: .75rem; font-weight: 600; padding: 5px 14px; border-radius: 99px; border: 1px solid;
-  }
-  #flashcard-tab .chip.known { border-color: rgba(124,255,178,.35); color: var(--green); background: rgba(124,255,178,.07); }
-  #flashcard-tab .chip.learning { border-color: rgba(255,214,100,.3); color: var(--yellow); background: rgba(255,214,100,.06); }
-  #flashcard-tab .chip.unseen { border-color: var(--border); color: var(--muted); }
-
-  #flashcard-tab .fc-secondary { margin-top: 20px; max-width: 600px; width: 100%; text-align: center; }
-  #flashcard-tab .kbd-hint { margin-top: 24px; font-size: .78rem; color: rgba(169,182,204,.4); text-align: center; }
-  #flashcard-tab kbd {
-    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
-    border-radius: 4px; padding: 1px 6px; font-size: .75rem;
-  }
-  @media (max-height: 600px) { #flashcard-tab .scene { height: 260px; } }
-</style>
-
-<div class="fc-inner">
-<div class="fc-progress-wrap"><div class="fc-progress-fill" id="fc-progressFill"></div></div>
-<div class="fc-progress-label" id="fc-progressLabel"></div>
-
-<div class="scene" id="fc-scene" onclick="FlashcardTab.flipCard()">
-  <div class="card-inner" id="fc-cardInner">
-    <div class="card-face front">
-      <div class="card-tag" id="fc-frontTag"></div>
-      <div class="card-question" id="fc-frontQ"></div>
-      <div class="card-hint">Tap to reveal answer</div>
-    </div>
-    <div class="card-face back">
-      <div class="card-theme" id="fc-backTheme"></div>
-      <div class="card-answer" id="fc-backA"></div>
-    </div>
-  </div>
-</div>
-
-<div class="fc-controls">
-  <button class="btn-nav" id="fc-btnPrev" onclick="FlashcardTab.prevCard()">← Prev</button>
-  <button class="primary" onclick="FlashcardTab.markKnown()">✓ Got it</button>
-  <button onclick="FlashcardTab.markLearning()">↻ Still learning</button>
-  <button class="btn-nav" id="fc-btnNext" onclick="FlashcardTab.nextCard()">Next →</button>
-</div>
-
-<div class="status-row">
-  <span class="chip known" id="fc-chipKnown">✓ 0 known</span>
-  <span class="chip learning" id="fc-chipLearning">↻ 0 learning</span>
-  <span class="chip unseen" id="fc-chipUnseen">0 unseen</span>
-</div>
-
-<div class="fc-secondary">
-  <button onclick="FlashcardTab.shuffleCards()" style="margin-right:8px">Shuffle</button>
-  <button onclick="FlashcardTab.resetAll()">Reset all</button>
-</div>
-
-<div class="kbd-hint">
-  <kbd>Space</kbd> flip &nbsp; <kbd>←</kbd> prev &nbsp; <kbd>→</kbd> next &nbsp; <kbd>K</kbd> got it &nbsp; <kbd>L</kbd> still learning
-</div>
-</div><!-- /fc-inner -->
-
-<script>
-const FlashcardTab = {
-  CARDS: [
-    // ── God is Not a Criminal ──────────────────────────────────────────────────
-    { theme:"God Is Not a Criminal", q:"What is F.T. Wright's 'criminal' argument about God?", a:"God <strong>never operates like a crime syndicate</strong> — He does not demand tribute and use violence or the threat of violence to force compliance. His governance is built entirely on love and freedom. Even when humans reject Him, God does not retaliate with force." },
-    { theme:"God Is Not a Criminal", q:"How does Wright contrast God's government with human ideas of authority?", a:"Humans often justify violence for a 'good cause' — the end justifies the means. Wright insists <strong>God never operates this way</strong>. He wins allegiance only through revelation of His character, not through coercion or the threat of punishment." },
-    // ── Nuclear Power Plant ────────────────────────────────────────────────────
-    { theme:"The Nuclear Power Plant", q:"Describe the Nuclear Power Plant illustration. What does the technician represent?", a:"A skilled technician maintains a dangerous plant near a town that despises him. He stays because <strong>his presence prevents catastrophe</strong>. When the townspeople force him out and the plant explodes, <em>he</em> is not the destroyer — he was prevented from saving them. The technician represents God." },
-    { theme:"The Nuclear Power Plant", q:"What does 'God destroys' really mean according to this illustration?", a:"When Scripture says 'God destroys,' it means God <strong>reluctantly withdrew His protective presence</strong> in response to sustained human rejection, allowing sin's natural self-destructive consequences to unfold. God is always the one being pushed out, never the aggressor." },
-    // ── White Hat, Black Hat ───────────────────────────────────────────────────
-    { theme:"White Hat, Black Hat", q:"What is the 'White Hat, Black Hat' Hollywood Western illustration?", a:"The villain lies, steals, and kills. The hero stops him — but by also lying, stealing, and killing. The audience cheers, absorbing <strong>Satan's philosophy: the end justifies the means</strong>. God never breaks His own law to enforce it. He never uses deception or force to achieve righteous ends." },
-    { theme:"White Hat, Black Hat", q:"What does the cross reveal in contrast to the 'White Hat' problem?", a:"The cross is the supreme demonstration that God does not use evil methods to achieve good ends. <strong>God absorbed violence rather than retaliating with it</strong>. He would not sin to stop sin — not even to save the world." },
-    // ── Father, Son, and the Gun ───────────────────────────────────────────────
-    { theme:"The Father, the Son, and the Gun", q:"Why did God give Israel rules of warfare in the Old Testament?", a:"When Israel rejected God's non-violent governance and demanded to fight like other nations, God — like a father whose son insists on owning a rifle — <strong>went the 'second mile.'</strong> Rather than abandoning them to unrestrained violence, He gave them rules of warfare to <strong>minimize the evil they had chosen.</strong>" },
-    { theme:"The Father, the Son, and the Gun", q:"What does this illustration say about how God works with human choices He doesn't approve of?", a:"God does not force compliance, but He does not abandon people who make bad choices either. He works <strong>within human stubbornness</strong> to limit damage. The OT laws reflect God's mercy inside Israel's chosen violence, not His ideal will." },
-    // ── Prodigal Son ──────────────────────────────────────────────────────────
-    { theme:"The Father of the Prodigal Son", q:"What does the Prodigal Son parable reveal about God's justice?", a:"When the son returns, the father does not lecture him, extract confession, or impose probation. He <strong>runs to meet him and restores him immediately and fully</strong>. Wright calls this <em>restorative</em> justice — not retributive. God's justice does not require suffering before restoration." },
-    { theme:"The Father of the Prodigal Son", q:"Who does the older brother represent in Wright's reading?", a:"The older brother's anger mirrors the theological assumption that <strong>justice requires suffering before restoration</strong>. His reaction reflects the popular but mistaken view that God cannot forgive until someone has paid. Wright argues this is a misreading of God's character." },
-    // ── Rods and Serpents ─────────────────────────────────────────────────────
-    { theme:"Rods and Serpents", q:"What did the rod-becoming-a-serpent before Pharaoh illustrate?", a:"While Aaron held the rod, it was a harmless staff. Released from his grasp, it became a devouring serpent. This warned Pharaoh: <strong>the forces of nature are safe only while held in God's directing hand.</strong> Released by His withdrawal, they become chaotic and destructive." },
-    { theme:"Rods and Serpents", q:"How does Wright reframe the plagues of Egypt using this illustration?", a:"The plagues were not God actively afflicting Egypt with violence. They were God <strong>progressively withdrawing His restraining protection</strong> in response to Pharaoh's repeated rejection, allowing natural chaos to fill the vacuum. The serpent didn't need to be made dangerous — only released." },
-    // ── Boeing 747 ────────────────────────────────────────────────────────────
-    { theme:"The Boeing 747", q:"What does the Boeing 747 illustration teach about the human condition?", a:"If an untrained passenger overpowers the pilot, the plane will crash — <strong>not because the pilot retaliates, but because the one capable of flying has been removed.</strong> God is the only one capable of sustaining the forces of life. When humanity displaces God, disaster follows as a natural consequence, not a punitive judgment." },
-    { theme:"The Boeing 747", q:"In the 747 illustration, who is the 'pilot' and who is the 'untrained passenger'?", a:"The <strong>pilot is God</strong> — the only one capable of sustaining the complex forces of existence. The <strong>untrained passenger is humanity</strong> (aligned with Satan) who seizes control. The 'crash' that follows is the inevitable result of removing the sustaining presence, not a punishment imposed from outside." },
-    // ── Cross as Dividing Line ────────────────────────────────────────────────
-    { theme:"The Cross as Dividing Line", q:"What are the 'two crosses' Wright identifies?", a:"<strong>Satan's cross (the cross of Babylon)</strong>: operates on self-service at the expense of others — control, compulsion, and suffering to secure obedience. <strong>Christ's cross</strong>: self-sacrificing service for others at ultimate cost, with no coercion and no retaliation. Both are revealed simultaneously at Calvary." },
-    { theme:"The Cross as Dividing Line", q:"What did Calvary prove simultaneously about both characters?", a:"Satan demonstrated there is <strong>no limit to how far he will go</strong> — he moved all of human and religious power to destroy the Son of God. God demonstrated there is <strong>no limit to how far He will go in love</strong> — absorbing violence without retaliating, forgiving His executioners, dying to reveal truth rather than extract payment." },
-    // ── God's Destruction ─────────────────────────────────────────────────────
-    { theme:"Interpreting God's 'Destruction'", q:"What is Wright's central hermeneutical thesis about biblical destruction texts?", a:"When Scripture attributes destruction to God, it means God <strong>reluctantly withdrew His protective presence</strong> in response to sustained rejection, allowing sin's natural self-destructive consequences to take their course. God does not actively rain down violence — He holds back chaos, and when He withdraws, chaos fills the space." },
-    { theme:"Interpreting God's 'Destruction'", q:"How does Wright apply this to the Flood and the destruction of Sodom?", a:"In each case — the Flood, Sodom, Egypt's plagues, the wilderness deaths — Wright argues a careful reading shows <strong>God warning, pleading, and delaying</strong>. Destruction follows only after sustained rejection. <strong>God is always the one being expelled, not the one attacking.</strong>" },
-    // ── Law as God's Character ────────────────────────────────────────────────
-    { theme:"The Law as God's Character", q:"What is God's law, according to Wright?", a:"God's law is not an arbitrary set of rules protecting His authority. <strong>The law is the transcript of God's character</strong> — it describes how love behaves in relationship. Because God is perfect love, He never uses compelling force to secure obedience to that law." },
-    { theme:"The Law as God's Character", q:"Why can't God violate His own law to enforce it?", a:"<strong>Obedience obtained by force or fear is not the obedience the law describes</strong> — it is a contradiction in terms. This means God cannot threaten violence for compliance (the Criminal problem), cannot use evil means for good ends (the White Hat problem), and cannot demand suffering before forgiving (the Prodigal Son problem)." },
-    // ── Big Picture ───────────────────────────────────────────────────────────
-    { theme:"The Great Controversy", q:"What is the great controversy about, in Wright's framework?", a:"The great controversy is fundamentally about <strong>God's character</strong> — whether He governs by love or by force. Every illustration in the book is a facet of this single question. Calvary is the ultimate answer: God governs by self-sacrificing love, never by coercion." },
-    { theme:"The Great Controversy", q:"How does Satan's 'educational' strategy work, according to Wright?", a:"Satan convinces humanity that <strong>the end justifies the means</strong> — that good can use evil methods, that law must be broken to uphold it. The Hollywood Western is his most successful classroom. Christ's life and cross utterly rejected this framework, revealing a God who absorbs violence rather than returning it." }
-  ],
-
-  _deck: [],
-  _current: 0,
-  _flipped: false,
-  _status: [],
-  _indexMap: [],
-
-  render() {
-    const card = this._deck[this._current];
-    document.getElementById('fc-frontTag').textContent = card.theme;
-    document.getElementById('fc-frontQ').textContent = card.q;
-    document.getElementById('fc-backTheme').textContent = card.theme;
-    document.getElementById('fc-backA').innerHTML = card.a;
-    this._flipped = false;
-    document.getElementById('fc-cardInner').classList.remove('flipped');
-    const pct = Math.round(((this._current+1)/this._deck.length)*100);
-    document.getElementById('fc-progressFill').style.width = pct+'%';
-    document.getElementById('fc-progressLabel').textContent = `Card ${this._current+1} of ${this._deck.length}`;
-    document.getElementById('fc-btnPrev').disabled = this._current === 0;
-    document.getElementById('fc-btnNext').disabled = this._current === this._deck.length - 1;
-    this.updateCounts();
-  },
-
-  updateCounts() {
-    const known = this._status.filter(s=>s==='known').length;
-    const learning = this._status.filter(s=>s==='learning').length;
-    const unseen = this._status.filter(s=>s==='unseen').length;
-    document.getElementById('fc-chipKnown').textContent = `✓ ${known} known`;
-    document.getElementById('fc-chipLearning').textContent = `↻ ${learning} learning`;
-    document.getElementById('fc-chipUnseen').textContent = `${unseen} unseen`;
-  },
-
-  flipCard() {
-    this._flipped = !this._flipped;
-    document.getElementById('fc-cardInner').classList.toggle('flipped', this._flipped);
-  },
-
-  nextCard() { if (this._current < this._deck.length-1) { this._current++; this.render(); } },
-  prevCard() { if (this._current > 0) { this._current--; this.render(); } },
-
-  markKnown() {
-    this._status[this._indexMap[this._current]] = 'known';
-    this.updateCounts();
-    if (this._current < this._deck.length-1) { this._current++; this.render(); }
-  },
-
-  markLearning() {
-    this._status[this._indexMap[this._current]] = 'learning';
-    this.updateCounts();
-    if (this._current < this._deck.length-1) { this._current++; this.render(); }
-  },
-
-  shuffleCards() {
-    const combined = this._deck.map((c,i) => ({ card:c, orig:this._indexMap[i] }));
-    for (let i = combined.length-1; i > 0; i--) {
-      const j = Math.floor(Math.random()*(i+1));
-      [combined[i], combined[j]] = [combined[j], combined[i]];
-    }
-    this._deck = combined.map(x => x.card);
-    this._indexMap = combined.map(x => x.orig);
-    this._current = 0;
-    this.render();
-  },
-
-  resetAll() {
-    this._deck = [...this.CARDS];
-    this._indexMap = [...Array(this.CARDS.length).keys()];
-    this._status = new Array(this.CARDS.length).fill('unseen');
-    this._current = 0;
-    this.render();
-  },
-
-  bindKeys() {
-    document.addEventListener('keydown', e => {
-      if (!document.getElementById('flashcard-tab').classList.contains('active')) return;
-      if (e.target.tagName === 'INPUT') return;
-      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); this.flipCard(); }
-      if (e.key === 'ArrowRight') this.nextCard();
-      if (e.key === 'ArrowLeft') this.prevCard();
-      if (e.key === 'k' || e.key === 'K') this.markKnown();
-      if (e.key === 'l' || e.key === 'L') this.markLearning();
-    });
-  },
-
-  init() {
-    this._deck = [...this.CARDS];
-    this._indexMap = [...Array(this.CARDS.length).keys()];
-    this._status = new Array(this.CARDS.length).fill('unseen');
-    this._current = 0;
-    this._flipped = false;
-    this.render();
-    this.bindKeys();
-  }
-};
-</script>
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     COORDINATOR
-     ═══════════════════════════════════════════════════════════ -->
-<!-- ═══════════════════════════════════════════════════════════
-     QUOTES TAB
-     ═══════════════════════════════════════════════════════════ -->
-<section id="quotes-tab" class="tab-section">
-<style>
-  #quotes-tab { padding: 40px 20px 60px; }
-  #quotes-tab .q-wrap { max-width: 780px; margin: 0 auto; }
-  #quotes-tab .q-intro { color: var(--muted); font-size: .93rem; line-height: 1.7; margin-bottom: 40px; text-align: center; }
-  #quotes-tab .q-group { margin-bottom: 44px; }
-  #quotes-tab .q-group-label {
-    font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--accent); opacity: .7; margin-bottom: 14px; padding-left: 2px;
-  }
-  #quotes-tab .q-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
-  #quotes-tab .q-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
-    padding: 22px 24px; display: flex; flex-direction: column; gap: 12px;
-    transition: border-color .15s;
-  }
-  #quotes-tab .q-card:hover { border-color: rgba(139,185,255,.3); }
-  #quotes-tab .q-text {
-    font-size: .97rem; line-height: 1.65; color: var(--text);
-    font-style: italic; flex: 1;
-  }
-  #quotes-tab .q-text::before { content: '\201C'; color: var(--accent); opacity: .5; font-size: 1.3em; font-style: normal; margin-right: 2px; }
-  #quotes-tab .q-text::after  { content: '\201D'; color: var(--accent); opacity: .5; font-size: 1.3em; font-style: normal; margin-left: 2px; }
-  #quotes-tab .q-attr { font-size: .78rem; color: var(--muted); }
-</style>
-<div class="q-wrap">
-  <p class="q-intro">Key statements from F.T. Wright's <em>Behold Your God</em>, organized by theme.</p>
-
-  <div class="q-group">
-    <div class="q-group-label">On God's Character</div>
-    <div class="q-grid">
-      <div class="q-card">
-        <div class="q-text">The great controversy is about God's character — whether He governs by force or by self-giving love.</div>
-        <div class="q-attr">F.T. Wright</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">To know God is life eternal, and life eternal is to know God.</div>
-        <div class="q-attr">F.T. Wright</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">All that man needs to know or can know of God has been revealed in the life and character of His Son.</div>
-        <div class="q-attr">Ellen White · Testimonies, vol. 8, p. 286</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">God is a Saviour and a Saviour only.</div>
-        <div class="q-attr">F.T. Wright</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="q-group">
-    <div class="q-group-label">On God's Law and Government</div>
-    <div class="q-grid">
-      <div class="q-card">
-        <div class="q-text">His law is a transcript of His own character, and it is the standard of all character.</div>
-        <div class="q-attr">Ellen White · Christ's Object Lessons, p. 315</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">Compelling power is found only under Satan's government. The Lord's principles are not of this order.</div>
-        <div class="q-attr">Ellen White · The Desire of Ages, p. 759</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">The exercise of force is contrary to the principles of God's government; He desires only the service of love; and love cannot be commanded.</div>
-        <div class="q-attr">Ellen White · The Desire of Ages, p. 22</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="q-group">
-    <div class="q-group-label">On Destruction and Salvation</div>
-    <div class="q-grid">
-      <div class="q-card">
-        <div class="q-text">Satan is the destroyer; God is the restorer.</div>
-        <div class="q-attr">Ellen White · The Ministry of Healing, p. 113</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">God destroys no man. Everyone who is destroyed will have destroyed himself.</div>
-        <div class="q-attr">Ellen White · Christ's Object Lessons, p. 84</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">God does not stand toward the sinner as an executioner of the sentence against transgression; but He leaves the rejecters of His mercy to themselves, to reap that which they have sown.</div>
-        <div class="q-attr">Ellen White · The Great Controversy, p. 36</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">God destroys by trying to save.</div>
-        <div class="q-attr">F.T. Wright</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="q-group">
-    <div class="q-group-label">On the Cross</div>
-    <div class="q-grid">
-      <div class="q-card">
-        <div class="q-text">The mystery of the cross explains all other mysteries.</div>
-        <div class="q-attr">Ellen White · The Great Controversy, p. 652</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">The cross is God's personal demonstration of the way in which He deals with those who refuse to give up sin.</div>
-        <div class="q-attr">F.T. Wright</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">In order to be rightly understood and appreciated, every truth in the Word of God must be studied in the light which streams from the cross of Calvary.</div>
-        <div class="q-attr">Ellen White · SDA Bible Commentary, vol. 5, p. 1137</div>
-      </div>
-      <div class="q-card">
-        <div class="q-text">When the character of Christ shall be perfectly reproduced in His people, then He will come to claim them as His own.</div>
-        <div class="q-attr">Ellen White · Christ's Object Lessons, p. 69</div>
-      </div>
-    </div>
-  </div>
-
-</div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════
-     STORY TAB — The Arc
-     ═══════════════════════════════════════════════════════════ -->
-<section id="story-tab" class="tab-section active">
-<style>
-  #story-tab { padding: 40px 20px 80px; }
-
-  .arc-wrap { max-width: 660px; margin: 0 auto; }
-
-  .arc-intro {
-    text-align: center;
-    color: var(--muted);
-    font-size: .95rem;
-    line-height: 1.75;
-    margin-bottom: 64px;
-    padding: 0 16px;
-  }
-  .arc-intro strong { color: var(--text); }
-
-  /* Timeline */
-  .arc-timeline {
-    position: relative;
-    padding-left: 44px;
-  }
-  .arc-timeline::before {
-    content: '';
-    position: absolute;
-    left: 9px; top: 12px; bottom: 12px;
-    width: 1px;
-    background: linear-gradient(180deg,
-      transparent 0%,
-      rgba(139,185,255,.2) 8%,
-      rgba(139,185,255,.2) 92%,
-      transparent 100%);
-  }
-
-  /* Beat */
-  .arc-beat {
-    position: relative;
-    margin-bottom: 72px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity .65s ease, transform .65s ease;
-  }
-  .arc-beat.is-visible { opacity: 1; transform: translateY(0); }
-
-  /* Dot */
-  .arc-beat::before {
-    content: '';
-    position: absolute;
-    left: -39px; top: 7px;
-    width: 11px; height: 11px;
-    border-radius: 50%;
-    border: 2px solid rgba(139,185,255,.3);
-    background: var(--bg);
-    transition: border-color .5s, background .5s;
-  }
-  .arc-beat.is-visible::before {
-    border-color: var(--accent);
-    background: rgba(139,185,255,.12);
-  }
-
-  .beat-label {
-    font-size: .7rem;
-    font-weight: 700;
-    letter-spacing: .13em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: .65;
-    margin-bottom: 10px;
-  }
-  .beat-heading {
-    font-size: 1.45rem;
-    font-weight: 700;
-    letter-spacing: -.025em;
-    line-height: 1.2;
-    margin-bottom: 14px;
-  }
-  .beat-body {
-    font-size: .93rem;
-    line-height: 1.8;
-    color: var(--muted);
-    margin-bottom: 18px;
-  }
-  .beat-quote {
-    margin: 0;
-    padding: 4px 0 4px 18px;
-    border-left: 2px solid rgba(139,185,255,.3);
-    font-style: italic;
-    font-size: .88rem;
-    line-height: 1.65;
-    color: rgba(230,237,247,.5);
-  }
-
-  /* Closing */
-  .arc-closing {
-    margin-top: 20px;
-    padding: 28px 32px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    text-align: center;
-    color: var(--muted);
-    font-size: .93rem;
-    line-height: 1.75;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity .65s ease, transform .65s ease;
-  }
-  .arc-closing.is-visible { opacity: 1; transform: translateY(0); }
-  .arc-closing em { color: var(--text); font-style: italic; }
-
-</style>
-
-<div class="arc-wrap">
-
-  <p class="arc-intro">
-    <strong>The great controversy</strong> is the story running beneath all of history —
-    a dispute about God's character that began before earth existed and will not end
-    until every question has been answered before the entire universe. This is its arc.
-  </p>
-
-  <div class="arc-timeline">
-
-    <div class="arc-beat">
-      <div class="beat-label">Before Time</div>
-      <h2 class="beat-heading">The Lie That Started Everything</h2>
-      <p class="beat-body">Long before earth's history began, a conflict arose in heaven. Lucifer — the highest of created beings — began to misrepresent God's character. His claim: that God's government was based on arbitrary authority and force. That obedience to His law was servitude, not freedom. That God was holding something back. The distrust spread. A question was planted in the universe that would take millennia to answer.</p>
-      <blockquote class="beat-quote">"Compelling power is found only under Satan's government. The Lord's principles are not of this order."</blockquote>
-    </div>
-
-    <div class="arc-beat">
-      <div class="beat-label">Eden</div>
-      <h2 class="beat-heading">The Same Lie, a New World</h2>
-      <p class="beat-body">The controversy reached earth through the same method: misrepresentation. In Eden, Satan portrayed God as withholding, threatened by human potential, governing through prohibition rather than love. Humanity accepted the false picture. The relationship was severed — not because God withdrew in anger, but because sin cannot coexist with the Source of life. Humanity chose to walk away from the only One who could sustain them.</p>
-      <blockquote class="beat-quote">"God destroys no man. Everyone who is destroyed will have destroyed himself."</blockquote>
-    </div>
-
-    <div class="arc-beat">
-      <div class="beat-label">Calvary</div>
-      <h2 class="beat-heading">The Answer</h2>
-      <p class="beat-body">At the cross, God answered the lie — not with argument, but with action. He absorbed the full consequences of humanity's rejection without retaliating, without forcing, without ceasing to love. Both governments were revealed at Calvary simultaneously: Satan's method of coercion and destruction exposed; God's method of self-giving love demonstrated in full. The cross is not a legal transaction. It is the decisive revelation of what God is like.</p>
-      <blockquote class="beat-quote">"The mystery of the cross explains all other mysteries."</blockquote>
-    </div>
-
-    <div class="arc-beat">
-      <div class="beat-label">The Last Days</div>
-      <h2 class="beat-heading">The Character Reproduced</h2>
-      <p class="beat-body">The controversy does not end with the cross alone. It ends when God's character is fully reproduced in His people — when a generation, facing the same pressures that crucified Christ, reflects His love without compromise. The final message to the world is not primarily spoken. It is lived. The earth is lightened with His glory — and "glory," in Scripture, means character.</p>
-      <blockquote class="beat-quote">"When the character of Christ shall be perfectly reproduced in His people, then He will come to claim them as His own."</blockquote>
-    </div>
-
-    <div class="arc-beat">
-      <div class="beat-label">The End</div>
-      <h2 class="beat-heading">Every Knee, Freely</h2>
-      <p class="beat-body">The controversy closes not by force but by evidence. Every intelligent being in the universe — even those who opposed God — freely acknowledges that His government is just, His character is love, and His way was right. Not compelled. Not coerced. Freely. The question Lucifer raised is answered once and for all. And because it is answered so completely, rebellion will never rise again.</p>
-      <blockquote class="beat-quote">"The great controversy is about God's character — whether He governs by force or by self-giving love."</blockquote>
-    </div>
-
-  </div><!-- /.arc-timeline -->
-
-  <div class="arc-closing">
-    This is what F.T. Wright's <em>Behold Your God</em> argues, chapter by chapter,
-    illustration by illustration: that the central question of history is not what God has done —
-    it is what God is <em>like</em>.
-  </div>
-
-</div><!-- /.arc-wrap -->
-</section>
-
-
-<script>
-const _tabInited = { story: true, illustrations: true, explorer: false, flashcard: false, quotes: true };
-
-function showTab(name, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-  document.getElementById(name+'-tab').classList.add('active');
-  if (!_tabInited[name]) {
-    _tabInited[name] = true;
-    if (name === 'explorer') ExplorerTab.init();
-    if (name === 'flashcard') FlashcardTab.init();
-    if (name === 'story') StoryTab.init();
-  }
+  document.getElementById('quizBtn').disabled = false;
 }
 
-const StoryTab = {
-  init() {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('#story-tab .arc-beat, #story-tab .arc-closing')
-      .forEach(el => observer.observe(el));
-  }
-};
-StoryTab.init();
+function renderQuestion() {
+  const q = quizState.questions[quizState.current];
+  if (!q) return;
 
-const ThemeSwitcher = {
-  set(theme, btn) {
-    document.body.className = document.body.className.replace(/\btheme-\S+/g, '').trim();
-    if (theme) document.body.classList.add('theme-' + theme);
-    document.querySelectorAll('.theme-opt').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    this.close();
-  },
-  toggle() { document.getElementById('theme-popover').classList.toggle('open'); },
-  close() { document.getElementById('theme-popover').classList.remove('open'); }
-};
-document.addEventListener('click', e => {
-  if (!e.target.closest('.theme-gear-btn') && !e.target.closest('#theme-popover')) ThemeSwitcher.close();
-});
+  const letters = ['A','B','C','D'];
+  const options = q.options.map((opt, i) => `
+    <button class="option" onclick="answerQuestion('${letters[i]}')" id="opt-${letters[i]}">${opt}</button>
+  `).join('');
+
+  document.getElementById('quizArea').innerHTML = `
+    <div class="card">
+      <div class="progress">Question ${quizState.current + 1} of ${quizState.questions.length}</div>
+      <div class="question-text">${q.question}</div>
+      <div class="options">${options}</div>
+      <div id="explanation"></div>
+      <div id="nextWrap"></div>
+    </div>`;
+}
+
+function answerQuestion(chosen) {
+  if (quizState.answered) return;
+  quizState.answered = true;
+
+  const q = quizState.questions[quizState.current];
+  const correct = q.correct;
+  quizState.total++;
+  if (chosen === correct) quizState.score++;
+  updateScore();
+
+  ['A','B','C','D'].forEach(l => {
+    const btn = document.getElementById('opt-' + l);
+    if (!btn) return;
+    btn.disabled = true;
+    if (l === correct) btn.classList.add('correct');
+    else if (l === chosen) btn.classList.add('wrong');
+  });
+
+  document.getElementById('explanation').innerHTML =
+    `<div class="explanation">${q.explanation || ''}</div>`;
+
+  const isLast = quizState.current >= quizState.questions.length - 1;
+  document.getElementById('nextWrap').innerHTML = isLast
+    ? `<button class="primary" onclick="startQuiz()">New Quiz</button>`
+    : `<button class="primary" onclick="nextQuestion()">Next Question</button>`;
+}
+
+function nextQuestion() {
+  quizState.current++;
+  quizState.answered = false;
+  renderQuestion();
+}
 </script>
-
 </body>
 </html>
