@@ -2,6 +2,32 @@
 
 ---
 
+## 2026-03-28 — Playwright MCP Test, BYG Theme Switcher
+
+### Playwright MCP Confirmed Working
+- Fresh session confirmed Playwright MCP connects at startup
+- Tested end-to-end: navigated to example.com, got page snapshot — success
+- Learned: file:// URLs blocked; must use local HTTP server (`python -m http.server`)
+- Learned: server must run as foreground process in background task (no `&`) to stay alive
+- Learned: if Chrome window is manually closed, next navigate reopens it automatically
+
+### Dev Branch Synced with Main
+- Merged main into dev (2 merge commits) — clean merge, no conflicts
+
+### BYG Web App — Global Theme Switcher
+- Added gear icon (⚙) to top-right of app header
+- Click opens popover with 4 options: Default, Explorer, Archives, High-Command (Navy skipped — too similar to Default)
+- Theme applies globally to `body` via class (`body.theme-explorer` etc.) — all tabs re-theme
+- CSS variables overridden on body; Arc tab hardcoded rgba values overridden via `body.theme-X` selectors
+- Smooth transitions on background/color
+
+### Explorer Theme Audit (In Progress at Session End)
+- Visually audited tabs 1, 2, 3 under Explorer theme
+- Subagent extracted all hardcoded rgba values across all 5 tabs
+- Fixes NOT yet applied — see handoff for full fix list
+
+---
+
 ## 2026-03-25 — Repo Sync, dev→main Promotion, BYG Flashcard App
 
 ### Repo Sync

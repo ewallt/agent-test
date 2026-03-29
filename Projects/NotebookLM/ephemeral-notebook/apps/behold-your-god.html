@@ -27,10 +27,72 @@
     background: linear-gradient(180deg, #070c16 0%, #0b1220 50%, #070c16 100%);
     color: var(--text);
     min-height: 100vh;
+    transition: background-color .35s ease, color .25s ease;
   }
 
+  /* ── Global themes ── */
+  body.theme-explorer {
+    --bg: #e8dcc8; --surface: #1a1815; --border: rgba(90,80,65,.35);
+    --text: #2c2416; --muted: #6b5d4f; --accent: #d4a574;
+    background: #e8dcc8; color: #2c2416;
+  }
+  body.theme-archives {
+    --bg: #f5f5f4; --surface: #e7e5e4; --border: rgba(41,37,36,.15);
+    --text: #292524; --muted: #57534e; --accent: #0f766e;
+    background: #f5f5f4; color: #292524;
+  }
+  body.theme-high-command {
+    --bg: #022c22; --surface: #064e3b; --border: rgba(254,240,138,.15);
+    --text: #ecfdf5; --muted: #6ee7b7; --accent: #fef08a;
+    background: #022c22; color: #ecfdf5;
+  }
+
+  /* ── Explorer: global hardcoded overrides ── */
+  body.theme-explorer .tab-btn.active { background: rgba(212,165,116,.15); border-color: rgba(212,165,116,.4); }
+  body.theme-explorer .tab-btn:hover { border-color: rgba(90,80,65,.4); }
+  body.theme-explorer .beat-label { opacity: 1; }
+  /* Tab 2 — Illustrations */
+  body.theme-explorer .badge-watch { background: rgba(212,165,116,.18); border-color: rgba(212,165,116,.45); color: #2c2416; }
+  body.theme-explorer .ill-item:hover { border-color: rgba(212,165,116,.5); background: rgba(212,165,116,.06); }
+  /* Tab 3 — Explorer */
+  body.theme-explorer .subtab.active { background: rgba(212,165,116,.15); border-color: rgba(212,165,116,.4); }
+  body.theme-explorer .subtab:hover:not(.active) { border-color: rgba(90,80,65,.35); }
+  body.theme-explorer select { background: #26231f; color: #faf8f3; border-color: rgba(90,80,65,.5); }
+  body.theme-explorer select:focus { border-color: rgba(212,165,116,.6); }
+  body.theme-explorer button.primary { background: #d4a574; color: #1a1815; }
+  body.theme-explorer .chip { background: rgba(212,165,116,.08); border-color: rgba(212,165,116,.3); }
+  body.theme-explorer .chip:hover { background: rgba(212,165,116,.18); border-color: rgba(212,165,116,.55); }
+  body.theme-explorer .option:hover:not(:disabled) { background: rgba(212,165,116,.07); border-color: rgba(212,165,116,.4); }
+  body.theme-explorer .explanation { background: rgba(212,165,116,.07); border-color: rgba(212,165,116,.2); }
+  body.theme-explorer td { border-bottom-color: rgba(90,80,65,.2); }
+  /* Tab 4 — Flashcards */
+  body.theme-explorer .fc-progress-wrap { background: rgba(90,80,65,.2); }
+  body.theme-explorer #flashcard-tab button:hover { border-color: rgba(90,80,65,.45); }
+  body.theme-explorer #flashcard-tab button.primary { background: #d4a574; color: #1a1815; }
+  body.theme-explorer kbd { background: rgba(90,80,65,.15); border-color: rgba(90,80,65,.3); color: #2c2416; }
+  body.theme-explorer .kbd-hint { color: rgba(107,93,79,.7); }
+  /* Tab 5 — Quotes */
+  body.theme-explorer .q-card:hover { border-color: rgba(212,165,116,.4); }
+  /* Arc tab hardcoded overrides */
+  body.theme-explorer .beat-quote { color: rgba(44,36,22,.55); border-left-color: rgba(212,165,116,.45); }
+  body.theme-explorer .arc-timeline::before { background: linear-gradient(180deg, transparent 0%, rgba(212,165,116,.3) 8%, rgba(212,165,116,.3) 92%, transparent 100%); }
+  body.theme-explorer .arc-beat::before { border-color: rgba(212,165,116,.3); }
+  body.theme-explorer .arc-beat.is-visible::before { background: rgba(212,165,116,.15); }
+  body.theme-explorer .arc-closing { color: #faf8f3; }
+  body.theme-explorer .arc-closing em { color: #faf8f3; }
+
+  body.theme-archives .beat-quote { color: rgba(41,37,36,.5); border-left-color: rgba(15,118,110,.35); }
+  body.theme-archives .arc-timeline::before { background: linear-gradient(180deg, transparent 0%, rgba(15,118,110,.2) 8%, rgba(15,118,110,.2) 92%, transparent 100%); }
+  body.theme-archives .arc-beat::before { border-color: rgba(15,118,110,.3); }
+  body.theme-archives .arc-beat.is-visible::before { background: rgba(15,118,110,.1); }
+
+  body.theme-high-command .beat-quote { color: rgba(236,253,245,.5); border-left-color: rgba(254,240,138,.3); }
+  body.theme-high-command .arc-timeline::before { background: linear-gradient(180deg, transparent 0%, rgba(254,240,138,.15) 8%, rgba(254,240,138,.15) 92%, transparent 100%); }
+  body.theme-high-command .arc-beat::before { border-color: rgba(254,240,138,.25); }
+  body.theme-high-command .arc-beat.is-visible::before { background: rgba(254,240,138,.08); }
+
   /* ── App shell ── */
-  .app-header { text-align: center; padding: 32px 20px 0; }
+  .app-header { text-align: center; padding: 32px 20px 0; position: relative; }
   .app-header h1 { font-size: clamp(1.6rem,4vw,2.2rem); font-weight: 700; letter-spacing: -.03em; margin-bottom: 8px; }
   .app-header h1 span { color: var(--accent); }
   .app-sub { color: var(--muted); font-size: .9rem; }
@@ -48,6 +110,36 @@
   /* ── Section visibility ── */
   .tab-section { display: none; }
   .tab-section.active { display: block; }
+
+  /* ── Theme gear ── */
+  .theme-gear-btn {
+    position: absolute; top: 32px; right: 20px;
+    background: transparent; border: 1px solid var(--border);
+    border-radius: 8px; color: var(--muted);
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; cursor: pointer;
+    transition: color .15s, border-color .15s;
+  }
+  .theme-gear-btn:hover { color: var(--text); border-color: var(--accent); }
+  .theme-popover {
+    position: absolute; top: 76px; right: 20px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 8px;
+    display: none; flex-direction: column; gap: 4px;
+    z-index: 100; min-width: 150px;
+    box-shadow: var(--shadow);
+  }
+  .theme-popover.open { display: flex; }
+  .theme-opt {
+    padding: 8px 14px; border-radius: 8px;
+    border: none; background: transparent;
+    color: var(--muted); font-size: .82rem; font-weight: 600;
+    text-align: left; cursor: pointer;
+    transition: background .12s, color .12s;
+  }
+  .theme-opt:hover { background: rgba(128,128,128,.12); color: var(--text); }
+  .theme-opt.active { color: var(--accent); }
 </style>
 </head>
 <body>
@@ -55,6 +147,13 @@
 <div class="app-header">
   <h1>Behold <span>Your God</span></h1>
   <p class="app-sub">F.T. Wright · AI-powered explorer, quiz, flashcards & quotes <span style="opacity:.4">v2.0</span></p>
+  <button class="theme-gear-btn" onclick="ThemeSwitcher.toggle()" title="Change theme">⚙</button>
+  <div class="theme-popover" id="theme-popover">
+    <button class="theme-opt active" data-theme="" onclick="ThemeSwitcher.set('',this)">Default</button>
+    <button class="theme-opt" data-theme="explorer" onclick="ThemeSwitcher.set('explorer',this)">Explorer</button>
+    <button class="theme-opt" data-theme="archives" onclick="ThemeSwitcher.set('archives',this)">Archives</button>
+    <button class="theme-opt" data-theme="high-command" onclick="ThemeSwitcher.set('high-command',this)">High-Command</button>
+  </div>
 </div>
 
 <nav class="tab-nav">
@@ -1079,6 +1178,7 @@ const FlashcardTab = {
   }
   .arc-closing.is-visible { opacity: 1; transform: translateY(0); }
   .arc-closing em { color: var(--text); font-style: italic; }
+
 </style>
 
 <div class="arc-wrap">
@@ -1164,6 +1264,21 @@ const StoryTab = {
   }
 };
 StoryTab.init();
+
+const ThemeSwitcher = {
+  set(theme, btn) {
+    document.body.className = document.body.className.replace(/\btheme-\S+/g, '').trim();
+    if (theme) document.body.classList.add('theme-' + theme);
+    document.querySelectorAll('.theme-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    this.close();
+  },
+  toggle() { document.getElementById('theme-popover').classList.toggle('open'); },
+  close() { document.getElementById('theme-popover').classList.remove('open'); }
+};
+document.addEventListener('click', e => {
+  if (!e.target.closest('.theme-gear-btn') && !e.target.closest('#theme-popover')) ThemeSwitcher.close();
+});
 </script>
 
 </body>
