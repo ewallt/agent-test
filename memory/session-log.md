@@ -2,6 +2,17 @@
 
 ---
 
+## 2026-03-29 (Session 2) — BYG Theme Switcher Reverted
+
+### BYG Theme Switcher Removed
+- Realized the theme switcher work from the previous session was experimental/Playwright-driven and shouldn't be kept
+- Reverted `behold-your-god.html` on dev to the main branch version (single default color scheme)
+- Committed revert: `601a364 byg: revert theme switcher — restore single color scheme from main`
+- Verified no theme switcher code anywhere else on local filesystem
+- Handoff unchanged — next session: run an ephemeral notebook
+
+---
+
 ## 2026-03-29 — Playwright MCP Findings, BYG Theme Switcher, Methodology Research
 
 ### Playwright MCP Confirmed & Understood
