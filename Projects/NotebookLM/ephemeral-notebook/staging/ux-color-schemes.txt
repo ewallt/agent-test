@@ -1,0 +1,70 @@
+# UI Color Schemes — Context Navigator App
+
+Four hand-crafted UI themes from a production web app. Each theme demonstrates a different aesthetic approach to color in dark and light interfaces.
+
+---
+
+## Explorer Theme (warm, earthy — dark cards on light background)
+
+```css
+--app-bg: #e8dcc8;       /* warm beige background */
+--card-bg: #1a1815;      /* near-black brown cards */
+--input-bg: #26231f;     /* slightly lighter input fields */
+--brand: #d4a574;        /* tan/gold accent */
+--text-body: #2c2416;    /* dark brown body text */
+--text-card: #faf8f3;    /* warm off-white text on cards */
+--text-muted: #a89580;   /* muted warm gray */
+--border: #5a5041;       /* medium brown border */
+```
+
+Design note: Inverted contrast — light background with dark cards. The warm gold accent (#d4a574) unifies the palette. Originated from a Gemini-generated suggestion; considered the strongest of the four themes.
+
+---
+
+## Archives Theme (light, neutral — muted teal accent)
+
+```css
+--app-bg: #f5f5f4;       /* near-white background */
+--card-bg: #e7e5e4;      /* light gray cards */
+--brand: #0f766e;        /* teal/emerald accent */
+--text: #292524;         /* near-black text */
+```
+
+Design note: Clean professional light theme. Teal accent provides strong contrast against the neutral background.
+
+---
+
+## High-Command Theme (dark forest green)
+
+```css
+--app-bg: #022c22;       /* deep forest green background */
+--card-bg: #064e3b;      /* medium forest green cards */
+--brand: #fef08a;        /* bright yellow accent */
+--text: #ecfdf5;         /* mint/pale green text */
+```
+
+Design note: Dark theme with strong nature/military aesthetic. Yellow accent on deep green creates high contrast. The brand color (#fef08a) pops dramatically against the dark background.
+
+---
+
+## Navy Theme (deep blue)
+
+```css
+--app-bg: #0b1020;       /* deep navy background */
+--card-bg: #111833;      /* dark blue cards */
+--brand: #8bb9ff;        /* soft light blue accent */
+--text: #e6ecff;         /* pale blue-white text */
+```
+
+Design note: Classic dark blue tech aesthetic. Soft light blue accent maintains warmth within a cool palette. All text tints toward blue for palette cohesion.
+
+---
+
+## Shared Implementation Pattern
+
+All themes use CSS custom properties with smooth transitions:
+```css
+transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+```
+
+The brand accent drives all interactive elements: buttons, active borders, focus states, and highlights. Muted text uses the brand hue at reduced saturation for hierarchy.

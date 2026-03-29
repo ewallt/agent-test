@@ -265,3 +265,23 @@
 - Hiccups: none
 
 ---
+
+## 2026-03-28 | Meta Notebook | "The Art of Doodle Animation"
+- Notebook ID: cfac8154-ed1d-4de1-9871-7a0fa556e41e
+- URL: https://notebooklm.google.com/notebook/cfac8154-ed1d-4de1-9871-7a0fa556e41e
+- Pattern: Research-based (fast mode) — 10 sources imported
+- Type: Meta notebook — for Claude to query on demand, no artifacts
+- Topic: SVG/CSS doodle animation, hand-drawn effects, libraries (Rough.js, vivus.js, DrawSVG/GSAP), easing/timing
+- Use case: Whiteboard Explainer project — query when building doodle scenes
+- Artifacts: none
+- Hiccups: none
+
+## 2026-03-28 | Meta Notebook | "UX and Interface Design"
+- Notebook ID: ae466d18-9614-497d-a521-0bf8af99a8be
+- URL: https://notebooklm.google.com/notebook/ae466d18-9614-497d-a521-0bf8af99a8be
+- Pattern: Research-based (deep mode) — 48 sources imported
+- Type: Meta notebook — for Claude to query on demand, no artifacts
+- Topic: UX/interface design, visual hierarchy, typography, color, layout, interaction patterns, accessibility, design systems, educational app UX
+- Use case: Query when building web apps, designing interfaces
+- Artifacts: none
+- Hiccups: none
