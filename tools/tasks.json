@@ -287,6 +287,20 @@
               "notes": "Skill that queries a notebook and writes+uploads three source documents: Explorer+Quiz KB, Tabbed KB, Slide Manifest. Created 2026-03-15 via skill-creator. Skill at ~/.claude/skills/notebooklm-source-prep/.",
               "priority": 3,
               "status": "done"
+            },
+            {
+              "id": "nlm-17",
+              "title": "Test notebooklm-ephemeral-notebook master skill on real run",
+              "notes": "Rebuilt 2026-03-29 as JIT sequencer with Standard and Exploratory paths, all process fixes baked in (15s polling, full UUIDs, artifact burst, no && chaining). Needs to be tested against an actual task file run to verify it drives correctly.",
+              "priority": 2,
+              "status": "pending"
+            },
+            {
+              "id": "nlm-18",
+              "title": "Share self-improving AI notebook and log the run",
+              "notes": "Notebook a87328bb-c642-48fb-b571-8f2245fa8a41 — 'Self-Improving AI — Current Landscape'. 5 videos rendered. Not yet shared publicly or logged in run-log. Also: run was done conversationally — consider formalizing as a task file.",
+              "priority": 3,
+              "status": "pending"
             }
           ]
         }
