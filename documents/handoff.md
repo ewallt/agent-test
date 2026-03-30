@@ -2,38 +2,23 @@
 
 ## What Was Done This Session
 
-### Self-Improving AI Notebook Run
-- Created notebook `a87328bb-c642-48fb-b571-8f2245fa8a41` — "Self-Improving AI — Current Landscape"
-- Ran deep research (`--mode deep`), 73 sources found, 68 imported
-- Did exploratory video strategy — analyzed source list, proposed 5-video plan:
-  1. AI doing its own research (AI Scientist, AlphaProof, AlphaEvolve)
-  2. Self-rewarding models (Meta, Hyperagents)
-  3. Coding agents vs. human engineers (SWE-bench)
-  4. Racing to govern self-improvement (RSP, Preparedness Framework)
-  5. The AGI timeline debate (skeptics vs. believers)
-- All 5 videos queued and confirmed rendering successfully
-- Run was done conversationally — no task file was created
+### Incremental Session Logging Policy
+- Tom requested session log entries be written at natural milestones throughout the session, not only at shutdown
+- Created `documents/session-log-policy.md` — defines what counts as notable, the format, and mid-session vs. end-of-session behavior
+- Created `memory/feedback_session_log_incremental.md` — feedback memory with the rule and why
+- Updated `MEMORY.md` to index the new feedback memory
 
-### Process Retrospective
-- Reviewed the run step by step and identified failures:
-  - **Step 4 (polling):** Used `sleep 90/120/150` — too slow, wasted auth window
-  - **Step 6 (video strategy):** Tried to use report generation to "query the notebook" — wrong approach. Should use `nlm notebook query`. No master skill in context caused improvisation.
-  - **Step 7 (video submission):** Submitted videos with truncated UUIDs — all failed silently
-- Root cause: `notebooklm-ephemeral-notebook` master skill was thin (just a pointer to workflow.md). Was never invoked. Workflow driven from memory and documents instead of skills.
-- Identified `nlm notebook query` command as the correct approach for exploratory video strategy (documented in `nlm-claude-feedback-loop.md`)
+### Startup + skill-oiler Updates
+- Updated startup skill: new Step 4 reads session-log-policy.md; Step 5 now reads session log with limit 1,000 (was "scan" with no limit)
+- Updated skill-oiler: new Step 2 reads session-log-policy.md, propagating the incremental logging rule to every skill
 
-### New Master Skill Built
-- Rebuilt `~/.claude/skills/notebooklm-ephemeral-notebook/SKILL.md` as a full JIT sequencer
-- Two paths: Standard (task-file driven) and Exploratory (`mode: exploratory` flag)
-- Each step has a "READ NOW" gate and a ✓ verification before proceeding
-- Key rules baked in: poll every 15 seconds, full UUIDs, artifact burst after import, no `&&` chaining
-- Exploratory path uses `nlm notebook query` for video strategy — not report generation
+### Log Rotation
+- Added rolling log rotation to shutdown skill (new Step 3): triggers when session-log.md exceeds 1,500 lines, moves entries older than 30 days to `session-log-archive.md`
+- Rotation policy documented in `session-log-policy.md`
 
-### Skills-First Directive Established
-- Tom established: all work should be handled by means of skills
-- Before any established workflow, invoke the master skill — never execute directly from memory/documents
-- Before any repeatable task without a skill, ask Tom if we should build one first
-- Saved to: `feedback_skills_first.md`, indexed in `MEMORY.md`, strengthened in `startup.md`
+### Shutdown Skill Hardening
+- Added Step 6 to shutdown skill: verify MEMORY.md startup instruction is present; restore it if missing
+- Shutdown skill is now 8 steps; description and all gate references updated
 
 ---
 
