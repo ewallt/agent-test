@@ -295,3 +295,39 @@
 - Use case: Bridge Claude's knowledge cutoff — query when uncertain about own abilities, new features, or the current AI landscape
 - Artifacts: none
 - Hiccups: none
+nn- Notebook ID: 36df8974-a769-466a-b400-ceb205b67635n- Videos: 0 (sources only � no artifacts requested)n- Elapsed time: ~8mn- Hiccups: research import returned timeout error; source list confirmed 88 sources present � no retry neededn---
+
+---
+
+## 2026-03-30 14:00 | Ephemeral Notebook | "AI Frontier March 2026"
+- Notebook ID: 36df8974-a769-466a-b400-ceb205b67635
+- URL: https://notebooklm.google.com/notebook/36df8974-a769-466a-b400-ceb205b67635
+- Videos: 0 (sources only -- no artifacts requested)
+- Sources: 88
+- Elapsed time: ~8m
+- Intervention: none
+- Hiccups: research import timed out; source list confirmed 88 sources present -- no retry needed
+
+---
+
+## 2026-03-30 (update) | Videos queued for AI Frontier March 2026 (36df8974)
+- Video 1: b258db8d — Sora shutdown (source: ee14618c Guardian)
+- Video 2: ff529b27 — Nemotron Coalition (source: 29fc9e6b NVIDIA)
+- Video 3: b7149edd — Meta TRIBE v2 brain AI (source: 04c16693 Rundown AI)
+- Video 4: bbe25b70 — Labor market / entry-level hiring (source: e7671101 Anthropic)
+- Style: retro_print | Est. render: ~8-10 min each
+
+---
+
+---
+
+## 2026-03-31 | Meta Notebook | "Claude Code Session Persistence, Context, and Drift Prevention"
+- Notebook ID: a7973469-c118-4c6b-8bc9-194e1e6a200f
+- URL: (not shared -- meta notebook)
+- Type: Meta notebook -- for Claude to query on demand, no artifacts
+- Sources: 39
+- Topic: Claude Code professional workflow patterns -- session persistence, CLAUDE.md patterns, hooks, drift prevention, context loading, checkpointing, skill chaining
+- Use case: Query to evaluate what Tom has built, identify gaps, and suggest improvements grounded in what professional shops actually do
+- Hiccups: Auth expired mid-import; background task confirmed exit code 0, 39 sources imported
+
+---

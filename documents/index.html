@@ -29,9 +29,10 @@
     padding: 0 0 80px;
   }
 
+  /* ── Header ── */
   header {
     border-bottom: 1px solid var(--border);
-    padding: 52px 24px 40px;
+    padding: 48px 24px 36px;
     text-align: center;
   }
   .badge {
@@ -51,44 +52,56 @@
     font-size: clamp(1.8rem, 4vw, 2.6rem);
     font-weight: 700;
     letter-spacing: -.03em;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
   header h1 span { color: var(--accent); }
-  header p {
-    color: var(--muted);
-    font-size: 1.05rem;
-    max-width: 520px;
+  header p { color: var(--muted); font-size: 1rem; }
+
+  /* ── Tab bar ── */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    padding: 20px 32px 0;
+    max-width: 1100px;
     margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+    }
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: .9rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+    padding: 10px 18px 12px;
+    white-space: nowrap;
+    transition: color .15s, border-color .15s;
+    margin-bottom: -1px;
   }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ── Tab content ── */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
 
   main {
-    max-width: 1400px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 48px 32px 0;
+    padding: 36px 32px 0;
   }
 
-  .columns {
+  /* ── Card grid ── */
+  .card-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 24px;
-    align-items: start;
-  }
-
-  .column {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .section-label {
-    font-size: .75rem;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 4px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
   }
 
   a.card {
@@ -106,10 +119,7 @@
     background: var(--surface2);
     transform: translateY(-2px);
   }
-  .card-icon {
-    font-size: 1.5rem;
-    margin-bottom: 14px;
-  }
+  .card-icon { font-size: 1.5rem; margin-bottom: 14px; }
   .card h2 {
     font-size: 1rem;
     font-weight: 600;
@@ -142,115 +152,46 @@
   <p>Reference documents and guides for the agent-test projects.</p>
 </header>
 
-<main>
-  <div class="columns">
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('project')">Project</button>
+  <button class="tab-btn" onclick="showTab('byg')">Behold Your God</button>
+  <button class="tab-btn" onclick="showTab('remotion')">Remotion</button>
+  <button class="tab-btn" onclick="showTab('notebooklm')">NotebookLM</button>
+  <button class="tab-btn" onclick="showTab('claude')">Claude &amp; Skills</button>
+  <button class="tab-btn" onclick="showTab('infra')">Infrastructure</button>
+</div>
 
-    <div class="column">
-      <div class="section-label">Project</div>
+<main>
+
+  <!-- PROJECT -->
+  <div class="tab-panel active" id="tab-project">
+    <div class="card-grid">
       <a class="card" href="ticket-board.html">
         <div class="card-icon">🎫</div>
-        <h2>Ticket Board</h2>
+        <h2>Ticket Board — How It Works</h2>
         <p>How the Jira-style ticket system works — statuses, ID prefixes, JSON structure, and how Claude manages tickets.</p>
       </a>
       <a class="card" href="http://localhost:3010/tasks.html">
         <div class="card-icon">📋</div>
-        <h2>Ticket Board</h2>
+        <h2>Ticket Board — Live</h2>
         <p>Live ticket board — open and in-progress work items across all agent-test projects.</p>
       </a>
     </div>
+  </div>
 
-    <div class="column">
-      <div class="section-label">Tools & Infrastructure</div>
-      <a class="card" href="playwright-mcp-findings.html">
-        <div class="card-icon">🎭</div>
-        <h2>Playwright MCP — Findings</h2>
-        <p>How browser-driven visual iteration works, token costs, when to use it, and why specification-driven auditing beats screenshot loops for CSS theming.</p>
-      </a>
-    </div>
-
-    <div class="column">
-      <div class="section-label">Remotion</div>
-      <a class="card" href="bar-chart-race.html">
-        <div class="card-icon">📊</div>
-        <h2>Bar Chart Race</h2>
-        <p>How the engine works, how the data is structured, and how to wire up a new dataset.</p>
-      </a>
-    </div>
-
-    <div class="column">
-      <div class="section-label">NotebookLM</div>
-      <a class="card" href="nlm-feedback-loop.html">
-        <div class="card-icon">🔁</div>
-        <h2>NLM Feedback Loop</h2>
-        <p>The Claude ↔ NotebookLM closed loop — how it works, and a brainstorm of use cases from iterative refinement to fully autonomous runs.</p>
-      </a>
-      <a class="card" href="notebooklm-workflow.html">
-        <div class="card-icon">📓</div>
-        <h2>NotebookLM Workflow</h2>
-        <p>The Ephemeral Notebook workflow — phases, inputs, outputs, design patterns, and the nlm tool.</p>
-      </a>
-      <a class="card" href="notebooklm-cli.html">
-        <div class="card-icon">⌨️</div>
-        <h2>NotebookLM CLI Reference</h2>
-        <p>Full command reference for the <code>nlm</code> CLI — notebooks, sources, artifacts, download, sharing, and gotchas.</p>
-      </a>
-      <a class="card" href="gdrive-integration.html">
-        <div class="card-icon">📄</div>
-        <h2>Google Drive MCP Integration</h2>
-        <p>Round-trip pipeline between NotebookLM and Google Docs — OAuth setup, reading and writing docs, export commands, and the dependency chain.</p>
-      </a>
-    </div>
-
-    <div class="column">
-      <div class="section-label">Claude Code &amp; Skills</div>
-      <a class="card" href="claude-memory-system.html">
-        <div class="card-icon">🧠</div>
-        <h2>Claude Memory System</h2>
-        <p>How Claude remembers things across sessions — the memory directory, MEMORY.md, file types, load order, and how to add your own entries.</p>
-      </a>
-      <a class="card" href="jit-instruction-delivery.html">
-        <div class="card-icon">🔁</div>
-        <h2>JIT Instruction Delivery</h2>
-        <p>How Just-In-Time gating prevents Claude from skipping workflow steps — the agent drift problem, how gates fix it, and where it falls short.</p>
-      </a>
-      <a class="card" href="claude-code-tips.html">
-        <div class="card-icon">⚡</div>
-        <h2>Claude Code Tips</h2>
-        <p>Loading tips and productivity patterns for working with Claude Code effectively.</p>
-      </a>
-      <a class="card" href="skills-installer-guide.html">
-        <div class="card-icon">🔧</div>
-        <h2>Agent Skills Installer</h2>
-        <p>How the skills installer works — installing, updating, and managing agent skills.</p>
-      </a>
-      <a class="card" href="publishing-skill-community-github.html">
-        <div class="card-icon">🚀</div>
-        <h2>Publishing a Skill</h2>
-        <p>How to publish a Claude Code skill to the community via GitHub.</p>
-      </a>
-      <a class="card" href="vercel-react-best-practices.html">
-        <div class="card-icon">🌐</div>
-        <h2>Popular Skills Notes</h2>
-        <p>Notes on popular skills and Vercel / React best practices.</p>
-      </a>
-    </div>
-
-    <div class="column">
-      <div class="section-label">Infrastructure</div>
-      <a class="card" href="../Projects/Infrastructure/documents/infrastructure-project-doc.html">
-        <div class="card-icon">🏗️</div>
-        <h2>Infrastructure Project</h2>
-        <p>Cross-cutting tools, meta-processes, and housekeeping — scope, planned reviews, and action items.</p>
-        <span class="tag">Infra</span>
-      </a>
-    </div>
-
-    <div class="column">
-      <div class="section-label">Behold Your God</div>
+  <!-- BYG -->
+  <div class="tab-panel" id="tab-byg">
+    <div class="card-grid">
       <a class="card" href="../Projects/BYG/documents/byg-project-doc.html">
         <div class="card-icon">📖</div>
         <h2>BYG Project Reference</h2>
         <p>11 illustrations, video build workflow, web app structure, naming conventions, and to-do list.</p>
+        <span class="tag">BYG</span>
+      </a>
+      <a class="card" href="../Projects/BYG/documents/byg-video-workflow.html">
+        <div class="card-icon">🎬</div>
+        <h2>BYG Video Workflow</h2>
+        <p>The three phases of making a BYG illustration video — script, localhost preview, render and deploy — with batch production plan.</p>
         <span class="tag">BYG</span>
       </a>
       <a class="card" href="../Projects/BYG/documents/edge-tts-guide.html">
@@ -260,8 +201,120 @@
         <span class="tag">Audio</span>
       </a>
     </div>
-
   </div>
+
+  <!-- REMOTION -->
+  <div class="tab-panel" id="tab-remotion">
+    <div class="card-grid">
+      <a class="card" href="bar-chart-race.html">
+        <div class="card-icon">📊</div>
+        <h2>Bar Chart Race</h2>
+        <p>How the engine works, how the data is structured, and how to wire up a new dataset.</p>
+        <span class="tag">Remotion</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- NOTEBOOKLM -->
+  <div class="tab-panel" id="tab-notebooklm">
+    <div class="card-grid">
+      <a class="card" href="notebooklm-workflow.html">
+        <div class="card-icon">📓</div>
+        <h2>NotebookLM Workflow</h2>
+        <p>The Ephemeral Notebook workflow — phases, inputs, outputs, design patterns, and the nlm tool.</p>
+        <span class="tag">NotebookLM</span>
+      </a>
+      <a class="card" href="notebooklm-cli.html">
+        <div class="card-icon">⌨️</div>
+        <h2>NotebookLM CLI Reference</h2>
+        <p>Full command reference for the nlm CLI — notebooks, sources, artifacts, download, sharing, and gotchas.</p>
+        <span class="tag">NotebookLM</span>
+      </a>
+      <a class="card" href="nlm-feedback-loop.html">
+        <div class="card-icon">🔁</div>
+        <h2>NLM Feedback Loop</h2>
+        <p>The Claude ↔ NotebookLM closed loop — how it works, and a brainstorm of use cases from iterative refinement to fully autonomous runs.</p>
+        <span class="tag">NotebookLM</span>
+      </a>
+      <a class="card" href="gdrive-integration.html">
+        <div class="card-icon">📄</div>
+        <h2>Google Drive MCP Integration</h2>
+        <p>Round-trip pipeline between NotebookLM and Google Docs — OAuth setup, reading and writing docs, export commands, and the dependency chain.</p>
+        <span class="tag">NotebookLM</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- CLAUDE & SKILLS -->
+  <div class="tab-panel" id="tab-claude">
+    <div class="card-grid">
+      <a class="card" href="claude-memory-system.html">
+        <div class="card-icon">🧠</div>
+        <h2>Claude Memory System</h2>
+        <p>How Claude remembers things across sessions — the memory directory, MEMORY.md, file types, load order, and how to add your own entries.</p>
+        <span class="tag">Claude</span>
+      </a>
+      <a class="card" href="jit-instruction-delivery.html">
+        <div class="card-icon">⏱</div>
+        <h2>JIT Instruction Delivery</h2>
+        <p>How Just-In-Time gating prevents Claude from skipping workflow steps — the agent drift problem, how gates fix it, and where it falls short.</p>
+        <span class="tag">Claude</span>
+      </a>
+      <a class="card" href="claude-code-tips.html">
+        <div class="card-icon">⚡</div>
+        <h2>Claude Code Tips</h2>
+        <p>Loading tips and productivity patterns for working with Claude Code effectively.</p>
+        <span class="tag">Claude</span>
+      </a>
+      <a class="card" href="skills-installer-guide.html">
+        <div class="card-icon">🔧</div>
+        <h2>Agent Skills Installer</h2>
+        <p>How the skills installer works — installing, updating, and managing agent skills.</p>
+        <span class="tag">Skills</span>
+      </a>
+      <a class="card" href="publishing-skill-community-github.html">
+        <div class="card-icon">🚀</div>
+        <h2>Publishing a Skill</h2>
+        <p>How to publish a Claude Code skill to the community via GitHub.</p>
+        <span class="tag">Skills</span>
+      </a>
+      <a class="card" href="vercel-react-best-practices.html">
+        <div class="card-icon">🌐</div>
+        <h2>Popular Skills Notes</h2>
+        <p>Notes on popular skills and Vercel / React best practices.</p>
+        <span class="tag">Skills</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- INFRASTRUCTURE -->
+  <div class="tab-panel" id="tab-infra">
+    <div class="card-grid">
+      <a class="card" href="../Projects/Infrastructure/documents/infrastructure-project-doc.html">
+        <div class="card-icon">🏗️</div>
+        <h2>Infrastructure Project</h2>
+        <p>Cross-cutting tools, meta-processes, and housekeeping — scope, planned reviews, and action items.</p>
+        <span class="tag">Infra</span>
+      </a>
+      <a class="card" href="playwright-mcp-findings.html">
+        <div class="card-icon">🎭</div>
+        <h2>Playwright MCP — Findings</h2>
+        <p>How browser-driven visual iteration works, token costs, when to use it, and why specification-driven auditing beats screenshot loops for CSS theming.</p>
+        <span class="tag">Tools</span>
+      </a>
+    </div>
+  </div>
+
 </main>
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('#tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+</script>
+
 </body>
 </html>

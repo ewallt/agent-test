@@ -1,30 +1,52 @@
-# Session Handoff — 2026-03-30
+# Session Handoff — 2026-03-31
 
 ## What Was Done This Session
 
-### BYG GitHub Repos Created
-- Discovered old `ewallt/byg` repo (June 2025, unrelated content) — renamed to `ewallt/byg-old`
-- Created `ewallt/byg` (prod): main branch with README, gh-pages with placeholder index.html. Pages enabled → ewallt.github.io/byg/
-- Created `ewallt/byg-dev` (staging): gh-pages with illustrations 01 + 02 + web app. Pages enabled → ewallt.github.io/byg-dev/
-- Folder structure on byg-dev gh-pages: `behold-your-god/`, `byg-nuclear-plant/`, `byg-god-not-criminal/`
+### Notebooks Built
 
-### Docs and Tickets Updated
-- `Projects/BYG/documents/byg-github-repos.md` — Current State section updated to reflect live status
-- `documents/overview.md` — GitHub Repos table updated (byg/byg-dev now live)
-- `tools/tasks.json` — byg-2 marked done; byg-3 already in-progress (confirmed correct)
-- `Projects/BYG/documents/project-definition.md` — Illustration 03 status updated to 🔄 In progress
+**AI Frontier March 2026** (`36df8974`)
+- Deep research run, 88 sources imported, 4 videos queued (retro_print style)
+- Videos: Why Sora Failed, Nemotron Coalition, Meta TRIBE v2 Brain AI, Entry-Level Job Trap
+- Notebook shared publicly
+
+**Claude Code Session Persistence — Meta Notebook** (`a7973469`)
+- 39 sources on Claude Code workflow patterns: CLAUDE.md, hooks, drift prevention, session persistence, skill chaining
+- Purpose: for Claude to query when evaluating Tom's workflow infrastructure vs. professional patterns
+- ID recorded in working-notes.md
+
+### Architecture Discussion — Pre-Harness vs. Harness
+- Tom framed current work (session logs, JIT, startup/shutdown) as "pre-harness" — compensations for statelessness
+- "Harness" proper = OpenClaw-style always-on architecture with persistent state, auto auth refresh, channel integrations
+- Anthropic's response: Claude Code Channels + Agent Skills open standard (MCP at 97M installs)
+- Researched nlm auth: 3-layer recovery mechanism in nlm CLI, cookies stable for weeks — 20-min limit may be overstated
+- NLM Enterprise API (Sep 2025): bearer tokens, headless auth — enterprise only, min 15 licenses
+- Two-instance workflow discussed: decided one instance with a proper skill is better than two for current workflow scale
+- Design principle confirmed: break sessions at natural phase boundaries (research/import vs. query/act)
+
+### BYG Video Workflow
+- Discussed the three phases: Script → Localhost → Render & Deploy
+- Identified doodle pre-specification (notes.md written before build) as the key missing step
+- Confirmed mutagen timing fix is untested — Illustration 03 render will be the first real validation
+- Proposed batch production plan: do all scripts first, then all localhost reviews, then all deploys
+- Wrote `Projects/BYG/documents/byg-video-workflow.html` — full reference doc with phase breakdown, who-does-what, batch plan
+
+### Index.html Redesign
+- Rebuilt `documents/index.html` from 6-column grid to tabbed layout
+- Six tabs: Project, Behold Your God, Remotion, NotebookLM, Claude & Skills, Infrastructure
+- Added BYG Video Workflow card to BYG tab
 
 ---
 
 ## State Right Now
 
-- `byg` and `byg-dev` repos are live on GitHub Pages
-- Illustration 03 (WhiteHatBlackHat): TSX + audio complete, timing fixed — render + deploy still pending (byg-3)
-- agent-test dev branch up to date
+- AI Frontier notebook live with 4 videos rendering (~8-10 min each)
+- Claude Code meta notebook (`a7973469`) built and ready to query
+- Illustration 03 (WhiteHatBlackHat): TSX + audio complete, timing fix in place — render + deploy still pending
+- `documents/index.html` now tabbed; all existing cards preserved
 
 ## Next Session Priority
 
-Run an ephemeral notebook. Read the task file in `tasks/` and execute the full workflow using the `notebooklm-ephemeral-notebook` skill.
+Tom has something new to work on — he'll describe it at session start.
 
 ## Other Items
 
@@ -34,4 +56,4 @@ Nothing blocked or unresolved.
 
 READ NOW: `C:\Users\tomew\.claude\projects\C--Users-tomew-Documents-agent-test\memory\startup.md`
 
-Workflow: Ephemeral Notebook
+Workflow: none

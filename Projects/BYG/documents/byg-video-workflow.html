@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYG Video Workflow</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 48px; }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+  }
+  h3 { font-size: 1rem; font-weight: 600; margin: 18px 0 8px; color: var(--text); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .card-bd { padding: 22px 24px; }
+  p { color: var(--muted); font-size: .97rem; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+  .code-block {
+    background: #060b15;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: .85rem;
+    line-height: 1.7;
+    margin: 14px 0;
+    overflow-x: auto;
+    padding: 16px 20px;
+    white-space: pre;
+  }
+
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: .92rem;
+  }
+  .callout.warn  { background: rgba(255,214,100,.07); border: 1px solid rgba(255,214,100,.25); color: var(--yellow); }
+  .callout.info  { background: rgba(139,185,255,.07); border: 1px solid rgba(139,185,255,.2);  color: var(--accent); }
+  .callout.green { background: rgba(124,255,178,.07); border: 1px solid rgba(124,255,178,.2);  color: var(--green);  }
+  .callout strong { display: block; margin-bottom: 6px; }
+
+  /* Phase header */
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .phase-num {
+    background: rgba(139,185,255,.15);
+    border: 1px solid rgba(139,185,255,.3);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: 700;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .phase-header-text h3 { margin: 0 0 4px; font-size: 1.1rem; color: var(--text); }
+  .phase-header-text p  { margin: 0; font-size: .88rem; }
+
+  /* Who does what */
+  .who-tag {
+    display: inline-block;
+    border-radius: 6px;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    padding: 2px 10px;
+    text-transform: uppercase;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .who-claude { background: rgba(139,185,255,.15); color: var(--accent); }
+  .who-tom    { background: rgba(124,255,178,.12); color: var(--green); }
+  .who-both   { background: rgba(255,214,100,.1);  color: var(--yellow); }
+
+  /* Step list */
+  .step-list { list-style: none; }
+  .step-list li {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    font-size: .93rem;
+    color: var(--muted);
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-num {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    width: 24px;
+  }
+
+  /* Batch grid */
+  .batch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .batch-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .batch-col h4 {
+    color: var(--accent);
+    font-size: .85rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .batch-col ul { list-style: none; }
+  .batch-col ul li {
+    color: var(--muted);
+    font-size: .88rem;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+  }
+  .batch-col ul li:last-child { border-bottom: none; }
+
+  /* Table */
+  .ref-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  .ref-table th {
+    background: var(--surface2);
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: .05em;
+    padding: 10px 16px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: .78rem;
+  }
+  .ref-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    vertical-align: top;
+  }
+  .ref-table td:first-child { color: var(--accent); font-family: var(--mono); }
+  .ref-table tr:last-child td { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">BYG Project</div>
+  <h1>Making a <span>BYG Video</span></h1>
+  <p>How an illustration goes from idea to deployed video — the three phases, who does what, and how to batch them for production efficiency.</p>
+</header>
+
+<div class="container">
+
+  <!-- OVERVIEW -->
+  <section>
+    <h2><span class="icon">🗺</span> Overview</h2>
+    <div class="card"><div class="card-bd">
+      <p>Each BYG illustration video goes through three distinct phases. These phases are intentionally separate — different modes of work, different tools, different who's-doing-what. Keeping them separate is what makes the process predictable.</p>
+      <p>The videos are built in <strong>Remotion</strong> — a framework that renders React components to MP4. The animation is SVG-based (hand-drawn style, dark background, spring animations). Narration is generated by <strong>Edge TTS</strong> (free, local, Microsoft voices) and saved as MP3 files that the composition loads at render time.</p>
+      <div class="callout info"><strong>The key insight</strong> Audio drives timing. Each slide's duration is calculated from the exact length of its MP3 file (measured by mutagen, accurate to the frame). The video waits for narration, not the other way around.</div>
+    </div></div>
+  </section>
+
+  <!-- PHASE 1 -->
+  <section>
+    <h2><span class="icon">✍️</span> Phase 1 — Script</h2>
+
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <div class="phase-header-text">
+        <h3>Write the script and generate audio</h3>
+        <p>All creative decisions happen here. No code, no Remotion. Pure content.</p>
+      </div>
+    </div>
+
+    <div class="card"><div class="card-bd">
+      <p>The output of Phase 1 is a <strong>notes.md</strong> file (content spec) and a set of <strong>MP3 files</strong> (one per slide + title) with a <strong>durations file</strong> that records their exact lengths in seconds.</p>
+
+      <h3>What goes into notes.md</h3>
+      <ul class="step-list">
+        <li><span class="step-num">1</span><span><span class="who-both">Both</span> <strong>Narrative arc</strong> — one sentence: what is this illustration arguing?</span></li>
+        <li><span class="step-num">2</span><span><span class="who-both">Both</span> <strong>4 slide titles + subtitles</strong> — the structure of the argument across 4 beats</span></li>
+        <li><span class="step-num">3</span><span><span class="who-both">Both</span> <strong>3 bullet points per slide</strong> — written as final narration copy, ~20–30 words each</span></li>
+        <li><span class="step-num">4</span><span><span class="who-both">Both</span> <strong>Doodle concept per slide</strong> — plain English description of what's in the scene at D0, and what appears at b[0], b[1], b[2]</span></li>
+        <li><span class="step-num">5</span><span><span class="who-both">Both</span> <strong>Title card tagline</strong> — the hook question under the illustration title</span></li>
+      </ul>
+
+      <div class="callout warn"><strong>Doodle descriptions matter</strong> "Hero on left, villain appears center-right at b[0]" is enough to build from. "Something interesting happens" is not. Specificity here saves back-and-forth in Phase 2.</div>
+
+      <h3>Audio generation</h3>
+      <ul class="step-list">
+        <li><span class="step-num">6</span><span><span class="who-claude">Claude</span> Write the Edge TTS generation script — one narration per slide + title card. Modelled on <code>generate-white-hat-black-hat-audio-edge.mjs</code>.</span></li>
+        <li><span class="step-num">7</span><span><span class="who-tom">Tom</span> Run the script: <code>node scripts/generate-{slug}-audio-edge.mjs</code>. Produces MP3s in <code>public/audio/{slug}/</code>.</span></li>
+        <li><span class="step-num">8</span><span><span class="who-claude">Claude</span> Measure exact durations with mutagen. Write the durations file: <code>src/{slug}-durations.ts</code>.</span></li>
+      </ul>
+
+      <div class="callout green"><strong>Why mutagen?</strong> Edge TTS produces VBR (variable bitrate) audio. File size is unreliable for duration estimation. mutagen reads actual audio metadata — accurate to milliseconds, which translates to frame-accurate timing.</div>
+
+      <h3>Durations file format</h3>
+      <div class="code-block">// src/white-hat-black-hat-durations.ts
+export const WHITE_HAT_BLACK_HAT_DURATIONS_S = [
+  18.432,  // slide 1
+  22.016,  // slide 2
+  19.840,  // slide 3
+  21.248,  // slide 4
+];</div>
+      <p>The title card audio is measured separately and used to set <code>TITLE_FRAMES</code> in the TSX file directly (audio duration in frames + ~19 frames buffer).</p>
+    </div></div>
+  </section>
+
+  <!-- PHASE 2 -->
+  <section>
+    <h2><span class="icon">🖥</span> Phase 2 — Localhost</h2>
+
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <div class="phase-header-text">
+        <h3>Build the composition and preview in Remotion Studio</h3>
+        <p>This is where the video is assembled. Tom evaluates; Claude iterates.</p>
+      </div>
+    </div>
+
+    <div class="card"><div class="card-bd">
+      <p>The output of Phase 2 is a TSX file that looks right in Studio — timing correct, doodles correct, text readable. You say "looks good" and it moves to Phase 3.</p>
+
+      <ul class="step-list">
+        <li><span class="step-num">1</span><span><span class="who-claude">Claude</span> Copy <code>NuclearPlant.tsx</code> as template. Adapt slide content, bullet text, and title card from notes.md.</span></li>
+        <li><span class="step-num">2</span><span><span class="who-claude">Claude</span> Write the four SVG doodle components from the doodle descriptions in notes.md. Each doodle has a D0 state (always visible) and b[0]–b[2] states that spring in with each bullet reveal.</span></li>
+        <li><span class="step-num">3</span><span><span class="who-claude">Claude</span> Register the new composition in <code>Root.tsx</code> — import durations, calculate frame counts, add <code>&lt;Composition&gt;</code> entry.</span></li>
+        <li><span class="step-num">4</span><span><span class="who-tom">Tom</span> Open Remotion Studio at <code>http://localhost:3001</code> and preview the composition. Studio should already be running; if not: <code>cd Projects/Remotion/simple-narrated-slides && npm run start</code>.</span></li>
+        <li><span class="step-num">5</span><span><span class="who-tom">Tom</span> Evaluate: timing, doodle legibility, text size, bullet pacing. Report what needs changing.</span></li>
+        <li><span class="step-num">6</span><span><span class="who-claude">Claude</span> Apply fixes — SVG coordinates, timing constants, bullet copy. Repeat from step 4 until approved.</span></li>
+      </ul>
+
+      <div class="callout info"><strong>What Claude can't do in Phase 2</strong> Watch the video and judge whether it looks right. Everything else — writing SVG, adjusting timing constants, modifying text — Claude handles. Tom's role is visual evaluation and directing changes.</div>
+
+      <h3>Key timing constants (in the TSX file)</h3>
+      <div class="card">
+        <table class="ref-table">
+          <tr><th>Constant</th><th>What it controls</th></tr>
+          <tr><td>TITLE_FRAMES</td><td>Length of the title card in frames. Set to: <code>ceil(title_audio_seconds * 30) + 19</code></td></tr>
+          <tr><td>SLIDE_BUFFER_FRAMES</td><td>Silence after each slide's audio ends. 30 frames (1s) for BYG illustrations.</td></tr>
+          <tr><td>bulletSpring delay</td><td>When each bullet SVG element springs in, relative to slide start. Proportional to audio duration.</td></tr>
+        </table>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- PHASE 3 -->
+  <section>
+    <h2><span class="icon">🚀</span> Phase 3 — Render and Deploy</h2>
+
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <div class="phase-header-text">
+        <h3>Render the MP4, deploy to GitHub Pages, update the web app</h3>
+        <p>Execution only. Claude handles everything; Tom watches and approves the final video.</p>
+      </div>
+    </div>
+
+    <div class="card"><div class="card-bd">
+
+      <ul class="step-list">
+        <li><span class="step-num">1</span><span><span class="who-claude">Claude</span> Run the render command from <code>Projects/Remotion/simple-narrated-slides/</code>:</span></li>
+      </ul>
+      <div class="code-block">npx remotion render WhiteHatBlackHat white-hat-black-hat-v1.mp4</div>
+      <p>Render takes a few minutes. CPU-bound, runs locally. Output goes to <code>out/</code>.</p>
+
+      <ul class="step-list">
+        <li><span class="step-num">2</span><span><span class="who-tom">Tom</span> Watch the rendered MP4. Confirm timing and visuals are correct.</span></li>
+        <li><span class="step-num">3</span><span><span class="who-claude">Claude</span> Create the wrapper HTML page — copy <code>byg-nuclear-plant.html</code>, update title, slug, and MP4 src. Save as <code>apps/byg-{slug}.html</code>.</span></li>
+        <li><span class="step-num">4</span><span><span class="who-claude">Claude</span> Deploy to <strong>byg-dev</strong> (staging) first using the <code>byg-deploy</code> skill — pushes MP4 + wrapper HTML to <code>gh-pages</code>.</span></li>
+        <li><span class="step-num">5</span><span><span class="who-tom">Tom</span> Check the live staging URL on ewallt.github.io/byg-dev/. Approve for production.</span></li>
+        <li><span class="step-num">6</span><span><span class="who-claude">Claude</span> Promote to <strong>byg</strong> (production) — same deploy to prod repo.</span></li>
+        <li><span class="step-num">7</span><span><span class="who-claude">Claude</span> Update <code>behold-your-god.html</code> — flip "Coming Attraction" badge to "▶ Watch", add link to wrapper page.</span></li>
+        <li><span class="step-num">8</span><span><span class="who-claude">Claude</span> Update <code>project-definition.md</code> — mark illustration complete with version number.</span></li>
+        <li><span class="step-num">9</span><span><span class="who-claude">Claude</span> Write <code>illustrations/{nn}-{slug}/notes.md</code> — record final script, doodle descriptions, and render/deploy log.</span></li>
+      </ul>
+
+      <div class="callout green"><strong>MP4 versioning</strong> Always version the MP4 filename on every deploy (e.g. <code>-v1</code>, <code>-v2</code>). GitHub Pages CDN caches aggressively — a new filename forces the cache to bust.</div>
+    </div></div>
+  </section>
+
+  <!-- FILE REFERENCE -->
+  <section>
+    <h2><span class="icon">📁</span> Key Files</h2>
+    <div class="card">
+      <table class="ref-table">
+        <tr><th>File</th><th>Purpose</th></tr>
+        <tr><td>src/{Name}.tsx</td><td>The composition — slides, doodles, timing constants, layout</td></tr>
+        <tr><td>src/{slug}-durations.ts</td><td>Measured audio durations in seconds — drives slide lengths</td></tr>
+        <tr><td>src/Root.tsx</td><td>Registers all compositions — imports durations, calculates frame counts</td></tr>
+        <tr><td>scripts/generate-{slug}-audio-edge.mjs</td><td>Edge TTS script — generates MP3s for this illustration</td></tr>
+        <tr><td>public/audio/{slug}/</td><td>MP3 files: title.mp3, slide-1.mp3 … slide-4.mp3</td></tr>
+        <tr><td>apps/byg-{slug}.html</td><td>Wrapper page — embeds the MP4 with title and description</td></tr>
+        <tr><td>illustrations/{nn}-{slug}/notes.md</td><td>Content spec — script, doodle descriptions, build log</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- BATCH PRODUCTION -->
+  <section>
+    <h2><span class="icon">⚡</span> Batch Production Plan</h2>
+    <div class="card"><div class="card-bd">
+      <p>Rather than taking each illustration through all three phases before starting the next, batch by phase. Each phase is a different mode of work — grouping them reduces context-switching and makes sessions more focused.</p>
+
+      <div class="batch-grid">
+        <div class="batch-col">
+          <h4>📝 Script Batch</h4>
+          <ul>
+            <li>Low token cost</li>
+            <li>Conversational — no tools</li>
+            <li>No auth, no servers</li>
+            <li>Do 3–5 at once</li>
+            <li>Output: notes.md per illustration</li>
+          </ul>
+        </div>
+        <div class="batch-col">
+          <h4>🖥 Localhost Batch</h4>
+          <ul>
+            <li>You at the screen</li>
+            <li>Studio running on :3001</li>
+            <li>Do 2–3 before fatigue</li>
+            <li>Output: approved TSX per illustration</li>
+          </ul>
+        </div>
+        <div class="batch-col">
+          <h4>🚀 Deploy Batch</h4>
+          <ul>
+            <li>Pure execution</li>
+            <li>Claude does most of it</li>
+            <li>Do all pending at once</li>
+            <li>Output: live videos on byg-dev / byg</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout info" style="margin-top:20px"><strong>Why this works</strong> Failures are contained. If a doodle needs rework in Phase 2, it doesn't block illustrations already deployed. If a script needs revision, no code has been written yet. Each phase has a clear completion state before the next begins.</div>
+
+      <h3>Example production run (Illustrations 04–06)</h3>
+      <div class="card" style="margin-top:12px">
+        <table class="ref-table">
+          <tr><th>Session</th><th>What happens</th><th>Output</th></tr>
+          <tr><td>Script session</td><td>Brainstorm all three illustrations — content, bullets, doodle concepts</td><td>notes.md × 3</td></tr>
+          <tr><td>Audio session</td><td>Claude writes scripts, Tom runs them, Claude measures durations</td><td>MP3s + durations.ts × 3</td></tr>
+          <tr><td>Localhost session</td><td>Claude builds TSX files, Tom previews and directs changes in Studio</td><td>Approved compositions × 3</td></tr>
+          <tr><td>Deploy session</td><td>Claude renders, deploys, updates web app and status for all three</td><td>3 live videos on byg-dev/byg</td></tr>
+        </table>
+      </div>
+    </div></div>
+  </section>
+
+</div>
+</body>
+</html>
