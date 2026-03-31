@@ -20,7 +20,7 @@
               "title": "Create byg and byg-dev GitHub repos",
               "notes": "Two-repo design: byg (prod, ewallt.github.io/byg/) and byg-dev (staging). byg starts README-only. byg-dev starts with BYG files from claude-code-fun gh-pages. See Projects/BYG/documents/byg-github-repos.md.",
               "priority": 2,
-              "status": "pending"
+              "status": "done"
             },
             {
               "id": "byg-3",
