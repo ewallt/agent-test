@@ -103,7 +103,7 @@ Three repos, three purposes:
 |------|---------|
 | `agent-test` | Full project backup — all source, skills, documents. Pushed to GitHub at every shutdown. |
 | `claude-code-fun` | Legacy public site. gh-pages branch only; origin for old BYG and other HTML deploys. |
-| `byg` / `byg-dev` | Planned BYG-specific repos. `byg` = prod (ewallt.github.io/byg/), `byg-dev` = staging. Not yet created. |
+| `byg` / `byg-dev` | BYG-specific repos. `byg` = prod (ewallt.github.io/byg/), `byg-dev` = staging (ewallt.github.io/byg-dev/). Both live. |
 
 The local `agent-test` git repo is the source of truth for all work. GitHub repos are downstream — backup or publication targets only.
 

@@ -47,6 +47,7 @@ Status is structural. byg-dev = built and reviewed. byg = prod. Location tells y
 
 ## Current State (2026-03-30)
 
-- `byg` and `byg-dev` repos: not yet created
-- `byg` prod: will start with README only; nothing goes live until deliberately promoted
-- `byg-dev`: will start with current BYG files copied from claude-code-fun gh-pages
+- `byg` — created. main: README.md only. gh-pages: placeholder index.html. Pages enabled. Live at ewallt.github.io/byg/
+- `byg-dev` — created. gh-pages: illustrations 01 + 02 + web app. Pages enabled. Live at ewallt.github.io/byg-dev/
+- Old repo renamed `ewallt/byg-old` (preserved, not deleted)
+- `byg` prod: nothing officially promoted yet — deploy when ready
