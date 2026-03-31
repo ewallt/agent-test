@@ -6,10 +6,12 @@ import { Britain1940, type Britain1940Props } from "./Britain1940";
 import { BattleOfAtlantic, type BattleOfAtlanticProps } from "./BattleOfAtlantic";
 import { NuclearPlant, type NuclearPlantProps } from "./NuclearPlant";
 import { GodNotCriminal, type GodNotCriminalProps } from "./GodNotCriminal";
+import { WhiteHatBlackHat, type WhiteHatBlackHatProps } from "./WhiteHatBlackHat";
 import { SLIDE_DURATIONS_S } from "./slide-durations";
 import { ATLANTIC_BULLET_DURATIONS_S } from "./atlantic-durations";
 import { NUCLEAR_SLIDE_DURATIONS_S } from "./nuclear-durations";
 import { GOD_NOT_CRIMINAL_DURATIONS_S } from "./god-not-criminal-durations";
+import { WHITE_HAT_BLACK_HAT_DURATIONS_S } from "./white-hat-black-hat-durations";
 import {
   SLIDE_INTRO_FRAMES as ATL_INTRO_FRAMES,
   BULLET_GAP_FRAMES  as ATL_GAP_FRAMES,
@@ -19,6 +21,13 @@ import {
 const FPS = 30;
 const TITLE_FRAMES = 120;       // 4s opening card — accommodates ~3.5s title audio
 const SLIDE_BUFFER_FRAMES = 60; // 2s of silence after each slide's audio ends
+
+// ── WhiteHatBlackHat ──────────────────────────────────────────────────────────
+const WHB_BUFFER_FRAMES = 30; // 1s buffer after each slide's audio
+const WHB_SLIDE_FRAMES = WHITE_HAT_BLACK_HAT_DURATIONS_S.map(
+  (s) => Math.ceil(s * FPS) + WHB_BUFFER_FRAMES
+);
+const WHB_TOTAL = 207 + WHB_SLIDE_FRAMES.reduce((a, b) => a + b, 0); // 207 = WHB TITLE_FRAMES
 
 // ── GodNotCriminal ────────────────────────────────────────────────────────────
 const GNC_SLIDE_FRAMES = GOD_NOT_CRIMINAL_DURATIONS_S.map(
@@ -106,6 +115,15 @@ export const Root: React.FC = () => {
         width={1920}
         height={1080}
         defaultProps={{ slideDurations: GNC_SLIDE_FRAMES }}
+      />
+      <Composition<WhiteHatBlackHatProps>
+        id="WhiteHatBlackHat"
+        component={WhiteHatBlackHat}
+        durationInFrames={WHB_TOTAL}
+        fps={FPS}
+        width={1920}
+        height={1080}
+        defaultProps={{ slideDurations: WHB_SLIDE_FRAMES }}
       />
     </>
   );

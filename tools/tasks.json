@@ -14,6 +14,20 @@
               "notes": "Define and build the end-to-end publish pipeline for BYG — covering local, dev, and main levels, all file types (TSX, HTML, MP4), and all testing involved.",
               "priority": 3,
               "status": "pending"
+            },
+            {
+              "id": "byg-2",
+              "title": "Create byg and byg-dev GitHub repos",
+              "notes": "Two-repo design: byg (prod, ewallt.github.io/byg/) and byg-dev (staging). byg starts README-only. byg-dev starts with BYG files from claude-code-fun gh-pages. See Projects/BYG/documents/byg-github-repos.md.",
+              "priority": 2,
+              "status": "pending"
+            },
+            {
+              "id": "byg-3",
+              "title": "Illustration 03 — render, deploy, and update web app",
+              "notes": "WhiteHatBlackHat: timing fixed, narrations complete. Remaining: render to MP4, write wrapper HTML, deploy to byg-dev, update behold-your-god.html.",
+              "priority": 2,
+              "status": "in-progress"
             }
           ]
         }

@@ -95,6 +95,20 @@ quality, and periodic cleanup.
 | nlm CLI | `C:\Users\tomew\.local\bin\nlm.exe` (v0.3.2) |
 | Account | ewalltom@gmail.com |
 
+## GitHub Repos
+
+Three repos, three purposes:
+
+| Repo | Purpose |
+|------|---------|
+| `agent-test` | Full project backup — all source, skills, documents. Pushed to GitHub at every shutdown. |
+| `claude-code-fun` | Legacy public site. gh-pages branch only; origin for old BYG and other HTML deploys. |
+| `byg` / `byg-dev` | Planned BYG-specific repos. `byg` = prod (ewallt.github.io/byg/), `byg-dev` = staging. Not yet created. |
+
+The local `agent-test` git repo is the source of truth for all work. GitHub repos are downstream — backup or publication targets only.
+
+Full BYG repo structure: `Projects/BYG/documents/byg-github-repos.md`
+
 ## For More Detail
 - Pending tasks: `memory/pending.md`
 - Session history: `memory/session-log.md`

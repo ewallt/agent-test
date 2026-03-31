@@ -2,39 +2,48 @@
 
 ## What Was Done This Session
 
-### Startup Skill: JIT Doc Added
-- Discovered Claude read session log at limit 200 instead of 1000 at session start — a behavioral drift failure
-- Added Step 3 to startup skill: READ NOW `JIT-experiment.md` — the JIT design doc is now loaded at every session start so the pattern is active and precise, not just abstractly understood
-- Added ✓ verification gate to Step 6 (session log read): "Confirm you used limit: 1000 before proceeding" — applies the JIT pattern directly to the failure point
-- Steps renumbered: old 3–6 → new 4–7; skill now has 7 steps
+### Illustration 03 — WhiteHatBlackHat Timing Fix
+- Root cause identified: Edge TTS uses VBR, making file-size-based duration estimation unreliable
+- Fixed by switching to `mutagen` for accurate MP3 duration measurement
+- `SLIDE_BUFFER_FRAMES` reduced from 180 to 30 (was compensating for wrong estimates)
+- `TITLE_FRAMES` corrected to 207 (actual title audio = 6.288s)
+- Root.tsx updated to match: `WHB_BUFFER_FRAMES = 30`, `WHB_TOTAL = 207 + ...`
+- Narrations rewritten from ~55 words (POC) to ~90 words (production quality)
 
-### Claude Code Downgrade
-- `--dangerously-skip-permissions` flag broken in v2.1.78+ due to hardcoded gate on `.claude`, `.git`, `.vscode`, `.idea` directories
-- Researched issue: v2.1.77 is the last confirmed-working version; downgrade is still the only reliable fix
-- Downgraded from v2.1.87 → v2.1.77 via `npm install -g @anthropic-ai/claude-code@2.1.77`
-- Takes effect in next session (new process)
+### Skill and Doc Updates
+- `byg-edge-tts` skill: updated template script reference to `generate-white-hat-black-hat-audio-edge.mjs`; Duration Estimation section rewritten to describe mutagen measurement
+- `workflow-principles.md`: added "Bias toward action" section — act without asking permission; only pause for merging to main, deploying to gh-pages, force-pushing, or posting to external services
+- `byg-deploy` skill: added READ NOW pointer to `byg-github-repos.md`
+- `byg` skill: added `byg-github-repos.md` to key file locations table
+- `shutdown` skill: added `git push origin dev main` after commit in Step 7
+
+### GitHub Repo Setup
+- Discovered agent-test local git repo had never been pushed to GitHub (origin was pointing at claude-code-fun)
+- Fixed: origin re-pointed to github.com/ewallt/agent-test; dev and main pushed
+- Designed two-repo structure for BYG: `byg` (prod, ewallt.github.io/byg/) and `byg-dev` (staging)
+- Each repo has `main` and `gh-pages` branches; byg starts README-only; byg-dev starts with BYG files from claude-code-fun gh-pages
+- Documented in `Projects/BYG/documents/byg-github-repos.md` (for Claude) and `.html` (for Tom)
+- `overview.md` updated with GitHub Repos section covering all three repos
 
 ---
 
 ## State Right Now
 
-- On `dev` branch, changes uncommitted
-- Notebook `a87328bb` exists with 5 videos rendered — not yet shared or logged in run-log
-- Two task files still queued: `cognitive-dissonance.md` and `fall-of-constantinople.md`
-- New master skill written but not yet tested against a real run
+- Illustration 03 (WhiteHatBlackHat) timing is correct; not yet rendered or deployed
+- `byg` and `byg-dev` repos designed but not yet created on GitHub
+- agent-test is now backed up to GitHub (github.com/ewallt/agent-test)
+- shutdown skill now pushes to GitHub at every session close
 
 ## Next Session Priority
 
-Continue the notebook workflow architecture discussion from this session. The session identified several process failures in the self-improving AI notebook run (auth expiry, truncated UUIDs, improvised video strategy at steps 6-7, missing master skill). Fixes were made: the `notebooklm-ephemeral-notebook` master skill was rebuilt as a proper JIT sequencer, and a skills-first directive was saved to memory and startup.md. Next session: review the new skill together, assess whether it fully addresses what went wrong, and discuss any remaining gaps. Also consider: today's run was done conversationally — a task file was never created. That may be worth addressing.
+Set up the `byg` and `byg-dev` GitHub repos. Create both repos on GitHub, initialize `byg` with a README only, and set up `byg-dev` with the current BYG files copied from claude-code-fun's gh-pages branch. Full design is documented in `Projects/BYG/documents/byg-github-repos.md` — read that first before starting.
 
 ## Other Items
 
-- None flagged
+Nothing blocked. No other items flagged.
 
 ## Session Start
 
 READ NOW: `C:\Users\tomew\.claude\projects\C--Users-tomew-Documents-agent-test\memory\startup.md`
 
-Workflow: ephemeral-notebook
-
-Context: This session ended in a process retrospective, after a self-improving AI notebook run that had several failures. We identified that the workflow was not being driven by skills — Claude was improvising from documents and memory. Key fixes made: (1) `notebooklm-ephemeral-notebook` SKILL.md rebuilt as a full JIT sequencer with Standard and Exploratory paths, (2) skills-first directive saved to memory. The discussion was left mid-stream — Tom wants to review what was done and decide if it's sufficient before running more notebooks.
+Workflow: Behold Your God

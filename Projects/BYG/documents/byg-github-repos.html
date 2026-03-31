@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BYG GitHub Repository Structure</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 48px; }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+  }
+  h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .card-bd { padding: 22px 24px; }
+  p { color: var(--muted); font-size: .97rem; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+  .code-block {
+    background: #060b15;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: .85rem;
+    line-height: 1.7;
+    margin: 14px 0;
+    overflow-x: auto;
+    padding: 16px 20px;
+    white-space: pre;
+  }
+
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: .92rem;
+  }
+  .callout.warn  { background: rgba(255,214,100,.07); border: 1px solid rgba(255,214,100,.25); color: var(--yellow); }
+  .callout.info  { background: rgba(139,185,255,.07); border: 1px solid rgba(139,185,255,.2);  color: var(--accent); }
+  .callout.green { background: rgba(124,255,178,.07); border: 1px solid rgba(124,255,178,.2);  color: var(--green);  }
+  .callout strong { display: block; margin-bottom: 6px; }
+
+  /* Flow diagram */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: center;
+    min-width: 140px;
+  }
+  .flow-node .label { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+  .flow-node .name { font-size: .95rem; font-weight: 600; color: var(--accent); font-family: var(--mono); }
+  .flow-node .sub { font-size: .78rem; color: var(--muted); margin-top: 3px; }
+  .flow-arrow {
+    color: var(--muted);
+    font-size: 1.4rem;
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+
+  /* Repo comparison grid */
+  .repo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 4px;
+  }
+  .repo-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+  }
+  .repo-card.prod { border-color: rgba(124,255,178,.3); }
+  .repo-card.dev  { border-color: rgba(139,185,255,.3); }
+  .repo-card .repo-name {
+    font-family: var(--mono);
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .repo-card.prod .repo-name { color: var(--green); }
+  .repo-card.dev  .repo-name { color: var(--accent); }
+  .repo-card .repo-url { font-size: .78rem; color: var(--muted); margin-bottom: 14px; font-family: var(--mono); }
+  .repo-card ul { list-style: none; }
+  .repo-card ul li { font-size: .88rem; color: var(--muted); padding: 5px 0; border-bottom: 1px solid var(--border); }
+  .repo-card ul li:last-child { border-bottom: none; }
+  .repo-card ul li strong { color: var(--text); }
+
+  /* Branch table */
+  .branch-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  .branch-table th {
+    text-align: left;
+    padding: 10px 16px;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    border-bottom: 1px solid var(--border);
+  }
+  .branch-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    vertical-align: top;
+  }
+  .branch-table td:first-child { font-family: var(--mono); color: var(--accent); font-weight: 600; }
+  .branch-table tr:last-child td { border-bottom: none; }
+
+  @media (max-width: 580px) {
+    .repo-grid { grid-template-columns: 1fr; }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">BYG Infrastructure</div>
+  <h1>GitHub Repository <span>Structure</span></h1>
+  <p>Two-repo design for Behold Your God — dev for active work, prod for what's live.</p>
+</header>
+
+<div class="container">
+
+  <!-- Overview -->
+  <section>
+    <h2><span class="icon">🗺</span> Overview</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>BYG uses two separate GitHub repositories. The split encodes maturity in structure: you know whether something is dev or prod by where it lives, not by trying to remember when it was deployed.</p>
+        <p>The <strong>local agent-test repo</strong> is the source of truth for all work. GitHub repos are downstream — they receive what's been built locally, they don't originate anything.</p>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-node">
+        <div class="label">Source</div>
+        <div class="name">agent-test</div>
+        <div class="sub">local git repo</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="label">Dev / Staging</div>
+        <div class="name">byg-dev</div>
+        <div class="sub">github.com/ewallt</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">
+        <div class="label">Production</div>
+        <div class="name">byg</div>
+        <div class="sub">ewallt.github.io/byg/</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The two repos -->
+  <section>
+    <h2><span class="icon">📦</span> The Two Repos</h2>
+    <div class="repo-grid">
+      <div class="repo-card dev">
+        <div class="repo-name">byg-dev</div>
+        <div class="repo-url">github.com/ewallt/byg-dev</div>
+        <ul>
+          <li><strong>Purpose:</strong> Active work, staging, review</li>
+          <li><strong>Who touches it:</strong> Claude, during deploy</li>
+          <li><strong>When deployed:</strong> Illustration complete, passes tests, Tom's visual sign-off</li>
+          <li><strong>gh-pages URL:</strong> ewallt.github.io/byg-dev/</li>
+          <li><strong>Status:</strong> To be created</li>
+        </ul>
+      </div>
+      <div class="repo-card prod">
+        <div class="repo-name">byg</div>
+        <div class="repo-url">github.com/ewallt/byg</div>
+        <ul>
+          <li><strong>Purpose:</strong> Production — what's officially live</li>
+          <li><strong>Who touches it:</strong> Tom, deliberately, when promoting</li>
+          <li><strong>When deployed:</strong> After review of byg-dev staging</li>
+          <li><strong>gh-pages URL:</strong> ewallt.github.io/byg/</li>
+          <li><strong>Status:</strong> To be created (README only initially)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout info">
+      <strong>Clean prod URL</strong>
+      The prod repo gets the short name <code>byg</code> so the public URL stays clean: <code>ewallt.github.io/byg/</code>. The dev repo takes the longer name <code>byg-dev</code> — its URL is only used internally for review.
+    </div>
+  </section>
+
+  <!-- Branch structure -->
+  <section>
+    <h2><span class="icon">🌿</span> Branch Structure</h2>
+    <p style="margin-bottom: 16px;">Each repo has the same two branches, serving different purposes.</p>
+    <div class="card">
+      <table class="branch-table">
+        <thead>
+          <tr>
+            <th>Branch</th>
+            <th>Contains</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>main</td>
+            <td>Full source — everything in main is also on gh-pages, plus the source files that power it</td>
+            <td>Complete record; not publicly served by GitHub Pages</td>
+          </tr>
+          <tr>
+            <td>gh-pages</td>
+            <td>Deployable subset — HTML wrapper pages, MP4 videos, the BYG web app</td>
+            <td>Served publicly by GitHub Pages; a curated subset of main</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warn">
+      <strong>Everything on gh-pages is also in main — not the reverse</strong>
+      gh-pages contains only what makes sense to serve publicly. Source files (TSX, scripts, audio) live in main but are not published to gh-pages.
+    </div>
+  </section>
+
+  <!-- What goes where -->
+  <section>
+    <h2><span class="icon">📁</span> What Goes Where</h2>
+    <div class="card">
+      <div class="card-bd">
+        <h3>byg-dev / gh-pages</h3>
+        <p>The rendered outputs for completed illustrations — wrapper HTML pages, MP4 video files, and the BYG web app. This is what's previewed during review before promoting to prod.</p>
+        <div class="code-block">byg-dev/gh-pages/
+  behold-your-god/index.html       ← BYG web app
+  byg-nuclear-plant/
+    index.html
+    nuclear-plant-v5.mp4
+  byg-god-not-criminal/
+    index.html
+    god-not-criminal-v1.mp4
+  byg-white-hat-black-hat/
+    index.html
+    white-hat-black-hat-v1.mp4
+  ...</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-bd">
+        <h3>byg / gh-pages (prod)</h3>
+        <p>Same structure as byg-dev, but only what's been deliberately promoted. Starts with just a README. New illustrations are added one at a time, after review on byg-dev.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-bd">
+        <h3>Local agent-test (not on these repos)</h3>
+        <p>All source files — TSX compositions, generation scripts, audio files, durations, skills, documents. This is never pushed to byg or byg-dev directly. The rendered outputs (HTML, MP4) are what get deployed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow -->
+  <section>
+    <h2><span class="icon">🔄</span> Promotion Workflow</h2>
+    <div class="card">
+      <div class="card-bd">
+        <h3>1. Build locally</h3>
+        <p>Illustration built in <code>agent-test/Projects/Remotion/simple-narrated-slides/</code>. Audio generated, durations measured, TSX composition written. Rendered to MP4 via <code>node render.js</code>.</p>
+
+        <h3 style="margin-top:18px">2. Deploy to byg-dev</h3>
+        <p>Wrapper HTML written, MP4 copied, web app updated. Committed to agent-test dev branch (local backup). Rendered files pushed to <code>byg-dev/gh-pages</code>.</p>
+
+        <h3 style="margin-top:18px">3. Review on byg-dev staging</h3>
+        <p>Tom reviews at <code>ewallt.github.io/byg-dev/</code>. Checks video playback, web app integration, wrapper page. Sign-off required before promotion.</p>
+
+        <h3 style="margin-top:18px">4. Promote to prod</h3>
+        <p>Approved files copied from <code>byg-dev/gh-pages</code> to <code>byg/gh-pages</code>. Prod URL goes live at <code>ewallt.github.io/byg/</code>.</p>
+      </div>
+    </div>
+    <div class="callout green">
+      <strong>Status is structural</strong>
+      You never need to remember what's been promoted. If it's on byg-dev, it's been built and reviewed. If it's on byg, it's prod. The location tells you the status.
+    </div>
+  </section>
+
+  <!-- Relationship to agent-test -->
+  <section>
+    <h2><span class="icon">🔗</span> Relationship to agent-test</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p><strong>agent-test</strong> is the local git repo backed up to <code>github.com/ewallt/agent-test</code>. It contains everything — all projects, all source, all skills and documents. It is the source of truth.</p>
+        <p><strong>byg-dev</strong> and <strong>byg</strong> are downstream publication targets. They receive rendered outputs only. They are not forks or mirrors of agent-test — they are separate repos with a different purpose.</p>
+        <p>The three repos serve three different concerns:</p>
+      </div>
+      <div style="display:grid; grid-template-columns: 180px 1fr; font-size:.88rem;">
+        <div style="padding:11px 20px; border-bottom:1px solid var(--border); font-family:var(--mono); color:var(--accent);">agent-test</div>
+        <div style="padding:11px 20px; border-bottom:1px solid var(--border); color:var(--muted);">Full project backup — source, skills, documents, all projects</div>
+        <div style="padding:11px 20px; border-bottom:1px solid var(--border); font-family:var(--mono); color:var(--accent);">byg-dev</div>
+        <div style="padding:11px 20px; border-bottom:1px solid var(--border); color:var(--muted);">BYG staging site — rendered outputs under review</div>
+        <div style="padding:11px 20px; font-family:var(--mono); color:var(--accent);">byg</div>
+        <div style="padding:11px 20px; color:var(--muted);">BYG production site — what's officially published</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

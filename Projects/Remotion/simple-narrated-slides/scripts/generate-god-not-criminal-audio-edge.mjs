@@ -84,15 +84,37 @@ for (const { id, text } of NARRATIONS) {
 }
 
 // ── Write god-not-criminal-durations.ts ──────────────────────────────────────
-const BITRATE_BPS = 128_000;
+// Per-file bitrate detection — handles mixed sources (ElevenLabs=128kbps, Edge TTS=80kbps)
 const CORRECTION = 0.974;
+
+function detectMp3Bitrate(filePath) {
+  const buf = Buffer.alloc(10000);
+  const fd = fs.openSync(filePath, "r");
+  const bytesRead = fs.readSync(fd, buf, 0, 10000, 0);
+  fs.closeSync(fd);
+  let i = 0;
+  if (buf.toString("ascii", 0, 3) === "ID3") {
+    const tagSize = ((buf[6] & 0x7f) << 21) | ((buf[7] & 0x7f) << 14) | ((buf[8] & 0x7f) << 7) | (buf[9] & 0x7f);
+    i = tagSize + 10;
+  }
+  while (i < bytesRead - 4) {
+    if (buf[i] === 0xff && (buf[i + 1] & 0xe0) === 0xe0) {
+      const idx = (buf[i + 2] >> 4) & 0xf;
+      const table = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0];
+      return table[idx] * 1000;
+    }
+    i++;
+  }
+  return 128_000; // fallback
+}
 
 const slideIds = NARRATIONS.filter((n) => n.id !== "title").map((n) => n.id);
 const durationsS = slideIds.map((id) => {
   const file = path.join(OUTPUT_DIR, `${id}.mp3`);
   if (!fs.existsSync(file)) return 20.0; // fallback if file missing
   const bytes = fs.statSync(file).size;
-  return parseFloat(((bytes * 8) / BITRATE_BPS * CORRECTION).toFixed(3));
+  const bitrateBps = detectMp3Bitrate(file);
+  return parseFloat(((bytes * 8) / bitrateBps * CORRECTION).toFixed(3));
 });
 
 const today = new Date().toISOString().slice(0, 10);
