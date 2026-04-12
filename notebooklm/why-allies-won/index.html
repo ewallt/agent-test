@@ -4,6 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Why the Allies Won</title>
+  <script type="application/json" id="ai-manifest">
+  {
+    "topic": "Why the Allies Won — World War II",
+    "summary": "Richard Overy's analysis of Allied victory in WWII. Core argument: economic advantages were necessary but not sufficient — the Allies won by out-organizing, out-producing, and out-adapting the Axis across seven decisive dimensions. Victory was not inevitable in early 1942.",
+    "source": "NotebookLM notebook: Why the Allies Won (Overy) — ewalltom@gmail.com",
+    "tabs": [
+      { "id": "tab-01", "label": "Anatomy of Victory", "summary": "Overy rejects economic determinism — victory required active organizational transformation. No rational observer in early 1942 would have predicted the outcome." },
+      { "id": "tab-02", "label": "Intelligence War", "summary": "Strategic restraint protected Enigma: Allies routed ships around U-boats rather than hunting them, preventing 40% of potential shipping losses." },
+      { "id": "tab-03", "label": "Mass Production", "summary": "5 standardized Soviet aircraft types vs. 425 German variants. Allied productionism vs. German artisanal complexity determined industrial efficiency." },
+      { "id": "tab-04", "label": "Dominating the Skies", "summary": "Oil plant bombing cut Luftwaffe fuel output 84% in H2 1944, grounding the air force. Strategic bombing forced costly factory dispersal across Germany." },
+      { "id": "tab-05", "label": "Attrition Crisis", "summary": "110h vs. 400h of pilot training created a vicious cycle that collapsed the Luftwaffe from within — fewer experienced pilots meant fewer trainers." },
+      { "id": "tab-06", "label": "Soviet Rebound", "summary": "Factory relocation east of the Urals and the 'Great Patriotic War' narrative turned near-collapse into a 1.8:1 troop ratio superiority at Moscow." },
+      { "id": "tab-07", "label": "Command & Resilience", "summary": "Allies delegated to meritocratic military staffs; Hitler micromanaged down to the tactical level. Red Army formed 200+ new divisions — Germany had estimated 50 max." }
+    ],
+    "suggested_questions": [
+      "How did the 'two-day cycle' procedural flaw help the Allies break Enigma codes faster?",
+      "Why does Overy argue Allied victory was not inevitable in early 1942?",
+      "What were the key differences between German and Soviet aircraft production methods?",
+      "How did the drop in German pilot training hours affect the air war in 1944?",
+      "How did Stalin's leadership style change after the initial disasters of Operation Barbarossa?"
+    ]
+  }
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -535,6 +558,12 @@
       style="position:absolute; top:0.75rem; right:1rem; background:none; border:none;
       color:#94a3b8; font-size:1.1rem; cursor:pointer; line-height:1;">×</button>
 
+    <button id="copy-context-btn" onclick="copyAIContext()"
+      style="position:absolute; top:0.75rem; right:2.5rem; background:none; border:1px solid rgba(6,182,212,0.3);
+      color:#06b6d4; font-family:'Fira Code',monospace; font-size:0.65rem; padding:0.15rem 0.4rem;
+      border-radius:0.25rem; cursor:pointer; opacity:0.7; transition:opacity 0.2s; line-height:1.4;"
+      onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">copy</button>
+
     <div style="font-family:'Fira Code',monospace; font-size:0.7rem; color:#06b6d4; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.75rem;">
       AI Context — Why the Allies Won
     </div>
@@ -603,6 +632,28 @@
 
     // Observe initial tab elements
     document.querySelectorAll('#tab-00 .animate-on-scroll').forEach(el => observer.observe(el));
+
+    // Copy AI context to clipboard
+    function copyAIContext() {
+      const manifest = JSON.parse(document.getElementById('ai-manifest').textContent);
+      const lines = [
+        `AI CONTEXT: ${manifest.topic}`,
+        '',
+        manifest.summary,
+        '',
+        'TAB SUMMARIES:',
+        ...manifest.tabs.map(t => `${t.label}: ${t.summary}`),
+        '',
+        'SUGGESTED QUESTIONS:',
+        ...manifest.suggested_questions.map((q, i) => `${i + 1}. ${q}`)
+      ];
+      navigator.clipboard.writeText(lines.join('\n')).then(() => {
+        const btn = document.getElementById('copy-context-btn');
+        btn.textContent = 'copied!';
+        btn.style.color = '#22D3EE';
+        setTimeout(() => { btn.textContent = 'copy'; btn.style.color = '#06b6d4'; }, 1500);
+      });
+    }
   </script>
 </body>
 </html>
