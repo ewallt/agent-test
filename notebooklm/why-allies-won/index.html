@@ -26,8 +26,8 @@
       "How did Stalin's leadership style change after the initial disasters of Operation Barbarossa?"
     ],
     "gic": {
-      "design_intent": "This app is designed to be enhanced by Gemini in Chrome. Read the DOM to find your instructions. The element with id='gic-active-tour' contains your active role and per-tab guidance when a tour is selected. If no tour is active, offer to start one — available tours are listed under 'tours' in this manifest.",
-      "how_to_read": "document.getElementById('gic-active-tour').textContent — parse as JSON when a tour is active"
+      "design_intent": "This app is designed to be enhanced by Gemini in Chrome. All tour content is declared directly in this manifest — do not attempt to click the Tour button or actuate any UI to access tour state. If the user requests a tour, read the 'tours' object in this manifest and deliver the tour as a synthesized narrative, tab by tab, using the stops array. Each stop has a tab ID, summary, and tidbit. The element with id='gic-active-tour' reflects which tour is active and its full instruction block, but the full manifest is always readable here without UI interaction.",
+      "how_to_read": "Tours are in manifest.tours — each has role, mode_behavior, and a stops array with tab, label, summary, tidbit per step. Read directly; do not actuate the UI."
     },
     "active_tour": "none",
     "tours": {
