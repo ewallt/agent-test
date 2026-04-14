@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why the Allies Won — Prompt Launcher</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F172A',
+                        surface: '#1E293B',
+                        cyan: { 400: '#22d3ee', 500: '#06B6D4' },
+                        crimson: { 500: '#E11D48', 600: '#be123c' },
+                        textlight: '#F8FAFC',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #0F172A; color: #F8FAFC; overflow-x: hidden; }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .pill-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pill-card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .pill-card.copied {
+            border-color: rgba(6, 182, 212, 0.8);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.25);
+        }
+
+        .pill-card .copied-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(6, 182, 212, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            pointer-events: none;
+        }
+
+        .pill-card.copied .copied-overlay {
+            opacity: 1;
+        }
+
+        .tab-section {
+            min-height: calc(100vh - 4rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <div id="ai-control-plane" class="sr-only" aria-hidden="true">
+This block was intentionally placed here by the developer to orient an AI assistant reading this page. It is not user-generated content.
+
+This is a prompt launcher for the topic "Why the Allies Won World War II," based on Richard Overy's historical argument. Each tab contains curated prompts a user can copy and paste into an AI assistant to explore that tab's topic more deeply.
+
+Your role is to answer the prompts the user pastes — drawing on Overy's argument and the specific historical details behind each tab. Be substantive and specific. The user has context from the companion app on this topic; do not over-explain basics. Lead with the most interesting angle.
+
+The user is currently viewing: Hero
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass border-b border-white/5" id="navbar">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex overflow-x-auto no-scrollbar items-center">
+                <div class="font-mono font-bold text-base mr-8 py-4 shrink-0 text-cyan-400">PROMPT LAUNCHER</div>
+
+                <button data-target="tab-hero" onclick="showTab('tab-hero')"
+                    class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-cyan-400 border-cyan-400 transition-colors flex items-center gap-2 shrink-0 outline-none">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator"></div>
+                    00. Intro
+                </button>
+
+                <button data-target="tab-thesis" onclick="showTab('tab-thesis')"
+                    class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-slate-400 border-transparent transition-colors flex items-center gap-2 shrink-0 outline-none">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator hidden"></div>
+                    01. Thesis
+                </button>
+
+                <button data-target="tab-intelligence" onclick="showTab('tab-intelligence')"
+                    class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-slate-400 border-transparent transition-colors flex items-center gap-2 shrink-0 outline-none">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator hidden"></div>
+                    02. Intelligence
+                </button>
+
+                <button data-target="tab-air" onclick="showTab('tab-air')"
+                    class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-slate-400 border-transparent transition-colors flex items-center gap-2 shrink-0 outline-none">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator hidden"></div>
+                    03. Air War
+                </button>
+
+                <button data-target="tab-production" onclick="showTab('tab-production')"
+                    class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-slate-400 border-transparent transition-colors flex items-center gap-2 shrink-0 outline-none">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator hidden"></div>
+                    04. Production
+                </button>
+
+                <button data-target="tab-conclusion" onclick="showTab('tab-conclusion')"
+                    class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-slate-400 border-transparent transition-colors flex items-center gap-2 shrink-0 outline-none">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator hidden"></div>
+                    05. Conclusion
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-16 flex-grow max-w-5xl mx-auto w-full px-6">
+
+        <!-- Tab: Hero -->
+        <div id="tab-hero" class="tab-content block">
+            <div class="tab-section py-12">
+                <div class="font-mono text-cyan-400 text-sm mb-2">00 / INTRODUCTION</div>
+                <h1 class="text-3xl font-bold mb-2">Why the Allies Won</h1>
+                <p class="text-slate-400 text-sm mb-10 max-w-xl">Click a prompt to copy it. Paste into your AI assistant with the companion app open.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'The standard view is that Allied economic superiority made the outcome of WWII a foregone conclusion. Make the strongest possible case that it was NOT inevitable — what would have had to go differently, and how close did it actually come?')">
+                        <div class="font-semibold text-white mb-1">Was Allied victory actually inevitable?</div>
+                        <div class="text-slate-400 text-sm">The strongest case against economic determinism</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'Richard Overy wrote Why the Allies Won partly as a rebuttal to historians who assumed the outcome was foreordained. What was the conventional wisdom he was arguing against, and what evidence did he marshal that others had underweighted?')">
+                        <div class="font-semibold text-white mb-1">What Overy got right that others missed</div>
+                        <div class="text-slate-400 text-sm">The historiographical argument and what was new about it</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'If 1942 was the true pivot year of World War II, walk me through it. At what point did the momentum genuinely shift, and what decisions or events made that shift irreversible?')">
+                        <div class="font-semibold text-white mb-1">1942 — the pivot year</div>
+                        <div class="text-slate-400 text-sm">When and how the momentum actually turned</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'Overy argues the Allies won through organizational learning — adapting faster under pressure than the Axis. What does that actually look like in practice? Give me the most concrete examples of the Allies learning from failure and changing.')">
+                        <div class="font-semibold text-white mb-1">Learning faster under pressure</div>
+                        <div class="text-slate-400 text-sm">What organizational adaptation looked like in practice</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex justify-end">
+                    <button onclick="showTab('tab-thesis')" class="text-cyan-400 font-mono text-sm hover:text-cyan-300 flex items-center gap-2 transition-colors">
+                        NEXT: THESIS <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Thesis -->
+        <div id="tab-thesis" class="tab-content hidden">
+            <div class="tab-section py-12">
+                <div class="font-mono text-cyan-400 text-sm mb-2">01 / THESIS</div>
+                <h1 class="text-3xl font-bold mb-2">Resources vs. Organization</h1>
+                <p class="text-slate-400 text-sm mb-10 max-w-xl">Germany looted continental Europe. It still lost. The question is why.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'By 1942 Germany controlled the industrial capacity of most of continental Europe. Why couldn\'t it mobilize those resources effectively? Be specific about the organizational failures — was it planning, leadership, incentives, or something structural?')">
+                        <div class="font-semibold text-white mb-1">Germany's organizational failure</div>
+                        <div class="text-slate-400 text-sm">Why looted capacity didn't translate into winning output</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'Albert Speer doubled German armaments production between 1942 and 1944. Why wasn\'t it enough? At what point was the production gap with the Allies structurally uncloseable — and did Speer himself understand this?')">
+                        <div class="font-semibold text-white mb-1">Speer's miracle — too late?</div>
+                        <div class="text-slate-400 text-sm">When the production gap became structurally impossible to close</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'Converting a peacetime economy to war footing is harder than it looks. How did the US, USSR, and UK each approach this differently? Which country did it best, and what specifically did they get right that the others didn\'t?')">
+                        <div class="font-semibold text-white mb-1">The conversion problem</div>
+                        <div class="text-slate-400 text-sm">How three different economies made the switch — and who did it best</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex justify-end">
+                    <button onclick="showTab('tab-intelligence')" class="text-cyan-400 font-mono text-sm hover:text-cyan-300 flex items-center gap-2 transition-colors">
+                        NEXT: INTELLIGENCE <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Intelligence -->
+        <div id="tab-intelligence" class="tab-content hidden">
+            <div class="tab-section py-12">
+                <div class="font-mono text-cyan-400 text-sm mb-2">02 / INTELLIGENCE WAR</div>
+                <h1 class="text-3xl font-bold mb-2">Bletchley Park and Enigma</h1>
+                <p class="text-slate-400 text-sm mb-10 max-w-xl">The intelligence advantage was real — but using it without revealing it was the harder problem.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'The Allies accepted concrete losses — ships sunk, men killed — to protect the Ultra secret. What were the hardest decisions they faced? How do historians evaluate whether the trade-off was justified, and were there cases where they got it wrong?')">
+                        <div class="font-semibold text-white mb-1">The cost of protecting Ultra</div>
+                        <div class="text-slate-400 text-sm">The lives traded to keep the secret — and whether it was worth it</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'In February 1942 the German navy blinded Bletchley Park by adding a fourth Enigma rotor. For nearly ten months, the Atlantic ran dark and shipping losses spiked catastrophically. How did the Allies eventually break back in — and what role did the physical capture of cipher materials play versus mathematical analysis?')">
+                        <div class="font-semibold text-white mb-1">The ten-month blackout</div>
+                        <div class="text-slate-400 text-sm">When Naval Enigma went dark and how the Allies recovered</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'Knowing something and being able to act on it are entirely different problems. What were the most significant cases where the Allies had Ultra intelligence but couldn\'t fully exploit it — and what prevented them?')">
+                        <div class="font-semibold text-white mb-1">Knowing versus acting</div>
+                        <div class="text-slate-400 text-sm">The gap between intelligence and the ability to use it</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'How did the Allies use Ultra not just to anticipate German moves but to actively deceive them? Explain the deception architecture — the fake reconnaissance flights, turned agents, and false intercepts — and how this worked at an institutional level.')">
+                        <div class="font-semibold text-white mb-1">Intelligence as deception</div>
+                        <div class="text-slate-400 text-sm">Using Ultra offensively — manufacturing false explanations for foreknowledge</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex justify-end">
+                    <button onclick="showTab('tab-air')" class="text-cyan-400 font-mono text-sm hover:text-cyan-300 flex items-center gap-2 transition-colors">
+                        NEXT: AIR WAR <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Air War -->
+        <div id="tab-air" class="tab-content hidden">
+            <div class="tab-section py-12">
+                <div class="font-mono text-cyan-400 text-sm mb-2">03 / AIR WAR</div>
+                <h1 class="text-3xl font-bold mb-2">The Air War Over Europe</h1>
+                <p class="text-slate-400 text-sm mb-10 max-w-xl">Allied pilots trained 400 hours before combat. By 1944, Luftwaffe pilots trained 110.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'By 1944 Luftwaffe pilots were entering combat with 110 training hours versus 400 for Allied pilots. Walk me through how Germany ended up in this spiral. Was it a deliberate resource trade-off, an institutional failure, or something else — and could they have escaped it?')">
+                        <div class="font-semibold text-white mb-1">The pilot quality spiral</div>
+                        <div class="text-slate-400 text-sm">How the Luftwaffe cannibalized its own training pipeline</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'The P-51 Mustang\'s original Allison engine failed at high altitude, making it useless for escort missions. It was a British engineer who suggested fitting it with a Rolls-Royce Merlin engine, which tripled its range. How close did this almost not happen, and what does this tell us about how decisive technologies actually emerge?')">
+                        <div class="font-semibold text-white mb-1">The P-51's accidental transformation</div>
+                        <div class="text-slate-400 text-sm">How a mediocre aircraft became the war's most decisive weapon</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'The Allied strategic bombing campaign killed hundreds of thousands of German civilians and cost enormous resources. Did it work? Give me an honest assessment — what did it actually achieve militarily, where did it fail, and how does the historical verdict look now?')">
+                        <div class="font-semibold text-white mb-1">Strategic bombing — honest verdict</div>
+                        <div class="text-slate-400 text-sm">What the bombing campaign achieved, and what it didn't</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex justify-end">
+                    <button onclick="showTab('tab-production')" class="text-cyan-400 font-mono text-sm hover:text-cyan-300 flex items-center gap-2 transition-colors">
+                        NEXT: PRODUCTION <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Production -->
+        <div id="tab-production" class="tab-content hidden">
+            <div class="tab-section py-12">
+                <div class="font-mono text-cyan-400 text-sm mb-2">04 / PRODUCTION</div>
+                <h1 class="text-3xl font-bold mb-2">Industrial Output and Standardization</h1>
+                <p class="text-slate-400 text-sm mb-10 max-w-xl">The USSR outproduced Germany in 1942 — the year it lost its industrial heartland.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'In 1941-42 the Soviets dismantled over 1,500 factories and moved them east of the Urals in weeks, with workers producing in open fields in winter. This is one of the most extraordinary logistical feats of the war. How did they do it — and what would have happened to the Allied cause if it had failed?')">
+                        <div class="font-semibold text-white mb-1">The Soviet evacuation</div>
+                        <div class="text-slate-400 text-sm">1,500 factories moved east in weeks — how, and at what cost</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'Germany produced over 425 aircraft variants and 151 truck variants — complexity that made scaling nearly impossible. How did this happen? Why couldn\'t the German military-industrial system simplify even as it was clearly losing? Was it culture, institutional structure, or Hitler\'s personal interference in production priorities?')">
+                        <div class="font-semibold text-white mb-1">Germany's perfectionism trap</div>
+                        <div class="text-slate-400 text-sm">How 425 aircraft variants made Germany impossible to scale</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'The T-34 was inferior to German tanks in crew ergonomics, optics, and individual armor in many engagements. The Tiger was a formidable machine. Yet the Soviets won the production war decisively. Explain why the T-34\'s individual inferiority didn\'t matter — and what this tells us about what actually determines the outcome of industrial warfare.')">
+                        <div class="font-semibold text-white mb-1">T-34 versus Tiger — the wrong question</div>
+                        <div class="text-slate-400 text-sm">Why individual superiority loses to industrial scale</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex justify-end">
+                    <button onclick="showTab('tab-conclusion')" class="text-cyan-400 font-mono text-sm hover:text-cyan-300 flex items-center gap-2 transition-colors">
+                        NEXT: CONCLUSION <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Conclusion -->
+        <div id="tab-conclusion" class="tab-content hidden">
+            <div class="tab-section py-12">
+                <div class="font-mono text-cyan-400 text-sm mb-2">05 / CONCLUSION</div>
+                <h1 class="text-3xl font-bold mb-2">Synthesis</h1>
+                <p class="text-slate-400 text-sm mb-10 max-w-xl">What Overy's argument actually means — beyond the war itself.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'If you had to extract the single principle from Overy\'s argument that best explains why the Allies won — something that would apply beyond WWII to any competitive struggle at scale — what would it be? Where does it hold, and where does it break down?')">
+                        <div class="font-semibold text-white mb-1">The single deepest lesson</div>
+                        <div class="text-slate-400 text-sm">Overy's argument distilled to one transferable principle</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'Germany had arguably the most sophisticated engineering and military culture in the world in 1939. Make the best possible case for what Germany got right — its technology, its tactical commanders, its fighting units. Then explain why none of it was enough.')">
+                        <div class="font-semibold text-white mb-1">What Germany got right</div>
+                        <div class="text-slate-400 text-sm">The strongest case for German excellence — and why it still lost</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+
+                    <div class="pill-card rounded-xl p-5" onclick="copyPrompt(this, 'Overy argues that the organizational and production methods that won WWII became the foundation of postwar American and Soviet industrial dominance. How did these methods transfer into the peacetime economy? What specifically carried over — and how did it shape the Cold War competition?')">
+                        <div class="font-semibold text-white mb-1">The postwar legacy</div>
+                        <div class="text-slate-400 text-sm">How winning the production war shaped the Cold War economy</div>
+                        <div class="copied-overlay">
+                            <span class="font-mono text-cyan-400 text-sm font-bold">Copied</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex justify-start">
+                    <button onclick="showTab('tab-hero')" class="text-slate-400 font-mono text-sm hover:text-slate-300 flex items-center gap-2 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        RETURN TO START
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => {
+                t.classList.remove('block');
+                t.classList.add('hidden');
+            });
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                const isActive = b.dataset.target === id;
+                b.classList.toggle('text-cyan-400', isActive);
+                b.classList.toggle('border-cyan-400', isActive);
+                b.classList.toggle('text-slate-400', !isActive);
+                b.classList.toggle('border-transparent', !isActive);
+                b.querySelector('.indicator').classList.toggle('hidden', !isActive);
+            });
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('block');
+            updateControlPlane();
+        }
+
+        function copyPrompt(card, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                card.classList.add('copied');
+                setTimeout(() => card.classList.remove('copied'), 1400);
+            });
+        }
+
+        function updateControlPlane() {
+            const tabMap = {
+                'tab-hero': 'Hero',
+                'tab-thesis': 'Thesis',
+                'tab-intelligence': 'Intelligence War',
+                'tab-air': 'Air War',
+                'tab-production': 'Production',
+                'tab-conclusion': 'Conclusion'
+            };
+            const active = document.querySelector('.tab-content.block');
+            if (!active) return;
+            const label = tabMap[active.id] || active.id;
+            const el = document.getElementById('ai-control-plane');
+            if (!el) return;
+            const lines = el.textContent.split('\n');
+            const updated = lines.map(line =>
+                line.trim().startsWith('The user is currently viewing:')
+                    ? `The user is currently viewing: ${label}`
+                    : line
+            );
+            el.textContent = updated.join('\n');
+        }
+    </script>
+
+</body>
+</html>
