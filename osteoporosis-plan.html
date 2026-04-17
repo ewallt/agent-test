@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osteoporosis Reversal Plan</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        slate: {
+                            850: '#151e2e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Inline CSS -->
+    <style>
+        body {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .highlight {
+            background-color: #fef08a; /* yellow-200 */
+            color: #854d0e; /* yellow-800 */
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-weight: 600;
+        }
+        
+        .dark .highlight {
+            background-color: rgba(202, 138, 4, 0.4); /* yellow-600 with opacity */
+            color: #fef08a; /* yellow-200 */
+        }
+
+        /* Subtly animated transitions for cards */
+        .card-enter {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Fixed Header Navigation -->
+    <header class="sticky top-0 z-50 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            
+            <!-- Logo / Title -->
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">O</div>
+                <div id="headerTitle" class="font-serif font-bold text-lg text-slate-800 dark:text-white hidden sm:block">OsteoPlan</div>
+            </div>
+
+            <!-- Controls (Search & Toggles) -->
+            <div class="flex items-center flex-1 justify-end space-x-2 sm:space-x-4">
+                
+                <!-- Search Input -->
+                <div class="relative w-full max-w-[12rem] sm:max-w-xs transition-all duration-300">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="w-full text-sm rounded-full bg-slate-100 dark:bg-slate-800 border border-transparent focus:border-indigo-300 dark:focus:border-indigo-600 px-4 py-2 pl-10 outline-none text-slate-800 dark:text-slate-200 transition-all placeholder-slate-400 dark:placeholder-slate-500 shadow-inner" 
+                        placeholder="Search plan..." 
+                    />
+                    <svg class="w-4 h-4 absolute left-3.5 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+
+                <!-- Language Toggle -->
+                <button 
+                    id="langToggleBtn"
+                    onclick="toggleLang()" 
+                    class="px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-slate-700 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors border border-slate-200 dark:border-slate-700"
+                    aria-label="Toggle Language">
+                    PT
+                </button>
+
+                <!-- Theme Toggle -->
+                <button 
+                    onclick="toggleTheme()" 
+                    class="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700"
+                    aria-label="Toggle Theme">
+                    <span id="themeIcon" class="block w-4 h-4 flex items-center justify-center text-sm">🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="content" class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <!-- Injected via JavaScript -->
+    </main>
+
+    <!-- Core Logic & Data -->
+    <script>
+        /**
+         * State Management
+         */
+        const state = {
+            theme: 'light',
+            lang: 'en',
+            searchQuery: ''
+        };
+
+        /**
+         * Content Knowledge Base (Localization)
+         */
+        const i18n = {
+            en: {
+                headerTitle: "OsteoPlan",
+                searchPlaceholder: "Search plan...",
+                langToggle: "PT",
+                title: "The Ultimate Plan to Reverse Osteoporosis in 6 Months",
+                subtitle: "Osteoporosis weakens bones and increases fracture risk—but with the right plan, you can significantly improve bone strength within months. While “reversal” varies by individual, many people can increase bone density and reduce bone loss with consistent action.",
+                phases: [
+                    {
+                        period: "Month 1–2",
+                        title: "Build the Foundation",
+                        icon: "1",
+                        sections: [
+                            { title: "🥛 Nutrition First", items: ["Aim for 1,000–1,200 mg calcium/day", "Include dairy, leafy greens, almonds, seeds", "Ensure vitamin D (sunlight or supplements if needed)"] },
+                            { title: "🚶 Start Moving", items: ["Daily walking (20–30 minutes)", "Light strength exercises (2–3 times/week)"] },
+                            { title: "🚫 Cut Harmful Habits", items: ["Reduce smoking and alcohol", "Limit processed foods and excess salt"] }
+                        ]
+                    },
+                    {
+                        period: "Month 3–4",
+                        title: "Strengthen & Stimulate",
+                        icon: "2",
+                        sections: [
+                            { title: "🏋️ Add Resistance Training", items: ["Weight lifting or resistance bands", "Focus on hips, spine, and legs", "3–4 sessions per week"] },
+                            { title: "🧘 Improve Balance", items: ["Yoga or balance exercises", "Helps prevent falls and fractures"] },
+                            { title: "🥗 Optimize Nutrients", items: ["Add magnesium, zinc, and vitamin K", "Eat whole, nutrient-dense foods"] }
+                        ]
+                    },
+                    {
+                        period: "Month 5–6",
+                        title: "Maximize Gains",
+                        icon: "3",
+                        sections: [
+                            { title: "🔥 Increase Intensity", items: ["Add stair climbing or light jogging (if appropriate)", "Continue progressive strength training"] },
+                            { title: "💪 Build Muscle", items: ["Muscle strength supports bone strength", "Focus on consistency"] },
+                            { title: "🩺 Monitor Progress", items: ["Consider a bone density test (DEXA scan)", "Track strength, posture, and balance improvements"] }
+                        ]
+                    }
+                ],
+                habitsTitle: "🌿 Daily Habits That Make a Difference",
+                habits: [
+                    "☀️ Get sunlight regularly",
+                    "💤 Sleep 7–9 hours nightly",
+                    "💧 Stay hydrated",
+                    "🧠 Manage stress (high stress weakens bones)"
+                ],
+                footerLink: "Source: DailyHealthyLifeGuide.com",
+                noResults: "No results found for"
+            },
+            pt: {
+                headerTitle: "OsteoPlano",
+                searchPlaceholder: "Pesquisar...",
+                langToggle: "EN",
+                title: "O Plano Definitivo para Reverter a Osteoporose em 6 Meses",
+                subtitle: "A osteoporose enfraquece os ossos e aumenta o risco de fraturas — mas com o plano certo, você pode melhorar significativamente a força óssea em meses. Embora a 'reversão' varie por indivíduo, muitos conseguem aumentar a densidade óssea com ações consistentes.",
+                phases: [
+                    {
+                        period: "Mês 1–2",
+                        title: "Construir a Base",
+                        icon: "1",
+                        sections: [
+                            { title: "🥛 Nutrição em Primeiro Lugar", items: ["Mire em 1.000–1.200 mg de cálcio/dia", "Inclua laticínios, folhas verdes, amêndoas, sementes", "Garanta vitamina D (luz solar ou suplementos)"] },
+                            { title: "🚶 Comece a se Mover", items: ["Caminhada diária (20–30 minutos)", "Exercícios leves de força (2–3 vezes/semana)"] },
+                            { title: "🚫 Corte Hábitos Nocivos", items: ["Reduza o fumo e o álcool", "Limite alimentos processados e excesso de sal"] }
+                        ]
+                    },
+                    {
+                        period: "Mês 3–4",
+                        title: "Fortalecer e Estimular",
+                        icon: "2",
+                        sections: [
+                            { title: "🏋️ Adicione Resistência", items: ["Levantamento de peso ou elásticos de resistência", "Foco nos quadris, coluna e pernas", "3–4 sessões por semana"] },
+                            { title: "🧘 Melhore o Equilíbrio", items: ["Yoga ou exercícios de equilíbrio", "Ajuda a prevenir quedas e fraturas"] },
+                            { title: "🥗 Otimize os Nutrientes", items: ["Adicione magnésio, zinco e vitamina K", "Coma alimentos integrais e densos em nutrientes"] }
+                        ]
+                    },
+                    {
+                        period: "Mês 5–6",
+                        title: "Maximizar Ganhos",
+                        icon: "3",
+                        sections: [
+                            { title: "🔥 Aumente a Intensidade", items: ["Adicione subida de escadas ou corrida leve", "Continue o treinamento de força progressivo"] },
+                            { title: "💪 Construa Músculo", items: ["A força muscular apoia a força óssea", "Foco na consistência"] },
+                            { title: "🩺 Monitore o Progresso", items: ["Considere uma densitometria óssea (DEXA)", "Acompanhe melhorias na força, postura e equilíbrio"] }
+                        ]
+                    }
+                ],
+                habitsTitle: "🌿 Hábitos Diários Que Fazem a Diferença",
+                habits: [
+                    "☀️ Tome sol regularmente",
+                    "💤 Durma de 7 a 9 horas por noite",
+                    "💧 Mantenha-se hidratado",
+                    "🧠 Gerencie o estresse (enfraquece os ossos)"
+                ],
+                footerLink: "Fonte: DailyHealthyLifeGuide.com",
+                noResults: "Nenhum resultado encontrado para"
+            }
+        };
+
+        /**
+         * Controllers
+         */
+        function toggleTheme() {
+            state.theme = state.theme === 'light' ? 'dark' : 'light';
+            applyTheme();
+        }
+
+        function applyTheme() {
+            if (state.theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').textContent = '☀️';
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('themeIcon').textContent = '🌙';
+            }
+        }
+
+        function toggleLang() {
+            state.lang = state.lang === 'en' ? 'pt' : 'en';
+            state.searchQuery = ''; // Reset search on language toggle for cleaner UX
+            document.getElementById('searchInput').value = '';
+            renderHeader();
+            renderContent();
+        }
+
+        /**
+         * Utility: String manipulation & Search highlighting
+         */
+        function highlightText(text, query) {
+            if (!query) return text;
+            const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedQuery})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        function filterData(data, query) {
+            if (!query) return data;
+            const q = query.toLowerCase();
+
+            const filteredPhases = data.phases.map(phase => {
+                const phaseMatches = phase.period.toLowerCase().includes(q) || phase.title.toLowerCase().includes(q);
+
+                const filteredSections = phase.sections.map(section => {
+                    const sectionMatches = section.title.toLowerCase().includes(q);
+                    const filteredItems = section.items.filter(item => item.toLowerCase().includes(q));
+
+                    // If section/phase matches, keep all items. Otherwise only keep matched items.
+                    if (phaseMatches || sectionMatches || filteredItems.length > 0) {
+                        return {
+                            ...section,
+                            items: sectionMatches || phaseMatches ? section.items : filteredItems
+                        };
+                    }
+                    return null;
+                }).filter(Boolean);
+
+                if (phaseMatches || filteredSections.length > 0) {
+                    return {
+                        ...phase,
+                        sections: phaseMatches && filteredSections.length === 0 ? phase.sections : filteredSections
+                    };
+                }
+                return null;
+            }).filter(Boolean);
+
+            const filteredHabits = data.habits.filter(habit => habit.toLowerCase().includes(q));
+
+            return {
+                ...data,
+                phases: filteredPhases,
+                habits: data.habitsTitle.toLowerCase().includes(q) ? data.habits : filteredHabits
+            };
+        }
+
+        /**
+         * View Renderers
+         */
+        function renderHeader() {
+            const langData = i18n[state.lang];
+            document.getElementById('headerTitle').textContent = langData.headerTitle;
+            document.getElementById('searchInput').placeholder = langData.searchPlaceholder;
+            document.getElementById('langToggleBtn').textContent = langData.langToggle;
+        }
+
+        function renderContent() {
+            const langData = i18n[state.lang];
+            const filtered = filterData(langData, state.searchQuery);
+            const contentDiv = document.getElementById('content');
+
+            // Empty State
+            if (filtered.phases.length === 0 && filtered.habits.length === 0) {
+                contentDiv.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-32 text-center card-enter">
+                        <div class="text-4xl mb-4">🔍</div>
+                        <h2 class="text-xl font-medium text-slate-800 dark:text-slate-200 mb-2">${langData.noResults}</h2>
+                        <p class="text-slate-500 dark:text-slate-400 font-mono text-sm bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded">"${state.searchQuery}"</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Hero Section
+            let html = `
+                <div class="mb-12 md:mb-16 text-center pt-4 sm:pt-8 card-enter">
+                    <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-6 leading-tight tracking-tight">
+                        ${highlightText(langData.title, state.searchQuery)}
+                    </h1>
+                    <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+                        ${highlightText(langData.subtitle, state.searchQuery)}
+                    </p>
+                </div>
+            `;
+
+            // Timeline & Plan Cards
+            if (filtered.phases.length > 0) {
+                html += `<div class="relative border-l-2 border-slate-200 dark:border-slate-800 ml-4 md:ml-8 mt-12 space-y-16">`;
+
+                filtered.phases.forEach((phase, index) => {
+                    const delay = index * 0.1;
+                    html += `
+                        <div class="relative ml-6 md:ml-12 card-enter" style="animation-delay: ${delay}s">
+                            <!-- Timeline Dot/Icon -->
+                            <span class="absolute flex items-center justify-center w-10 h-10 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-lg font-bold rounded-full -left-[2.35rem] md:-left-[3.85rem] ring-4 ring-slate-50 dark:ring-slate-900 shadow-sm border border-indigo-200 dark:border-indigo-800">
+                                ${phase.icon}
+                            </span>
+                            
+                            <!-- Phase Header -->
+                            <div class="mb-6">
+                                <h3 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-1">
+                                    ${highlightText(phase.period, state.searchQuery)}
+                                </h3>
+                                <p class="text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider text-sm sm:text-base">
+                                    ${highlightText(phase.title, state.searchQuery)}
+                                </p>
+                            </div>
+                            
+                            <!-- Sections Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                    `;
+
+                    phase.sections.forEach(section => {
+                        html += `
+                            <div class="bg-white dark:bg-slate-850 rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md hover:border-indigo-200 dark:hover:border-indigo-800/50 transition-all duration-300 group">
+                                <h4 class="font-bold text-slate-800 dark:text-slate-100 mb-4 text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                    ${highlightText(section.title, state.searchQuery)}
+                                </h4>
+                                <ul class="space-y-3">
+                        `;
+                        section.items.forEach(item => {
+                            html += `
+                                <li class="text-slate-600 dark:text-slate-300 text-sm sm:text-base flex items-start leading-snug">
+                                    <span class="text-indigo-500 dark:text-indigo-400 mr-2.5 mt-0.5 opacity-70">•</span>
+                                    <span>${highlightText(item, state.searchQuery)}</span>
+                                </li>
+                            `;
+                        });
+                        html += `</ul></div>`;
+                    });
+
+                    html += `</div></div>`;
+                });
+                html += `</div>`;
+            }
+
+            // Daily Habits Section
+            if (filtered.habits.length > 0) {
+                html += `
+                    <div class="mt-20 pt-12 border-t border-slate-200 dark:border-slate-800 card-enter" style="animation-delay: 0.3s">
+                        <h3 class="font-serif text-2xl font-bold text-slate-900 dark:text-white mb-8 text-center">
+                            ${highlightText(langData.habitsTitle, state.searchQuery)}
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                `;
+                filtered.habits.forEach(habit => {
+                    html += `
+                        <div class="bg-emerald-50 dark:bg-emerald-900/10 rounded-xl p-5 text-center shadow-sm border border-emerald-100 dark:border-emerald-800/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/20 transition-colors">
+                            <p class="text-slate-800 dark:text-slate-200 font-medium text-sm leading-relaxed">
+                                ${highlightText(habit, state.searchQuery)}
+                            </p>
+                        </div>
+                    `;
+                });
+                html += `</div></div>`;
+            }
+
+            // Footer Reference
+            html += `
+                <div class="mt-16 pt-8 pb-4 text-center text-xs text-slate-400 dark:text-slate-500 font-medium card-enter" style="animation-delay: 0.4s">
+                    <a href="https://dailyhealthylifeguide.com/Osteoporosis" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors underline decoration-slate-300 dark:decoration-slate-700 underline-offset-4">
+                        ${langData.footerLink}
+                    </a>
+                </div>
+            `;
+
+            contentDiv.innerHTML = html;
+        }
+
+        /**
+         * Initialization & Events
+         */
+        function init() {
+            // Check system preference for dark mode
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                state.theme = 'dark';
+                applyTheme();
+            }
+
+            // Search Event Listener
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                state.searchQuery = e.target.value;
+                renderContent();
+            });
+
+            // Initial Render
+            renderHeader();
+            renderContent();
+        }
+
+        // Bootstrap
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
