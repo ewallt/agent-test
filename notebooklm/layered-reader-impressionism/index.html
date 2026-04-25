@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layered Reader — Movements in Modern Art</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Defaults overridden by JS, but present for initial render */
+      --app-bg: #0b1020;
+      --card-bg: #111833;
+      --input-bg: #1a2347;
+      --brand: #8bb9ff;
+      --text-body: #e6ecff;
+      --text-card: #e6ecff;
+      --text-muted: #bcc5e3;
+      --border: #26325b;
+      --text-heading: #e6ecff;
+    }
+
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      background-color: var(--app-bg);
+      color: var(--text-body);
+      font-family: 'Merriweather', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .font-ui {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    /* Scrollbar styling for a polished look */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--app-bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <!-- GiC Control Plane -->
+  <div id="ai-control-plane" class="sr-only" aria-hidden="true"></div>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const THEMES = [
+      {
+        id: 'navy',
+        vars: { '--app-bg': '#0b1020', '--card-bg': '#111833', '--input-bg': '#1a2347', '--brand': '#8bb9ff', '--text-body': '#e6ecff', '--text-card': '#e6ecff', '--text-muted': '#bcc5e3', '--border': '#26325b', '--text-heading': '#e6ecff' }
+      },
+      {
+        id: 'archives',
+        vars: { '--app-bg': '#f5f5f4', '--card-bg': '#e7e5e4', '--input-bg': '#d6d3d1', '--brand': '#0f766e', '--text-body': '#292524', '--text-card': '#0f766e', '--text-muted': '#4a4540', '--border': '#d6d3d1', '--text-heading': '#0f766e' }
+      },
+      {
+        id: 'explorer',
+        vars: { '--app-bg': '#e8dcc8', '--card-bg': '#1a1815', '--input-bg': '#26231f', '--brand': '#d4a574', '--text-body': '#2c2416', '--text-card': '#faf8f3', '--text-muted': '#a89580', '--border': '#5a5041', '--text-heading': '#2c2416' }
+      },
+      {
+        id: 'high-command',
+        vars: { '--app-bg': '#022c22', '--card-bg': '#064e3b', '--input-bg': '#065f46', '--brand': '#fef08a', '--text-body': '#ecfdf5', '--text-card': '#ecfdf5', '--text-muted': '#81eebb', '--border': '#065f46', '--text-heading': '#ecfdf5' }
+      }
+    ];
+
+    const GIC_MODES = [
+      { id: 'visual_reading', group: 'The Work', label: 'Visual reading', desc: "explain what's actually happening in the paintings" },
+      { id: 'central_obsession', group: 'The Work', label: 'The central obsession', desc: "the one thing this artist kept chasing" },
+      { id: 'breakthrough', group: 'The Work', label: 'The breakthrough', desc: "identify the single most important painting or moment" },
+      { id: 'biographical_moment', group: 'The Story', label: 'Biographical moment', desc: "what was happening in their life that shaped their work" },
+      { id: 'what_they_fought', group: 'The Story', label: 'What they were fighting', desc: "the academy, the critics, their own limits" },
+      { id: 'peer_view', group: 'The Story', label: 'How their peers saw them', desc: "what other artists thought of them; internal politics" },
+      { id: 'who_they_influenced', group: 'The Legacy', label: 'Who they influenced', desc: "the direct line forward; who came next" },
+      { id: 'critics_wrong', group: 'The Legacy', label: 'What critics got wrong', desc: "contemporary reception vs. history's verdict" },
+      { id: 'why_it_matters', group: 'The Legacy', label: 'Why it still matters', desc: "what this artist changes about how we see painting today" }
+    ];
+
+    const CONTENT_DATA = [
+      // --- ARTISTS WITH SCENES ---
+      {
+        id: "cassatt",
+        title: "Mary Cassatt",
+        content: "Mary Cassatt arrived in Paris at 21 with ambitions the city's institutions were designed to block. Women were barred from the École des Beaux-Arts. She taught herself by copying the masters in the Louvre. When Degas saw her work at the 1877 Salon and said \"there is someone who feels the way I do,\" it changed everything. This is the story of how she got inside the room she wasn't supposed to enter.",
+        scenes: [
+          {
+            title: "Scene 1 — The Louvre, 1865",
+            prose: "A young American woman stands before a large Velázquez in the Grand Gallery of the Louvre, brush in hand, copying with concentrated precision. Around her, other copyists work in silence. She is not casual — her movements are too deliberate, her attention too fixed. The camera tracks slowly sideways along the gallery wall, moving past frame after frame until it settles on her face in profile. Dust motes drift through high clerestory windows. She does not look up.",
+            metadata: {
+              SETTING: "The Grand Gallery of the Louvre, Paris, midday",
+              SUBJECT: "Mary Cassatt, early 20s, copyist in residence",
+              "IN-SCENE MOTION": "Her brush moves across the canvas in short, considered strokes; other copyists shift in the background",
+              LIGHTING: "Cold north light from high windows; dust motes suspended in beams above",
+              "NARRATION BEAT": "Cassatt arrived in Paris at 21 to study painting. Women were barred from the École des Beaux-Arts. She taught herself by copying the masters in the Louvre."
+            }
+          },
+          {
+            title: "Scene 2 — The Rejection",
+            prose: "A group of men in formal coats confer before a submission wall in a large atelier. A canvas faces away from us — we see only the back of it, and then the back of Cassatt as she waits near the door. One man shakes his head. She turns and walks out through a long corridor. The camera holds on the corridor as her figure recedes. The exit grows brighter as she approaches it. She does not look back.",
+            metadata: {
+              SETTING: "Official French Salon submission hall, 1870s",
+              SUBJECT: "Cassatt and a selection jury",
+              "IN-SCENE MOTION": "She walks away; the door at the end of the corridor admits a shaft of daylight",
+              LIGHTING: "Interior shadow; a single distant rectangle of light at the far end",
+              "NARRATION BEAT": "The Salon accepted her work sporadically, then rejected it. She was painting against the academic tradition and the gatekeepers knew it."
+            }
+          },
+          {
+            title: "Scene 3 — What Degas Saw",
+            prose: "A man stops in front of a painting at a crowded Salon. He does not move. The crowd flows past him like water around a stone. The camera slowly pushes in on the back of his head, then shifts to a shallow focus — his face reflected faintly in the varnished surface of the canvas. He says nothing. He does not leave.",
+            metadata: {
+              SETTING: "Paris Salon, 1877",
+              SUBJECT: "Edgar Degas standing before a Cassatt painting",
+              "IN-SCENE MOTION": "Exhibition visitors move behind him; he stays motionless",
+              LIGHTING: "Bright gallery overhead light; the painting surface holds a faint reflection of his face",
+              "NARRATION BEAT": "Degas stopped in front of her work and reportedly said: \"There is someone who feels the way I do.\" He would invite her to join the Impressionists that same year."
+            }
+          },
+          {
+            title: "Scene 4 — The Invitation",
+            prose: "Two figures sit across from each other at a small café table, empty cups between them. He leans forward and says something. She is still for a moment. Then she straightens slightly. The camera is close, slightly handheld. Traffic noise in the street outside. Neither of them is smiling.",
+            metadata: {
+              SETTING: "A Montmartre café, Paris, 1877",
+              SUBJECT: "Cassatt and Degas",
+              "IN-SCENE MOTION": "He gestures; she listens; pedestrians move past the window behind them",
+              LIGHTING: "Warm interior gas light against grey afternoon daylight through the glass",
+              "NARRATION BEAT": "Degas invited her to exhibit with the Impressionists — the group that had broken from the Salon and built their own circuit. For Cassatt, it was the only invitation that mattered."
+            }
+          },
+          {
+            title: "Scene 5 — The Exhibition, 1879",
+            prose: "Visitors move through a gallery hung with paintings. Cassatt stands against the wall, watching. A woman stops before one of her canvases — a woman reading in afternoon light — and stays. Then another stops. The camera holds on Cassatt's face: not relief, not triumph. Just attention.",
+            metadata: {
+              SETTING: "4th Impressionist Exhibition, Paris, 1879",
+              SUBJECT: "Cassatt watching visitors respond to her work",
+              "IN-SCENE MOTION": "Gallery visitors move; one pauses, then another; Cassatt's expression stays level",
+              LIGHTING: "Warm afternoon light through tall windows, pooling on the wooden floor",
+              "NARRATION BEAT": "At 35, Cassatt exhibited with the Impressionists for the first time. She would show with them four more times. She never again submitted to the Salon."
+            }
+          }
+        ]
+      },
+      {
+        id: "gauguin",
+        title: "Paul Gauguin",
+        content: "Paul Gauguin abandoned his stockbroker career, his wife, his five children, and eventually France itself in search of a world more real than the one he was leaving. He found a colonized island where the culture he was looking for had already been dismantled. What he painted anyway — bold, flat, luminous, mysterious — turned out to be one of the most consequential visual inventions of the modern era.\n\nGauguin started painting as a hobby. He was a successful stockbroker — comfortable salary, growing family — and he spent his Sundays at the easel. He collected Impressionist paintings when he could afford them. He was an amateur, and then the crash of 1882 stripped that word away.",
+        scenes: [
+          {
+            title: "Scene 1 — The Choice",
+            prose: "",
+            metadata: {
+              SETTING: "Paris stock exchange floor, then a modest apartment studio, 1870s",
+              SUBJECT: "Gauguin at work — first in the trading crowd, then alone at the canvas",
+              "IN-SCENE MOTION": "Bodies moving through the trading floor; later, a single figure painting, unhurried",
+              LIGHTING: "Harsh midday light in the exchange; warm lamp and window light in the studio",
+              "NARRATION BEAT": "Gauguin as a Sunday painter — and the crash that ended the choice"
+            }
+          },
+          {
+            title: "Scene 2 — Everything Goes",
+            prose: "A bare apartment. Moving crates half-filled with household objects. Mette Gauguin stands near the door, coat on, children gathered around her. Gauguin stands apart, at the canvas stacked against the wall. The camera holds wide, the space between husband and wife explicit and unmoving. She leaves. The door closes. He turns back to the canvases. After the crash, Gauguin chose painting over everything else — over his marriage, over his children, over stability. Mette took the children to Copenhagen, to her family. He stayed in Paris and was poor almost immediately. He painted through it. The cost was real and he paid it without apparent hesitation.",
+            metadata: {
+              SETTING: "A bare apartment in Paris",
+              SUBJECT: "The dissolution of a life",
+              "IN-SCENE MOTION": "She leaves; the door closes; he turns back to the canvas",
+              LIGHTING: "Cold, empty room lighting",
+              "NARRATION BEAT": "Choosing painting over everything else"
+            }
+          },
+          {
+            title: "Scene 4 — The Auction, the Haircut, the Ship",
+            prose: "A small auction room. Gauguin's paintings are displayed on the walls — vivid, flat, nothing like what Paris currently wanted. A few dozen people sit in rows. A painting is held up. The bidding is slow. The camera holds on Gauguin's face as a sale is confirmed — not triumphant, just tallying. Later: a barber's chair. His long hair falls to the floor. He watches in the mirror without expression.\n\nGauguin sold thirty of his paintings at auction in February 1891 to fund the voyage. He raised nine thousand francs — enough. He cut his hair, said farewell to almost no one, and boarded a ship. He was forty-two years old. He told people he was going to Tahiti to paint and to die there. He was not entirely joking.",
+            metadata: {
+              SETTING: "Paris auction house, then a barber's chair, then a harbor",
+              SUBJECT: "Gauguin at the auction, at the barber, departing",
+              "IN-SCENE MOTION": "A painting raised for bidding; hair falling; the ship pulling away from dock",
+              LIGHTING: "Flat auction-house light; close warm light at the barber's; cold morning harbour light",
+              "NARRATION BEAT": "The departure — selling everything, cutting away the past, going"
+            }
+          },
+          {
+            title: "Scene 5 — What He Found",
+            prose: "A street in Papeete, 1891. Gauguin walks slowly, taking it in. French colonial buildings. A church. Men in Western suits. Women in missionary-influenced dresses. A government administrator on horseback. The camera tracks alongside him, unhurried, as his expression moves from expectation to something harder to name. He turns down a side street and the colonial architecture gives way to something quieter. He keeps walking.\n\nThe Tahiti Gauguin arrived in was a French colony of fifteen years. The old religious and social structures had been largely displaced by the Church and the administration. The language was still Tahitian, the landscape was still extraordinary — but the world he had traveled ten thousand miles to find had already been changed beyond recovery. He stood in it and understood that he had arrived too late.",
+            metadata: {
+              SETTING: "Papeete, Tahiti, 1891 — colonial streets, then the edges of town",
+              SUBJECT: "Gauguin walking through the town, taking in what it actually is",
+              "IN-SCENE MOTION": "Gauguin walking, colonial life passing around him — officials, missionaries, ordinary people",
+              LIGHTING: "Tropical midday light, harsh and bright, shadows sharp",
+              "NARRATION BEAT": "The paradise was already gone — colonized, Christianized, changed"
+            }
+          },
+          {
+            title: "Scene 7 — The Last Island",
+            prose: "A hillside on Hiva Oa, Marquesas Islands. A wooden house — \"The House of Pleasure,\" Gauguin called it — stands at the edge of a clearing, the forest pressing in. Gauguin, now in his fifties, thin and ill, sits on the steps. He is writing letters — to the colonial governor, to the bishop, protesting the treatment of the island's indigenous people. The camera holds on his hands, the pen moving. Around him, the island is still and very green.\n\nBy 1901 Gauguin had left Tahiti for the more remote Marquesas, still looking for something further from Europe. He was by now syphilitic, partially blind in one eye, in chronic pain. He spent his last years fighting the colonial administration and the Church on behalf of the people they governed — corresponding, protesting, making enemies in high offices. He died in May 1903. The local bishop wrote to a colleague: \"A dreadful man. An enemy of God.\" There were nine paintings in his house.",
+            metadata: {
+              SETTING: "Gauguin's house on Hiva Oa, Marquesas Islands, 1902–03",
+              SUBJECT: "Gauguin writing letters, seated on the steps of his house",
+              "IN-SCENE MOTION": "His hand writing; the forest still behind him; light shifting through the trees",
+              LIGHTING: "Dappled tropical light, green and filtered, both beautiful and isolating",
+              "NARRATION BEAT": "The last years — sick, combative, still working, dying far from everything he left behind"
+            }
+          },
+          {
+            title: "Scene 8 — What Matisse Saw",
+            prose: "A Paris gallery, 1906. A retrospective of Gauguin's work fills the walls — room after room of flat color, bold outline, invented warmth. A young man with round glasses moves slowly through the rooms, stopping in front of one painting for a long time. He is Henri Matisse. The camera tracks slowly across the paintings on the wall — the yellows, the deep reds, the figures that exist outside of any realistic light — while Matisse remains in the corner of the frame, very still.\n\nMatisse later said the retrospective changed his understanding of what color could do. The Fauves — wild color, anti-naturalistic, emotional rather than descriptive — were taking their first steps that same year. Within a decade, Expressionism would push further in the same direction. Picasso absorbed Gauguin's flat planes and symbolic boldness into Cubism. The entire modern tradition of using color as a primary expressive tool runs through a man who died poor and alone on an island in the Pacific, having painted a paradise that didn't exist.",
+            metadata: {
+              SETTING: "Paris gallery, Gauguin retrospective, 1906",
+              SUBJECT: "Matisse moving through the exhibition; Gauguin's paintings on the walls",
+              "IN-SCENE MOTION": "Matisse walking slowly, stopping; the paintings filling the frame as the camera moves across them",
+              LIGHTING: "Gallery light, warm and even, the paintings vivid against white walls",
+              "NARRATION BEAT": "The influence — Matisse, the Fauves, Expressionism — everything that followed"
+            }
+          }
+        ]
+      },
+      {
+        id: "kandinsky",
+        title: "Wassily Kandinsky",
+        content: "In 1908, Wassily Kandinsky returned to his Munich studio at dusk and saw a painting glowing on the wall that stopped him cold — extraordinary, luminous, unrecognizable. When he brought a lamp close, he realized it was one of his own canvases, turned on its side. That moment of not recognizing his own work became the seed of abstract art. If a painting worked with no identifiable subject, why paint subjects at all?",
+        scenes: [
+          {
+            title: "Scene 1 — The Studio at Dusk",
+            prose: "A man opens the door to a studio and stops. Across the room, a canvas catches the last light from the window — warm, layered, glowing. He doesn't move. The light is fading fast. The camera is behind him, looking over his shoulder at the lit canvas. He takes a step forward.",
+            metadata: {
+              SETTING: "Kandinsky's Munich studio, Schwabing district, 1908, late afternoon",
+              SUBJECT: "Kandinsky seeing an unfamiliar painting in low light",
+              "IN-SCENE MOTION": "He steps forward; the light from the window shifts and dims",
+              LIGHTING: "Fading amber window light falling on the canvas; the rest of the room in shadow",
+              "NARRATION BEAT": "Kandinsky returned to his studio at dusk and saw a painting he didn't recognize. It was, he later wrote, of extraordinary beauty."
+            }
+          },
+          {
+            title: "Scene 2 — The Recognition",
+            prose: "He lifts a lamp from the workbench and brings it close to the canvas. The light reveals colors, shapes — and then the image resolves. It is one of his own paintings. Propped sideways against the wall. The camera pushes in slowly on the surface of the canvas as the lamp illuminates it. He sets the lamp down. He looks at the painting for a long moment.",
+            metadata: {
+              SETTING: "Same studio, moments later",
+              SUBJECT: "Kandinsky identifying the painting as his own",
+              "IN-SCENE MOTION": "He lifts and carries the lamp; the canvas surface comes into focus as he approaches",
+              LIGHTING: "Single lamp light moving across the canvas; everything else falls dark",
+              "NARRATION BEAT": "The painting was his own — turned on its side. What had made it beautiful was precisely that he hadn't been able to see what it depicted."
+            }
+          },
+          {
+            title: "Scene 3 — The Question",
+            prose: "The studio, the next morning. Kandinsky stands before a canvas in full daylight, brush in hand. He doesn't paint. He looks at the canvas — blank — and then at his earlier work on the surrounding walls. He sets the brush down. The camera tracks slowly along the wall of his existing paintings, lingering on each, then returns to the blank canvas.",
+            metadata: {
+              SETTING: "Kandinsky's studio, the following morning",
+              SUBJECT: "Kandinsky rethinking what painting is for",
+              "IN-SCENE MOTION": "He sets down his brush; the camera tracks the wall of existing work",
+              LIGHTING: "Clear morning studio light; even, no dramatic shadows",
+              "NARRATION BEAT": "If subject matter was the thing that made a painting fail to move him — and its absence was what made it work — the question became: what was painting actually for?"
+            }
+          },
+          {
+            title: "Scene 6 — What He Left",
+            prose: "A gallery, present day. Visitors move through a room of Kandinsky's work. A child stops before one of the large abstracts and stares up at it. The camera is low, behind the child, looking up at the painting. The child doesn't move for a long time. An adult takes her hand and gently pulls her away. She looks back over her shoulder as they walk.",
+            metadata: {
+              SETTING: "A museum gallery, present day",
+              SUBJECT: "A visitor encountering abstract work for the first time",
+              "IN-SCENE MOTION": "The child stops; an adult leads her away; she looks back",
+              LIGHTING: "Museum diffuse light; the painting's colors warm the space around it",
+              "NARRATION BEAT": "Kandinsky gave a name to what abstract art was supposed to produce: inner necessity — the feeling a painting causes before the mind can explain why. He discovered it by accident, in a studio at dusk, looking at a canvas the wrong way up."
+            }
+          }
+        ]
+      },
+      {
+        id: "klimt",
+        title: "Gustav Klimt",
+        content: "Gustav Klimt was trained as a decorative muralist — the kind of craftsman who painted grand ceilings for the Viennese establishment. He ended up leading the revolt against that establishment. The Secession, the scandal of his University paintings, the gold-leaf canvases: all of it was one sustained argument — that decoration is not lesser than fine art, that ornament is not the enemy of meaning. Vienna disagreed loudly, and Klimt never changed his position.",
+        scenes: [
+          {
+            title: "Scene 1 — The Commission",
+            prose: "A vast interior — a university hall under construction, scaffolding filling the space. High on a platform, workers are applying preliminary sketches to a ceiling section. Below, officials in formal dress inspect a maquette. One points at something. Another shakes his head. The camera cranes up slowly from the officials to the ceiling, then holds on the blank space waiting to be filled.",
+            metadata: {
+              SETTING: "Vienna University, 1894 — early stages of the ceiling commission",
+              SUBJECT: "The official commission that would become a scandal",
+              "IN-SCENE MOTION": "Officials examine the maquette below; workers move on scaffolding above; the camera cranes up",
+              LIGHTING: "Construction interior light — cold, unfinished; shafts from high windows",
+              "NARRATION BEAT": "In 1894, Klimt received the prestigious commission to paint allegorical murals for the University of Vienna's ceiling — Philosophy, Medicine, Jurisprudence. The Faculty expected classical allegory. What they got was something else entirely."
+            }
+          },
+          {
+            title: "Scene 2 — The Scandal",
+            prose: "A formal presentation hall. A large canvas is unveiled before an audience of professors and officials. The image shows writhing human bodies — naked, intertwined, suspended — no clear allegory, no triumphant figure, no reassuring resolution. The audience is silent for a moment, then the murmur begins. The camera holds on the unveiled painting, not on the audience.",
+            metadata: {
+              SETTING: "Vienna, 1900 — public unveiling of Philosophy",
+              SUBJECT: "The Faculty's reaction to what Klimt actually painted",
+              "IN-SCENE MOTION": "The canvas is revealed; the audience murmur builds; no one approaches the painting",
+              LIGHTING: "Formal presentation lighting; the painting is lit from above",
+              "NARRATION BEAT": "Eighty-seven professors signed a protest. The works were called pornographic, nihilistic, perverse. Klimt had been asked to represent knowledge triumphing over darkness. He had painted the human body adrift in the infinite — unrescued by reason."
+            }
+          },
+          {
+            title: "Scene 3 — The Secession",
+            prose: "A new building under construction in Vienna — clean geometric lines, a golden dome in the shape of laurel leaves, the inscription above the door: \"To every age its art, to art its freedom.\" Workers lay the final stones. The camera holds on the inscription, then slowly pulls back to show the whole facade.",
+            metadata: {
+              SETTING: "Vienna Secession building, Naschmarkt, 1897–1898",
+              SUBJECT: "The founding of the breakaway artists' group",
+              "IN-SCENE MOTION": "Final construction details being completed; the inscription is set into place",
+              LIGHTING: "Clear day, the gilded dome catching direct sunlight",
+              "NARRATION BEAT": "In 1897, Klimt co-founded the Vienna Secession — a breakaway from the official artists' association. The new building's motto said plainly what they were after: art free from academic authority."
+            }
+          },
+          {
+            title: "Scene 4 — The Gold",
+            prose: "A studio, afternoon. Klimt applies gold leaf to a canvas with a fine brush, working in small sections. The gold catches the light as he lays it down — shifting, warm, Byzantine. The camera is close on his hands and the canvas surface. Behind him, on the wall, Byzantine mosaics pinned for reference. The room is quiet except for the faint sound of the gold being pressed flat.",
+            metadata: {
+              SETTING: "Klimt's Vienna studio, early 1900s",
+              SUBJECT: "Klimt working with gold leaf — his most distinctive technical innovation",
+              "IN-SCENE MOTION": "His hands apply the gold leaf in small careful sections; it catches the light",
+              LIGHTING: "Studio light at an angle that makes the gold surface shift and glow",
+              "NARRATION BEAT": "Klimt had seen Byzantine mosaics in Ravenna in 1903 and understood immediately: flatness and gold were not limitations — they were arguments. Against illusionism. Against the idea that painting must pretend to be a window."
+            }
+          },
+          {
+            title: "Scene 6 — The Refusal",
+            prose: "An official building, Vienna, early 1900s. A clerk extends an envelope across a desk — an official letter with a red seal. On the other side of the desk, Klimt looks at it briefly, then shakes his head and leaves without taking it. The camera stays on the envelope on the desk as his footsteps recede.",
+            metadata: {
+              SETTING: "An official Vienna building, early 1900s",
+              SUBJECT: "Klimt declining official recognition",
+              "IN-SCENE MOTION": "He looks at the envelope, shakes his head, turns and walks out; the envelope stays on the desk",
+              LIGHTING: "Interior administrative light; grey and institutional",
+              "NARRATION BEAT": "Klimt refused the Emperor's Prize. He declined a professorship at the Academy of Fine Arts. He gave no interviews and almost no public statements. His position was entirely in the work."
+            }
+          }
+        ]
+      },
+      {
+        id: "munch",
+        title: "Edvard Munch",
+        content: "Edvard Munch described the moment precisely in his journal: walking at sunset along a fjord road, a wave of anxiety so overwhelming he felt nature itself was screaming around him. He painted that feeling four times. The image he made — a figure on a bridge, mouth open, sky writhing — became the most recognized depiction of anxiety in the history of art, not because it described the world, but because it described a nervous system.",
+        scenes: [
+          {
+            title: "Scene 2 — The Journal Entry",
+            prose: "A man sits at a desk by a window, late at night, writing. His hand moves quickly — the writing of someone trying to get something down before it fades. The lamp is close. Outside the window, darkness. The camera slowly pushes in on his hand as he writes, then holds.",
+            metadata: {
+              SETTING: "Munch's room, Oslo, 1892, late evening",
+              SUBJECT: "Munch writing the journal entry describing the experience",
+              "IN-SCENE MOTION": "His hand moves across the page; the lamp flickers once; he continues writing",
+              LIGHTING: "Single close lamp; the page is the brightest object in the frame",
+              "NARRATION BEAT": "That night he wrote it out: the walk, the railing, the screaming sky. He knew the experience was the material. He would spend the next decade trying to paint it."
+            }
+          },
+          {
+            title: "Scene 3 — First Version",
+            prose: "A canvas in progress — the bridge in the foreground, a single elongated figure gripping the rail, the landscape behind it in swirling curves of red and blue. A hand applies paint in long, agitated strokes, following the contour of the sky rather than resisting it. The camera tracks the brush as it moves. The landscape is not still — it is moving with the figure's distress.",
+            metadata: {
+              SETTING: "Munch's studio, Oslo, 1893",
+              SUBJECT: "The first version of The Scream being painted",
+              "IN-SCENE MOTION": "The brush moves in long swirling strokes; the painted landscape curves and pulses",
+              LIGHTING: "Studio interior light; the canvas itself glows with the red of the painted sky",
+              "NARRATION BEAT": "In the first version, the landscape doesn't just surround the figure — it participates in its distress. The sky curves. The water curves. Everything bends toward the scream."
+            }
+          },
+          {
+            title: "Scene 5 — The Frieze of Life",
+            prose: "A wall hung with paintings — figures in landscapes, couples at the water's edge, a sickbed, a figure at a window, a scream. Each one dealing with anxiety, love, or death. The camera tracks slowly along the wall. The images are different but their emotional temperature is the same. Munch moves through the room, stopping briefly at each one.",
+            metadata: {
+              SETTING: "An exhibition of Munch's work, late 1890s",
+              SUBJECT: "The Frieze of Life — Munch's larger project of which The Scream was one part",
+              "IN-SCENE MOTION": "He walks through the gallery; stops briefly at each canvas; moves on",
+              LIGHTING: "Warm gallery evening light; each canvas catches it differently",
+              "NARRATION BEAT": "The Scream was not a standalone image — it was part of Munch's lifelong project he called the Frieze of Life: a meditation on anxiety, love, and death as the three coordinates of human experience."
+            }
+          },
+          {
+            title: "Scene 6 — What It Became",
+            prose: "A museum gift shop, present day. The figure from The Scream is on mugs, tote bags, refrigerator magnets, phone cases. Tourists move past a reproduction. A child picks up a mug, looks at it, and puts it back. The camera holds on the reproduction on the wall behind the merchandise — the actual image, slightly incongruous, above the noise.",
+            metadata: {
+              SETTING: "A museum gift shop, present day",
+              SUBJECT: "The image at maximum cultural saturation",
+              "IN-SCENE MOTION": "Tourists move; a child handles merchandise; the image on the wall stays still",
+              LIGHTING: "Commercial retail light; the reproduction on the wall catches slightly different light",
+              "NARRATION BEAT": "The Scream became the most reproduced work of art in history. The irony is clean: an image that began as a private anxiety attack became a universal shorthand for every kind of distress — trivial, serious, and everything between."
+            }
+          }
+        ]
+      },
+      {
+        id: "rousseau",
+        title: "Henri Rousseau",
+        content: "Henri Rousseau spent his working life as a customs officer at the gates of Paris, began painting in his forties with no training, and was laughed at by critics for decades. Then Picasso threw a banquet in his honor, and the avant-garde realized that what looked like naivety was something rarer: a way of seeing unencumbered by convention. His dreamlike jungles, painted from botanical gardens and magazine illustrations, became one of the founding visions of modern art.",
+        scenes: [
+          {
+            title: "Scene 1 — The Gate",
+            prose: "A stone archway at the edge of Paris, early morning. A uniformed official stands at his post as a cart loaded with barrels rolls slowly through the barrière. He checks the manifest, stamps a paper, waves the cart through. The cart passes, and the man returns to stillness — the gate behind him, the city ahead, the same view he has had for twenty years. He is Henri Rousseau. He has been painting on weekends. He has entered his work in the open-submission exhibition at the Salon des Indépendants, where anyone may show. The reviews use words like clumsy, childlike, wrong. He clips them out and keeps them.",
+            metadata: {
+              SETTING: "A Paris city gate (barrière), 1880s, early morning",
+              SUBJECT: "A customs official in uniform standing at his post as a cart passes through",
+              "IN-SCENE MOTION": "The cart rolling slowly through the arch; the official's hand stamping a document; the cart clearing the gate and receding",
+              LIGHTING: "Flat grey morning light, even and unhurried, the stone of the arch faintly damp",
+              "NARRATION BEAT": "The starting point — a self-taught painter at the margins, cheerfully absorbing mockery"
+            }
+          },
+          {
+            title: "Scene 2 — The Jardin des Plantes",
+            prose: "On his days off, Rousseau visited the Jardin des Plantes — the Paris botanical garden, with its greenhouses and its natural history museum. He stood in the greenhouse among the palms and the broad-leafed tropical plants, making small sketches. He studied the stuffed lions and exotic birds in the museum cases, their glass eyes fixed and permanent. He bought illustrated natural history magazines. He had never been to a jungle, would never go. But he was building one — not from observation but from accumulation, fragment by fragment, in a small apartment in Plaisance.\n\nA large Victorian greenhouse, interior, afternoon. Humid and still. Broad tropical leaves crowd the glass walls; a narrow path winds between them. A stout figure in a jacket moves slowly along the path, stopping to look closely at a leaf, then moving on. The camera tracks alongside him at a slight distance, keeping pace, the foliage pressing in on both sides.",
+            metadata: {
+              SETTING: "The greenhouse at the Jardin des Plantes, Paris, 1880s–1890s, afternoon",
+              SUBJECT: "Rousseau moving slowly among the tropical plants, studying them closely",
+              "IN-SCENE MOTION": "His unhurried progress along the path; leaves shifting slightly as he passes; his hand briefly touching a broad frond",
+              LIGHTING: "Diffuse afternoon light through the greenhouse glass, warm and slightly green",
+              "NARRATION BEAT": "The source material — a jungle assembled from fragments, never from experience"
+            }
+          },
+          {
+            title: "Scene 3 — The Sleeping Gypsy",
+            prose: "In 1897, Rousseau completed a painting and wrote a letter to the mayor of Laval, his hometown, offering it for the municipal collection. The painting showed a woman asleep on the sand of a desert under a full moon. She holds a mandolin. Beside her stands a lion, sniffing her hair. It does not attack. The light has no source. The shadows fall in the wrong direction. The scale of the lion relative to the woman is impossible. The mayor declined the offer. The painting now hangs in the Museum of Modern Art in New York. What makes it work — the reason it is still looked at — is the same thing that made the mayor say no: the stillness is absolute, the scene suspended in a time that has no before or after.\n\nA moonlit desert. A woman lies asleep on the ground, her striped robe spread beneath her, a mandolin resting in her arms. A lion stands over her, massive, its face turned toward hers, perfectly still. The camera holds in a slow push-in toward the woman's face — the lion's flank filling the right edge of the frame, the moon enormous above the horizon. Neither figure moves. The desert is silent.",
+            metadata: {
+              SETTING: "An open desert under a full moon, night",
+              SUBJECT: "A sleeping woman with a mandolin; a lion standing directly over her",
+              "IN-SCENE MOTION": "Almost none — the lion's slight breath; a faint shimmer of moonlight on the sand",
+              LIGHTING: "Sourceless moonlight, even and cold, no shadows falling correctly",
+              "NARRATION BEAT": "The Sleeping Gypsy — the painting the mayor rejected; the impossible stillness that makes it unforgettable"
+            }
+          },
+          {
+            title: "Scene 4 — The Banquet",
+            prose: "In November 1908, Picasso cleared the floor of his studio at Le Bateau-Lavoir in Montmartre and held a banquet. The guest of honor was Henri Rousseau, now sixty-four, carrying his violin. Around the table: Georges Braque, Gertrude Stein, Guillaume Apollinaire, Marie Laurencin. The evening was partly celebration, partly joke — the most sophisticated artists in Paris honoring the man their critics called naive. But something happened over the course of the night. They looked at Rousseau and they looked at his work and they found themselves unable to dismiss it. The flatness, the dreamlike displacement, the complete indifference to academic convention: these were not incompetencies. They were permissions the trained eye could not grant itself.\n\nA crowded studio at night, lit by lanterns and candles, tables pushed together, wine bottles open. At the center, a small stout man with a violin, smiling broadly, surrounded by younger faces watching him with an expression that has shifted from irony toward something less comfortable. The camera cranes up slowly from the table to show the whole room — the paintings on the walls, the figures around the table, the old man at the center of it.",
+            metadata: {
+              SETTING: "Picasso's studio at Le Bateau-Lavoir, Montmartre, Paris, November 1908, evening",
+              SUBJECT: "Rousseau at the center of a table of avant-garde artists; Picasso watching",
+              "IN-SCENE MOTION": "Conversation around the table; Rousseau raising his glass; the shifting of expressions as the evening deepens",
+              LIGHTING: "Warm lantern and candlelight, uneven and amber, casting the faces in soft shadow",
+              "NARRATION BEAT": "The banquet — the moment the avant-garde recognized what Rousseau had been doing"
+            }
+          },
+          {
+            title: "Scene 5 — What the Trained Eye Could Not Do",
+            prose: "A painter trained in the academic tradition learns to depict recession: things closer are larger, things further are smaller, the background recedes toward a vanishing point. Rousseau had not been trained. In his jungles, every leaf is at the same distance — the foreground foliage and the background foliage equally sharp, equally present, equally saturated. The effect is suffocation, total enclosure: you cannot find a way through the painting because there is no depth to find. His trained contemporaries could not have painted this. They knew too much. They would have corrected it before the paint dried.\n\nA dense jungle interior, no visible sky. The leaves press in from every direction — large and small, near and far, all in equal focus, all equally green. No light source is visible; the illumination seems to come from the leaves themselves. A figure stands in the middle distance, barely distinguishable from the foliage around her. The camera holds absolutely still. There is nowhere for the eye to go.",
+            metadata: {
+              SETTING: "A dense tropical jungle interior, no sky visible",
+              SUBJECT: "The jungle itself as subject; a human figure barely visible in the middle distance",
+              "IN-SCENE MOTION": "A slow movement of leaves — wind, or breath; the figure slightly shifting",
+              LIGHTING: "Sourceless ambient green light, as if the foliage itself is luminous",
+              "NARRATION BEAT": "The structural advantage — the untrained flatness that creates total enclosure"
+            }
+          },
+          {
+            title: "Scene 6 — The Dream",
+            prose: "In 1910, the last year of his life, Rousseau completed the largest and most ambitious painting he had ever made. In the center of a dense jungle, a red velvet sofa. On the sofa, a woman — Yadwigha, the subject of the painting, a woman from his past — reclines naked among the fronds, looking out at the viewer. In the background, a dark figure plays a flute. Animals watch from the foliage. The sofa is inexplicable. No explanation is offered. Rousseau wrote a poem about it: Yadwigha, in a beautiful dream / Having fallen gently to sleep / Heard the sounds of a musette / Played by a well-meaning enchanter. He showed it at the Salon des Indépendants and died three months later. The Surrealists would spend the next two decades trying to paint what he had already painted.\n\nA jungle at night, every leaf visible in sourceless light. On an ornate red velvet sofa, a woman reclines — calm, watching the viewer, entirely at ease in a setting that makes no sense. In the deep background, the faint silhouette of a figure with a flute. The camera slowly pushes in toward the woman's face, the jungle pressing in on all sides, the sofa impossibly domestic in the wild green dark.",
+            metadata: {
+              SETTING: "A dense jungle interior at night; a red velvet sofa incongruously at the center",
+              SUBJECT: "A reclining woman on the sofa, watching the viewer; a flute player in the distance",
+              "IN-SCENE MOTION": "The faintest movement of leaves; the woman's steady gaze",
+              LIGHTING: "Sourceless night light, the foliage luminous, the sofa's red vivid against the green",
+              "NARRATION BEAT": "The Dream — a Surrealist painting fifteen years before Surrealism had a name"
+            }
+          },
+          {
+            title: "Scene 7 — The Recognition",
+            prose: "Rousseau died in September 1910, in a public hospital, leaving debts he could not pay. His obituaries were brief. Within a decade, the Surrealists had claimed him as their ancestor. De Chirico studied his dreamlike displacement. Max Ernst absorbed his jungle logic. The movement that would define the twentieth century's imagination traced its lineage directly to the customs officer who had no training, submitted cheerfully to mockery, painted jungles from botanical gardens, and died owing rent. He had painted the unconscious before Freud's vocabulary was widely known, before the movement that needed that vocabulary had a name.\n\nA museum gallery, afternoon, natural light from high windows. A single large painting fills the far wall — dense green jungle, a reclining figure, a red sofa. A visitor stops in front of it, tilts her head slightly, and stands very still. The camera pulls back slowly through the gallery entrance, widening until the painting is a distant rectangle of green and the visitor a small figure before it, alone in the room.",
+            metadata: {
+              SETTING: "A museum gallery, contemporary, high natural light",
+              SUBJECT: "A visitor standing before a large Rousseau jungle painting",
+              "IN-SCENE MOTION": "The visitor's stillness; other visitors moving faintly in the background; the slow pull-back",
+              LIGHTING: "Clean museum light from above, even and white, falling equally on everything",
+              "NARRATION BEAT": "The legacy — the untrained painter as ancestor of the movement that defined modern art"
+            }
+          }
+        ]
+      },
+
+      // --- ARTISTS WITHOUT SCENES ---
+      {
+        id: "cezanne",
+        title: "Paul Cézanne",
+        content: "Paul Cézanne spent most of his career in failure. He submitted to the Paris Salon repeatedly and was rejected almost every time. The Impressionists he exhibited with considered his work unfinished — too crude, the surfaces unresolved, the drawing uncertain. He withdrew to Aix-en-Provence in the south of France and worked in near-total isolation. When he died in 1906, the obituary in the local paper got his name wrong. Within a decade, Picasso and Braque had used his discoveries to invent Cubism. Matisse bought one of his paintings and kept it for the rest of his life, calling it a \"sustaining influence.\" By 1920 he was widely recognized as the father of modern art. He had been dead for fourteen years.\n\n**The Problem He Was Solving**\nThe Impressionists solved one problem — how to capture light and atmosphere in the moment — and created another. Their paintings shimmered, but they dissolved. Everything became surface, sensation, air. What Cézanne wanted was to \"make of Impressionism something solid and durable, like the art of the museums.\" He wanted the sensation and the structure. His answer was to stop thinking of a painting as a window onto a scene and start thinking of it as an object in its own right — a flat surface organized into something coherent. Perspective, as it had been practiced since the Renaissance, was a lie: it assumed a single fixed viewpoint, a frozen moment. But looking at anything, you move your eyes. You shift. The mountain doesn't look the same from every position or in every light. Cézanne wanted to put all of that into a single image.\n\n**The Method**\nCézanne painted slowly. Agonizingly slowly. Sitters for his portraits reported sitting for over a hundred sessions. His dealer Ambroise Vollard sat for 115 sittings — at the end of which Cézanne declared he was satisfied with the shirt front. He abandoned canvases, left them unfinished, started over. He worked outdoors in the Provençal heat and in his studio, and he painted the same motifs again and again. His technique involved what critics later called \"passage\" — a deliberate blurring of the edges between one form and another, so that a tree might bleed into the sky, a rock into a shadow. Contour lines, the clear outlines that academic painters used to define objects, were replaced by small brushstrokes of modulated color. The eye assembles the form rather than being handed it. He also used multiple viewpoints in a single canvas: a bowl of apples might be seen from slightly above while the table beneath it is seen straight on, and the wall behind both is seen from a different angle still. The result is unstable, slightly wrong — and more honest, he believed, to actual experience.\n\n**The Late Recognition**\nIn 1895, the dealer Ambroise Vollard mounted the first major retrospective of Cézanne's work. The show was a revelation. Young painters came and stared. Pissarro, the Impressionist elder, wept. Monet bought three paintings. The next generation came to him in pilgrimage. They stood in front of his canvases and understood something that could not quite be articulated — that he had found a way through a door that everyone else was still searching for. He received them cautiously, suspiciously, in his studio in Aix. He did not trust praise; he had been without it for too long.\n\n**What He Left Behind**\nThe flat, fractured surfaces of Cubism. The deliberate distortions of Matisse. The idea that a painting is not a record of a scene but a construction — an object whose relationship to reality is a problem to be solved freshly each time. The entire tradition of twentieth-century painting runs through what Cézanne found in Aix, working alone, rejected, convinced he was failing. His apples — the bowls of fruit he painted hundreds of times, adjusting coins under the tablecloth to tilt them at the right angle — became the most analyzed still-life objects in the history of art. They look like apples. They also look like the world coming apart and being put back together in a different order.",
+        scenes: []
+      },
+      {
+        id: "degas",
+        title: "Edgar Degas",
+        content: "Degas's subject was motion caught in the act: the ballerina mid-rehearsal, the jockey on a turning horse, the laundress bent over her iron, the café singer mid-phrase. He was not interested in the posed figure. He wanted the figure doing something — off-balance, caught from an unexpected angle, unaware of being watched. The dancer was his obsession for nearly forty years. He produced more than 700 works on the subject — paintings, pastels, drawings, bronze sculptures. But his dancers were not the idealized figures of classical ballet imagery. They were working women: young, often poor, stretching sore muscles, adjusting straps, waiting in the wings. He painted them from the orchestra pit, from the wings, from above. He painted them with the overhead lighting that made shadows fall upward, distorting faces into something almost unsettling. The glamour was intentional and deceptive at the same time.\n\n**The New Tools: Pastel and Photography**\nTwo technologies shaped Degas's mature work. The first was pastel. He used it not as a secondary medium but as his primary one — building up layers of color with a cross-hatching technique that gave his surfaces a vibrating, textured quality no oil painting could replicate. His late pastels, made when his eyesight was failing, are among the most radical works of the nineteenth century — color pushed to near-abstraction, the figure barely held together by light.\n\n**Paris as Subject**\nDegas's Paris was not the sunlit countryside of Monet or the riverside pleasures of Renoir. It was the city at work and at play — the café-concert, the racetrack, the opera, the laundry, the brothel. His series of women bathing, produced in the 1880s and 1890s, scandalized critics not because they were erotic but because they weren't. Women crouching in tin tubs, drying their backs, combing their hair — ordinary bodies performing private acts, observed without sentiment or titillation. Degas said he wanted to show the human animal attending to itself, \"as if you were looking through a keyhole.\"\n\n**The Difficult Man**\nDegas was famously difficult. He quarreled with nearly everyone, ended friendships abruptly, and became in his later years increasingly bitter. During the Dreyfus Affair — the crisis that split France over the false conviction of a Jewish army officer — Degas declared himself a fierce anti-Dreyfusard, ending lifelong friendships with Jewish artists and patrons. His politics were reactionary, his personality prickly, his solitude increasingly complete. None of this diminishes what he made. The works survive their maker, as they always do.\n\n**What He Left Behind**\nDegas never married, rarely sold his work, and died in 1917 leaving a studio crammed with nearly everything he had ever made — kept back from the world, hoarded, refined. The estate sale took three weeks. What he left was a body of work that changed how artists thought about composition, angle, and the relationship between observation and construction. The cropped frame, the oblique view, the figure in action rather than in pose — these became the grammar of modern art. Degas arrived at them before anyone else understood why they mattered.",
+        scenes: []
+      },
+      {
+        id: "hopper",
+        title: "Edward Hopper",
+        content: "Edward Hopper spent eleven years making commercial illustrations to pay his rent while the paintings he wanted to make sold almost nothing. He studied in Paris and returned without becoming a French painter. He drove across America looking at diners, gas stations, motels, and the backs of buildings and made serious paintings of them — the kind of subjects no one in the fine arts tradition had thought worth painting. He worked until he was in his eighties. He died in 1967 in his New York studio.\n\n**Scene 1 — The Illustrator**\nNew York, 1910. A commercial art studio, midday. Hopper is twenty-eight, working at a drafting table, drawing the kinds of anonymous men in business suits and women in domestic interiors that trade magazines require. He has studied painting in Paris. He knows the difference between what he is doing and what he wants to do. The other illustrators work around him. He finishes a drawing, sets it aside, picks up the next job. A wedge of afternoon light comes through a high window and catches the corner of his desk. He stops for a moment and looks at it. The camera pushes slowly in toward that patch of light — the only thing in the room with any real interest.\n\n**Scene 2 — Paris**\nLeft Bank, Paris, 1906. A café terrace, late afternoon. Hopper is twenty-four and has come to study painting. He sits at a corner table with a coffee and a sketchbook, watching the street. The particular quality of Parisian light — old stone, long shadows, the way the city holds the afternoon — is settling into him. He will make three trips here. He will not become a French painter. He will take something from Paris — an understanding of how light can be the actual subject, not merely the condition — and bring it back to a country that mostly hasn't tried to paint itself seriously yet. The camera tracks slowly along the café terrace, past other patrons, past Hopper at his table, and continues down the street until the buildings close in and the frame darkens.\n\n**Scene 3 — The Etchings**\nNew York, 1915. A lower Manhattan printing studio, evening. Hopper is working at an etching press — pulling prints, inspecting them under the light. The images he is making are American: elevated train stations, rooftops, stairwells, the backs of buildings nobody looks at. Night scenes. One lit window, the street below it empty. He has not sold a painting in years. The etchings cost almost nothing to make. He holds a fresh print up to the lamp — a city corner at night, a single lit window, the street dark and quiet. The camera tilts down slowly from the lit window in the print to the press below it, where Hopper's hands are cleaning ink from the plate.\n\n**Scene 4 — Nighthawks**\nNew York, 1942. A corner diner at two in the morning. A large curved window of plate glass. Inside, under fluorescent light: a couple at the counter, a man alone in a dark hat, a short-order cook behind the bar. The street outside is empty. No one on the sidewalk. A single streetlamp. Wartime. The light inside is too bright for this hour. The figures are in their positions and no one is speaking. Hopper built this painting from imagination — no single diner matches it exactly — but the specific loneliness it shows was not imagined. The camera tracks slowly along the exterior of the diner, just outside the glass, the figures inside moving through the frame one by one, until the corner comes, the glass ends, and the street is only dark.\n\n**Scene 5 — Cape Cod Morning**\nSouth Truro, Massachusetts, summer, 1950. A white clapboard house in sharp morning light. In an upper-story window, a woman stands looking out — at trees, the road, the light on grass. She is not waiting for anyone. She is looking. Hopper drove here with his wife Josephine and spent several days before deciding which window to paint. The eastern light on Cape Cod in summer is specific — hard, clean, coming in at a low angle that makes white clapboard glow. He always began with the light. The camera pushes slowly in toward the window until only the frame, the figure, and the light are visible — the woman and the particular quality of morning that Hopper came back here to paint every summer for thirty years.\n\n**Key Takeaway**\nEdward Hopper spent over a decade in commercial illustration while making paintings almost no one bought, returned from Paris without becoming a French painter, and slowly built a body of work that made ordinary American environments — diners, gas stations, hotel rooms, streets at night — into subjects for serious painting. His pictures are not about loneliness as a theme. They are about the specific quality of light in American rooms, and the loneliness follows from accuracy.",
+        scenes: []
+      },
+      {
+        id: "lautrec",
+        title: "Henri de Toulouse-Lautrec",
+        content: "Henri de Toulouse-Lautrec came from one of the oldest noble families in France and spent his adult life in the cabarets, dance halls, and brothels of Montmartre. He was there every night, at the same tables, watching the same performers, making work that turned commercial poster art into fine art and made the people he observed into icons. He died at thirty-six.\n\n**Scene 1 — The Falls**\nHe was born in 1864 in Albi, in the south of France, into the kind of family that had been noble for so long the title felt like furniture. His parents were first cousins. When he was thirteen he broke his left thighbone in a fall from a chair. When he was fourteen he fell into a ditch and broke the right one. Both legs stopped growing. By the time he was an adult he stood under five feet tall, his torso full-sized, his legs stunted beneath him. He moved through the world with a cane and a certain fixed irony. He never complained about it in print. He made jokes.\n\n**Scene 3 — The Posters**\nIn 1891, the Moulin Rouge commissioned him to design a poster for the new season. He produced something that had not existed before: a large-format lithograph using flat planes of color, silhouetted figures, and empty space arranged with the precision of a Japanese woodblock print. The poster went up on walls across Paris overnight. People tore them down to keep. Lautrec went on to produce thirty more posters and three hundred lithographs that essentially invented modern graphic design — the techniques that every advertising artist in the twentieth century would build on.\n\n**Scene 4 — The Performers**\nHe painted Jane Avril, who danced with an interior quality, as if she were somewhere else entirely. He painted La Goulue, who kicked and lifted her skirts and worked the crowd with the efficiency of a professional. He painted Yvette Guilbert, the cabaret singer, who sent him a furious letter when she saw how he'd rendered her — the long black gloves, the ugly neck, the entirely undignified pose — and whom he painted again and again anyway. He saw something real in all of them: working people with an expertise that the people watching them would never understand.\n\n**Scene 5 — The Life**\nHe drank heavily, and then more heavily, and then in a way that became a medical problem. His family had him briefly committed to a sanatorium in 1899. He pulled himself together, produced a series of drawings from memory to prove his mind was intact, and was released. He went back to Montmartre. He continued to drink. In 1901 he had a stroke at his mother's estate in the south of France, where she had brought him after a second collapse. He was thirty-six. His mother was with him when he died.\n\n**Key Takeaway**\nToulouse-Lautrec was born into the French nobility, broke both legs as a teenager in falls that stunted his growth, and spent his adult life in the cabarets of Montmartre making work that invented modern poster art and documented a world that polite society pretended did not exist. He produced roughly a thousand works before dying at thirty-six.",
+        scenes: []
+      },
+      {
+        id: "matisse",
+        title: "Henri Matisse",
+        content: "Henri Matisse discovered painting by accident, reshaped it by design, and when his body finally gave out he invented an entirely new medium rather than stop. He worked for sixty years. He was still cutting paper the week before he died.\n\n**Scene 1 — The Accident**\nMatisse was twenty years old, studying law in northern France, and recovering from appendicitis when his mother brought him a paint box to pass the time. He later said he felt free — free in a way he had never felt before. He abandoned law, moved to Paris, and enrolled in art school. His father, who had expected him to take over the family grain business, never forgave him. None of that mattered. He had found the one thing.\n\n**Scene 2 — The Inheritance**\nAt the École des Beaux-Arts, Matisse studied under Gustave Moreau, who told his students to look at the work in the Louvre until they understood why it was made. Matisse took this literally. He also bought a small Cézanne — Three Bathers — for more money than he could easily afford, and kept it for thirty-seven years. In it he said he found something about the architecture of painting: how a canvas could be organized, how color and structure could carry each other. Cézanne was his foundation. Almost everything else was built on top of it.\n\n**Scene 3 — The Fauves**\nIn the summer of 1905, Matisse and André Derain painted in Collioure on the Mediterranean coast and came back with canvases that used color in a way no one had seen before — not as description, not as light, but as pure emotional force. At the Salon d'Automne that year, their work and several others like it were hung together. A critic walked through, looked at a conventional bronze sculpture in the center of the room, and wrote that it was like Donatello in a cage of wild beasts — fauves. The name stuck. The movement lasted barely three years, but it opened a door that couldn't be closed.\n\n**Scene 4 — The South**\nIn 1917, Matisse moved to Nice. He was forty-seven, the war had been grinding for three years, and he wanted light. He found it — the Mediterranean clarity, the patterned interiors, the flat planes of color that the southern sun made possible. For the next two decades he painted rooms: women in rooms, fabrics in rooms, windows opening onto gardens. His critics called the work decorative. He said decoration was not an insult. The purpose of art was to give pleasure and rest, the way a good armchair did after a day of hard work.\n\n**Scene 5 — The Cutouts**\nIn his late sixties, surgery left Matisse largely bedridden. He could no longer stand at a canvas. He began cutting shapes from paper that his assistants had pre-painted in vivid gouache, then arranging the shapes — flowers, figures, leaves, abstract forms — into compositions pinned to his studio walls. He called the technique painting with scissors. The results were not the work of a man confined. They were some of the most joyful, formally inventive work of his career. Jazz, the book he made from the cutouts in 1947, contained images that influenced graphic designers for the next fifty years. The Chapelle du Rosaire in Vence, which he designed entirely — architecture, windows, vestments, ceramics — opened in 1951. He was eighty-one.\n\n**Scene 6 — What He Left**\nMatisse died in Nice in 1954. He had outlived most of his contemporaries, the Fauvist movement he founded, two world wars, and the critical consensus that had periodically dismissed his work as too pleasant. Picasso, who was his rival, his friend, and his most attentive competitor for forty years, said when Matisse died that he was the only painter who could hold color and form in the same thought.",
+        scenes: []
+      },
+      {
+        id: "monet",
+        title: "Claude Monet",
+        content: "Claude Monet (1840–1926) was the central figure of French Impressionism and one of the most consequential painters in the history of Western art. More than any other artist of his era, Monet pursued a single obsession across seven decades: the faithful capture of light as it moves, shifts, and transforms the world at every hour and in every season.\n\n**The Series**\nBeginning in the late 1880s, Monet began working in extended series — multiple canvases of a single subject painted under varying light conditions. He would work on several canvases simultaneously, rotating between them as the light changed. The series are among the most sustained meditations on perception in the history of art.\n\n**Struggles**\nMonet's career was marked by long periods of financial desperation. Through the 1870s he was frequently unable to pay rent, feed his children, or buy paint. His first wife, Camille, died in 1879 after years of poverty and illness; Monet later said, to his horror, that when he looked at her on her deathbed, his painter's eye had automatically begun analyzing the colors in her face.\n\n**The Water Lilies and Legacy**\nMonet's gift to the French state — a suite of large Water Lily panels installed in two oval rooms in the Orangerie in Paris — was arranged before his death and inaugurated in 1927, the year after he died. He conceived the rooms as a total environment, a refuge of color and contemplation. They remain one of the most visited sites in Paris.\n\nMonet died on December 5, 1926, at Giverny, at the age of eighty-six. He had worked almost to the end. His influence is immeasurable. He was the first painter to make perception itself — the act of seeing, in time, in changing light — the explicit subject of serious art.",
+        scenes: []
+      },
+      {
+        id: "morisot",
+        title: "Berthe Morisot",
+        content: "When the first Impressionist exhibition opened in April 1874 — the show that gave the movement its name — one of the participating artists was a thirty-two-year-old woman named Berthe Morisot. She exhibited in seven of the eight Impressionist exhibitions. She was a central figure in the circle, not a peripheral one — a peer of Monet, Renoir, and Degas, respected by all of them. She has spent most of the century since being described as \"Manet's sister-in-law.\"\n\n**What She Painted**\nMorisot's subjects were the spaces women occupied in nineteenth-century bourgeois life: the garden, the nursery, the parlor, the balcony overlooking the street below. Her technique was aggressive. She worked with rapid, loose strokes that left large areas of canvas barely covered, figures suggested rather than fully rendered. Critics who disliked her work called it unfinished. What they were seeing was a deliberate formal choice: she was less interested in completing the illusion than in capturing the quality of a moment.\n\n**The Recovery**\nFor most of the twentieth century, Morisot was a footnote. Her work was collected but not studied; exhibited but not examined. The feminist art history movement of the 1970s began to change this, situating her not as an anomaly but as evidence of a larger pattern: that women artists had always been present, had always been significant, and had been systematically written out of the story. She was there at the beginning. She was there for almost all of it.",
+        scenes: []
+      },
+      {
+        id: "picasso",
+        title: "Pablo Picasso",
+        content: "Pablo Picasso was a Spanish painter working in Paris who arrived already technically accomplished, encountered the African collection at a Paris museum in his early twenties, and produced a painting that made it impossible to continue European art as it had been practiced for five hundred years. He did not intend this. He was looking for something the tradition had no language for and found it by dismantling the tradition.",
+        scenes: []
+      },
+      {
+        id: "pissarro",
+        title: "Camille Pissarro",
+        content: "Camille Pissarro was the only painter to exhibit in all eight Impressionist exhibitions. He was older than most of the group, born in the Caribbean, Jewish, perpetually short of money, and somehow the person that Cézanne, Gauguin, and Seurat all turned to when they were finding their way.\n\n**The Anchor of the Movement**\nThe eight Impressionist exhibitions ran from 1874 to 1886. Monet skipped some. Renoir skipped some. Degas argued, Cézanne dropped out, Morisot participated in seven. Pissarro showed in all eight. He was the connective tissue — the one who kept relationships functioning when the others were feuding, who argued for inclusion when others wanted to exclude, who turned up every time.\n\n**The Teacher**\nCézanne arrived in Paris arrogant, difficult, and technically unformed. Pissarro took him seriously when almost no one else did, brought him out to Pontoise to paint side by side, and spent years working with him on fundamentals. Cézanne later said Pissarro was like a father to him. Gauguin came through too.\n\n**What He Left**\nPissarro died in Paris in 1903. Cézanne, who became the father of modern art, passed through his hands. Gauguin, who reinvented painting in the tropics, began as his student. Seurat, who turned color into a science, showed his first major work in an exhibition Pissarro helped hold together. He remains the least famous of the group he helped hold together.",
+        scenes: []
+      },
+      {
+        id: "seurat",
+        title: "Georges Seurat",
+        content: "Georges Seurat spent two years on a single painting, applied with thousands of tiny dots, based on color theory he had studied like an engineer. When he showed A Sunday on La Grande Jatte in 1886, it divided the art world immediately. He died five years later at thirty-one, with an unfinished canvas on his easel and a family no one knew he had.\n\n**What He Was Trying to Solve**\nSeurat admired the Impressionists and saw exactly what was wrong with them. They had discovered that light and color were the real subjects of painting, but their method — intuitive, loose, painted outdoors in the moment — produced results that varied painting to painting. He wanted the sensation of Impressionism on a systematic foundation.\n\n**The Science**\nHe found it in the color theorists. Eugène Chevreul had shown that complementary colors placed next to each other intensify each other. Ogden Rood's work on optical mixing showed that small dots of color, viewed from a distance, blend in the eye rather than on the canvas — producing a luminosity that mixed paint could never achieve.\n\n**The Secret**\nSeurat was intensely private. He lived with his mother, showed little of himself to anyone, and kept his personal life almost entirely hidden. When he died in 1891, his family discovered he had a mistress and a young son. Neither had been mentioned to anyone.",
+        scenes: []
+      },
+      {
+        id: "vangogh",
+        title: "Vincent van Gogh",
+        content: "Vincent van Gogh did not begin painting seriously until he was 27. He died at 37. In the decade between, he produced roughly 900 paintings and more than 1,100 drawings and sketches. He sold one painting in his lifetime.\n\n**The Letters**\nVan Gogh wrote constantly. More than 800 letters survive, most of them to his brother Theo. The letters are not the correspondence of a tortured man crying for help. They are the working notes of a serious thinker — dense with observations about technique, about color theory, about what he was trying to do and why it wasn't working yet.\n\n**Arles**\nIn 1888 he moved south to Arles, seeking the light and color of Provence. In the fifteen months he spent in Arles and the nearby Saint-Paul-de-Mausole asylum, he produced approximately 300 paintings. That is roughly one every day and a half.\n\n**The Final Seventy Days**\nIn May 1890 he moved to Auvers-sur-Oise. In the seventy days between his arrival and his death, Van Gogh painted seventy-six canvases. One painting per day. He died on July 29th, 1890, with Theo beside him. He was 37.\n\n**What He Was After**\nVan Gogh's letters describe a painter who understood exactly what he was trying to do. He wanted to use color \"to express the terrible passions of humanity\" — not to describe a scene but to create an experience. He believed color could carry emotion directly, without the mediation of story or symbol.",
+        scenes: []
+      }
+    ];
+
+    const App = () => {
+      const [activeTab, setActiveTab] = useState(CONTENT_DATA[0].id);
+      const [activeMode, setActiveMode] = useState(null);
+      const [menuOpen, setMenuOpen] = useState(false);
+      const [activeTheme, setActiveTheme] = useState('navy');
+      const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+      useEffect(() => {
+        const theme = THEMES.find(t => t.id === activeTheme) || THEMES[0];
+        Object.entries(theme.vars).forEach(([key, value]) => {
+          document.documentElement.style.setProperty(key, value);
+        });
+      }, [activeTheme]);
+
+      useEffect(() => {
+        const controlPlane = document.getElementById('ai-control-plane');
+        if (controlPlane) {
+          if (activeMode) {
+            const modeData = GIC_MODES.find(m => m.id === activeMode);
+            controlPlane.innerText = `Current Active Lens: ${modeData ? modeData.label : 'None'}. Please respond about the current painter using this lens constraint.`;
+          } else {
+            controlPlane.innerText = '';
+          }
+        }
+      }, [activeMode, activeTab]);
+
+      const cycleTheme = () => {
+        const currentIndex = THEMES.findIndex(t => t.id === activeTheme);
+        const nextIndex = (currentIndex + 1) % THEMES.length;
+        setActiveTheme(THEMES[nextIndex].id);
+      };
+
+      const handleModeSelect = (id) => {
+        setActiveMode(prev => prev === id ? null : id);
+        setMenuOpen(false);
+      };
+
+      const currentPainter = CONTENT_DATA.find(p => p.id === activeTab);
+
+      return (
+        <div style={{ backgroundColor: 'var(--app-bg)', color: 'var(--text-body)' }} className="min-h-screen flex flex-col font-ui relative">
+
+          {/* Header */}
+          <header style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-card)', borderBottom: '1px solid var(--border)' }} className="sticky top-0 z-30 px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center">
+              <button
+                onClick={() => setMobileNavOpen(!mobileNavOpen)}
+                className="md:hidden mr-4"
+                style={{ color: 'var(--text-muted)' }}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+              </button>
+              <h1 className="font-bold tracking-tight text-lg">Layered Reader <span style={{ color: 'var(--text-muted)' }}>— Impressionism</span></h1>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <span className="hidden sm:inline text-sm font-medium" style={{ color: 'var(--text-muted)' }}>Movements in Modern Art</span>
+              <div className="flex items-center space-x-2 border pl-3 pr-2 py-1 rounded-full" style={{ borderColor: 'var(--border)' }}>
+                <span className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--brand)' }}>{activeTheme}</span>
+                <button onClick={cycleTheme} className="p-1 rounded-full hover:opacity-80 transition-opacity" style={{ color: 'var(--text-card)' }} aria-label="Cycle theme">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <div className="flex flex-1 relative">
+
+            {/* Sidebar */}
+            <aside
+              style={{ backgroundColor: 'var(--card-bg)', color: 'var(--text-card)', borderRight: '1px solid var(--border)' }}
+              className={`fixed md:sticky top-0 md:top-16 inset-y-0 left-0 z-20 w-64 transform ${mobileNavOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto`}
+              style={{ height: 'calc(100vh - 4rem)', backgroundColor: 'var(--card-bg)', color: 'var(--text-card)', borderRight: '1px solid var(--border)' }}
+            >
+              <div className="p-4 pt-20 md:pt-4 pb-40">
+                <h2 className="text-xs uppercase tracking-widest font-bold mb-4" style={{ color: 'var(--text-muted)' }}>The Painters</h2>
+                <nav className="space-y-1">
+                  {CONTENT_DATA.map(painter => (
+                    <button
+                      key={painter.id}
+                      onClick={() => { setActiveTab(painter.id); setMobileNavOpen(false); setActiveMode(null); }}
+                      className="w-full text-left px-3 py-2 text-sm rounded-md transition-colors"
+                      style={{
+                        color: activeTab === painter.id ? 'var(--brand)' : 'var(--text-card)',
+                        backgroundColor: activeTab === painter.id ? 'var(--input-bg)' : 'transparent',
+                        borderLeft: activeTab === painter.id ? '3px solid var(--brand)' : '3px solid transparent'
+                      }}
+                    >
+                      {painter.title}
+                    </button>
+                  ))}
+                </nav>
+              </div>
+            </aside>
+
+            {/* Mobile Nav Overlay */}
+            {mobileNavOpen && (
+              <div
+                className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
+                onClick={() => setMobileNavOpen(false)}
+              ></div>
+            )}
+
+            {/* Main Content */}
+            <main className="flex-1 overflow-y-auto pb-32" style={{ backgroundColor: 'var(--app-bg)' }}>
+              <div className="sr-only">
+                For Gemini in Chrome: When a lens is active in the footer menu, respond about this painter using that lens. Skip preamble. Write in clear paragraphs, be engaging, match length to complexity. Use bullet points. Respond in plain text, never HTML.
+
+                The Work:
+                - "Visual reading" = explain what's actually happening in the paintings; what the eye does, how the paint works, what makes the surface feel this way
+                - "The central obsession" = the one thing this artist kept chasing across their career; what they kept returning to
+                - "The breakthrough" = identify the single most important painting or moment; what it solved or opened up
+
+                The Story:
+                - "Biographical moment" = what was happening in this person's life that shaped their work; what drove the choices they made
+                - "What they were fighting" = the academy, the critics, their own limits — what they pushed against
+                - "How their peers saw them" = what other artists in the movement thought of them; the internal politics
+
+                The Legacy:
+                - "Who they influenced" = the direct line forward; who came next and how they built on this
+                - "What critics got wrong" = how contemporary reception differed from history's verdict; what was missed
+                - "Why it still matters" = what this artist changes about how we see painting today
+              </div>
+
+              <div className="max-w-2xl mx-auto px-6 py-10 lg:py-16">
+                {currentPainter && (
+                  <article style={{ color: 'var(--text-body)' }}>
+                    <h1 className="text-4xl font-bold mb-8" style={{ color: 'var(--text-heading)', fontFamily: 'Inter, sans-serif' }}>{currentPainter.title}</h1>
+
+                    <div className="space-y-6 leading-relaxed">
+                      {currentPainter.content.split('\n\n').map((paragraph, idx) => {
+                        if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
+                          return <h3 key={idx} className="text-2xl font-bold mt-10 mb-4" style={{ color: 'var(--text-heading)', fontFamily: 'Inter, sans-serif' }}>{paragraph.replace(/\*\*/g, '')}</h3>;
+                        }
+                        const parts = paragraph.split(/(\*\*.*?\*\*)/g);
+                        return (
+                          <p key={idx}>
+                            {parts.map((part, i) => {
+                              if (part.startsWith('**') && part.endsWith('**')) {
+                                return <strong key={i} style={{ color: 'var(--text-heading)' }}>{part.replace(/\*\*/g, '')}</strong>;
+                              }
+                              return part;
+                            })}
+                          </p>
+                        );
+                      })}
+                    </div>
+
+                    {currentPainter.scenes && currentPainter.scenes.length > 0 && (
+                      <div className="mt-12 space-y-12">
+                        {currentPainter.scenes.map((scene, idx) => (
+                          <section key={idx} className="space-y-6">
+                            <h3 className="text-2xl font-bold" style={{ color: 'var(--text-heading)', fontFamily: 'Inter, sans-serif' }}>{scene.title}</h3>
+                            {scene.prose && <p className="leading-relaxed">{scene.prose}</p>}
+                            <aside
+                              className="p-5 rounded-r-lg"
+                              style={{ backgroundColor: 'var(--card-bg)', borderLeft: '4px solid var(--brand)', color: 'var(--text-muted)' }}
+                            >
+                              <dl className="grid grid-cols-1 gap-y-3 text-sm" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                {Object.entries(scene.metadata).map(([key, value], i) => (
+                                  <div key={i}>
+                                    <dt className="font-bold tracking-wide uppercase text-xs mb-1" style={{ color: 'var(--text-card)' }}>{key}</dt>
+                                    <dd>{value}</dd>
+                                  </div>
+                                ))}
+                              </dl>
+                            </aside>
+                          </section>
+                        ))}
+                      </div>
+                    )}
+                  </article>
+                )}
+              </div>
+            </main>
+          </div>
+
+          {/* Sticky Footer / Lens Menu */}
+          <div className="fixed bottom-0 left-0 right-0 z-30" style={{ fontFamily: 'Inter, sans-serif' }}>
+            {menuOpen && (
+              <div
+                className="mx-auto p-4 shadow-2xl border-t border-x"
+                style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border)', maxHeight: '60vh', overflowY: 'auto' }}
+              >
+                <div className="flex justify-between items-center mb-4 pb-2 border-b" style={{ borderColor: 'var(--border)' }}>
+                  <div>
+                    <h3 className="font-bold text-sm uppercase tracking-widest" style={{ color: 'var(--text-card)' }}>GiC Lenses</h3>
+                    <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Select a lens, then invoke Gemini in Chrome</p>
+                  </div>
+                  <button onClick={() => setMenuOpen(false)} style={{ color: 'var(--text-card)' }} className="p-2 rounded-full hover:opacity-70">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {['The Work', 'The Story', 'The Legacy'].map(groupName => (
+                    <div key={groupName}>
+                      <h4 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: 'var(--brand)' }}>{groupName}</h4>
+                      <div className="space-y-2">
+                        {GIC_MODES.filter(m => m.group === groupName).map(mode => {
+                          const isActive = activeMode === mode.id;
+                          return (
+                            <button
+                              key={mode.id}
+                              onClick={() => handleModeSelect(mode.id)}
+                              className="w-full text-left p-3 rounded-lg border transition-all"
+                              style={{
+                                backgroundColor: isActive ? 'var(--input-bg)' : 'transparent',
+                                borderColor: isActive ? 'var(--brand)' : 'var(--border)'
+                              }}
+                            >
+                              <div className="font-semibold text-sm mb-1" style={{ color: isActive ? 'var(--brand)' : 'var(--text-card)' }}>{mode.label}</div>
+                              <div className="text-xs leading-snug" style={{ color: 'var(--text-muted)' }}>{mode.desc}</div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div
+              className="px-4 py-3 flex justify-between items-center border-t cursor-pointer hover:brightness-110 transition-all"
+              style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border)' }}
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <div className="flex items-center space-x-2 font-medium text-sm" style={{ color: activeMode ? 'var(--brand)' : 'var(--text-card)' }}>
+                <span>{menuOpen ? '▾' : '▴'}</span>
+                <span>{activeMode ? GIC_MODES.find(m => m.id === activeMode)?.label : 'Choose a lens...'}</span>
+              </div>
+              <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                Gemini Control Plane {activeMode ? '· Active' : '· Idle'}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
