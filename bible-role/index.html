@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 4: The Role of the Bible</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkblue: {
+                            900: '#0f172a', /* slate-900: elegant dark blue */
+                            800: '#1e293b', /* slate-800: card background */
+                            700: '#334155',
+                        },
+                        teal: {
+                            700: '#0f766e',
+                            800: '#115e59',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Hide scrollbar for horizontal scrolling tabs on mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .content-section p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .content-section ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .content-section li {
+            margin-bottom: 0.5rem;
+        }
+        .content-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            /* Teal in light mode, soft blue in dark mode */
+            color: #0f766e; 
+        }
+        html.dark .content-section h2 {
+            color: #93c5fd; /* blue-300 */
+        }
+        .content-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #115e59;
+        }
+        html.dark .content-section h3 {
+            color: #bfdbfe; /* blue-200 */
+        }
+        .blockquote-style {
+            border-left-width: 4px;
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-darkblue-900 dark:text-gray-200 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white dark:bg-darkblue-800 shadow-sm sticky top-0 z-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <h1 class="text-lg md:text-xl font-bold text-teal-800 dark:text-blue-300 truncate pr-4">
+                Lesson 4: The Role of the Bible
+            </h1>
+            <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-darkblue-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                <!-- Sun Icon -->
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                <!-- Moon Icon -->
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            </button>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex overflow-x-auto no-scrollbar border-b border-gray-200 dark:border-darkblue-700" aria-label="Tabs" id="tabs-container">
+                <!-- Tab buttons generated via JS -->
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 content-section">
+        
+        <!-- Overview Tab -->
+        <div id="tab-overview" class="tab-content hidden">
+            <div class="bg-white dark:bg-darkblue-800 rounded-xl shadow-sm p-6 mb-6">
+                <p class="text-sm font-semibold tracking-wide text-teal-600 dark:text-blue-400 uppercase mb-2">April 18–24, 2026</p>
+                <h2 style="margin-top: 0;">Memory Text</h2>
+                <div class="blockquote-style bg-teal-50 border-teal-500 dark:bg-darkblue-700 dark:border-blue-400 text-gray-700 dark:text-gray-300">
+                    <p class="mb-0">"For the word of God is living and powerful, and sharper than any two-edged sword, piercing even to the division of soul and spirit, and of joints and marrow, and is a discerner of the thoughts and intents of the heart" (Hebrews 4:12, NKJV).</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-darkblue-800 rounded-xl shadow-sm p-6">
+                <h2 style="margin-top: 0;">Core Theme</h2>
+                <p>The Bible functions not merely as an academic or historical text, but as a living mechanism through which God communicates, nourishes, and transforms human perspective. The lesson emphasizes daily engagement, submission of human reasoning to scriptural authority, and the necessity of approaching the text with a spiritually open mind.</p>
+                
+                <h2>Daily Progressions Overview</h2>
+                <ul>
+                    <li><strong>Sunday: The Most Powerful Weapon</strong> - The primary strategy of opposition (Satan) is to induce apathy, busyness, or doubt to sever the daily connection with the Word. (Eph. 6:17-18; Heb. 4:12; Lam. 3:22-23)</li>
+                    <li><strong>Monday: Scripture, the Authority</strong> - The danger of selectively reading or manipulating Scripture to fit human reasoning. The Bible must be accepted holistically. (2 Tim. 3:15-17; Matt. 22:37)</li>
+                    <li><strong>Tuesday: Bible Truth</strong> - In an era of decaying objective truth, the Bible stands as the foundational, unchanging metric against which all other sources must be tested. (John 14:6; John 17:17; Prov. 30:5-6)</li>
+                    <li><strong>Wednesday: Bible Claims</strong> - The active, living nature of the Word. It operates as spiritual sustenance capable of altering one's internal state. (Ps. 119:11; John 6:63; Jer. 15:16)</li>
+                    <li><strong>Thursday: State of the Heart</strong> - The prerequisite of spiritual discernment. The text yields its depth only to those approaching with humility. (1 Cor. 2:14; 1 Thess. 2:13)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sunday Tab -->
+        <div id="tab-sunday" class="tab-content hidden">
+            <div class="bg-white dark:bg-darkblue-800 rounded-xl shadow-sm p-6">
+                <h2 style="margin-top: 0;">Sunday: The Most Powerful Weapon</h2>
+                
+                <h3>The Angle: The Banality of Distraction (<i>The Screwtape Letters</i>)</h3>
+                <p>The lesson identifies Satan's primary strategy as keeping people away from the Word through busyness and apathy. C.S. Lewis captured this architecture of temptation precisely in <i>The Screwtape Letters</i>. The senior demon, Screwtape, advises that the best way to keep a soul from God is not through spectacular sins or complex intellectual arguments, but through the "dreary, flickering, spinning" distractions of ordinary life. The mundane is leveraged as the enemy of the profound.</p>
+
+                <h3>Supplementary Scriptures</h3>
+                <ul>
+                    <li><strong>Mark 4:18-19:</strong> The seed sown among thorns. Notice the mechanics here; the Word isn't destroyed by a frontal, fiery attack. It is systematically "choked" by the "cares of this world and the deceitfulness of riches."</li>
+                    <li><strong>Luke 10:38-42:</strong> Mary and Martha. Martha was not engaged in malicious behavior; she was executing necessary duties. Her error was allowing the urgent to displace the essential.</li>
+                    <li><strong>1 Peter 5:8:</strong> The adversary prowls like a roaring lion. While often visualized as an overt assault, a predator's most statistically effective tactic is isolating and stalking a distracted, unaware target.</li>
+                </ul>
+
+                <h3>Questions for the Class</h3>
+                <div class="bg-gray-50 dark:bg-darkblue-700 p-5 rounded-lg">
+                    <ol class="list-decimal pl-5 space-y-3">
+                        <li>If Screwtape were writing a letter analyzing our specific congregation or culture today, what specific tools or routines would he highlight as his most effective "weapons of mass distraction"?</li>
+                        <li>The lesson asserts that neglecting the Word strains our horizontal relationships (marriages, parenting, friendships). Mechanistically, how does a deficit of biblical input translate into decreased patience or increased anxiety in our daily interactions?</li>
+                        <li>How do we practically differentiate between legitimate, unavoidable "busyness" (duty) and spiritual avoidance masquerading as responsibility?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tuesday Tab -->
+        <div id="tab-tuesday" class="tab-content hidden">
+            <div class="bg-white dark:bg-darkblue-800 rounded-xl shadow-sm p-6">
+                <h2 style="margin-top: 0;">Tuesday: Bible Truth</h2>
+                
+                <h3>The Angle: The Epistemological Anchor in a Post-Truth Culture</h3>
+                <p>The lesson highlights the cultural decay of objective truth, noting the shift toward relative, individualized realities. Modern discourse frequently relies on phrases like "my truth" and "your truth."</p>
+
+                <h3>Deep Dive: Deconstructing "My Truth"</h3>
+                <ul>
+                    <li><strong>The Epistemological Shift:</strong> Society has largely transitioned from viewing truth as a <i>discovered external reality</i> (something outside ourselves that we must align our lives to) to a <i>constructed internal reality</i> (personal experiences or feelings that the external world must validate).</li>
+                    <li><strong>The Flaw in the Metric:</strong> When truth is subjective, it ceases to function as a metric. If a ruler stretches to accommodate the object being measured, it is no longer measuring; it is merely conforming. Furthermore, when two subjective "truths" collide, there is no objective standard to appeal to. Conflict resolution degrades into a power struggle or a contest of emotional weight, rather than an appeal to an absolute standard.</li>
+                    <li><strong>The Biblical Counter-Position:</strong> Scripture defines truth as an absolute reality rooted in the immutable character of God. "Your word is truth" (John 17:17) establishes an external locus of truth. It exists independently of our feelings, cultural consensus, or lived experiences. It is the absolute reference frame against which human experience is evaluated.</li>
+                </ul>
+
+                <h3>Supplementary Scriptures</h3>
+                <ul>
+                    <li><strong>Judges 21:25:</strong> "In those days there was no king in Israel; everyone did what was right in his own eyes." This establishes the historical precedent and consequence of subjective, individualized truth.</li>
+                    <li><strong>John 8:32:</strong> "And you shall know the truth, and the truth shall make you free." Modern culture suggests freedom comes from defining your own truth. Christ posits the inverse: true autonomy is the byproduct of submitting to an objective, external Truth.</li>
+                    <li><strong>Hebrews 13:8:</strong> "Jesus Christ is the same yesterday, today, and forever." Because truth is inextricably linked to the nature of God, its primary characteristic is immutability.</li>
+                </ul>
+
+                <h3>Questions for the Class</h3>
+                <div class="bg-gray-50 dark:bg-darkblue-700 p-5 rounded-lg mb-6">
+                    <ol class="list-decimal pl-5 space-y-3">
+                        <li>People often use "my truth" as a shorthand for "my lived experience." How can we as Christians validate and listen to the real, painful experiences of others without conceding that those experiences define absolute truth?</li>
+                        <li>Human reason is highly valued in modern society. Practically, what does the internal process look like when we realize our logic or "reasoning" directly conflicts with a plain reading of Scripture? How do we force our reason to submit?</li>
+                        <li>The lesson implies that truth is not merely propositional (a list of theological facts) but relational (Jesus said, "I am the truth"). How should viewing truth as an encounter with a Person, rather than just data acquisition, change our daily approach to reading the Bible?</li>
+                    </ol>
+                </div>
+                
+                <p class="italic text-teal-700 dark:text-blue-300 mb-6">For a brief overview of how modern society adopted the concept of subjective truth, please see the <strong>History</strong> tab.</p>
+
+                <h3>The Irony of Subjective Truth</h3>
+                <ul>
+                    <li><strong>Self-Referential Collapse:</strong> To assert that "all truth is relative" or "there is no absolute truth" is, by definition, an absolute claim about reality. The premise destroys its own foundation.</li>
+                    <li><strong>Functional Inconsistency:</strong> When individuals assert a "personal truth," they routinely demand that others validate or accommodate it. If a belief were genuinely a localized, subjective experience, another person's differing perspective would be irrelevant. Becoming offended by disagreement reveals an implicit demand that one's subjective experience be treated by others as an objective standard.</li>
+                </ul>
+
+                <h3>The Advantages of an Objective Truth Framework</h3>
+                <ul>
+                    <li><strong>Psychological and Spiritual Stability:</strong> Objective truth serves as an external anchor that holds fast regardless of internal turbulence.<br>
+                    <i>Scripture:</i> <strong>Matthew 7:24-25</strong></li>
+                    <li><strong>Authentic Liberation:</strong> Submission to an objective standard pulls us outward, freeing us from the tyranny of self.<br>
+                    <i>Scripture:</i> <strong>Psalm 119:45</strong></li>
+                    <li><strong>A Foundation for Justice and Unity:</strong> Objective truth provides a neutral, transcendent judge that stands above conflicting parties, allowing for true reconciliation.<br>
+                    <i>Scripture:</i> <strong>Ephesians 4:14-15</strong></li>
+                </ul>
+
+                <h3>Ellen G. White on the Objective Standard</h3>
+                <div class="blockquote-style bg-gray-100 border-gray-400 dark:bg-darkblue-700 dark:border-gray-500 text-gray-700 dark:text-gray-300">
+                    <p>"God will have a people upon the earth to maintain the Bible, and the Bible only, as the standard of all doctrines and the basis of all reforms. The opinions of learned men, the deductions of science, the creeds or decisions of ecclesiastical councils, as numerous and discordant as are the churches which they represent, the voice of the majority—not one nor all of these should be regarded as evidence for or against any point of religious faith. Before accepting any doctrine or precept, we should demand a plain 'Thus saith the Lord' in its support."</p>
+                    <p class="mb-0 text-sm font-semibold">— <i>The Great Controversy</i>, p. 595</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="tab-history" class="tab-content hidden">
+            <div class="bg-white dark:bg-darkblue-800 rounded-xl shadow-sm p-6">
+                <h2 style="margin-top: 0;">Historical Context: The Shift to Subjective Truth</h2>
+                
+                <p>The normalization of phrases like "my truth" is the culmination of a centuries-long epistemological shift. In the pre-modern era, truth was universally understood as objective and rooted in divine revelation; God was the absolute reference point. During the Enlightenment (Modernism), the locus of truth shifted from divine revelation to human reason and the scientific method. While truth was still considered objective and discoverable, the standard became human intellect rather than Scripture.</p>
+                <p>In the mid-to-late 20th century, Postmodernism fractured this consensus entirely. Philosophers argued that human reason is inherently biased and that claims to objective truth are merely constructs used by those in power to maintain control. Consequently, Postmodernism dismantled the idea of a universal meta-narrative. If objective truth cannot be known or trusted, the only remaining metric is subjective, lived experience. This academic philosophy eventually permeated popular culture, combining with modern hyper-individualism to create a society where truth is no longer a shared external reality to be discovered, but a personal identity marker to be asserted and validated.</p>
+
+                <h3>Key Figures in the Postmodern Shift</h3>
+                <ul>
+                    <li><strong>Jean-François Lyotard:</strong> Famously defined postmodernism as "incredulity toward metanarratives." He argued that grand, overarching stories that attempt to explain all of reality are inherently oppressive and false.</li>
+                    <li><strong>Michel Foucault:</strong> Posited that claims of objective truth are actually disguised attempts to exert power and control. Truth is determined by systems and institutions that hold cultural power.</li>
+                    <li><strong>Jacques Derrida:</strong> Developed "deconstruction," a method of linguistic analysis suggesting words only refer to other words, never to an objective reality outside the text.</li>
+                </ul>
+
+                <h3>Mechanism of Cultural Saturation</h3>
+                <ol class="list-decimal pl-5 mb-6 space-y-2">
+                    <li><strong>The Educational Pipeline:</strong> These philosophies dominated university humanities from the 1970s onward, shaping the foundational assumptions of the next generation's teachers and cultural curators.</li>
+                    <li><strong>Therapeutic Culture:</strong> Psychology and self-help movements increasingly prioritized internal emotional states over external realities, training society to look inward for truth.</li>
+                    <li><strong>The Digital Age:</strong> Social media algorithms accelerated the process by constructing individualized reality tunnels. Furthermore, the democratization of publishing meant every subjective opinion gained the exact same platform and visual weight as established facts.</li>
+                </ol>
+
+                <h3>The Alternative to Truth: The Struggle for Power</h3>
+                <p>When a society abandons an agreed-upon standard of truth, reason and evidence lose their currency in public discourse. If there is no objective reality to appeal to, genuine dialogue and persuasion become impossible because there is no shared framework for evaluating arguments. In the absence of a shared truth, the only remaining mechanism for resolving disputes or organizing society is raw power.</p>
+                <p>This dynamic is a central feature of postmodern thought. If all claims to objective truth are viewed cynically as mere assertions of dominance—masks hiding a desire to control—then the pursuit of truth is replaced entirely by the pursuit of power. In this paradigm, how one obtains power becomes irrelevant; coercion, manipulation, and silencing opponents are justified because the end goal is simply to enforce one's subjective reality over others.</p>
+                <p>Operating under a framework of objective truth offers a stark, liberating contrast. It allows for persuasion. Persuasion respects human agency and dignity. It assumes that both parties are subject to a higher, neutral standard (reason and evidence) and can collaboratively discover it. When opposing sides attempt to gain influence through persuasion rather than coercion, they build a society based on mutual consent rather than force.</p>
+                <p>The framers of the United States government understood this vulnerability deeply. They designed a constitutional system predicated on the existence of objective realities ("We hold these truths to be self-evident") and the human capacity for rational debate. Knowing the historical tendency of human nature to default to tyranny, they structured the republic with deliberate friction—checks, balances, and separated branches. This architecture was explicitly designed to frustrate the raw accumulation of power and to force opposing factions to rely on dialogue, evidence, and persuasion.</p>
+            </div>
+        </div>
+
+        <!-- Wednesday Tab -->
+        <div id="tab-wednesday" class="tab-content hidden">
+            <div class="bg-white dark:bg-darkblue-800 rounded-xl shadow-sm p-6">
+                <h2 style="margin-top: 0;">Wednesday: Bible Claims</h2>
+                
+                <h3>The Angle: Spiritual Metabolism and the Mechanics of Consumption</h3>
+                <p>The lesson pivots to the Bible’s self-identification as living sustenance. The metaphor of the Word as "food" requires us to consider the biological process of eating. Food only provides energy when it is properly ingested, digested, and metabolized into cellular structures. Similarly, reading the text is merely ingestion; meditation and application are the digestive processes that convert textual data into spiritual vitality.</p>
+
+                <h3>Deep Dive: The Pathology of Appetite</h3>
+                <ul>
+                    <li><strong>The Satiation of Junk Food:</strong> A lack of hunger for the Word rarely means we are not hungry; it usually means our appetites have been hijacked by spiritual "junk food." We approach the Bible without appetite because our minds are already engorged with the mundane.</li>
+                    <li><strong>The Digestion Process:</strong> The prophet Jeremiah states he "found" the words and "ate them." Eating involves breaking down the material. In biblical study, this equates to meditation—chewing on a concept, breaking it apart through cross-referencing, and allowing it to assimilate into our structural worldview.</li>
+                    <li><strong>The Antidote to Discouragement:</strong> Discouragement is fundamentally a collapse of perspective. The Bible acts as clinical nourishment in these moments by actively rewiring our cognitive framework. It injects an objective, historical record of God's faithfulness into our subjective experience of pain.</li>
+                    <li><strong>Taste and Experience:</strong> Both Peter and Ezekiel describe the Word as having a specific "taste" (milk, honey). This suggests that rigorous study should eventually yield a visceral, experiential sweetness.</li>
+                </ul>
+
+                <h3>Supplementary Scriptures</h3>
+                <ul>
+                    <li><strong>Jeremiah 15:16:</strong> "Your words were found, and I ate them, And Your word was to me the joy and rejoicing of my heart..."</li>
+                    <li><strong>Matthew 4:4:</strong> "Man shall not live by bread alone, but by every word that proceeds from the mouth of God."</li>
+                    <li><strong>Ezekiel 3:1-3:</strong> The prophet is commanded to eat the scroll. It serves as a symbol of internalizing the message completely before attempting to proclaim it outwardly.</li>
+                    <li><strong>Psalm 119:50:</strong> "This is my comfort in my affliction, For Your word has given me life."</li>
+                    <li><strong>Romans 15:4:</strong> "For whatever things were written before were written for our learning, that we through the patience and comfort of the Scriptures might have hope."</li>
+                </ul>
+
+                <h3>Questions for the Class</h3>
+                <div class="bg-gray-50 dark:bg-darkblue-700 p-5 rounded-lg mb-6">
+                    <ol class="list-decimal pl-5 space-y-3">
+                        <li>If a lack of appetite for the Bible is a symptom of spiritual sickness or being "full" of worldly distractions, what are practical mechanisms we can use to detox and restore a healthy hunger for God's Word?</li>
+                        <li>What is the functional difference between "reading" a chapter of the Bible and "eating" it? What specific study habits constitute "chewing" on the text?</li>
+                        <li>Jesus utilized the Word as immediate sustenance during an active spiritual attack in the wilderness. How does routinely storing up this "food" prepare us for inevitable moments of crisis where we don't have time to study, but desperately need immediate spiritual energy?</li>
+                        <li>How does the "comfort of the Scriptures" functionally differ from conventional positive thinking or secular coping mechanisms when a person is experiencing profound discouragement?</li>
+                    </ol>
+                </div>
+
+                <h3>Ellen G. White on Nourishment for the Discouraged</h3>
+                <p>God's response to human discouragement is profoundly practical. He does not merely offer distant sympathy; He provides the Scriptures as an active, living restorative to the failing soul. Ellen G. White consistently connected the biological necessity of food with the spiritual necessity of the Word for those experiencing despair:</p>
+                
+                <div class="blockquote-style bg-gray-100 border-gray-400 dark:bg-darkblue-700 dark:border-gray-500 text-gray-700 dark:text-gray-300">
+                    <p>"As our physical life is sustained by food, so our spiritual life is sustained by the word of God. And every soul is to receive life from God's word for himself."<br>
+                    <span class="text-sm font-semibold">— <i>The Desire of Ages</i>, p. 390</span></p>
+                </div>
+
+                <div class="blockquote-style bg-gray-100 border-gray-400 dark:bg-darkblue-700 dark:border-gray-500 text-gray-700 dark:text-gray-300">
+                    <p>"The Bible is God's voice speaking to us, just as surely as though we could hear it with our ears... The reading and contemplation of the Scriptures would be regarded as an audience with the Infinite One."<br>
+                    <span class="text-sm font-semibold">— <i>Testimonies for the Church</i>, vol. 6, p. 393</span></p>
+                </div>
+
+                <div class="blockquote-style bg-gray-100 border-gray-400 dark:bg-darkblue-700 dark:border-gray-500 text-gray-700 dark:text-gray-300 mb-0">
+                    <p>"To all who are reaching out to feel the guiding hand of God, the moment of greatest discouragement is the time when divine help is nearest. They will look back with thankfulness upon the darkest part of their way... From every temptation and every trial He will bring them forth with firmer faith and a richer experience."<br>
+                    <span class="text-sm font-semibold">— <i>Steps to Christ</i>, p. 86</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thursday Tab -->
+        <div id="tab-thursday" class="tab-content hidden">
+            <div class="bg-white dark:bg-darkblue-800 rounded-xl shadow-sm p-6">
+                <h2 style="margin-top: 0;">Thursday: State of the Heart</h2>
+                
+                <h3>The Angle: The Posture of Reception and the Expectation of Encounter</h3>
+                <p>The lesson posits that the efficacy of the Bible in a person's life is intimately connected to their expectation when opening it. Scripture is not a magical incantation that bypasses human volition; it is a relational communication. Its power is activated by the posture of the recipient. If we approach the text believing God has something specific to communicate, we read for encounter. If we approach it with skepticism or apathy, we read merely for data—or we don't read at all.</p>
+
+                <h3>Deep Dive: The Mechanics of Belief</h3>
+                <ul>
+                    <li><strong>The Sufficiency of Small Faith:</strong> The requirement of belief does not demand absolute theological certainty devoid of struggle or doubt. Faith is not a high threshold of intellectual mastery we must achieve before reading; rather, it is the simple, honest admission of our need combined with a willingness to listen. The father in Mark 9 who cried, "Lord, I believe; help my unbelief!" was met with miraculous intervention despite his fractured confidence. When we open the Bible with even a sliver of expectation that God <i>might</i> speak, that fractional belief acts as the entry point for the Holy Spirit. God honors the forward <i>direction</i> of our posture far more than the <i>perfection</i> of our faith. Like a mustard seed, small faith contains the structural potential for massive growth if it is continually planted in the soil of the Word.</li>
+                </ul>
+
+                <div class="blockquote-style bg-gray-100 border-gray-400 dark:bg-darkblue-700 dark:border-gray-500 text-gray-700 dark:text-gray-300">
+                    <p class="font-semibold mb-2">Ellen G. White on Small Faith:</p>
+                    <p>"'If Thou canst do anything, have compassion on us, and help us.' How many a sin-burdened soul has echoed that prayer. And to all, the pitying Saviour's answer is, 'If thou canst believe, all things are possible to him that believeth.' It is faith that connects us with heaven, and brings us strength for coping with the powers of darkness. In Christ, God has provided means for subduing every sinful trait, and resisting every temptation, however strong. But many feel that they lack faith, and therefore they remain away from Christ. Let these souls, in their helpless unworthiness, cast themselves upon the mercy of their compassionate Saviour. Look not to self, but to Christ. He who healed the sick and cast out demons when He walked among men is the same mighty Redeemer today. Faith comes by the word of God. Then grasp His promise, 'Him that cometh to Me I will in no wise cast out.' John 6:37. Cast yourself at His feet with the cry, 'Lord, I believe; help Thou mine unbelief.' You can never perish while you do this—never."</p>
+                    <p class="mb-0 text-sm font-semibold">— <i>The Desire of Ages</i>, p. 429</p>
+                </div>
+
+                <h3>Supplementary Scriptures</h3>
+                <ul class="space-y-4">
+                    <li>
+                        <strong>John 5:39-40:</strong> "You search the Scriptures, for in them you think you have eternal life; and these are they which testify of Me. But you are not willing to come to Me that you may have life."<br>
+                        <span class="block mt-1 text-sm text-gray-600 dark:text-gray-400"><i>Explanation:</i> Jesus highlights the tragic irony of the religious elite. They meticulously analyzed the text (extracting data) but entirely missed the Person the text pointed toward. This verse serves as a crucial warning: rigorous Bible study, when divorced from a sincere desire to encounter Christ, leads to theological pride rather than spiritual vitality. The text is meant to be the map, not the final destination.</span>
+                    </li>
+                    <li>
+                        <strong>Hebrews 11:6:</strong> "But without faith it is impossible to please Him, for he who comes to God must believe that He is, and that He is a rewarder of those who diligently seek Him."<br>
+                        <span class="block mt-1 text-sm text-gray-600 dark:text-gray-400"><i>Explanation:</i> This verse establishes the baseline prerequisite for approaching the Bible. Faith here is defined not as complex doctrinal mastery, but as a twofold conviction: first, that God actually exists, and second, that He actively responds to those who seek Him.</span>
+                    </li>
+                    <li>
+                        <strong>James 1:21:</strong> "...receive with meekness the implanted word, which is able to save your souls."<br>
+                        <span class="block mt-1 text-sm text-gray-600 dark:text-gray-400"><i>Explanation:</i> James uses agricultural imagery. "Meekness" (or humility) is the fertile soil required for the seed of the Word to take root. If the heart is hardened by pride, the Word bounces off the surface. Received with a teachable posture, it becomes "implanted," germinating internally to produce lasting structural transformation.</span>
+                    </li>
+                </ul>
+
+                <h3>Questions for the Class</h3>
+                <div class="bg-gray-50 dark:bg-darkblue-700 p-5 rounded-lg">
+                    <ol class="list-decimal pl-5 space-y-3">
+                        <li>What is the functional difference between reading the Bible to accumulate theological data and reading it with the expectation of a divine encounter?</li>
+                        <li>Since 1 Corinthians 2:14 indicates that spiritual things are "foolishness" to the natural mind, how do we handle legitimate intellectual doubts without adopting a cynical posture that blocks spiritual discernment?</li>
+                        <li>How can we practically cultivate a sense of expectancy before we open the Bible each day, rather than just treating it as a checklist item?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Goal Tab -->
+        <div id="tab-the_goal" class="tab-content hidden">
+            <div class="bg-white dark:bg-darkblue-800 rounded-xl shadow-sm p-6">
+                <h2 style="margin-top: 0;">The Ultimate Goal: Finding Christ</h2>
+                
+                <h3>The Angle: The Text vs. The Person</h3>
+                <p>A profound danger exists for those who study the Bible diligently: bibliolatry. It is entirely possible to elevate the text to an idol, treating the Scriptures as an end in themselves rather than the means to an end. Jesus forcefully addressed this legalistic and disconnected approach to study in His rebuke of the religious leaders.</p>
+
+                <h3>Deep Dive: The Illusion of Life in the Letters</h3>
+                <ul>
+                    <li><strong>The Irony of the Search:</strong> In John 5:39-40, Jesus observes, "You search the Scriptures, for in them you think you have eternal life; and these are they which testify of Me. But you are not willing to come to Me that you may have life." The Pharisees had mastered the text. They memorized it, analyzed it, and debated it, assuming that the sheer accumulation of biblical knowledge would grant them eternal life. Jesus corrected this fatal misunderstanding: the text does not contain life; the text contains the testimony of the One who *is* life.</li>
+                    <li><strong>The Function of the Bible:</strong> The Bible functions as a map. A map is invaluable for navigation, but confusing the map with the destination is a critical error. The highest purpose of Scripture is to serve as a signpost, directing human attention toward a living relationship with Jesus Christ. It informs us about His character, His promises, and His nature so that when we encounter Him, we recognize Him.</li>
+                    <li><strong>The Necessity of Christ:</strong> Eternal life is not a reward for passing a theological exam based on biblical data. It is the byproduct of being connected to the Source of life. If our daily Bible study only yields more information but does not actively drive us into deeper communion with Christ, it has failed its primary structural purpose.</li>
+                </ul>
+
+                <h3>Questions for the Class</h3>
+                <div class="bg-gray-50 dark:bg-darkblue-700 p-5 rounded-lg">
+                    <ol class="list-decimal pl-5 space-y-3">
+                        <li>How do we evaluate whether our current approach to Bible study is leading us to theological pride (like the Pharisees) or to a deeper reliance on Jesus Christ?</li>
+                        <li>What practical steps can we take to ensure that we don't just stop at "searching the Scriptures," but consistently take the next step to "come to Him"?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Friday Tab -->
+        <div id="tab-friday" class="tab-content hidden">
+            <div class="bg-white dark:bg-darkblue-800 rounded-xl shadow-sm p-6">
+                <h2 style="margin-top: 0;">Friday: Further Thought</h2>
+                
+                <h3>The Angle: The Overflow of the Internal Reality</h3>
+                <p>The lesson concludes by linking the words we speak to the structural condition of our hearts. Humans possess an inherent diagnostic tool: whatever fills the internal reservoir eventually spills over into external communication. In times of pressure or fatigue, the veneer drops, and the true contents of the heart dictate our speech. If the Bible is the Word of God, it operates on this exact same principle. It is the overflow of God's internal reality toward humanity.</p>
+
+                <h3>Deep Dive: The Architecture of Divine Intent</h3>
+                <ul>
+                    <li><strong>The Diagnostic Connection:</strong> Matthew 12:34 establishes a fixed law of human nature: "Out of the abundance of the heart the mouth speaks." Our speech betrays our condition. When we read the Bible, we are not merely decoding ancient historical data; we are receiving the unmediated overflow of God's heart.</li>
+                    <li><strong>The Nature of the Overflow:</strong> If God's words are the overflow of His heart, we must ask what exactly resides in that heart. We often project our own cynical or punitive motives onto God. However, Jeremiah 29:11 explicitly defines the internal architecture of God's intent toward humanity. His thoughts are entirely engineered for peace, restoration, and hope. He is not a reluctant deity dispensing minimum required guidance; He is actively pursuing our survival.</li>
+                </ul>
+
+                <h3>Supplementary Scriptures</h3>
+                <ul class="space-y-4">
+                    <li>
+                        <strong>Matthew 12:34:</strong> "Brood of vipers! How can you, being evil, speak good things? For out of the abundance of the heart the mouth speaks."<br>
+                        <span class="block mt-1 text-sm text-gray-600 dark:text-gray-400"><i>Explanation:</i> Christ points out the impossibility of masking an internal void with external piety. The corollary is that God's good, living, and powerful words (Heb. 4:12) are proof of His inherently good and life-giving nature.</span>
+                    </li>
+                    <li>
+                        <strong>Jeremiah 29:11:</strong> "For I know the thoughts that I think toward you, says the LORD, thoughts of peace and not of evil, to give you a future and a hope."<br>
+                        <span class="block mt-1 text-sm text-gray-600 dark:text-gray-400"><i>Explanation:</i> Spoken to Israel during a period of catastrophic exile and discouragement, this verse reveals God's underlying motive. Even when circumstances suggest abandonment or judgment, God's internal disposition toward His people remains fixed on their ultimate restoration.</span>
+                    </li>
+                </ul>
+
+                <h3>Questions for the Class</h3>
+                <div class="bg-gray-50 dark:bg-darkblue-700 p-5 rounded-lg">
+                    <ol class="list-decimal pl-5 space-y-3">
+                        <li>If the Bible is the overflow of God's heart, how should that shift our approach from reading it as a legalistic duty to reading it as a relational exercise?</li>
+                        <li>When we are placed under pressure, stress, or extreme fatigue, what generally overflows from our hearts into our speech? How does this contrast with the way God speaks to us when we fail Him?</li>
+                        <li>Reviewing the themes of this week, how can we structure our daily routines so that we are continuously "filling the reservoir" with God's Word, ensuring that what overflows from us to others is life-giving?</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Initialization Script -->
+    <script>
+        // Tab Configuration
+        const tabs = [
+            { id: 'overview', label: 'Overview' },
+            { id: 'sunday', label: 'Sunday' },
+            { id: 'tuesday', label: 'Tuesday' },
+            { id: 'history', label: 'History' },
+            { id: 'wednesday', label: 'Wednesday' },
+            { id: 'thursday', label: 'Thursday' },
+            { id: 'the_goal', label: 'The Goal' },
+            { id: 'friday', label: 'Friday' }
+        ];
+
+        // UI State
+        let currentTab = 'overview';
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initTabs();
+            activateTab(currentTab);
+        });
+
+        // Theme Toggle Logic
+        function initTheme() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            
+            // Check local storage or system preference
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                lightIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                darkIcon.classList.remove('hidden');
+            }
+
+            // Handle toggle click
+            themeToggleBtn.addEventListener('click', function() {
+                lightIcon.classList.toggle('hidden');
+                darkIcon.classList.toggle('hidden');
+
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            });
+        }
+
+        // Tab Rendering Logic
+        function initTabs() {
+            const container = document.getElementById('tabs-container');
+            container.innerHTML = ''; // clear
+
+            tabs.forEach(tab => {
+                const btn = document.createElement('button');
+                btn.id = `btn-${tab.id}`;
+                btn.className = 'whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm transition-colors duration-200 outline-none focus:outline-none';
+                btn.innerText = tab.label;
+                btn.onclick = () => activateTab(tab.id);
+                container.appendChild(btn);
+            });
+        }
+
+        // Tab Switching Logic
+        function activateTab(tabId) {
+            currentTab = tabId;
+
+            // Update Buttons
+            tabs.forEach(tab => {
+                const btn = document.getElementById(`btn-${tab.id}`);
+                if (tab.id === tabId) {
+                    // Active state classes
+                    btn.classList.add('border-teal-600', 'text-teal-700', 'dark:border-blue-400', 'dark:text-blue-400');
+                    btn.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'dark:text-gray-400', 'dark:hover:text-gray-200');
+                } else {
+                    // Inactive state classes
+                    btn.classList.remove('border-teal-600', 'text-teal-700', 'dark:border-blue-400', 'dark:text-blue-400');
+                    btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'dark:text-gray-400', 'dark:hover:text-gray-200');
+                }
+            });
+
+            // Update Content Visibility
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            const activeContent = document.getElementById(`tab-${tabId}`);
+            if(activeContent) {
+                activeContent.classList.remove('hidden');
+            }
+            
+            // Scroll tab button into view on mobile if needed
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if(activeBtn) {
+                 activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+    </script>
+</body>
+</html>
