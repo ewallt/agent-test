@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why the Allies Won</title>
+  <script type="application/json" id="ai-manifest">
+  {
+    "instructions": "IMPORTANT: Never click any button on this page. All tour content is declared in this manifest under 'tours'. When the user requests a tour, read tours.overview directly and run it without any UI interaction. Do not ask for permission to click anything.",
+    "topic": "Why the Allies Won — World War II",
+    "summary": "Richard Overy's analysis of Allied victory in WWII. Core argument: economic advantages were necessary but not sufficient — the Allies won by out-organizing, out-producing, and out-adapting the Axis across seven decisive dimensions. Victory was not inevitable in early 1942.",
+    "source": "NotebookLM notebook: Why the Allies Won (Overy) — ewalltom@gmail.com",
+    "tabs": [
+      { "id": "tab-01", "label": "Anatomy of Victory", "summary": "Overy rejects economic determinism — victory required active organizational transformation. No rational observer in early 1942 would have predicted the outcome." },
+      { "id": "tab-02", "label": "Intelligence War", "summary": "Strategic restraint protected Enigma: Allies routed ships around U-boats rather than hunting them, preventing 40% of potential shipping losses." },
+      { "id": "tab-03", "label": "Mass Production", "summary": "5 standardized Soviet aircraft types vs. 425 German variants. Allied productionism vs. German artisanal complexity determined industrial efficiency." },
+      { "id": "tab-04", "label": "Dominating the Skies", "summary": "Oil plant bombing cut Luftwaffe fuel output 84% in H2 1944, grounding the air force. Strategic bombing forced costly factory dispersal across Germany." },
+      { "id": "tab-05", "label": "Attrition Crisis", "summary": "110h vs. 400h of pilot training created a vicious cycle that collapsed the Luftwaffe from within — fewer experienced pilots meant fewer trainers." },
+      { "id": "tab-06", "label": "Soviet Rebound", "summary": "Factory relocation east of the Urals and the 'Great Patriotic War' narrative turned near-collapse into a 1.8:1 troop ratio superiority at Moscow." },
+      { "id": "tab-07", "label": "Command & Resilience", "summary": "Allies delegated to meritocratic military staffs; Hitler micromanaged down to the tactical level. Red Army formed 200+ new divisions — Germany had estimated 50 max." }
+    ],
+    "suggested_questions": [
+      "How did the 'two-day cycle' procedural flaw help the Allies break Enigma codes faster?",
+      "Why does Overy argue Allied victory was not inevitable in early 1942?",
+      "What were the key differences between German and Soviet aircraft production methods?",
+      "How did the drop in German pilot training hours affect the air war in 1944?",
+      "How did Stalin's leadership style change after the initial disasters of Operation Barbarossa?"
+    ],
+    "gic": {
+      "design_intent": "This app is designed to be enhanced by Gemini in Chrome. All tour content is declared directly in this manifest — do not attempt to click the Tour button or actuate any UI to access tour state. If the user requests a tour, read the 'tours' object in this manifest and deliver the tour as a synthesized narrative, tab by tab, using the stops array. Each stop has a tab ID, summary, and tidbit. The element with id='gic-active-tour' reflects which tour is active and its full instruction block, but the full manifest is always readable here without UI interaction.",
+      "how_to_read": "Tours are in manifest.tours — each has role, mode_behavior, and a stops array with tab, label, summary, tidbit per step. Read directly; do not actuate the UI."
+    },
+    "active_tour": "none",
+    "tours": {
+      "overview": {
+        "name": "Overview Tour",
+        "role": "Guide",
+        "mode_behavior": "Run the tour one stop at a time. For each stop: (1) Tell the user the tab name and what it covers in one sentence, then ask them to read the page and signal when done. (2) When they signal done, deliver the tidbit for that stop — a concrete detail that goes beyond what is on screen. (3) Tell them the name of the next tab and ask them to navigate there. Wait for their signal before moving on. Never deliver more than one stop at a time. Use the stops array as your script — deliver the summary and tidbit fields, do not substitute your own.",
+        "stops": [
+          {
+            "tab": "tab-01",
+            "label": "Anatomy of Victory",
+            "summary": "Overy's core argument: economic superiority was necessary but not sufficient — the Allies had to actively translate potential into combat effectiveness. No rational observer in early 1942 would have predicted the outcome.",
+            "tidbit": "Overy wrote this book partly as a direct rebuttal to Paul Kennedy's 'The Rise and Fall of the Great Powers,' which argued industrial scale explained everything. The polemic between them is still live in military history circles today."
+          },
+          {
+            "tab": "tab-02",
+            "label": "Intelligence War",
+            "summary": "The Allies routed convoys around U-boats rather than attacking them — hiding the fact that Enigma was broken. Strategic restraint was as important as the cryptanalysis itself.",
+            "tidbit": "The Germans ran a full security audit of Enigma in 1943 after suspecting a leak. Their review concluded the machine was mathematically unbreakable. The thoroughness of the investigation reassured them completely — they never seriously considered that the codes had been read for years."
+          },
+          {
+            "tab": "tab-03",
+            "label": "Mass Production",
+            "summary": "Five standardized Soviet aircraft types versus 425 German variants. Allied productionism versus German artisanal complexity determined who could scale.",
+            "tidbit": "The T-34 tank was considered inferior to German models in crew ergonomics, optics, and internal communication — Soviet tank crews often fought with the hatch open just to see clearly. But it could be built by semi-skilled workers in roughly 55 man-hours, versus hundreds for a Panther."
+          },
+          {
+            "tab": "tab-04",
+            "label": "Air War",
+            "summary": "Oil plant bombing cut Luftwaffe fuel output 84% in the second half of 1944, grounding an air force that was otherwise still functional.",
+            "tidbit": "The Norden bombsight — which the US Air Force considered so secret that bombardiers were trained to destroy it before capture — put roughly 1 in 5 bombs within a mile of the target in early raids. 'Precision bombing' was a significant overstatement that took years to acknowledge."
+          },
+          {
+            "tab": "tab-05",
+            "label": "Attrition Crisis",
+            "summary": "The gap between 110 Luftwaffe training hours and 400 Allied hours created a vicious cycle: fewer experienced pilots meant fewer trainers, which produced even less experienced pilots.",
+            "tidbit": "By late 1944, some Luftwaffe pilots flew their first operational mission having never fired their aircraft's guns in training. Life expectancy for new Eastern Front pilots was measured in single-digit missions."
+          },
+          {
+            "tab": "tab-06",
+            "label": "Soviet Rebound",
+            "summary": "1,523 industrial enterprises relocated east of the Urals between July and November 1941 — in winter, on open flatcars, with workers sometimes riding on the machinery at -40°C.",
+            "tidbit": "Stalin revived the Russian Orthodox Church as a morale tool — the same institution the Soviet state had spent two decades actively persecuting. Priests blessed soldiers before combat. The irony was visible to everyone. It worked anyway."
+          },
+          {
+            "tab": "tab-07",
+            "label": "Command and Resilience",
+            "summary": "Allied leaders delegated to meritocratic military staffs; Hitler micromanaged down to the tactical level, turning every error into a compounding catastrophe.",
+            "tidbit": "By 1944, Hitler was personally approving individual Panzer battalion movements from his headquarters in Bavaria while Allied forces were already through the wire. His generals could not act without his authorization — and he was often unreachable."
+          }
+        ]
+      }
+    }
+  }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#0F172A',
+            surface: '#1E293B',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          },
+          backgroundImage: {
+            'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%231e293b' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")"
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-mono { font-family: 'Fira Code', monospace; }
+
+    /* Screen-fit: every tab fills exactly one viewport */
+    .tab-content > section {
+      min-height: calc(100vh - 4rem);
+      max-height: calc(100vh - 4rem);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Glass card */
+    .glass {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 0.75rem;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .glass:hover {
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+
+    /* Typewriter */
+    .typewriter {
+      overflow: hidden;
+      border-right: .15em solid #06B6D4;
+      white-space: nowrap;
+      animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+      display: inline-block;
+      max-width: 100%;
+    }
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #06B6D4; } }
+
+    /* Radar sweep */
+    @keyframes radar-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .radar-sweep {
+      animation: radar-spin 10s linear infinite;
+      background: conic-gradient(from 0deg, transparent 70%, rgba(6,182,212,0.1) 100%);
+      border-radius: 50%;
+    }
+
+    /* Fade-in on scroll */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(2rem);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .animate-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Nav scrollbar hide */
+    .nav-scroll::-webkit-scrollbar { display: none; }
+    .nav-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen" style="background:#0F172A; color:#F8FAFC; overflow-x:hidden">
+
+  <!-- Fixed navbar -->
+  <nav class="fixed w-full z-50" style="background:rgba(30,41,59,0.8); backdrop-filter:blur(12px); border-bottom:1px solid rgba(255,255,255,0.05)">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="nav-scroll flex overflow-x-auto items-center">
+        <div class="font-mono font-bold text-base mr-6 py-4 shrink-0" style="color:#06B6D4">WHY THE ALLIES WON</div>
+
+        <button data-target="tab-00" onclick="showTab('tab-00')"
+          class="tab-btn px-3 py-4 font-mono text-xs whitespace-nowrap border-b-2 transition-colors flex items-center gap-2 shrink-0 outline-none" style="color:#06B6D4; border-bottom-color:#06B6D4">
+          <div class="w-2 h-2 rounded-sm animate-pulse indicator" style="background:#06B6D4"></div>
+          00. Intro
+        </button>
+
+        <button data-target="tab-01" onclick="showTab('tab-01')"
+          class="tab-btn px-3 py-4 font-mono text-xs whitespace-nowrap border-b-2 border-transparent text-slate-400 transition-colors flex items-center gap-2 shrink-0 outline-none">
+          <div class="w-2 h-2 rounded-sm animate-pulse indicator hidden" style="background:#06B6D4"></div>
+          01. Victory
+        </button>
+
+        <button data-target="tab-02" onclick="showTab('tab-02')"
+          class="tab-btn px-3 py-4 font-mono text-xs whitespace-nowrap border-b-2 border-transparent text-slate-400 transition-colors flex items-center gap-2 shrink-0 outline-none">
+          <div class="w-2 h-2 rounded-sm animate-pulse indicator hidden" style="background:#06B6D4"></div>
+          02. Intelligence War
+        </button>
+
+        <button data-target="tab-03" onclick="showTab('tab-03')"
+          class="tab-btn px-3 py-4 font-mono text-xs whitespace-nowrap border-b-2 border-transparent text-slate-400 transition-colors flex items-center gap-2 shrink-0 outline-none">
+          <div class="w-2 h-2 rounded-sm animate-pulse indicator hidden" style="background:#06B6D4"></div>
+          03. Mass Production
+        </button>
+
+        <button data-target="tab-04" onclick="showTab('tab-04')"
+          class="tab-btn px-3 py-4 font-mono text-xs whitespace-nowrap border-b-2 border-transparent text-slate-400 transition-colors flex items-center gap-2 shrink-0 outline-none">
+          <div class="w-2 h-2 rounded-sm animate-pulse indicator hidden" style="background:#06B6D4"></div>
+          04. Air War
+        </button>
+
+        <button data-target="tab-05" onclick="showTab('tab-05')"
+          class="tab-btn px-3 py-4 font-mono text-xs whitespace-nowrap border-b-2 border-transparent text-slate-400 transition-colors flex items-center gap-2 shrink-0 outline-none">
+          <div class="w-2 h-2 rounded-sm animate-pulse indicator hidden" style="background:#06B6D4"></div>
+          05. Attrition Crisis
+        </button>
+
+        <button data-target="tab-06" onclick="showTab('tab-06')"
+          class="tab-btn px-3 py-4 font-mono text-xs whitespace-nowrap border-b-2 border-transparent text-slate-400 transition-colors flex items-center gap-2 shrink-0 outline-none">
+          <div class="w-2 h-2 rounded-sm animate-pulse indicator hidden" style="background:#06B6D4"></div>
+          06. Soviet Rebound
+        </button>
+
+        <button data-target="tab-07" onclick="showTab('tab-07')"
+          class="tab-btn px-3 py-4 font-mono text-xs whitespace-nowrap border-b-2 border-transparent text-slate-400 transition-colors flex items-center gap-2 shrink-0 outline-none">
+          <div class="w-2 h-2 rounded-sm animate-pulse indicator hidden" style="background:#06B6D4"></div>
+          07. Command
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Tab panels -->
+  <main class="pt-16 flex-grow">
+
+    <!-- TAB 00: Hero -->
+    <div id="tab-00" class="tab-content block">
+      <section class="relative bg-grid-pattern" style="background-color:#0F172A">
+        <div class="absolute inset-0" style="background:rgba(15,23,42,0.8)"></div>
+        <div class="radar-sweep absolute" style="width:700px; height:700px; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; opacity:0.5;"></div>
+
+        <div class="relative z-10 flex flex-col items-center justify-center text-center px-6" style="min-height:calc(100vh - 4rem)">
+          <div class="glass font-mono text-xs px-4 py-2 mb-6 animate-on-scroll" style="color:#06B6D4; letter-spacing:0.15em">
+            [ WORLD WAR II — HISTORICAL ANALYSIS ]
+          </div>
+
+          <h1 class="font-bold mb-4 animate-on-scroll" style="font-size:clamp(2rem,5vw,3.5rem); line-height:1.1">
+            <span class="typewriter" style="color:#F8FAFC">Why the Allies Won</span>
+          </h1>
+
+          <p class="text-slate-300 mb-8 max-w-xl animate-on-scroll" style="font-size:1.05rem; line-height:1.6">
+            Richard Overy's landmark analysis of how seven decisive factors — intelligence, production, air power, and leadership — turned potential into victory against all odds.
+          </p>
+
+          <button onclick="showTab('tab-01')"
+            class="glass font-mono text-sm px-6 py-3 animate-on-scroll transition-all"
+            style="border:1px solid #06B6D4; color:#06B6D4; border-radius:0.5rem"
+            onmouseover="this.style.background='rgba(6,182,212,0.15)'" onmouseout="this.style.background=''">
+            EXPLORE THE ANALYSIS →
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 01: Anatomy of Victory -->
+    <div id="tab-01" class="tab-content hidden">
+      <section class="px-6 py-4 max-w-7xl mx-auto w-full">
+        <div class="font-mono text-xs mb-2 animate-on-scroll" style="color:#06B6D4; letter-spacing:0.1em">01 / ANATOMY OF VICTORY</div>
+        <h2 class="text-2xl font-bold mb-4 animate-on-scroll">Decoding Victory: Inevitability vs. Contingency</h2>
+
+        <div class="grid gap-4 animate-on-scroll" style="grid-template-columns:2fr 1fr">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Many historians argue victory was inevitable after December 1941 due to overwhelming Allied advantages in wealth, manpower, and resources.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Richard Overy rejects economic determinism — victory required actively translating raw potential into combat effectiveness.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">The conflict was fundamentally a moral, political, technical, and organizational contest — not merely an arithmetic of resources.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">In early 1942, the Axis still controlled vast resources and held significant operational momentum across every theater.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <div class="glass p-4 text-center">
+              <div class="font-bold mb-1" style="font-size:1.8rem; color:#06B6D4; line-height:1.1">Early 1942</div>
+              <div class="text-slate-400 text-xs font-mono mt-1 leading-snug">Germany controlled nearly all continental European resources — Allied victory was far from preordained</div>
+            </div>
+            <div class="glass p-4 flex-1" style="border-left:4px solid #E11D48">
+              <p class="text-slate-300 text-sm italic leading-relaxed mb-2">"On the face of things, no rational man in early 1942 would have guessed at the eventual outcome of the war."</p>
+              <div class="font-mono text-xs" style="color:#E11D48">— Richard Overy</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-4 animate-on-scroll">
+          <button onclick="showTab('tab-02')" class="font-mono text-sm flex items-center gap-2 transition-colors" style="color:#06B6D4">
+            NEXT: INTELLIGENCE WAR
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 02: Intelligence War -->
+    <div id="tab-02" class="tab-content hidden">
+      <section class="px-6 py-4 max-w-7xl mx-auto w-full">
+        <div class="font-mono text-xs mb-2 animate-on-scroll" style="color:#06B6D4; letter-spacing:0.1em">02 / INTELLIGENCE WAR</div>
+        <h2 class="text-2xl font-bold mb-4 animate-on-scroll">Enigma and the Dilemma of Strategic Restraint</h2>
+
+        <div class="grid gap-4 animate-on-scroll" style="grid-template-columns:2fr 1fr">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">The Allies successfully decrypted German Enigma communications, revealing precise U-boat locations during the critical Battle of the Atlantic.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Exploiting intelligence posed a fundamental dilemma: acting directly on it risked exposing the source and prompting Germany to upgrade their codes.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">To protect their secret, the Allies exercised "strategic restraint" — using data primarily to route merchant convoys around wolfpacks, not to hunt U-boats directly.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">A German procedural flaw — reusing "inner settings" on even calendar days — allowed Allies to decrypt messages 8 hours faster on those days.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <div class="glass p-4 text-center">
+              <div class="font-bold mb-1" style="font-size:3rem; color:#06B6D4; line-height:1">40%</div>
+              <div class="text-slate-400 text-xs font-mono mt-1 leading-snug">of potential Allied merchant shipping losses prevented directly by Enigma intelligence</div>
+            </div>
+            <div class="glass p-4 flex-1" style="border-left:4px solid #E11D48">
+              <p class="text-slate-300 text-sm italic leading-relaxed mb-2">"The source must never be jeopardized by carrying out a tactical operation which might arouse the enemy's suspicion."</p>
+              <div class="font-mono text-xs" style="color:#E11D48">— British Admiralty Directive</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-4 animate-on-scroll">
+          <button onclick="showTab('tab-03')" class="font-mono text-sm flex items-center gap-2 transition-colors" style="color:#06B6D4">
+            NEXT: MASS PRODUCTION
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 03: Mass Production -->
+    <div id="tab-03" class="tab-content hidden">
+      <section class="px-6 py-4 max-w-7xl mx-auto w-full">
+        <div class="font-mono text-xs mb-2 animate-on-scroll" style="color:#06B6D4; letter-spacing:0.1em">03 / MASS PRODUCTION ENGINE</div>
+        <h2 class="text-2xl font-bold mb-4 animate-on-scroll">Standardization vs. Artisanal Complexity</h2>
+
+        <div class="grid gap-4 animate-on-scroll" style="grid-template-columns:2fr 1fr">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">The Allies triumphed via "American and Soviet productionism" — standardizing weapons for long, uninterrupted mass-production runs at maximum volume.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">The Soviet Union performed a miraculous industrial feat: physically relocating entire factories and workforces east of the Urals to escape the German advance.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Germany's economy remained highly bureaucratized and tied to inefficient craft manufacturing traditions — the opposite of Allied standardization.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">German leaders demanded constant design modifications and prioritized sophisticated, custom-built weaponry over high-volume output — sabotaging their own production lines.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <div class="glass p-4">
+              <div class="font-mono text-xs mb-3" style="color:#06B6D4">Aircraft variants in production</div>
+              <div class="flex flex-col gap-2">
+                <div>
+                  <div class="font-mono text-xs text-slate-400 mb-1">Germany</div>
+                  <div class="h-5 rounded" style="background:rgba(225,29,72,0.5); border:1px solid rgba(225,29,72,0.6); width:100%"></div>
+                  <div class="font-mono text-xs mt-1" style="color:#E11D48">425 variants</div>
+                </div>
+                <div>
+                  <div class="font-mono text-xs text-slate-400 mb-1">Soviet Union</div>
+                  <div class="h-5 rounded" style="background:rgba(6,182,212,0.5); border:1px solid rgba(6,182,212,0.6); width:calc(5/425*100%)"></div>
+                  <div class="font-mono text-xs mt-1" style="color:#06B6D4">5 standardized types</div>
+                </div>
+              </div>
+            </div>
+            <div class="glass p-4 flex-1" style="border-left:4px solid #E11D48">
+              <p class="text-slate-300 text-sm italic leading-relaxed mb-2">"Factory for factory, the Allies made better use of their industry than their enemy."</p>
+              <div class="font-mono text-xs" style="color:#E11D48">— Richard Overy</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-4 animate-on-scroll">
+          <button onclick="showTab('tab-04')" class="font-mono text-sm flex items-center gap-2 transition-colors" style="color:#06B6D4">
+            NEXT: DOMINATING THE SKIES
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 04: Dominating the Skies -->
+    <div id="tab-04" class="tab-content hidden">
+      <section class="px-6 py-4 max-w-7xl mx-auto w-full">
+        <div class="font-mono text-xs mb-2 animate-on-scroll" style="color:#06B6D4; letter-spacing:0.1em">04 / DOMINATING THE SKIES</div>
+        <h2 class="text-2xl font-bold mb-4 animate-on-scroll">Strategic Bombing and the Air War</h2>
+
+        <div class="grid gap-4 animate-on-scroll" style="grid-template-columns:2fr 1fr">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">The British and Americans adopted a "general air strategy" simultaneously pursuing strategic bombing, air defense, and aero-naval cooperation.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Allied bombing forced German industry to frantically disperse factories, severely disrupting their belated efforts to adopt mass production.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Strategic attacks on German synthetic oil plants completely devastated Luftwaffe fuel supplies, grounding planes precisely when they were needed most.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">The constant bombing threat forced Germany to divert massive resources to homeland air defense, severely weakening frontline combat capabilities.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <div class="glass p-4">
+              <div class="font-mono text-xs mb-2" style="color:#06B6D4">Luftwaffe fuel output — 1944</div>
+              <svg viewBox="0 0 180 72" class="w-full">
+                <text x="8" y="12" font-family="Fira Code" font-size="8" fill="#94a3b8">H1 1944</text>
+                <rect x="8" y="16" width="120" height="14" rx="2" fill="rgba(6,182,212,0.3)" stroke="#06B6D4" stroke-width="0.5"/>
+                <text x="133" y="27" font-family="Fira Code" font-size="8" fill="#06B6D4">889k t</text>
+                <text x="8" y="46" font-family="Fira Code" font-size="8" fill="#94a3b8">H2 1944</text>
+                <rect x="8" y="50" width="19.7" height="14" rx="2" fill="rgba(225,29,72,0.3)" stroke="#E11D48" stroke-width="0.5"/>
+                <text x="33" y="61" font-family="Fira Code" font-size="8" fill="#E11D48">146k t  ↓84%</text>
+              </svg>
+            </div>
+            <div class="glass p-4 flex-1" style="border-left:4px solid #E11D48">
+              <p class="text-slate-300 text-sm italic leading-relaxed mb-2">"The Second World War in Europe was, economically speaking, an air war."</p>
+              <div class="font-mono text-xs" style="color:#E11D48">— Phillips O'Brien</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-4 animate-on-scroll">
+          <button onclick="showTab('tab-05')" class="font-mono text-sm flex items-center gap-2 transition-colors" style="color:#06B6D4">
+            NEXT: ATTRITION CRISIS
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 05: Attrition Crisis -->
+    <div id="tab-05" class="tab-content hidden">
+      <section class="px-6 py-4 max-w-7xl mx-auto w-full">
+        <div class="font-mono text-xs mb-2 animate-on-scroll" style="color:#06B6D4; letter-spacing:0.1em">05 / THE ATTRITION CRISIS</div>
+        <h2 class="text-2xl font-bold mb-4 animate-on-scroll">Pilot Training and the Luftwaffe's Collapse</h2>
+
+        <div class="grid gap-4 animate-on-scroll" style="grid-template-columns:2fr 1fr">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">The Luftwaffe's collapse was driven primarily by a human capital crisis — a catastrophic shortage of well-trained fighter pilots, not just machines.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Allied pilots trained in secure global hinterlands (the US and British Empire); German programs collapsed under fuel shortages and frontline pressures.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">The disparity created a vicious cycle: undertrained German pilots suffered massive attrition and soaring accident rates against highly trained Allied escorts.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Fewer experienced pilots meant fewer trainers, which produced even less-trained pilots — the cycle accelerated the Luftwaffe's institutional collapse.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <div class="glass p-4">
+              <div class="font-mono text-xs mb-3" style="color:#06B6D4">Training hours — mid-1944</div>
+              <div class="flex items-end justify-around gap-4 px-4" style="height:80px">
+                <div class="flex flex-col items-center gap-1 flex-1">
+                  <div class="w-full rounded-t" style="height:22px; background:rgba(225,29,72,0.6); border:1px solid #E11D48"></div>
+                  <div class="font-mono text-xs" style="color:#E11D48">110h</div>
+                  <div class="font-mono text-xs text-slate-500">GER</div>
+                </div>
+                <div class="flex flex-col items-center gap-1 flex-1">
+                  <div class="w-full rounded-t" style="height:80px; background:rgba(6,182,212,0.6); border:1px solid #06B6D4"></div>
+                  <div class="font-mono text-xs" style="color:#06B6D4">400h</div>
+                  <div class="font-mono text-xs text-slate-500">ALLY</div>
+                </div>
+              </div>
+            </div>
+            <div class="glass p-4 flex-1" style="border-left:4px solid #E11D48">
+              <p class="text-slate-300 text-sm italic leading-relaxed mb-2">"The deterioration of quality of German pilots appears to be the most important single cause of the defeat of the German Air Force."</p>
+              <div class="font-mono text-xs" style="color:#E11D48">— US Strategic Bombing Survey</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-4 animate-on-scroll">
+          <button onclick="showTab('tab-06')" class="font-mono text-sm flex items-center gap-2 transition-colors" style="color:#06B6D4">
+            NEXT: SOVIET REBOUND
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 06: Soviet Rebound -->
+    <div id="tab-06" class="tab-content hidden">
+      <section class="px-6 py-4 max-w-7xl mx-auto w-full">
+        <div class="font-mono text-xs mb-2 animate-on-scroll" style="color:#06B6D4; letter-spacing:0.1em">06 / THE SOVIET REBOUND</div>
+        <h2 class="text-2xl font-bold mb-4 animate-on-scroll">Deep War and the Great Patriotic War</h2>
+
+        <div class="grid gap-4 animate-on-scroll" style="grid-template-columns:2fr 1fr">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">After the disasters of Barbarossa, the USSR faced extreme industrial, agricultural, and manpower shortages — and nonetheless reversed the tide within months.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Stalin shifted messaging from Communist ideology to traditional Russian patriotism, rebranding the conflict as the "Great Patriotic War" to mobilize the population for total war.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">The regime strategically revived the previously persecuted Russian Orthodox Church to boost morale — allowing priests to bless soldiers going into battle.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Despite terrible attrition, the Red Air Force overcame the Luftwaffe through sheer volume — aircraft production vastly outstripped German output month after month.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <div class="glass p-4 text-center">
+              <div class="font-mono text-xs mb-2" style="color:#06B6D4">Troop ratio — Battle of Moscow</div>
+              <div class="font-bold" style="font-size:1.4rem; color:#E11D48; line-height:1.2">1:1.3</div>
+              <div class="text-slate-400 text-xs font-mono mb-2">German advantage (initial)</div>
+              <div class="text-slate-500 text-xs mb-1">↓ 5 months later ↓</div>
+              <div class="font-bold" style="font-size:1.4rem; color:#06B6D4; line-height:1.2">1.8:1</div>
+              <div class="text-slate-400 text-xs font-mono">Soviet superiority</div>
+            </div>
+            <div class="glass p-4 flex-1" style="border-left:4px solid #E11D48">
+              <p class="text-slate-300 text-sm italic leading-relaxed mb-2">"He who comes to us with the sword, shall perish by the sword. On that the Russian land has stood, and will stand."</p>
+              <div class="font-mono text-xs" style="color:#E11D48">— Soviet propaganda, invoking historic Russian heroes</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-4 animate-on-scroll">
+          <button onclick="showTab('tab-07')" class="font-mono text-sm flex items-center gap-2 transition-colors" style="color:#06B6D4">
+            NEXT: COMMAND &amp; RESILIENCE
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 07: Command and Resilience -->
+    <div id="tab-07" class="tab-content hidden">
+      <section class="px-6 py-4 max-w-7xl mx-auto w-full">
+        <div class="font-mono text-xs mb-2 animate-on-scroll" style="color:#06B6D4; letter-spacing:0.1em">07 / COMMAND &amp; RESILIENCE</div>
+        <h2 class="text-2xl font-bold mb-4 animate-on-scroll">Delegation vs. Hubris</h2>
+
+        <div class="grid gap-4 animate-on-scroll" style="grid-template-columns:2fr 1fr">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Managing a global total war required national leaders to delegate immense responsibility to professional, meritocratic military staffs who understood the operational realities.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Roosevelt, Churchill, and Stalin increasingly stepped back from tactical control to allow military professionals to direct the war effort — a discipline Hitler never managed.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Stalin reduced the power of political commissars within the Red Army, granting military officers genuine command authority and restoring traditional ranks.</p>
+            </div>
+            <div class="glass p-4">
+              <p class="text-slate-300 text-sm leading-relaxed">Hitler, after early successes, surrounded himself with lackeys and disastrously micromanaged operations down to the tactical level — hubris that multiplied every error.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <div class="glass p-4 text-center">
+              <div class="font-bold mb-1" style="font-size:3rem; color:#06B6D4; line-height:1">200+</div>
+              <div class="text-slate-400 text-xs font-mono mt-1 leading-snug">new Red Army divisions formed after Barbarossa — German intelligence had estimated a maximum of 50</div>
+            </div>
+            <div class="glass p-4 flex-1" style="border-left:4px solid #E11D48">
+              <p class="text-slate-300 text-sm italic leading-relaxed mb-2">"Hitler's will and unshakable faith in his personal destiny played a key role in both the rise and fall of the Third Reich."</p>
+              <div class="font-mono text-xs" style="color:#E11D48">— Historical assessment</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-4 animate-on-scroll">
+          <button onclick="showTab('tab-00')" class="font-mono text-sm flex items-center gap-2 transition-colors" style="color:#06B6D4">
+            ← RETURN TO START
+          </button>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- GiC active tour state — hidden, read by Gemini in Chrome -->
+  <div id="gic-active-tour" style="position:absolute; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none;">No tour active. User has not selected a tour yet.</div>
+
+  <!-- Tour selector button -->
+  <button id="tour-trigger-btn" onclick="var p=document.getElementById('tour-panel'); p.style.display=p.style.display==='none'?'block':'none';"
+    style="position:fixed; bottom:1.5rem; left:1.5rem; z-index:1001;
+      background:rgba(15,23,42,0.9); border:1px solid #06b6d4; color:#06b6d4;
+      font-family:'Fira Code',monospace; font-size:0.75rem; padding:0.4rem 0.75rem;
+      border-radius:0.375rem; cursor:pointer; opacity:0.7; transition:opacity 0.2s;"
+    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">TOUR</button>
+
+  <!-- Tour selector panel -->
+  <div id="tour-panel" style="display:none; position:fixed; bottom:4.5rem; left:1.5rem;
+    width:320px; z-index:1000; background:rgba(30,41,59,0.95); backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.08);
+    border-radius:0.75rem; padding:1.25rem 1.5rem; color:#f8fafc;
+    font-family:'Inter',sans-serif; font-size:0.875rem; line-height:1.6;
+    box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+
+    <button onclick="document.getElementById('tour-panel').style.display='none'"
+      style="position:absolute; top:0.75rem; right:1rem; background:none; border:none;
+      color:#94a3b8; font-size:1.1rem; cursor:pointer; line-height:1;">×</button>
+
+    <div style="font-family:'Fira Code',monospace; font-size:0.7rem; color:#06b6d4; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.25rem;">
+      GiC Guided Tours
+    </div>
+    <p style="color:#64748b; font-size:0.72rem; margin-bottom:1rem; line-height:1.4;">
+      Select a tour — Gemini in Chrome will guide you through the content.
+    </p>
+
+    <div style="display:flex; flex-direction:column; gap:0.5rem;">
+      <button class="tour-option-btn" data-tour="overview" onclick="selectTour('overview')"
+        style="text-align:left; background:rgba(30,41,59,0.6); border:1px solid rgba(255,255,255,0.08);
+        border-radius:0.5rem; padding:0.75rem 1rem; cursor:pointer; transition:border-color 0.2s, color 0.2s; color:#94a3b8;">
+        <div style="font-family:'Fira Code',monospace; font-size:0.75rem; margin-bottom:0.2rem;">Overview</div>
+        <div style="font-size:0.72rem; color:#64748b; line-height:1.3;">A guided walk through each tab with one extra detail per stop that goes beyond what's on screen.</div>
+      </button>
+      <!-- Additional tours can be added here -->
+    </div>
+  </div>
+
+  <!-- AI hint button -->
+  <button onclick="var p=document.getElementById('ai-panel'); p.style.display=p.style.display==='none'?'block':'none';"
+    style="position:fixed; bottom:1.5rem; right:1.5rem; z-index:1001;
+      background:rgba(15,23,42,0.9); border:1px solid #06b6d4; color:#06b6d4;
+      font-family:'Fira Code',monospace; font-size:0.75rem; padding:0.4rem 0.75rem;
+      border-radius:0.375rem; cursor:pointer; opacity:0.7; transition:opacity 0.2s;"
+    onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">AI</button>
+
+  <!-- AI hint panel -->
+  <div id="ai-panel" style="display:none; position:fixed; bottom:4.5rem; right:1.5rem;
+    width:400px; z-index:1000; background:rgba(30,41,59,0.95); backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.08);
+    border-radius:0.75rem; padding:1.25rem 1.5rem; color:#f8fafc;
+    font-family:'Inter',sans-serif; font-size:0.875rem; line-height:1.6;
+    box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+
+    <button onclick="document.getElementById('ai-panel').style.display='none'"
+      style="position:absolute; top:0.75rem; right:1rem; background:none; border:none;
+      color:#94a3b8; font-size:1.1rem; cursor:pointer; line-height:1;">×</button>
+
+    <button id="copy-context-btn" onclick="copyAIContext()"
+      style="position:absolute; top:0.75rem; right:2.5rem; background:none; border:1px solid rgba(6,182,212,0.3);
+      color:#06b6d4; font-family:'Fira Code',monospace; font-size:0.65rem; padding:0.15rem 0.4rem;
+      border-radius:0.25rem; cursor:pointer; opacity:0.7; transition:opacity 0.2s; line-height:1.4;"
+      onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">copy</button>
+
+    <div style="font-family:'Fira Code',monospace; font-size:0.7rem; color:#06b6d4; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.75rem;">
+      AI Context — Why the Allies Won
+    </div>
+
+    <p style="color:#cbd5e1; font-size:0.8rem; margin-bottom:1rem; line-height:1.5;">
+      This reference page explores the complex, contingent factors behind Allied victory in World War II, drawing on Richard Overy's analysis. The core argument: economic advantages were necessary but insufficient — the Allies won by out-organizing, out-producing, and out-adapting the Axis across seven decisive dimensions. Victory was not inevitable in 1942.
+    </p>
+
+    <div style="font-family:'Fira Code',monospace; font-size:0.7rem; color:#06b6d4; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.5rem;">
+      Tab Summaries
+    </div>
+    <ul style="color:#94a3b8; font-size:0.78rem; margin-bottom:1rem; padding-left:0; list-style:none;">
+      <li style="margin-bottom:0.35rem;"><span style="font-family:'Fira Code',monospace; color:#06b6d4; margin-right:0.5rem;">01</span>Anatomy of Victory — Overy argues victory required active organizational transformation, not just economic size.</li>
+      <li style="margin-bottom:0.35rem;"><span style="font-family:'Fira Code',monospace; color:#06b6d4; margin-right:0.5rem;">02</span>Intelligence War — Strategic restraint protected Enigma; 40% of shipping losses were prevented as a result.</li>
+      <li style="margin-bottom:0.35rem;"><span style="font-family:'Fira Code',monospace; color:#06b6d4; margin-right:0.5rem;">03</span>Mass Production — 5 standardized Soviet aircraft types vs. 425 German variants determined industrial efficiency.</li>
+      <li style="margin-bottom:0.35rem;"><span style="font-family:'Fira Code',monospace; color:#06b6d4; margin-right:0.5rem;">04</span>Dominating the Skies — Oil plant bombing cut Luftwaffe fuel by 84% in H2 1944, grounding the air force.</li>
+      <li style="margin-bottom:0.35rem;"><span style="font-family:'Fira Code',monospace; color:#06b6d4; margin-right:0.5rem;">05</span>Attrition Crisis — 110h vs. 400h of pilot training created a vicious cycle that collapsed the Luftwaffe from within.</li>
+      <li style="margin-bottom:0.35rem;"><span style="font-family:'Fira Code',monospace; color:#06b6d4; margin-right:0.5rem;">06</span>Soviet Rebound — Factory relocation and the Great Patriotic War narrative turned near-collapse into numerical superiority.</li>
+      <li style="margin-bottom:0.35rem;"><span style="font-family:'Fira Code',monospace; color:#06b6d4; margin-right:0.5rem;">07</span>Command &amp; Resilience — Allies delegated to meritocratic military staffs; Hitler micromanaged and multiplied every error.</li>
+    </ul>
+
+    <div style="font-family:'Fira Code',monospace; font-size:0.7rem; color:#06b6d4; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.5rem;">
+      Suggested Questions
+    </div>
+    <ol style="color:#94a3b8; font-size:0.78rem; padding-left:1.2rem; margin:0;">
+      <li style="margin-bottom:0.35rem;">How did the "two-day cycle" procedural flaw help the Allies break Enigma codes faster?</li>
+      <li style="margin-bottom:0.35rem;">Why does Overy argue Allied victory was not inevitable in early 1942?</li>
+      <li style="margin-bottom:0.35rem;">What were the key differences between German and Soviet aircraft production methods?</li>
+      <li style="margin-bottom:0.35rem;">How did the drop in German pilot training hours affect the air war in 1944?</li>
+      <li style="margin-bottom:0.35rem;">How did Stalin's leadership style change after the initial disasters of Operation Barbarossa?</li>
+    </ol>
+  </div>
+
+  <script>
+    // IntersectionObserver fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); });
+    }, { threshold: 0.1 });
+
+    // Tab switching
+    function showTab(id) {
+      document.querySelectorAll('.tab-content').forEach(t => {
+        t.classList.remove('block');
+        t.classList.add('hidden');
+      });
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        const isActive = b.dataset.target === id;
+        if (isActive) {
+          b.style.color = '#06B6D4';
+          b.style.borderBottomColor = '#06B6D4';
+        } else {
+          b.style.color = '';
+          b.style.borderBottomColor = 'transparent';
+        }
+        const ind = b.querySelector('.indicator');
+        if (ind) ind.classList.toggle('hidden', !isActive);
+      });
+      const panel = document.getElementById(id);
+      panel.classList.remove('hidden');
+      panel.classList.add('block');
+      panel.querySelectorAll('.animate-on-scroll').forEach(el => {
+        el.classList.remove('is-visible');
+        setTimeout(() => observer.observe(el), 50);
+      });
+    }
+
+    // Observe initial tab elements
+    document.querySelectorAll('#tab-00 .animate-on-scroll').forEach(el => observer.observe(el));
+
+    // Tour selection
+    function selectTour(tourId) {
+      const manifest = JSON.parse(document.getElementById('ai-manifest').textContent);
+      const tour = manifest.tours[tourId];
+      if (!tour) return;
+
+      // Write full tour block to hidden GiC div
+      document.getElementById('gic-active-tour').textContent = JSON.stringify(tour, null, 2);
+
+      // Update TOUR button
+      const tourBtn = document.getElementById('tour-trigger-btn');
+      tourBtn.textContent = 'TOUR ●';
+      tourBtn.style.opacity = '1';
+      tourBtn.onmouseout = null; // keep full opacity once a tour is active
+
+      // Highlight selected option, unhighlight others
+      document.querySelectorAll('.tour-option-btn').forEach(btn => {
+        const isActive = btn.dataset.tour === tourId;
+        btn.style.borderColor = isActive ? '#06B6D4' : 'rgba(255,255,255,0.08)';
+        btn.style.color = isActive ? '#06B6D4' : '#F8FAFC';
+      });
+
+      // Close the panel
+      document.getElementById('tour-panel').style.display = 'none';
+    }
+
+    // Copy AI context to clipboard
+    function copyAIContext() {
+      const manifest = JSON.parse(document.getElementById('ai-manifest').textContent);
+      const lines = [
+        `AI CONTEXT: ${manifest.topic}`,
+        '',
+        manifest.summary,
+        '',
+        'TAB SUMMARIES:',
+        ...manifest.tabs.map(t => `${t.label}: ${t.summary}`),
+        '',
+        'SUGGESTED QUESTIONS:',
+        ...manifest.suggested_questions.map((q, i) => `${i + 1}. ${q}`)
+      ];
+      navigator.clipboard.writeText(lines.join('\n')).then(() => {
+        const btn = document.getElementById('copy-context-btn');
+        btn.textContent = 'copied!';
+        btn.style.color = '#22D3EE';
+        setTimeout(() => { btn.textContent = 'copy'; btn.style.color = '#06b6d4'; }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topological Proofs Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        canvas { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 h-screen flex flex-col overflow-hidden">
+
+    <header class="bg-white border-b border-slate-200 px-6 pt-6 pb-0 flex flex-col gap-6 shrink-0">
+        <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Topological Proofs Visualizer</h1>
+        <div class="flex gap-8 border-b-2 border-transparent">
+            <button onclick="switchTab('bw')" id="tab-bw" class="pb-3 text-lg font-semibold text-blue-600 border-b-2 border-blue-600 transition-colors">Bolzano-Weierstrass</button>
+            <button onclick="switchTab('mct')" id="tab-mct" class="pb-3 text-lg font-semibold text-slate-500 hover:text-slate-800 transition-colors">Monotone Convergence</button>
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden">
+        
+        <div class="flex-1 bg-slate-100 p-8 flex items-center justify-center">
+            <div class="w-full max-w-5xl aspect-[5/3] bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative">
+                <canvas id="vizCanvas"></canvas>
+            </div>
+        </div>
+
+        <aside class="w-[400px] bg-white border-l border-slate-200 flex flex-col shrink-0">
+            <div class="p-8 flex-1 flex flex-col">
+                <div class="uppercase tracking-widest text-sm font-bold text-slate-400 mb-2">Step <span id="stepCounter">1 / 4</span></div>
+                <h2 id="stepTitle" class="text-2xl font-bold text-slate-800 mb-4 leading-tight"></h2>
+                <p id="stepDesc" class="text-slate-600 text-lg leading-relaxed flex-1"></p>
+                
+                <div class="flex gap-4 mt-8 pt-6 border-t border-slate-100">
+                    <button onclick="prevStep()" id="prevBtn" class="flex-1 py-3 px-4 rounded-lg font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
+                    <button onclick="nextStep()" id="nextBtn" class="flex-1 py-3 px-4 rounded-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // --- Data & Geometry Definitions ---
+        const VIRTUAL_W = 1000;
+        const VIRTUAL_H = 600;
+        
+        // BW Geometry
+        const bwPoints = [];
+        const clusterCenter = { x: 650, y: 350 };
+        // Generate infinite (dense) tail
+        for(let i = 0; i < 450; i++) {
+            let angle = Math.random() * Math.PI * 2;
+            let radius = Math.random() * 50; 
+            bwPoints.push({ x: clusterCenter.x + Math.cos(angle)*radius, y: clusterCenter.y + Math.sin(angle)*radius });
+        }
+        // Generate scattered sequence points
+        for(let i = 0; i < 50; i++) {
+            bwPoints.push({ x: 250 + Math.random()*500, y: 150 + Math.random()*300 });
+        }
+        
+        const bwCovers = [
+            { x: 350, y: 250, r: 200 },
+            { x: 550, y: 200, r: 220 },
+            { x: 300, y: 450, r: 180 },
+            { x: 700, y: 450, r: 200 },
+            { x: 600, y: 380, r: 240 }, // The winning ball capturing the cluster
+            { x: 450, y: 350, r: 200 }
+        ];
+
+        // MCT Geometry
+        const mctPoints = [];
+        const S = 800;
+        for(let i = 1; i <= 15; i++) {
+            mctPoints.push(S - 550 / Math.pow(i, 0.8)); // Monotonically increasing toward S
+        }
+        const mctN = 5; // The finite subcover max index
+
+        // --- State Machine ---
+        const stories = {
+            bw: [
+                {
+                    title: "The Bounded Sequence",
+                    desc: "Consider an infinite sequence of points bounded within a compact space (the gray box). Because it is bounded, it cannot escape to infinity."
+                },
+                {
+                    title: "The Finite Cover",
+                    desc: "We cover the entire space with an arbitrary collection of open balls. Because the space is compact, we know we can do this using only a finite number of balls."
+                },
+                {
+                    title: "The Pigeonhole Trap",
+                    desc: "We have an infinite number of points distributed among a finite number of balls. By the Pigeonhole Principle, at least one of these balls MUST contain an infinite number of points."
+                },
+                {
+                    title: "The Epsilon Trap",
+                    desc: "This infinite cluster reveals our accumulation point. An epsilon-ball drawn around this point physically traps the infinite tail, proving the sequence contains a convergent subsequence."
+                }
+            ],
+            mct: [
+                {
+                    title: "The Monotone Sequence",
+                    desc: "We have an infinite sequence (blue points) that is monotonically increasing and bounded. Let S be its supremum."
+                },
+                {
+                    title: "Covering the Supremum",
+                    desc: "We draw an arbitrary open neighborhood V around our limit candidate, S. Our goal is to prove the sequence's tail eventually gets permanently trapped inside V."
+                },
+                {
+                    title: "The Russian Doll Cover",
+                    desc: "For every point in the sequence, we draw an open ray stretching from negative infinity up to that point. Because the sequence is monotone, these rays are perfectly nested."
+                },
+                {
+                    title: "The Finite Subcover",
+                    desc: "Together with V, these rays cover the compact space. We extract a finite subcover. Because they are nested, the finite list of rays collapses down to just the single largest ray, U_N."
+                },
+                {
+                    title: "The Inescapable Trap",
+                    desc: "Our space is now covered entirely by U_N and V. Since any subsequent point x_m (where m > N) is mathematically greater than x_N, it cannot fit inside U_N. It is forced to live inside V forever."
+                }
+            ]
+        };
+
+        let currentTab = 'bw';
+        let currentStep = 0;
+
+        // --- Canvas Setup ---
+        const canvas = document.getElementById('vizCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            // Setup high-DPI canvas
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            
+            // Apply coordinate system scaling
+            const scaleX = rect.width / VIRTUAL_W;
+            const scaleY = rect.height / VIRTUAL_H;
+            const scale = Math.min(scaleX, scaleY);
+            
+            const offsetX = (rect.width - VIRTUAL_W * scale) / 2;
+            const offsetY = (rect.height - VIRTUAL_H * scale) / 2;
+            
+            ctx.translate(offsetX, offsetY);
+            ctx.scale(scale, scale);
+            
+            render();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        // --- Drawing Logic ---
+        function render() {
+            ctx.clearRect(-1000, -1000, 3000, 3000);
+            if (currentTab === 'bw') drawBW(currentStep);
+            if (currentTab === 'mct') drawMCT(currentStep);
+        }
+
+        function drawBW(step) {
+            // Draw compact space bounding box
+            ctx.fillStyle = '#f1f5f9';
+            ctx.fillRect(200, 100, 600, 400);
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(200, 100, 600, 400);
+
+            // Step 1: All Covers
+            if (step === 1) {
+                bwCovers.forEach(c => {
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.r, 0, Math.PI*2);
+                    ctx.fillStyle = 'rgba(59, 130, 246, 0.1)';
+                    ctx.fill();
+                    ctx.strokeStyle = '#3b82f6';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                });
+            }
+
+            // Step 2 & 3: Pigeonhole Winner
+            if (step >= 2) {
+                bwCovers.forEach((c, index) => {
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.r, 0, Math.PI*2);
+                    if (index === 4) {
+                        ctx.fillStyle = 'rgba(16, 185, 129, 0.2)'; // Emerald winning ball
+                        ctx.strokeStyle = '#059669';
+                        ctx.lineWidth = 4;
+                    } else {
+                        ctx.fillStyle = 'rgba(203, 213, 225, 0.1)'; // Faded others
+                        ctx.strokeStyle = '#cbd5e1';
+                        ctx.lineWidth = 1;
+                    }
+                    ctx.fill();
+                    ctx.stroke();
+                });
+            }
+
+            // Step 3: Epsilon Trap
+            if (step === 3) {
+                ctx.beginPath();
+                ctx.arc(clusterCenter.x, clusterCenter.y, 60, 0, Math.PI*2);
+                ctx.fillStyle = 'rgba(225, 29, 72, 0.2)';
+                ctx.fill();
+                ctx.strokeStyle = '#e11d48';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+
+            // Draw Points
+            bwPoints.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, Math.PI*2);
+                ctx.fillStyle = step === 3 && Math.hypot(p.x - clusterCenter.x, p.y - clusterCenter.y) < 60 ? '#e11d48' : '#1e293b';
+                ctx.fill();
+            });
+        }
+
+        function drawMCT(step) {
+            const baseY = 450;
+            
+            // Base Line
+            ctx.beginPath();
+            ctx.moveTo(100, baseY);
+            ctx.lineTo(900, baseY);
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // Supremum S
+            ctx.fillStyle = '#e11d48';
+            ctx.fillRect(S - 2, baseY - 20, 4, 40);
+            ctx.font = 'bold 24px Inter';
+            ctx.fillText('S', S - 8, baseY - 35);
+
+            // Step 1: Neighborhood V
+            const vStart = 680;
+            if (step >= 1) {
+                ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+                ctx.fillRect(vStart, baseY - 80, 900 - vStart, 160);
+                ctx.strokeStyle = '#059669';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(vStart, baseY - 80);
+                ctx.lineTo(vStart, baseY + 80);
+                ctx.stroke();
+                ctx.fillStyle = '#059669';
+                ctx.fillText('V', vStart + 20, baseY - 95);
+            }
+
+            // Step 2: Russian Dolls U_n
+            if (step === 2) {
+                for(let i = 0; i < 6; i++) {
+                    let yOff = baseY + 30 + i * 20;
+                    let grad = ctx.createLinearGradient(100, 0, mctPoints[i], 0);
+                    grad.addColorStop(0, 'transparent');
+                    grad.addColorStop(1, 'rgba(59, 130, 246, 0.5)');
+                    
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(100, yOff, mctPoints[i] - 100, 15);
+                    ctx.fillStyle = '#2563eb';
+                    ctx.font = '14px Inter';
+                    ctx.fillText('U' + (i+1), 80, yOff + 12);
+                }
+            }
+
+            // Step 3 & 4: Finite Subcover U_N
+            if (step >= 3) {
+                let grad = ctx.createLinearGradient(100, 0, mctPoints[mctN], 0);
+                grad.addColorStop(0, 'transparent');
+                grad.addColorStop(1, 'rgba(59, 130, 246, 0.4)');
+                
+                ctx.fillStyle = grad;
+                ctx.fillRect(100, baseY + 30, mctPoints[mctN] - 100, 40);
+                ctx.strokeStyle = '#2563eb';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(mctPoints[mctN], baseY + 30);
+                ctx.lineTo(mctPoints[mctN], baseY + 70);
+                ctx.stroke();
+                
+                ctx.fillStyle = '#2563eb';
+                ctx.font = 'bold 20px Inter';
+                ctx.fillText('U_N', 60, baseY + 58);
+            }
+
+            // Sequence Points
+            for(let i = 0; i < mctPoints.length; i++) {
+                ctx.beginPath();
+                ctx.arc(mctPoints[i], baseY, 7, 0, Math.PI*2);
+                if (step === 4 && i > mctN) {
+                    ctx.fillStyle = '#e11d48'; // Highlight trapped points
+                } else {
+                    ctx.fillStyle = '#3b82f6';
+                }
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+        }
+
+        // --- UI Controllers ---
+        function updateUI() {
+            const story = stories[currentTab][currentStep];
+            document.getElementById('stepTitle').innerText = story.title;
+            document.getElementById('stepDesc').innerText = story.desc;
+            document.getElementById('stepCounter').innerText = `${currentStep + 1} / ${stories[currentTab].length}`;
+            
+            document.getElementById('prevBtn').disabled = currentStep === 0;
+            document.getElementById('nextBtn').disabled = currentStep === stories[currentTab].length - 1;
+            
+            render();
+        }
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            currentStep = 0;
+            
+            // Update Tab Styling
+            document.querySelectorAll('header button').forEach(btn => {
+                btn.classList.remove('text-blue-600', 'border-blue-600');
+                btn.classList.add('text-slate-500', 'border-transparent');
+            });
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.remove('text-slate-500', 'border-transparent');
+            activeBtn.classList.add('text-blue-600', 'border-blue-600');
+            
+            updateUI();
+        }
+
+        function nextStep() {
+            if (currentStep < stories[currentTab].length - 1) {
+                currentStep++;
+                updateUI();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                updateUI();
+            }
+        }
+
+        // Init
+        setTimeout(resizeCanvas, 0); // Allow DOM to paint
+        updateUI();
+
+    </script>
+</body>
+</html>

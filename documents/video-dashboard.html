@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Dashboard</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --surface3: #192238;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --orange: rgba(251,146,60,.9);
+    --purple: rgba(167,139,250,.9);
+    --shadow: 0 8px 24px rgba(0,0,0,.4);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* ── Header ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 40px 32px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+    max-width: 1380px;
+    margin: 0 auto;
+  }
+  .header-left h1 {
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 4px;
+  }
+  .header-left h1 span { color: var(--accent); }
+  .header-left p { color: var(--muted); font-size: .9rem; }
+  .trash-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 1.15rem;
+    line-height: 1;
+    padding: 8px 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: border-color .15s, color .15s, box-shadow .15s;
+    white-space: nowrap;
+  }
+  .trash-btn:hover { border-color: rgba(255,122,138,.4); color: var(--red); }
+  .trash-btn.drag-over {
+    border-color: var(--red);
+    box-shadow: 0 0 0 2px rgba(255,122,138,.28);
+    color: var(--red);
+  }
+  .trash-count {
+    background: rgba(255,122,138,.15);
+    border: 1px solid rgba(255,122,138,.3);
+    border-radius: 99px;
+    color: var(--red);
+    font-size: .65rem;
+    font-weight: 700;
+    font-family: var(--sans);
+    padding: 1px 7px;
+    min-width: 18px;
+    text-align: center;
+  }
+  .trash-wrap { position: relative; }
+  .trash-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.55);
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px;
+    min-width: 210px;
+    z-index: 100;
+  }
+  .trash-menu.open { display: flex; }
+  .tmenu-btn {
+    background: none;
+    border: none;
+    border-radius: 7px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: .84rem;
+    font-weight: 600;
+    padding: 9px 14px;
+    text-align: left;
+    transition: background .1s, color .1s;
+    white-space: nowrap;
+    width: 100%;
+  }
+  .tmenu-btn:hover { background: rgba(255,255,255,.06); color: var(--text); }
+  .tmenu-restore:hover { background: rgba(124,255,178,.08); color: var(--green); }
+  .tmenu-remove:hover  { background: rgba(255,122,138,.08); color: var(--red); }
+
+  /* ── Notebook filter ── */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px 32px 0;
+    max-width: 1380px;
+    margin: 0 auto;
+  }
+  .filter-label {
+    font-size: .72rem;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: .76rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    transition: border-color .15s, color .15s, background .15s;
+    user-select: none;
+  }
+  .chip:hover { color: var(--text); border-color: rgba(255,255,255,.22); }
+  .chip.active {
+    background: rgba(139,185,255,.12);
+    border-color: rgba(139,185,255,.35);
+    color: var(--accent);
+  }
+
+  /* ── Board ── */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    padding: 20px 32px 0;
+    max-width: 1380px;
+    margin: 0 auto;
+  }
+
+  /* ── Column ── */
+  .column {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .column.drag-over {
+    border-color: var(--col-color, var(--accent));
+    box-shadow: 0 0 0 1px var(--col-color, var(--accent));
+  }
+  .column[data-status="source_ready"] { --col-color: rgba(56,189,248,.9); }
+  .column[data-status="nlm"]        { --col-color: var(--purple); }
+  .column[data-status="downloaded"] { --col-color: var(--orange); }
+  .column[data-status="youtube"]    { --col-color: var(--green);  }
+  .column[data-status="published"]  { --col-color: rgba(251,207,232,.85); }
+
+  .col-header {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .col-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .col-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--col-color, var(--accent));
+    flex-shrink: 0;
+  }
+  .col-title {
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--col-color, var(--accent));
+  }
+  .col-count {
+    background: rgba(255,255,255,.07);
+    border-radius: 99px;
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--muted);
+    padding: 2px 8px;
+    min-width: 24px;
+    text-align: center;
+  }
+
+  .col-body {
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 80px;
+  }
+
+  /* ── Video card ── */
+  .vcard {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: grab;
+    user-select: none;
+    transition: border-color .12s, opacity .12s, transform .1s, box-shadow .12s;
+    position: relative;
+  }
+  .vcard:hover {
+    border-color: rgba(139,185,255,.22);
+    background: var(--surface3);
+    box-shadow: var(--shadow);
+  }
+  .vcard:active { cursor: grabbing; }
+  .vcard.dragging { opacity: .3; transform: scale(.97); }
+  .vcard.skip-yt { border-color: rgba(255,122,138,.2); }
+  .vcard.filtered-out { display: none; }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .vtitle {
+    font-size: .86rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+    letter-spacing: -.01em;
+  }
+  .skip-badge {
+    flex-shrink: 0;
+    background: rgba(255,122,138,.1);
+    border: 1px solid rgba(255,122,138,.25);
+    border-radius: 99px;
+    color: var(--red);
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    padding: 2px 7px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .nb-tag {
+    font-size: .72rem;
+    color: var(--muted);
+    margin-bottom: 0;
+    opacity: .7;
+  }
+  .nb-tag em { color: var(--accent); font-style: normal; opacity: .9; }
+  .playlist-tag { font-size: .72rem; color: var(--green); opacity: .8; margin-top: 1px; }
+
+  .card-foot {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .card-notes {
+    font-size: .72rem;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-bottom: 3px;
+  }
+  .artifact-id {
+    font-family: var(--mono);
+    font-size: .66rem;
+    color: rgba(139,185,255,.45);
+  }
+  .date-added {
+    font-size: .66rem;
+    color: rgba(255,255,255,.22);
+    margin-top: 2px;
+  }
+
+  /* ── Focus prompt badge ── */
+  .fp-badge {
+    flex-shrink: 0;
+    background: rgba(139,185,255,.08);
+    border: 1px solid rgba(139,185,255,.2);
+    border-radius: 99px;
+    color: rgba(139,185,255,.6);
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    padding: 2px 7px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: context-menu;
+  }
+
+  /* ── Context menu ── */
+  .ctx-menu {
+    position: fixed;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.55);
+    display: none;
+    flex-direction: column;
+    padding: 6px;
+    z-index: 200;
+    min-width: 190px;
+  }
+  .ctx-menu.open { display: flex; }
+  .ctx-btn {
+    background: none;
+    border: none;
+    border-radius: 7px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: .84rem;
+    font-weight: 600;
+    padding: 9px 14px;
+    text-align: left;
+    transition: background .1s, color .1s;
+    white-space: nowrap;
+    width: 100%;
+  }
+  .ctx-btn:hover { background: rgba(139,185,255,.08); color: var(--accent); }
+
+  /* ── Drop placeholder ── */
+  .drop-hint {
+    color: rgba(255,255,255,.12);
+    font-size: .75rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 20px 10px;
+    border: 1px dashed rgba(255,255,255,.08);
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Video <span>Dashboard</span></h1>
+    <p>Drag cards between columns to update pipeline status. Saved automatically.</p>
+  </div>
+  <div class="trash-wrap">
+    <button class="trash-btn" id="trashBtn" onclick="toggleTrashMenu()" title="Drag a card here to hide it">
+      🗑️<span class="trash-count" id="trashCount" style="display:none"></span>
+    </button>
+    <div class="trash-menu" id="trashMenu">
+      <button class="tmenu-btn tmenu-restore" onclick="restoreHidden()">↩ Restore <span id="tmenuCount"></span></button>
+      <button class="tmenu-btn tmenu-remove"  onclick="permanentlyRemove()">✕ Remove permanently</button>
+    </div>
+  </div>
+</header>
+
+<div class="filter-bar" id="filterBar"></div>
+<div class="board" id="board"></div>
+
+<script>
+/* ── Helpers ── */
+function formatDate(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${months[m-1]} ${d}`;
+}
+
+/* ── Default data (loaded from video-dashboard-data.json) ── */
+let DEFAULT_VIDEOS = [];
+
+const COLUMNS = [
+  { status: 'source_ready', label: 'Source Ready' },
+  { status: 'nlm',          label: 'In NLM'       },
+  { status: 'downloaded',   label: 'Downloaded'   },
+  { status: 'youtube',      label: 'YouTube'      },
+  { status: 'published',    label: 'Published'    },
+];
+
+const LS_KEY    = 'video-dashboard-v2';
+const LS_HIDDEN = 'video-dashboard-hidden';
+const LS_PERM   = 'video-dashboard-permanent';
+
+/* ── State ── */
+let statusOverrides    = {};         // { [title]: newStatus }
+let hiddenTitles       = new Set();  // dragged to trash — restorable
+let permanentlyDeleted = new Set();  // confirmed permanent removal
+let activeNotebook  = 'All';
+let draggedTitle    = null;
+
+/* ── Persistence ── */
+function loadOverrides() {
+  try { statusOverrides = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
+  catch { statusOverrides = {}; }
+}
+function saveOverrides() {
+  localStorage.setItem(LS_KEY, JSON.stringify(statusOverrides));
+}
+function loadHidden() {
+  try { hiddenTitles = new Set(JSON.parse(localStorage.getItem(LS_HIDDEN) || '[]')); }
+  catch { hiddenTitles = new Set(); }
+}
+function saveHidden() {
+  localStorage.setItem(LS_HIDDEN, JSON.stringify([...hiddenTitles]));
+}
+function loadPermanent() {
+  try { permanentlyDeleted = new Set(JSON.parse(localStorage.getItem(LS_PERM) || '[]')); }
+  catch { permanentlyDeleted = new Set(); }
+}
+function savePermanent() {
+  localStorage.setItem(LS_PERM, JSON.stringify([...permanentlyDeleted]));
+}
+function updateTrashCount() {
+  const n     = hiddenTitles.size;
+  const badge = document.getElementById('trashCount');
+  const btn   = document.getElementById('trashBtn');
+  if (!badge || !btn) return;
+  if (n > 0) {
+    badge.textContent  = n;
+    badge.style.display = '';
+    btn.title = `${n} hidden card${n > 1 ? 's' : ''} — click to restore`;
+  } else {
+    badge.style.display = 'none';
+    btn.title = 'Drag a card here to hide it';
+  }
+}
+function toggleTrashMenu() {
+  if (hiddenTitles.size === 0) return;
+  const menu = document.getElementById('trashMenu');
+  if (!menu) return;
+  const n = hiddenTitles.size;
+  document.getElementById('tmenuCount').textContent = `${n} card${n > 1 ? 's' : ''}`;
+  menu.classList.toggle('open');
+}
+function closeTrashMenu() {
+  const menu = document.getElementById('trashMenu');
+  if (menu) menu.classList.remove('open');
+}
+function restoreHidden() {
+  closeTrashMenu();
+  hiddenTitles.clear();
+  saveHidden();
+  render();
+}
+function permanentlyRemove() {
+  closeTrashMenu();
+  hiddenTitles.forEach(t => permanentlyDeleted.add(t));
+  hiddenTitles.clear();
+  saveHidden();
+  savePermanent();
+  render();
+}
+
+/* ── Derived videos (with overrides applied, hidden/deleted excluded) ── */
+function getVideos() {
+  return DEFAULT_VIDEOS
+    .filter(v => !hiddenTitles.has(v.title) && !permanentlyDeleted.has(v.title))
+    .map(v => ({
+      ...v,
+      status: statusOverrides[v.title] ?? v.status,
+    }));
+}
+
+/* ── Notebooks list ── */
+function getNotebooks() {
+  return ['All', ...new Set(DEFAULT_VIDEOS.map(v => v.notebook))];
+}
+
+/* ── Filter bar ── */
+function buildFilterBar() {
+  document.getElementById('filterBar').innerHTML =
+    `<span class="filter-label">Notebook</span>` +
+    getNotebooks().map(nb => {
+      const safe = nb.replace(/"/g, '&quot;');
+      return `<button class="chip ${activeNotebook === nb ? 'active' : ''}"
+        onclick="setNotebook('${safe.replace(/'/g, '&#39;')}')">${nb}</button>`;
+    }).join('');
+}
+
+function setNotebook(nb) {
+  activeNotebook = nb;
+  buildFilterBar();
+  updateCardVisibility();
+}
+
+/* ── Card HTML ── */
+function cardHTML(v) {
+  const hasFooter = v.notes || v.artifactId || v.dateAdded;
+  const fp = v.focusPrompt ? v.focusPrompt.replace(/"/g, '&quot;') : null;
+  return `<div class="vcard ${v.skipYt ? 'skip-yt' : ''}"
+      draggable="true"
+      data-title="${v.title.replace(/"/g, '&quot;')}"
+      data-notebook="${v.notebook}"
+      ${fp ? `data-fp="${fp}"` : ''}>
+    <div class="card-top">
+      <div class="vtitle">${v.title}</div>
+      <div style="display:flex;gap:4px;flex-shrink:0">
+        ${v.skipYt ? '<span class="skip-badge">Skip YT</span>' : ''}
+        ${fp ? '<span class="fp-badge" title="Right-click to copy focus prompt">prompt</span>' : ''}
+      </div>
+    </div>
+    ${!v.playlist ? `<div class="nb-tag"><em>${v.notebook}</em></div>` : ''}
+    ${v.playlist ? `<div class="playlist-tag">${v.playlist}</div>` : ''}
+    ${hasFooter ? `<div class="card-foot">
+      ${v.notes      ? `<div class="card-notes">${v.notes}</div>` : ''}
+      ${v.artifactId ? `<div class="artifact-id">artifact: ${v.artifactId}</div>` : ''}
+      ${v.dateAdded  ? `<div class="date-added">added ${formatDate(v.dateAdded)}</div>` : ''}
+    </div>` : ''}
+  </div>`;
+}
+
+/* ── Board ── */
+function buildBoard() {
+  const videos = getVideos();
+  const board = document.getElementById('board');
+
+  board.innerHTML = COLUMNS.map(col => {
+    const cards = videos.filter(v => v.status === col.status);
+    return `<div class="column" data-status="${col.status}">
+      <div class="col-header">
+        <div class="col-title-wrap">
+          <div class="col-dot"></div>
+          <span class="col-title">${col.label}</span>
+        </div>
+        <span class="col-count" data-col="${col.status}">${cards.length}</span>
+      </div>
+      <div class="col-body" data-col="${col.status}">
+        ${cards.length === 0
+          ? '<div class="drop-hint">Drop here</div>'
+          : cards.map(cardHTML).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  attachDragListeners();
+  updateCardVisibility();
+}
+
+/* ── Drag & drop ── */
+function attachDragListeners() {
+  // Cards
+  document.querySelectorAll('.vcard').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      draggedTitle = card.dataset.title;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', draggedTitle);
+      // Delay class so browser can take snapshot first
+      requestAnimationFrame(() => card.classList.add('dragging'));
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      draggedTitle = null;
+    });
+  });
+
+  // Focus prompt context menu
+  document.querySelectorAll('.vcard[data-fp]').forEach(card => {
+    card.addEventListener('contextmenu', e => showCtxMenu(e, card.dataset.fp));
+  });
+
+  // Columns
+  document.querySelectorAll('.column').forEach(col => {
+    const targetStatus = col.dataset.status;
+
+    col.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      col.classList.add('drag-over');
+    });
+    col.addEventListener('dragleave', e => {
+      if (!col.contains(e.relatedTarget)) col.classList.remove('drag-over');
+    });
+    col.addEventListener('drop', e => {
+      e.preventDefault();
+      col.classList.remove('drag-over');
+      const title = e.dataTransfer.getData('text/plain');
+      if (!title) return;
+      const video = DEFAULT_VIDEOS.find(v => v.title === title);
+      if (!video) return;
+      const defaultStatus = video.status;
+      // Store override only if different from default
+      if (targetStatus === defaultStatus) {
+        delete statusOverrides[title];
+      } else {
+        statusOverrides[title] = targetStatus;
+      }
+      saveOverrides();
+      buildBoard();
+    });
+  });
+}
+
+/* ── Notebook visibility filter (applied after render) ── */
+function updateCardVisibility() {
+  document.querySelectorAll('.vcard').forEach(card => {
+    const nb = card.dataset.notebook;
+    const show = activeNotebook === 'All' || nb === activeNotebook;
+    card.classList.toggle('filtered-out', !show);
+  });
+  // Update column counts
+  document.querySelectorAll('.column').forEach(col => {
+    const status = col.dataset.status;
+    const countEl = col.querySelector('.col-count');
+    if (!countEl) return;
+    const visible = col.querySelectorAll('.vcard:not(.filtered-out)').length;
+    countEl.textContent = visible;
+  });
+}
+
+/* ── Focus prompt context menu ── */
+let activeCtxPrompt = null;
+function showCtxMenu(e, focusPrompt) {
+  e.preventDefault();
+  activeCtxPrompt = focusPrompt;
+  const menu = document.getElementById('ctxMenu');
+  if (!menu) return;
+  menu.style.left = `${Math.min(e.clientX, window.innerWidth - 210)}px`;
+  menu.style.top  = `${Math.min(e.clientY, window.innerHeight - 60)}px`;
+  menu.classList.add('open');
+}
+function closeCtxMenu() {
+  const menu = document.getElementById('ctxMenu');
+  if (menu) menu.classList.remove('open');
+  activeCtxPrompt = null;
+}
+function copyFocusPrompt() {
+  if (!activeCtxPrompt) return;
+  navigator.clipboard.writeText(activeCtxPrompt).then(() => {
+    const btn = document.getElementById('ctxCopyBtn');
+    if (btn) { btn.textContent = '✓ Copied!'; setTimeout(() => { btn.textContent = '📋 Copy focus prompt'; }, 1200); }
+  });
+  closeCtxMenu();
+}
+
+/* ── Trash drop target ── */
+function attachTrashListeners() {
+  const trash = document.getElementById('trashBtn');
+  if (!trash) return;
+  trash.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    trash.classList.add('drag-over');
+  });
+  trash.addEventListener('dragleave', e => {
+    if (!trash.contains(e.relatedTarget)) trash.classList.remove('drag-over');
+  });
+  trash.addEventListener('drop', e => {
+    e.preventDefault();
+    trash.classList.remove('drag-over');
+    const title = e.dataTransfer.getData('text/plain');
+    if (!title) return;
+    hiddenTitles.add(title);
+    delete statusOverrides[title];  // clear any override too
+    saveOverrides();
+    saveHidden();
+    render();
+  });
+}
+
+/* ── Full render ── */
+function render() {
+  buildFilterBar();
+  buildBoard();
+  updateTrashCount();
+}
+
+/* ── Init ── */
+async function init() {
+  DEFAULT_VIDEOS = await fetch('video-dashboard-data.json').then(r => r.json());
+  loadOverrides();
+  loadHidden();
+  loadPermanent();
+  render();
+  attachTrashListeners();
+  document.addEventListener('click', e => {
+    const wrap = document.querySelector('.trash-wrap');
+    if (wrap && !wrap.contains(e.target)) closeTrashMenu();
+    const ctxMenu = document.getElementById('ctxMenu');
+    if (ctxMenu && !ctxMenu.contains(e.target)) closeCtxMenu();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeTrashMenu(); closeCtxMenu(); }
+  });
+}
+init();
+</script>
+
+<div class="ctx-menu" id="ctxMenu">
+  <button class="ctx-btn" id="ctxCopyBtn" onclick="copyFocusPrompt()">📋 Copy focus prompt</button>
+</div>
+
+</body>
+</html>

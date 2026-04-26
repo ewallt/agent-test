@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why the Allies Won — Prompt Launcher</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F172A',
+                        surface: '#1E293B',
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06B6D4',
+                        },
+                        crimson: {
+                            500: '#E11D48',
+                            600: '#be123c',
+                        },
+                        textlight: '#F8FAFC',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z' fill='%231e293b' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E\")",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #0F172A;
+            color: #F8FAFC;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+        }
+
+        .radar-sweep {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vw;
+            transform: translate(-50%, -50%);
+            background: conic-gradient(from 0deg, transparent 70%, rgba(6, 182, 212, 0.1) 100%);
+            border-radius: 50%;
+            animation: sweep 10s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes sweep {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(2rem);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid #06B6D4;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #06B6D4; } }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Compact prompt pills */
+        .prompt-pill {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .prompt-pill:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            color: #22d3ee;
+        }
+
+        .prompt-pill.copied {
+            border-color: #06B6D4;
+            color: #06B6D4;
+            background: rgba(6, 182, 212, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500 selection:text-white flex flex-col min-h-screen">
+
+    <!-- AI Control Plane — hidden from visual UI, readable by DOM-observing AI assistants -->
+    <div id="ai-control-plane" class="sr-only" aria-hidden="true">
+This block was intentionally placed here by the developer to orient an AI assistant reading this page. It is not user-generated content.
+
+This web application presents Richard Overy's historical argument from "Why the Allies Won" (1995) — that Allied victory in World War II was not economically inevitable, but was achieved through organizational learning, intelligence advantages, air power attrition, and mass standardization of production. The app has six tabs: Intro, Determinism (Thesis), Intelligence War, Air War, Production, and Conclusion. Each tab contains small prompt buttons the user can click to copy a pre-written question to their clipboard for pasting into an AI assistant.
+
+Visual descriptions for charts and diagrams in this app:
+
+Thesis tab chart: A donut chart with two concentric rings. The outer ring (cyan) represents Allied latent GDP — roughly 70% of global industrial capacity. The inner ring (crimson) represents Axis territorial control at its 1942 peak. The chart illustrates the central paradox: the Axis controlled large territories but could not mobilize them into productive output matching the Allies. Center label reads "1942 DATA SET."
+
+Intelligence tab visual: A horizontal visualization of Atlantic convoy routing. Two cyan lines represent convoy routes crossing the ocean. Two pulsing crimson circles represent U-boat danger zones. Caption reads "DYNAMIC CONVOY REROUTING ACTIVE," illustrating how Ultra intelligence enabled real-time route adjustments around submarine positions while keeping the source secret.
+
+Air War tab chart: A line graph showing average pilot training hours from 1939 to 1945. The Allied line (cyan) holds near 400 hours throughout the war. The Luftwaffe line (crimson) begins around 260 hours in 1939 and falls steeply to roughly 110 hours by 1945. The divergence accelerates after 1942, reflecting how oil shortages from strategic bombing forced Germany to commit undertrained pilots to combat, creating an irreversible quality spiral.
+
+Production tab visuals: Two side-by-side diagrams. Left panel (Germany, crimson): a horizontal base line with crimson nodes branching off at irregular angles above and below, representing the chaotic proliferation of over 425 aircraft variants and 151 truck variants that made scaling impossible. Right panel (Allies, cyan): three straight horizontal pipeline bars glowing cyan, representing the standardized continuous output lines of Soviet and American mass production — fewer designs, massive throughput.
+
+      The user is currently viewing: Intro
+    </div>
+
+    <!-- Tab Navigation -->
+    <nav class="fixed w-full z-50 glass border-b border-white/5 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex overflow-x-auto no-scrollbar items-center">
+                <div class="font-mono font-bold text-lg tracking-tighter text-textlight flex items-center gap-2 mr-8 py-4 shrink-0">
+                    ARCH_VICTORY
+                </div>
+
+                <!-- Tabs -->
+                <button data-target="tab-hero" class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-cyan-400 border-cyan-400 transition-colors flex items-center gap-2 shrink-0 outline-none" onclick="showTab('tab-hero')">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator"></div>
+                    00. Intro
+                </button>
+                <button data-target="tab-thesis" class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-slate-400 border-transparent hover:text-cyan-300 transition-colors flex items-center gap-2 shrink-0 outline-none" onclick="showTab('tab-thesis')">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator hidden"></div>
+                    01. Determinism
+                </button>
+                <button data-target="tab-intelligence" class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-slate-400 border-transparent hover:text-cyan-300 transition-colors flex items-center gap-2 shrink-0 outline-none" onclick="showTab('tab-intelligence')">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator hidden"></div>
+                    02. Intelligence
+                </button>
+                <button data-target="tab-air-war" class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-slate-400 border-transparent hover:text-cyan-300 transition-colors flex items-center gap-2 shrink-0 outline-none" onclick="showTab('tab-air-war')">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator hidden"></div>
+                    03. Air War
+                </button>
+                <button data-target="tab-production" class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-slate-400 border-transparent hover:text-cyan-300 transition-colors flex items-center gap-2 shrink-0 outline-none" onclick="showTab('tab-production')">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator hidden"></div>
+                    04. Production
+                </button>
+                <button data-target="tab-conclusion" class="tab-btn px-4 py-4 font-mono text-sm whitespace-nowrap border-b-2 text-slate-400 border-transparent hover:text-cyan-300 transition-colors flex items-center gap-2 shrink-0 outline-none" onclick="showTab('tab-conclusion')">
+                    <div class="w-2 h-2 bg-cyan-500 rounded-sm animate-pulse indicator hidden"></div>
+                    05. Conclusion
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="pt-16 flex-grow">
+
+        <!-- TAB 00: Intro (Hero Section) -->
+        <div id="tab-hero" class="tab-content block">
+            <section class="relative min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center px-6 bg-grid-pattern overflow-hidden">
+                <div class="radar-sweep"></div>
+                <div class="absolute inset-0 bg-primary/80 z-0"></div>
+
+                <div class="relative z-10 text-center max-w-4xl mx-auto mt-12 animate-on-scroll is-visible">
+                    <div class="inline-block mb-4 px-4 py-1 rounded-full glass font-mono text-cyan-400 text-sm border border-cyan-500/30">
+                        [ ACCESSING HISTORICAL DATA: 1939-1945 ]
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+                        Beyond Inevitability: <br>
+                        The <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 text-glow">Architecture</span> of Allied Victory
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-300 font-light mb-8 max-w-2xl mx-auto leading-relaxed">
+                        It wasn't just about having more resources. Discover the intelligence networks, mass production pipelines, and strategic organizational choices that truly turned the tide of World War II in 1942.
+                    </p>
+
+                    <!-- Prompt Pills -->
+                    <div class="flex flex-wrap justify-center gap-2 mb-8">
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'The standard view is that Allied economic superiority made the outcome of WWII a foregone conclusion. Make the strongest possible case that it was NOT inevitable — what would have had to go differently, and how close did it actually come?')">Was Allied victory inevitable?</button>
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'Richard Overy wrote Why the Allies Won partly as a rebuttal to historians who assumed the outcome was foreordained. What was the conventional wisdom he was arguing against, and what evidence did he marshal that others had underweighted?')">What Overy got right</button>
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'If 1942 was the true pivot year of World War II, walk me through it. At what point did the momentum genuinely shift, and what decisions or events made that shift irreversible?')">1942 — the pivot year</button>
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'Overy argues the Allies won through organizational learning — adapting faster under pressure than the Axis. What does that actually look like in practice? Give me the most concrete examples of the Allies learning from failure and changing.')">Learning faster under pressure</button>
+                    </div>
+
+                    <button onclick="showTab('tab-thesis')" class="inline-flex items-center gap-2 bg-cyan-500/10 text-cyan-400 border border-cyan-500/50 hover:bg-cyan-500 hover:text-white px-8 py-3 rounded-lg font-mono font-medium transition-all duration-300 group outline-none">
+                        INITIATE ANALYSIS
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 01: Determinism (Thesis) -->
+        <div id="tab-thesis" class="tab-content hidden">
+            <section class="py-24 px-6 relative min-h-[calc(100vh-4rem)] flex items-center">
+                <div class="max-w-7xl mx-auto w-full">
+                    <div class="grid md:grid-cols-2 gap-16 items-center">
+                        <div class="animate-on-scroll">
+                            <h2 class="font-mono text-cyan-500 mb-2">01 / THE CONTEXT</h2>
+                            <h3 class="text-4xl font-bold mb-6">The Myth of Economic Destiny</h3>
+                            <p class="text-slate-300 mb-6 leading-relaxed">
+                                In 1942, Germany controlled almost the entire resources of continental Europe, while Japan had wiped out the western colonial presence in East Asia in mere months. The Soviet Union had lost the heart of its industry.
+                            </p>
+                            <p class="text-slate-300 leading-relaxed mb-6">
+                                The Allied victory was not inevitable. Wealth and latent GDP alone do not win wars. The Allies were initially divided and poorly led. To survive, they had to actively <em>learn</em> how to win, executing a massive overhaul of military organization, technology application, and moral resilience.
+                            </p>
+                            <ul class="space-y-4 font-mono text-sm text-slate-400 mb-8">
+                                <li class="flex items-center gap-3">
+                                    <span class="w-1.5 h-1.5 bg-crimson-500 rounded-full"></span>
+                                    Axis control at its peak threatened global supply lines.
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                                    Allied latent GDP required years to mobilize.
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
+                                    Victory demanded systemic technological integration.
+                                </li>
+                            </ul>
+
+                            <!-- Prompt Pills -->
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <button class="prompt-pill" onclick="copyPrompt(this, 'By 1942 Germany controlled the industrial capacity of most of continental Europe. Why couldn\'t it mobilize those resources effectively? Be specific about the organizational failures — was it planning, leadership, incentives, or something structural?')">Germany's organizational failure</button>
+                                <button class="prompt-pill" onclick="copyPrompt(this, 'Albert Speer doubled German armaments production between 1942 and 1944. Why wasn\'t it enough? At what point was the production gap with the Allies structurally uncloseable — and did Speer himself understand this?')">Speer's miracle — too late?</button>
+                                <button class="prompt-pill" onclick="copyPrompt(this, 'Converting a peacetime economy to war footing is harder than it looks. How did the US, USSR, and UK each approach this differently? Which country did it best, and what specifically did they get right that the others didn\'t?')">The conversion problem</button>
+                            </div>
+
+                            <button onclick="showTab('tab-intelligence')" class="text-cyan-400 font-mono text-sm hover:text-cyan-300 flex items-center gap-2 transition-colors">
+                                NEXT: INTELLIGENCE <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </button>
+                        </div>
+
+                        <!-- Visual: Doughnut Chart -->
+                        <div class="animate-on-scroll relative h-96 glass rounded-2xl flex justify-center items-center overflow-hidden border border-slate-700 w-full">
+                            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.4)_0,transparent_100%)]"></div>
+                            <div class="relative w-64 h-64">
+                                <svg viewBox="0 0 100 100" class="w-full h-full transform -rotate-90">
+                                    <!-- Latent GDP (Cyan) -->
+                                    <circle cx="50" cy="50" r="40" fill="transparent" stroke="#1e293b" stroke-width="12"></circle>
+                                    <circle cx="50" cy="50" r="40" fill="transparent" stroke="#06B6D4" stroke-width="12" stroke-dasharray="251.2" stroke-dashoffset="75" class="transition-all duration-1000"></circle>
+                                    <!-- Territorial Control 1942 (Crimson) -->
+                                    <circle cx="50" cy="50" r="24" fill="transparent" stroke="#1e293b" stroke-width="8"></circle>
+                                    <circle cx="50" cy="50" r="24" fill="transparent" stroke="#E11D48" stroke-width="8" stroke-dasharray="150.7" stroke-dashoffset="30" class="transition-all duration-1000"></circle>
+                                </svg>
+                                <!-- Center text -->
+                                <div class="absolute inset-0 flex flex-col justify-center items-center font-mono">
+                                    <span class="text-2xl font-bold text-textlight">1942</span>
+                                    <span class="text-xs text-slate-400">DATA SET</span>
+                                </div>
+                                <!-- Legends -->
+                                <div class="absolute -right-4 top-0 flex items-center gap-2 font-mono text-xs">
+                                    <div class="w-2 h-2 bg-cyan-500"></div> All Latent GDP
+                                </div>
+                                <div class="absolute -right-4 bottom-12 flex items-center gap-2 font-mono text-xs">
+                                    <div class="w-2 h-2 bg-crimson-500"></div> Axis Territory
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 02: Intelligence -->
+        <div id="tab-intelligence" class="tab-content hidden">
+            <section class="py-24 px-6 bg-surface/30 relative min-h-[calc(100vh-4rem)] flex flex-col justify-center border-t border-slate-800">
+                <div class="max-w-7xl mx-auto w-full">
+                    <div class="mb-16 text-center animate-on-scroll">
+                        <h3 class="text-4xl md:text-5xl font-bold">Breaking Naval Enigma</h3>
+                        <p class="mt-4 text-slate-400 max-w-2xl mx-auto text-lg">Winning the Battle of the Atlantic required bridging the gap between raw intelligence and operational restraint.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-8 mb-16">
+                        <!-- Card 1 -->
+                        <div class="glass glass-card p-8 rounded-xl animate-on-scroll transition-all duration-300">
+                            <svg class="w-10 h-10 text-crimson-500 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <h4 class="text-xl font-bold mb-3">The U-Boat Threat</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                German "Wolfpacks" communicated coordinates using Enigma encryption, systematically starving Allied supply lines across the Atlantic. Without supplies, the European ground war was impossible.
+                            </p>
+                        </div>
+                        <!-- Card 2 -->
+                        <div class="glass glass-card p-8 rounded-xl animate-on-scroll transition-all duration-300" style="transition-delay: 100ms;">
+                            <svg class="w-10 h-10 text-cyan-400 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                            <h4 class="text-xl font-bold mb-3">The Breakthrough</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                Allied codebreakers at Bletchley Park, utilizing early electro-mechanical computers (Bombes), successfully cracked Naval Enigma, gaining real-time access to U-boat grids and operational plans.
+                            </p>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="glass glass-card p-8 rounded-xl animate-on-scroll transition-all duration-300" style="transition-delay: 200ms;">
+                            <svg class="w-10 h-10 text-cyan-500 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            <h4 class="text-xl font-bold mb-3">Calculated Restraint</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">
+                                To protect the source, the Allies exercised strategic restraint. They could not save every ship. Instead, they utilized HF/DF and radar alongside Enigma to route convoys safely, avoiding Nazi suspicion.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Glowing Data Line Visual -->
+                    <div class="animate-on-scroll glass rounded-xl p-6 border border-slate-700 relative overflow-hidden mb-10">
+                        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiMzMzQiLz48L3N2Zz4=')] opacity-20"></div>
+                        <div class="flex justify-between items-center text-xs font-mono text-slate-500 mb-4 relative z-10">
+                            <span>NORTH AMERICA</span>
+                            <span>ATLANTIC SEABOARD</span>
+                            <span>UNITED KINGDOM</span>
+                        </div>
+                        <div class="relative h-12 flex items-center z-10">
+                            <!-- Base line -->
+                            <div class="absolute w-full h-[1px] bg-slate-700"></div>
+                            <!-- Animated Convoy routes -->
+                            <div class="absolute h-[2px] bg-cyan-400 shadow-[0_0_10px_#22d3ee] w-1/3 left-0 rounded-full"></div>
+                            <div class="absolute h-[2px] bg-cyan-400 shadow-[0_0_10px_#22d3ee] w-1/4 left-1/2 rounded-full transform -translate-y-2 opacity-50"></div>
+                            <!-- Danger Zones -->
+                            <div class="absolute w-4 h-4 bg-crimson-600 rounded-full left-1/3 transform -translate-y-1/2 -translate-x-1/2 opacity-80 shadow-[0_0_15px_#be123c] animate-pulse"></div>
+                            <div class="absolute w-4 h-4 bg-crimson-600 rounded-full left-2/3 transform translate-y-4 -translate-x-1/2 opacity-80 shadow-[0_0_15px_#be123c] animate-pulse"></div>
+                        </div>
+                        <div class="text-center text-xs font-mono text-cyan-500 mt-4 relative z-10">
+                            > DYNAMIC CONVOY REROUTING ACTIVE
+                        </div>
+                    </div>
+
+                    <!-- Prompt Pills -->
+                    <div class="flex flex-wrap justify-center gap-2 mb-8 animate-on-scroll">
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'The Allies accepted concrete losses — ships sunk, men killed — to protect the Ultra secret. What were the hardest decisions they faced? How do historians evaluate whether the trade-off was justified, and were there cases where they got it wrong?')">The cost of protecting Ultra</button>
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'In February 1942 the German navy blinded Bletchley Park by adding a fourth Enigma rotor. For nearly ten months, the Atlantic ran dark and shipping losses spiked catastrophically. How did the Allies eventually break back in — and what role did the physical capture of cipher materials play versus mathematical analysis?')">The ten-month blackout</button>
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'Knowing something and being able to act on it are entirely different problems. What were the most significant cases where the Allies had Ultra intelligence but couldn\'t fully exploit it — and what prevented them?')">Knowing versus acting</button>
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'How did the Allies use Ultra not just to anticipate German moves but to actively deceive them? Explain the deception architecture — the fake reconnaissance flights, turned agents, and false intercepts — and how this worked at an institutional level.')">Intelligence as deception</button>
+                    </div>
+
+                    <div class="text-center animate-on-scroll">
+                        <button onclick="showTab('tab-air-war')" class="text-cyan-400 font-mono text-sm hover:text-cyan-300 inline-flex items-center gap-2 transition-colors">
+                            NEXT: THE AIR WAR <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 03: Air War -->
+        <div id="tab-air-war" class="tab-content hidden">
+            <section class="py-24 px-6 relative min-h-[calc(100vh-4rem)] flex items-center border-t border-slate-800">
+                <div class="max-w-7xl mx-auto w-full">
+                    <div class="grid md:grid-cols-2 gap-16 items-center">
+
+                        <!-- Text Area -->
+                        <div class="animate-on-scroll order-1 md:order-1">
+                            <h2 class="font-mono text-cyan-500 mb-2">03 / ATTRITION &amp; INNOVATION</h2>
+                            <h3 class="text-4xl font-bold mb-6">Controlling the Skies</h3>
+                            <p class="text-slate-300 mb-4 leading-relaxed">
+                                The Battle of Britain was a stalemate won largely due to the "force gradient"—fighting over home territory with integrated radar. But the real destruction of the Luftwaffe occurred over Germany in 1944.
+                            </p>
+                            <p class="text-slate-300 mb-6 leading-relaxed">
+                                Innovation wasn't just the P-51 Mustang; it was simple solutions like drop-tanks that allowed continuous fighter escort deep into enemy territory.
+                            </p>
+                            <div class="bg-primary p-4 rounded-lg border border-slate-700 border-l-4 border-l-cyan-500 mb-6">
+                                <h5 class="font-bold text-white mb-2 text-sm uppercase tracking-wider">The Crucial Metric</h5>
+                                <p class="text-sm text-slate-400 font-mono">
+                                    Starved of oil by strategic bombing, Luftwaffe pilot training hours dropped from 260h to 110h. Allied pilots trained for 400h. This discrepancy created a vicious, irreversible cycle of novice pilot deaths for the Axis.
+                                </p>
+                            </div>
+
+                            <!-- Prompt Pills -->
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <button class="prompt-pill" onclick="copyPrompt(this, 'By 1944 Luftwaffe pilots were entering combat with 110 training hours versus 400 for Allied pilots. Walk me through how Germany ended up in this spiral. Was it a deliberate resource trade-off, an institutional failure, or something else — and could they have escaped it?')">The pilot quality spiral</button>
+                                <button class="prompt-pill" onclick="copyPrompt(this, 'The P-51 Mustang\'s original Allison engine failed at high altitude, making it useless for escort missions. It was a British engineer who suggested fitting it with a Rolls-Royce Merlin engine, which tripled its range. How close did this almost not happen, and what does this tell us about how decisive technologies actually emerge?')">P-51\'s accidental transformation</button>
+                                <button class="prompt-pill" onclick="copyPrompt(this, 'The Allied strategic bombing campaign killed hundreds of thousands of German civilians and cost enormous resources. Did it work? Give me an honest assessment — what did it actually achieve militarily, where did it fail, and how does the historical verdict look now?')">Strategic bombing — honest verdict</button>
+                            </div>
+
+                            <button onclick="showTab('tab-production')" class="text-cyan-400 font-mono text-sm hover:text-cyan-300 flex items-center gap-2 transition-colors">
+                                NEXT: PRODUCTION <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </button>
+                        </div>
+
+                        <!-- Visual: Line Graph -->
+                        <div class="animate-on-scroll order-2 md:order-2 glass p-6 rounded-2xl border border-slate-700 w-full">
+                            <h4 class="font-mono text-sm text-slate-400 mb-6">METRIC: AVERAGE PILOT TRAINING HOURS</h4>
+                            <div class="relative w-full h-64 border-l border-b border-slate-600">
+                                <!-- Y-Axis Labels -->
+                                <div class="absolute -left-10 top-0 text-xs font-mono text-slate-500">400h</div>
+                                <div class="absolute -left-10 bottom-0 text-xs font-mono text-slate-500">0h</div>
+
+                                <!-- X-Axis Labels -->
+                                <div class="absolute -bottom-6 left-0 text-xs font-mono text-slate-500">1939</div>
+                                <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-mono text-slate-500">1942</div>
+                                <div class="absolute -bottom-6 right-0 text-xs font-mono text-slate-500">1945</div>
+
+                                <!-- Graph SVG -->
+                                <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+                                    <!-- Grid lines -->
+                                    <line x1="0" y1="25" x2="100" y2="25" stroke="#334155" stroke-width="0.5" stroke-dasharray="2"></line>
+                                    <line x1="0" y1="50" x2="100" y2="50" stroke="#334155" stroke-width="0.5" stroke-dasharray="2"></line>
+                                    <line x1="0" y1="75" x2="100" y2="75" stroke="#334155" stroke-width="0.5" stroke-dasharray="2"></line>
+
+                                    <!-- Allied Line (Cyan) - Remains high ~400h -->
+                                    <path d="M 0,20 L 20,20 L 40,25 L 60,15 L 80,18 L 100,15" fill="none" stroke="#06B6D4" stroke-width="3" class="drop-shadow-[0_0_5px_rgba(6,182,212,0.8)]"></path>
+                                    <circle cx="100" cy="15" r="2" fill="#06B6D4"></circle>
+
+                                    <!-- Axis Line (Crimson) - Crashes from ~260 to ~110h -->
+                                    <path d="M 0,35 L 20,35 L 40,50 L 60,70 L 80,85 L 100,90" fill="none" stroke="#E11D48" stroke-width="3" class="drop-shadow-[0_0_5px_rgba(225,29,72,0.8)]"></path>
+                                    <circle cx="100" cy="90" r="2" fill="#E11D48"></circle>
+                                </svg>
+                            </div>
+                            <!-- Graph Legend -->
+                            <div class="flex gap-6 mt-10 font-mono text-xs justify-center">
+                                <div class="flex items-center gap-2"><div class="w-3 h-3 bg-cyan-500 rounded-sm"></div> Allied Forces</div>
+                                <div class="flex items-center gap-2"><div class="w-3 h-3 bg-crimson-500 rounded-sm"></div> Luftwaffe</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 04: Production -->
+        <div id="tab-production" class="tab-content hidden">
+            <section class="py-24 px-6 bg-surface/30 relative min-h-[calc(100vh-4rem)] flex flex-col justify-center border-t border-slate-800">
+                <div class="max-w-7xl mx-auto w-full">
+                    <div class="text-center mb-16 animate-on-scroll">
+                        <h2 class="font-mono text-cyan-500 mb-2">04 / THE PRODUCTION PARADOX</h2>
+                        <h3 class="text-4xl font-bold mb-4">The Engine of War: Standardizing Victory</h3>
+                        <p class="text-slate-400 max-w-2xl mx-auto">In 1942, despite massive territorial and resource losses, the USSR outproduced Germany in tanks and aircraft. The difference lay in the architectural philosophy of production.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 mb-16">
+                        <!-- Germany Production -->
+                        <div class="glass p-8 rounded-xl animate-on-scroll border-t-4 border-t-crimson-500 relative overflow-hidden">
+                            <div class="absolute top-4 right-4 text-crimson-500/20">
+                                <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-2">Bureaucratic Artisanry</h4>
+                            <p class="font-mono text-crimson-400 text-sm mb-6">AXIS / GERMANY</p>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-8">
+                                The German economy was heavily bureaucratized and favored "artisan" crafting of weapons. They continuously tweaked designs for perfection, producing over 425 different aircraft models and 151 truck variants.
+                            </p>
+
+                            <!-- Visual: Chaotic Nodes -->
+                            <div class="h-32 w-full relative flex items-center">
+                                <div class="w-4 h-4 bg-slate-700 rounded-full z-10"></div>
+                                <div class="w-full h-[1px] bg-slate-700 absolute"></div>
+                                <div class="absolute left-[10%] w-1/4 h-8 border-t border-l border-crimson-500/50 -top-8 rounded-tl-lg"></div>
+                                <div class="absolute left-[20%] w-1/3 h-12 border-b border-l border-crimson-500/50 -bottom-12 rounded-bl-lg"></div>
+                                <div class="absolute left-[40%] w-1/4 h-6 border-t border-l border-crimson-500/50 -top-6 rounded-tl-lg"></div>
+                                <div class="absolute left-[60%] w-[10%] h-4 border-b border-l border-crimson-500/50 -bottom-4 rounded-bl-lg"></div>
+                                <div class="absolute left-[35%] -top-9 w-2 h-2 bg-crimson-500 rounded-full shadow-[0_0_8px_#be123c]"></div>
+                                <div class="absolute left-[53%] -bottom-13 w-2 h-2 bg-crimson-500 rounded-full shadow-[0_0_8px_#be123c]"></div>
+                                <div class="absolute left-[65%] -top-7 w-2 h-2 bg-crimson-500 rounded-full shadow-[0_0_8px_#be123c]"></div>
+                                <div class="absolute left-[70%] -bottom-5 w-2 h-2 bg-crimson-500 rounded-full shadow-[0_0_8px_#be123c]"></div>
+                                <div class="absolute right-0 w-2 h-2 bg-crimson-500 rounded-full shadow-[0_0_8px_#be123c]"></div>
+                            </div>
+                        </div>
+
+                        <!-- USSR / USA Production -->
+                        <div class="glass p-8 rounded-xl animate-on-scroll border-t-4 border-t-cyan-500 relative overflow-hidden" style="transition-delay: 100ms;">
+                            <div class="absolute top-4 right-4 text-cyan-500/10">
+                                <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                            </div>
+                            <h4 class="text-2xl font-bold mb-2">Mass Standardization</h4>
+                            <p class="font-mono text-cyan-400 text-sm mb-6">ALLIES / USSR &amp; USA</p>
+                            <p class="text-slate-300 text-sm leading-relaxed mb-8">
+                                The Soviets miraculously relocated industry to the Urals and embraced ruthless standardization. By locking in functional models (like the T-34 tank and Il-2 aircraft), they utilized unskilled labor to create massive, continuous pipelines of output.
+                            </p>
+
+                            <!-- Visual: Straight Pipelines -->
+                            <div class="h-32 w-full flex flex-col justify-center gap-3">
+                                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden relative">
+                                    <div class="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-transparent via-cyan-400 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"></div>
+                                    <div class="w-full h-full bg-cyan-500/80 shadow-[0_0_10px_#06B6D4]"></div>
+                                </div>
+                                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden relative">
+                                    <div class="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-transparent via-cyan-400 to-transparent -translate-x-full animate-[shimmer_2s_infinite_0.5s]"></div>
+                                    <div class="w-full h-full bg-cyan-500/80 shadow-[0_0_10px_#06B6D4]"></div>
+                                </div>
+                                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden relative">
+                                    <div class="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-transparent via-cyan-400 to-transparent -translate-x-full animate-[shimmer_2s_infinite_1s]"></div>
+                                    <div class="w-full h-full bg-cyan-500/80 shadow-[0_0_10px_#06B6D4]"></div>
+                                </div>
+                                <style>
+                                    @keyframes shimmer { 100% { transform: translateX(100%); } }
+                                </style>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prompt Pills -->
+                    <div class="flex flex-wrap justify-center gap-2 mb-8 animate-on-scroll">
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'In 1941-42 the Soviets dismantled over 1,500 factories and moved them east of the Urals in weeks, with workers producing in open fields in winter. This is one of the most extraordinary logistical feats of the war. How did they do it — and what would have happened to the Allied cause if it had failed?')">The Soviet evacuation</button>
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'Germany produced over 425 aircraft variants and 151 truck variants — complexity that made scaling nearly impossible. How did this happen? Why couldn\'t the German military-industrial system simplify even as it was clearly losing? Was it culture, institutional structure, or Hitler\'s personal interference in production priorities?')">Germany\'s perfectionism trap</button>
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'The T-34 was inferior to German tanks in crew ergonomics, optics, and individual armor in many engagements. The Tiger was a formidable machine. Yet the Soviets won the production war decisively. Explain why the T-34\'s individual inferiority didn\'t matter — and what this tells us about what actually determines the outcome of industrial warfare.')">T-34 vs Tiger — the wrong question</button>
+                    </div>
+
+                    <div class="text-center animate-on-scroll">
+                        <button onclick="showTab('tab-conclusion')" class="text-cyan-400 font-mono text-sm hover:text-cyan-300 inline-flex items-center gap-2 transition-colors">
+                            NEXT: CONCLUSION <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 05: Conclusion -->
+        <div id="tab-conclusion" class="tab-content hidden">
+            <section class="py-24 px-6 relative overflow-hidden bg-primary min-h-[calc(100vh-4rem)] flex items-center border-t border-slate-800">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-cyan-900/10 pointer-events-none"></div>
+
+                <div class="max-w-5xl mx-auto text-center relative z-10 animate-on-scroll">
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">Victory by Design</h2>
+                    <p class="text-lg text-slate-300 leading-relaxed mb-12 max-w-4xl mx-auto">
+                        The Allies won because they managed the immense complexity of global, total war better than the Axis. They successfully integrated cutting-edge technology with military strategy, mastered mass production, and leveraged secret intelligence with mathematical restraint. It was a triumph of systems and logistics as much as bravery on the battlefield.
+                    </p>
+
+                    <div class="grid md:grid-cols-2 gap-6 text-left mb-12">
+                        <!-- Summary 1 -->
+                        <div class="glass p-6 rounded-xl border-l-2 border-cyan-500 hover:bg-surface/50 transition-colors">
+                            <h4 class="font-bold text-white mb-2 font-mono flex items-center gap-2">
+                                <span class="text-cyan-500">01.</span> Overcoming Destiny
+                            </h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Wealth alone didn't guarantee victory. The Allies actively reformed their military organizations and applied technological integration to turn latent GDP into unstoppable fighting power.
+                            </p>
+                        </div>
+                        <!-- Summary 2 -->
+                        <div class="glass p-6 rounded-xl border-l-2 border-cyan-500 hover:bg-surface/50 transition-colors">
+                            <h4 class="font-bold text-white mb-2 font-mono flex items-center gap-2">
+                                <span class="text-cyan-500">02.</span> Intelligence &amp; Restraint
+                            </h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Breaking Naval Enigma was only half the battle. Exercising calculated restraint in utilizing that intelligence kept the Axis blind while quietly securing critical Atlantic supply routes.
+                            </p>
+                        </div>
+                        <!-- Summary 3 -->
+                        <div class="glass p-6 rounded-xl border-l-2 border-cyan-500 hover:bg-surface/50 transition-colors">
+                            <h4 class="font-bold text-white mb-2 font-mono flex items-center gap-2">
+                                <span class="text-cyan-500">03.</span> Aerial Attrition
+                            </h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                Victory in the skies came down to pilot training pipelines and continuous fighter escorts, establishing a brutal attrition rate the oil-starved Luftwaffe simply couldn't sustain.
+                            </p>
+                        </div>
+                        <!-- Summary 4 -->
+                        <div class="glass p-6 rounded-xl border-l-2 border-cyan-500 hover:bg-surface/50 transition-colors">
+                            <h4 class="font-bold text-white mb-2 font-mono flex items-center gap-2">
+                                <span class="text-cyan-500">04.</span> Mass Standardization
+                            </h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">
+                                While German war production choked on bureaucratic artisanry and endless variants, Soviet and American pipelines rapidly pumped out millions of reliable, standardized machines.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Prompt Pills -->
+                    <div class="flex flex-wrap justify-center gap-2 mb-12">
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'If you had to extract the single principle from Overy\'s argument that best explains why the Allies won — something that would apply beyond WWII to any competitive struggle at scale — what would it be? Where does it hold, and where does it break down?')">The single deepest lesson</button>
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'Germany had arguably the most sophisticated engineering and military culture in the world in 1939. Make the best possible case for what Germany got right — its technology, its tactical commanders, its fighting units. Then explain why none of it was enough.')">What Germany got right</button>
+                        <button class="prompt-pill" onclick="copyPrompt(this, 'Overy argues that the organizational and production methods that won WWII became the foundation of postwar American and Soviet industrial dominance. How did these methods transfer into the peacetime economy? What specifically carried over — and how did it shape the Cold War competition?')">The postwar legacy</button>
+                    </div>
+
+                    <!-- Visual Icons at Bottom -->
+                    <div class="flex flex-wrap justify-center gap-8">
+                        <!-- Icon 1: Industry -->
+                        <div class="group flex flex-col items-center gap-3">
+                            <div class="w-16 h-16 rounded-full glass flex items-center justify-center text-slate-400 group-hover:text-cyan-400 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all duration-300 transform group-hover:-translate-y-2">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                            </div>
+                            <span class="text-xs font-mono text-slate-500 group-hover:text-cyan-400 transition-colors">INDUSTRY</span>
+                        </div>
+                        <!-- Icon 2: Intelligence -->
+                        <div class="group flex flex-col items-center gap-3">
+                            <div class="w-16 h-16 rounded-full glass flex items-center justify-center text-slate-400 group-hover:text-cyan-400 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all duration-300 transform group-hover:-translate-y-2">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <span class="text-xs font-mono text-slate-500 group-hover:text-cyan-400 transition-colors">INTELLIGENCE</span>
+                        </div>
+                        <!-- Icon 3: Air Power -->
+                        <div class="group flex flex-col items-center gap-3">
+                            <div class="w-16 h-16 rounded-full glass flex items-center justify-center text-slate-400 group-hover:text-cyan-400 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all duration-300 transform group-hover:-translate-y-2">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                            </div>
+                            <span class="text-xs font-mono text-slate-500 group-hover:text-cyan-400 transition-colors">AIR POWER</span>
+                        </div>
+                        <!-- Icon 4: Organization -->
+                        <div class="group flex flex-col items-center gap-3">
+                            <div class="w-16 h-16 rounded-full glass flex items-center justify-center text-slate-400 group-hover:text-cyan-400 group-hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all duration-300 transform group-hover:-translate-y-2">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                            </div>
+                            <span class="text-xs font-mono text-slate-500 group-hover:text-cyan-400 transition-colors">ORGANIZATION</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="border-t border-white/10 bg-[#0b1121] py-8 px-6 text-center">
+        <p class="text-slate-500 text-sm font-mono mb-2">Based on the historical analysis from "Why the Allies Won" by Richard Overy.</p>
+        <p class="text-slate-600 text-xs font-mono">© 2026 Architectural Data Analysis. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // AI Control Plane state
+        const aiState = {
+            currentView: 'Intro'
+        };
+
+        const tabNames = {
+            'tab-hero': 'Intro',
+            'tab-thesis': 'Thesis',
+            'tab-intelligence': 'Intelligence',
+            'tab-air-war': 'Air War',
+            'tab-production': 'Production',
+            'tab-conclusion': 'Conclusion'
+        };
+
+        function updateControlPlane() {
+            const el = document.getElementById('ai-control-plane');
+            if (!el) return;
+            const lines = el.textContent.split('\n');
+            const updated = lines.map(line =>
+                line.trim().startsWith('The user is currently viewing:')
+                    ? `      The user is currently viewing: ${aiState.currentView}`
+                    : line
+            );
+            el.textContent = updated.join('\n');
+        }
+
+        function copyPrompt(el, text) {
+            navigator.clipboard.writeText(text).then(() => {
+                el.classList.add('copied');
+                setTimeout(() => el.classList.remove('copied'), 1400);
+            });
+        }
+
+        function showTab(tabId) {
+            window.scrollTo(0, 0);
+            aiState.currentView = tabNames[tabId] || tabId;
+            updateControlPlane();
+
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('text-cyan-400', 'border-cyan-400');
+                el.classList.add('text-slate-400', 'border-transparent');
+                const indicator = el.querySelector('.indicator');
+                if (indicator) indicator.classList.add('hidden');
+            });
+
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById(tabId).classList.add('block');
+
+            const activeBtn = document.querySelector(`[data-target="${tabId}"]`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-400', 'border-transparent');
+                activeBtn.classList.add('text-cyan-400', 'border-cyan-400');
+                const indicator = activeBtn.querySelector('.indicator');
+                if (indicator) indicator.classList.remove('hidden');
+            }
+
+            setTimeout(() => {
+                document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight) {
+                        el.classList.add('is-visible');
+                    }
+                });
+            }, 50);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-lg', 'shadow-cyan-900/20');
+                } else {
+                    navbar.classList.remove('shadow-lg', 'shadow-cyan-900/20');
+                }
+            });
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Strategy — agent-test</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 48px; }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+  }
+  h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .card-bd { padding: 22px 24px; }
+  .card-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-header h3 { margin: 0; font-size: .95rem; }
+  .era-badge {
+    display: inline-block;
+    border-radius: 99px;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    padding: 3px 10px;
+    text-transform: uppercase;
+  }
+  .era-1 { background: rgba(255,122,138,.12); border: 1px solid rgba(255,122,138,.3); color: var(--red); }
+  .era-2 { background: rgba(124,255,178,.10); border: 1px solid rgba(124,255,178,.25); color: var(--green); }
+
+  p { color: var(--muted); font-size: .97rem; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+
+  ul { list-style: none; padding: 0; }
+  ul li {
+    color: var(--muted);
+    font-size: .95rem;
+    padding: 5px 0 5px 20px;
+    position: relative;
+  }
+  ul li::before {
+    content: "–";
+    color: var(--accent);
+    left: 0;
+    position: absolute;
+  }
+  ul li strong { color: var(--text); }
+
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+  .code-block {
+    background: #060b15;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: .83rem;
+    line-height: 1.7;
+    margin: 14px 0;
+    overflow-x: auto;
+    padding: 16px 20px;
+    white-space: pre;
+  }
+
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: .92rem;
+  }
+  .callout.info  { background: rgba(139,185,255,.07); border: 1px solid rgba(139,185,255,.2);  color: var(--accent); }
+  .callout.green { background: rgba(124,255,178,.07); border: 1px solid rgba(124,255,178,.2);  color: var(--green); }
+  .callout strong { display: block; margin-bottom: 6px; }
+
+  /* Comparison table */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 600px) { .compare { grid-template-columns: 1fr; } }
+  .compare-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .compare-col-header {
+    padding: 12px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+    font-size: .9rem;
+  }
+  .compare-col-body { padding: 16px 20px; }
+
+  /* Ref table */
+  .ref-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  .ref-table th {
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--accent);
+    font-weight: 600;
+    background: var(--surface2);
+  }
+  .ref-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    vertical-align: top;
+  }
+  .ref-table td:first-child { font-family: var(--mono); color: var(--accent); }
+  .ref-table tr:last-child td { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Infrastructure</div>
+  <h1>Session <span>Strategy</span></h1>
+  <p>How the approach to permissions, context, and session management evolved — and what the current setup looks like.</p>
+</header>
+
+<div class="container">
+
+  <!-- THE PROBLEM -->
+  <section>
+    <h2><span class="icon">⚠️</span> The Problem</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>Claude Code's default behavior is to prompt for permission on every file write, edit, and shell command. Out of the box this means constant interruptions — approving reads, writes, and git commands one by one. The other pressure point is context: Claude is stateless across sessions, so every new session starts cold unless something carries context over.</p>
+        <p>The early strategy addressed both problems but did so bluntly. The current strategy is more surgical — handling permissions through configuration and context through compaction rather than session boundaries.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE TWO ERAS -->
+  <section>
+    <h2><span class="icon">🔄</span> The Two Eras</h2>
+
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-col-header"><span class="era-badge era-1">Era 1</span> &nbsp;Manual Session Management</div>
+        <div class="compare-col-body">
+          <ul>
+            <li><strong>Permissions:</strong> <code>--dangerously-skip-permissions</code> flag — all prompts bypassed, no guardrails</li>
+            <li><strong>Compaction:</strong> threshold at 95% — effectively never compacted mid-session</li>
+            <li><strong>Session boundaries:</strong> used deliberately as a context management tool — start fresh to control what carries over</li>
+            <li><strong>Context bridge:</strong> shutdown task writes a handoff; startup task reads it back at session start</li>
+            <li><strong>Philosophy:</strong> session breaks are how you reset; manage drift by ending sessions, not by staying in them</li>
+          </ul>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-col-header"><span class="era-badge era-2">Era 2</span> &nbsp;Current Approach</div>
+        <div class="compare-col-body">
+          <ul>
+            <li><strong>Permissions:</strong> <code>defaultMode: auto</code> + explicit allow list + CLAUDE.md guardrails — surgical, not blunt</li>
+            <li><strong>Compaction:</strong> threshold at 50% — compaction happens mid-session; sessions can run longer</li>
+            <li><strong>Session boundaries:</strong> matter less now; compact-and-continue replaces end-and-restart</li>
+            <li><strong>Context bridge:</strong> <code>/pre-compact</code> logs before compacting; <code>/post-compact</code> re-reads orientation files after</li>
+            <li><strong>Philosophy:</strong> sessions are long-running; manage context within them through compaction, not by breaking them</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERMISSIONS IN DEPTH -->
+  <section>
+    <h2><span class="icon">🔐</span> Permissions</h2>
+
+    <div class="card">
+      <div class="card-header"><h3>Why not <code>--dangerously-skip-permissions</code>?</h3></div>
+      <div class="card-bd">
+        <p>The flag works but bypasses everything — including actions that genuinely warrant a pause. It also requires passing it on every CLI invocation, which is fragile. <code>defaultMode: auto</code> uses Claude's own judgment (the LLM classifier) to decide what needs approval, which is a better fit than an all-or-nothing bypass.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h3>Current <code>settings.json</code></h3></div>
+      <div class="card-bd">
+        <div class="code-block">{
+  "env": {
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Write",
+      "Edit"
+    ],
+    "defaultMode": "auto"
+  },
+  "skipAutoPermissionPrompt": true,
+  "skipDangerousModePermissionPrompt": true
+}</div>
+        <p><code>Bash(*)</code> allows all shell commands without prompting. <code>Write</code> and <code>Edit</code> are in the allow list so file operations never prompt. The actual guardrails live in CLAUDE.md, not the harness.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h3>CLAUDE.md as the real guardrail</h3></div>
+      <div class="card-bd">
+        <p>The four actions that still require confirmation before proceeding:</p>
+        <ul>
+          <li>Deleting a NotebookLM notebook</li>
+          <li>Force-pushing or hard-resetting git history</li>
+          <li>Committing directly to main</li>
+          <li>Permanently deleting files outside the git repo</li>
+        </ul>
+        <p style="margin-top:12px;">Everything else proceeds without asking. The philosophy: Claude's judgment via CLAUDE.md instructions is a better filter than harness prompts for routine work.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTEXT MANAGEMENT -->
+  <section>
+    <h2><span class="icon">🧠</span> Context Management</h2>
+
+    <div class="card">
+      <div class="card-header"><h3>Era 1: Session as context boundary</h3></div>
+      <div class="card-bd">
+        <p>Sessions were kept short and broken deliberately. The shutdown task wrote a handoff file summarizing what happened; the startup task read it back. The session boundary was a tool — a forced reset that gave you control over what context the next Claude instance would start with.</p>
+        <p>The cost: friction at every session start, loss of conversational continuity, and dependence on handoff quality. If the handoff missed something, that context was gone.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h3>Era 2: Compaction within sessions</h3></div>
+      <div class="card-bd">
+        <p>Auto-compact fires at 50% context usage (down from 95%). This means sessions can run much longer without hitting the limit, and compaction is a mid-session tool rather than a near-crash event.</p>
+        <p>Two skills handle the manual compact flow:</p>
+        <ul>
+          <li><strong><code>/pre-compact</code></strong> — writes a session log entry while context is fresh, then prompts you to run <code>/compact</code></li>
+          <li><strong><code>/post-compact</code></strong> — after compaction, re-reads <code>overview.md</code>, the session log (recent entries), and <code>MEMORY.md</code> to restore orientation</li>
+        </ul>
+        <p style="margin-top:12px;">The session log is the durable record. Rather than relying on a handoff written at session end, context is captured incrementally throughout the session as work completes.</p>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <strong>The key shift</strong>
+      Era 1 managed statefulness by controlling when sessions ended. Era 2 manages it by what gets written to durable files throughout a session — and by re-reading those files after compaction restores a clean context window.
+    </div>
+  </section>
+
+  <!-- REFERENCE -->
+  <section>
+    <h2><span class="icon">📋</span> Reference</h2>
+    <div class="card">
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Value / Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>settings.json</td>
+            <td><code>~/.claude/settings.json</code></td>
+          </tr>
+          <tr>
+            <td>CLAUDE.md</td>
+            <td><code>~/.claude/CLAUDE.md</code> — global guardrails and behavior rules</td>
+          </tr>
+          <tr>
+            <td>Auto-compact threshold</td>
+            <td>50% — set via <code>CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=50</code> in env</td>
+          </tr>
+          <tr>
+            <td>Pre-compact skill</td>
+            <td><code>~/.claude/skills/pre-compact/SKILL.md</code></td>
+          </tr>
+          <tr>
+            <td>Post-compact skill</td>
+            <td><code>~/.claude/skills/post-compact/SKILL.md</code></td>
+          </tr>
+          <tr>
+            <td>Session log</td>
+            <td><code>~/.claude/projects/.../memory/session-log.md</code></td>
+          </tr>
+          <tr>
+            <td>Permission mode</td>
+            <td><code>auto</code> — LLM classifier; allow list covers Bash(*), Write, Edit</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

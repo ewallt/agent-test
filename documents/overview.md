@@ -1,87 +1,58 @@
 # Project Overview
 
-A high-level map of all active work. Read this at session start to orient quickly.
-For depth on any area, follow the pointers below.
+A high-level map of all active work. Read at session start to orient.
 
 ---
 
-## The Six Groups
+## How to Work
+
+**Always work from a skill.** Before starting any task, check if a skill exists for it. If no skill exists, tell Tom before proceeding — don't wing it. Skills live in `~/.claude/skills/`. Each project lists its skills in its `project-definition.md`.
+
+If you need detail on any project, follow the pointer to its `project-definition.md`. That file lists the skills and reference docs for that project.
+
+---
+
+## Projects
 
 ### 1. Remotion — Bar Chart Race
-Animated bar chart race videos rendered with Remotion. A generic engine (`src/engine/`)
-renders any dataset. Projects live in `data/{project}/` as four component files, assembled
-by a build script into a single config. Currently two complete bar chart races (AI MMLU,
-Streaming Wars) and one with data but not yet wired up (Tallest Buildings).
-
+Generic engine that animates any dataset as a bar chart race; content lives in `data/{project}/`, the engine never changes.
+- `Projects/Remotion/bar-chart-race/documents/project-definition.md`
 - Studio: localhost:3000
-- Project root: `Projects/Remotion/bar-chart-race/`
-- Design doc: `Projects/Remotion/bar-chart-race/documents/design.md`
-
----
 
 ### 2. Remotion — Simple Narrated Slides
-Dark-background slideshow videos with ElevenLabs narration. Each composition is a
-self-contained `.tsx` file with per-bullet audio (one MP3 per narration sentence).
-Audio generation scripts write duration files that Root.tsx imports at module load —
-no async spinner, no calculateMetadata.
-
+Dark-background slideshow videos with Edge TTS narration; each composition is a self-contained TSX file. Primary build system for BYG videos.
+- `Projects/Remotion/simple-narrated-slides/documents/project-definition.md`
 - Studio: localhost:3001
-- Project root: `Projects/Remotion/simple-narrated-slides/`
-- Context: `memory/remotion-context.md`
-
----
 
 ### 3. Remotion — Whiteboard Explainer
-JSON-driven whiteboard-style explainer videos. Content lives entirely in a scenes JSON
-file; the React code stays stable. Has a theme system (warmPaper, darkChalk) and five
-scene types. Six new scene types are planned. Two compositions exist (WhiteboardExplainer-1,
-WhiteboardExplainer-2).
-
+JSON-driven whiteboard explainer videos; content in scenes JSON, React code stays stable.
+- `Projects/Remotion/whiteboard-explainer/documents/project-definition.md`
 - Studio: localhost:3002
-- Project root: `Projects/Remotion/whiteboard-explainer/`
-- Context doc: `Projects/Remotion/whiteboard-explainer/documents/context.md`
-- Planning doc: `Projects/Remotion/whiteboard-explainer/documents/planning.md`
-- Gotchas: `memory/whiteboard-explainer-gotchas.md`
 
----
-
-### 4. NotebookLM — Ephemeral Notebook
-Automated workflow for building NotebookLM notebooks from task files. Tom drops a task
-file in `tasks/`; Claude creates a notebook, runs research, imports sources, builds
-artifacts (videos, slides, infographics, web apps), and shares the notebook. One notebook
-per topic, purpose-built and disposable.
-
-- Workflow root: `Projects/NotebookLM/ephemeral-notebook/`
-- Full context: `memory/CONTEXT.md`
-- Workflow doc: `memory/skills/workflow-ephemeral-notebook.md`
-- Run log: `Projects/NotebookLM/ephemeral-notebook/run-log.md`
-
----
+### 4. NotebookLM — Playlists Notebook
+Automated workflow for building NotebookLM notebooks and generating playlist videos; one notebook per topic/playlist.
+- `Projects/NotebookLM/ephemeral-notebook/` — project root
+- `memory/CONTEXT.md` — full workflow context
 
 ### 5. BYG — Behold Your God
-Video series + companion web app based on F.T. Wright's *Behold Your God*. Ten illustrated
-animated videos (dark background, SVG doodle format), each with a wrapper page deployed to
-gh-pages. The web app bundles all 10 into a single page with Illustrations, Explorer, and
-Flashcard tabs. Illustration 01 (Nuclear Power Plant) is complete.
+Ten animated illustration videos and a companion web app based on F.T. Wright's *Behold Your God*.
+- `Projects/BYG/documents/project-definition.md`
 
-- Project definition: `Projects/BYG/documents/project-definition.md`
-- Web app: `Projects/NotebookLM/ephemeral-notebook/apps/behold-your-god.html`
-- Videos: `Projects/Remotion/simple-narrated-slides/` (studio: localhost:3001)
-- Knowledge base: `Projects/BYG/documents/knowledge-base.md`
+### 6. Augmented Chat
+Single-file web apps that enhance AI chat with structured content, prompt pills, and an AI response layer — clipboard-based (GiC) or inline (Gemini API).
+- `Projects/AugmentedChat/documents/project-definition.md`
 
----
+### 7. YouTube Growth
+Research and strategy for building a YouTube presence — SEO, thumbnails, post-upload workflow, Shorts, playlists.
+- `Projects/YouTubeGrowth/documents/project-definition.md`
 
-### 6. Infrastructure
-Cross-cutting tools, meta-processes, and housekeeping. Covers anything that applies
-across multiple projects rather than belonging to one: tooling, standards, documentation
-quality, and periodic cleanup.
+### 8. Gems
+Custom Google Gemini personas, each with a system prompt and knowledge file.
+- `Projects/Gems/documents/project-definition.md`
 
-- Project definition: `Projects/Infrastructure/documents/project-definition.md`
-- Task manager: `tools/tasks.html` (served on localhost:3010)
-- Task data: `tools/tasks.json` — update this when task status changes
-- Git: `main` (production) and `dev` (working). Promote via `bash promote.sh`.
-- Structural tests: 99 tests across all three Remotion projects (`npm test` in each)
-- Two planned reviews: redundancy/cleanup audit + software shop standards gap analysis
+### 9. Infrastructure
+Cross-cutting tools, meta-processes, and housekeeping that apply across all projects.
+- `Projects/Infrastructure/documents/project-definition.md`
 
 ---
 
@@ -92,27 +63,32 @@ quality, and periodic cleanup.
 | Working dir | `C:\Users\tomew\Documents\agent-test` |
 | Git branches | `main` (prod), `dev` (working) |
 | Promote command | `bash promote.sh` from agent-test root |
-| nlm CLI | `C:\Users\tomew\.local\bin\nlm.exe` (v0.3.2) |
+| nlm CLI | `C:\Users\tomew\.local\bin\nlm.exe` (v0.5.27) |
 | Account | ewalltom@gmail.com |
+| Videos folder | `C:\Users\tomew\Videos\` — playlist subfolders; `Not Yet in YouTube\` within each |
 
 ## GitHub Repos
 
-Three repos, three purposes:
-
 | Repo | Purpose |
 |------|---------|
-| `agent-test` | Full project backup — all source, skills, documents. Pushed to GitHub at every shutdown. |
-| `claude-code-fun` | Legacy public site. gh-pages branch only; origin for old BYG and other HTML deploys. |
-| `byg` / `byg-dev` | BYG-specific repos. `byg` = prod (ewallt.github.io/byg/), `byg-dev` = staging (ewallt.github.io/byg-dev/). Both live. |
-
-The local `agent-test` git repo is the source of truth for all work. GitHub repos are downstream — backup or publication targets only.
+| `agent-test` | Full project backup — all source, skills, documents. Pushed at every shutdown. |
+| `claude-code-fun` | Legacy public site. gh-pages branch only. |
+| `byg` / `byg-dev` | BYG-specific. `byg` = prod (ewallt.github.io/byg/), `byg-dev` = staging. Both live. |
 
 Full BYG repo structure: `Projects/BYG/documents/byg-github-repos.md`
 
+## Session Boundary
+
+`/compact` is the session boundary:
+- **pre-compact** = end-of-session (log entry, then signal ready)
+- **post-compact** = orientation (reads this file, session log, memory index)
+
 ## For More Detail
-- Pending tasks: `memory/pending.md`
+
+- Pending tasks: `tools/tasks.json` (board at localhost:3010)
 - Session history: `memory/session-log.md`
-- Startup checklist: `memory/startup.md`
-- Remotion details: `memory/remotion-context.md`
+- Active notebooks and IDs: `memory/working-notes.md`
 - NotebookLM full context: `memory/CONTEXT.md`
+- YouTube playlists guide: `documents/youtube-playlists-guide.md`
+- Generating ideas: use the `generating-ideas` skill
 - Gotchas: `memory/gotchas.md`, `memory/remotion-gotchas.md`, `memory/whiteboard-explainer-gotchas.md`

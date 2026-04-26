@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Setup — Quick Ref</title>
+<style>
+  :root {
+    --bg: #05080f;
+    --surface: #0d1525;
+    --border: rgba(255,255,255,.10);
+    --text: #f0f6ff;
+    --muted: #8fa8cc;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 32px;
+    gap: 48px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -.04em;
+    text-align: center;
+    background: linear-gradient(120deg, #a78bfa, #38bdf8, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    max-width: 720px;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+  }
+  .step:nth-child(1)::before { background: #a78bfa; }
+  .step:nth-child(2)::before { background: #38bdf8; }
+  .step:nth-child(3)::before { background: #34d399; }
+  .step:nth-child(4)::before { background: #fb923c; }
+
+  .num {
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1;
+    min-width: 36px;
+    opacity: .25;
+    color: var(--text);
+  }
+
+  .step-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: -.02em;
+  }
+
+  .step-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: .9em;
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+  .step:nth-child(1) code { background: rgba(167,139,250,.15); color: #c4b5fd; }
+  .step:nth-child(2) code { background: rgba(56,189,248,.12); color: #7dd3fc; }
+  .step:nth-child(3) code { background: rgba(52,211,153,.12); color: #6ee7b7; }
+  .step:nth-child(4) code { background: rgba(251,146,60,.12); color: #fdba74; }
+</style>
+</head>
+<body>
+
+<h1>Session Strategy</h1>
+
+<div class="steps">
+
+  <div class="step">
+    <div class="num">1</div>
+    <div class="step-body">
+      <div class="step-title">Keep the session going</div>
+      <div class="step-desc">Stay in the same session rather than starting fresh — preserves context and conversational continuity.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div class="step-body">
+      <div class="step-title">Set auto-compact to <code>50%</code></div>
+      <div class="step-desc">Compaction fires mid-session at half context, not at the edge. Sessions run longer without hitting the limit.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <div class="step-body">
+      <div class="step-title">Use <code>auto</code> mode for permissions</div>
+      <div class="step-desc">Claude's own classifier decides what needs approval — surgical, not an all-or-nothing bypass.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="num">4</div>
+    <div class="step-body">
+      <div class="step-title">Use <code>CLAUDE.md</code> judiciously</div>
+      <div class="step-desc">Put your real guardrails here — the actions that genuinely warrant a pause. Keep it focused so it stays effective.</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

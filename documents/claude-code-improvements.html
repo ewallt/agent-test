@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code — Infrastructure Improvements</title>
+<style>
+  :root {
+    --bg: #070c16;
+    --surface: #0f1726;
+    --surface2: #131e30;
+    --border: rgba(255,255,255,.10);
+    --text: #e6edf7;
+    --muted: #a9b6cc;
+    --accent: #8bb9ff;
+    --green: rgba(124,255,178,.92);
+    --yellow: rgba(255,214,100,.9);
+    --red: rgba(255,122,138,.95);
+    --shadow: 0 12px 30px rgba(0,0,0,.35);
+    --radius: 14px;
+    --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #070c16 0%, #0b1220 60%, #070c16 100%);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 24px 40px;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(139,185,255,.12);
+    border: 1px solid rgba(139,185,255,.25);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    padding: 4px 14px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 14px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  section { margin-top: 52px; }
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon {
+    background: rgba(139,185,255,.12);
+    border-radius: 8px;
+    color: var(--accent);
+    font-size: 1rem;
+    padding: 6px 9px;
+  }
+  h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .card-bd { padding: 22px 24px; }
+  p { color: var(--muted); font-size: .97rem; margin-bottom: 10px; }
+  p:last-child { margin-bottom: 0; }
+  p strong { color: var(--text); }
+  ul { color: var(--muted); font-size: .95rem; padding-left: 1.3em; margin-bottom: 10px; }
+  ul li { margin-bottom: 5px; }
+  ul li:last-child { margin-bottom: 0; }
+  ul li strong { color: var(--text); }
+
+  code {
+    background: rgba(139,185,255,.1);
+    border-radius: 5px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85em;
+    padding: 2px 7px;
+  }
+  .code-block {
+    background: #060b15;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: .83rem;
+    line-height: 1.7;
+    margin: 14px 0 4px;
+    overflow-x: auto;
+    padding: 16px 20px;
+    white-space: pre;
+    color: #c9d8f0;
+  }
+  .callout {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0 4px;
+    font-size: .92rem;
+  }
+  .callout.warn  { background: rgba(255,214,100,.07); border: 1px solid rgba(255,214,100,.25); color: var(--yellow); }
+  .callout.info  { background: rgba(139,185,255,.07); border: 1px solid rgba(139,185,255,.2);  color: var(--accent); }
+  .callout.green { background: rgba(124,255,178,.07); border: 1px solid rgba(124,255,178,.2);  color: var(--green);  }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  /* Priority item cards */
+  .item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .item-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .item-num {
+    background: rgba(139,185,255,.15);
+    border: 1px solid rgba(139,185,255,.3);
+    border-radius: 8px;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: .85rem;
+    font-weight: 700;
+    min-width: 32px;
+    text-align: center;
+    padding: 4px 8px;
+  }
+  .item-title { font-size: 1rem; font-weight: 600; color: var(--text); flex: 1; }
+  .effort {
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 99px;
+  }
+  .effort.trivial { background: rgba(124,255,178,.12); color: var(--green); border: 1px solid rgba(124,255,178,.25); }
+  .effort.easy    { background: rgba(139,185,255,.12); color: var(--accent); border: 1px solid rgba(139,185,255,.25); }
+  .effort.medium  { background: rgba(255,214,100,.10); color: var(--yellow); border: 1px solid rgba(255,214,100,.25); }
+  .item-bd { padding: 20px 22px; }
+
+  /* State table */
+  .state-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+  }
+  .state-table th {
+    text-align: left;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: .78rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .state-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    vertical-align: top;
+    color: var(--muted);
+  }
+  .state-table td:first-child { color: var(--text); font-weight: 500; white-space: nowrap; }
+  .state-table tr:last-child td { border-bottom: none; }
+  .status-ok   { color: var(--green); font-weight: 600; }
+  .status-gap  { color: var(--red);  font-weight: 600; }
+  .status-partial { color: var(--yellow); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Infrastructure</div>
+  <h1>Claude Code — <span>Infrastructure Improvements</span></h1>
+  <p>Identified from the 3/31/2026 source leak analysis. Ranked by leverage and implementation order.</p>
+</header>
+
+<div class="container">
+
+  <!-- CONTEXT -->
+  <section>
+    <h2><span class="icon">📡</span> Background</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p>On March 31, 2026, Claude Code's source was briefly published publicly. The developer community immediately reverse-engineered how the harness actually works — compaction strategy, the hook lifecycle, permission evaluation, agent frontmatter — and produced a wave of best-practices posts within 24 hours.</p>
+        <p>A NotebookLM notebook was built from that coverage (11 sources, dated 3/31 or later). The gaps below were identified by querying that notebook against this project's actual configuration.</p>
+        <p><strong>Notebook ID:</strong> <code>97e0990a-938c-4b8c-9b6a-7e24f5b69490</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURRENT STATE -->
+  <section>
+    <h2><span class="icon">📋</span> Current State</h2>
+    <div class="card">
+      <table class="state-table">
+        <thead>
+          <tr>
+            <th>Area</th>
+            <th>Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>CLAUDE.md</td>
+            <td><span class="status-ok">✓ Good</span></td>
+            <td>Global + project-level. Skills system, JIT gates, memory system. Well above average.</td>
+          </tr>
+          <tr>
+            <td>Permission config</td>
+            <td><span class="status-partial">~ Partial</span></td>
+            <td>Has <code>Write</code>, <code>Edit</code>, <code>powershell -Command *</code>, <code>nlm *</code>. Missing git, npm, node wildcards.</td>
+          </tr>
+          <tr>
+            <td>Auto mode</td>
+            <td><span class="status-gap">✗ Not set</span></td>
+            <td><code>skipDangerousModePermissionPrompt: true</code> is the blunt-instrument fallback. Auto mode uses a background classifier — smarter.</td>
+          </tr>
+          <tr>
+            <td>Hooks</td>
+            <td><span class="status-gap">✗ None</span></td>
+            <td>No <code>~/.claude/hooks/</code> directory. No Stop, PreCompact, or PostToolUse hooks.</td>
+          </tr>
+          <tr>
+            <td>AUTOCOMPACT threshold</td>
+            <td><span class="status-gap">✗ Default (95%)</span></td>
+            <td>Compaction fires at the last moment when context quality is already degraded.</td>
+          </tr>
+          <tr>
+            <td>/compact usage</td>
+            <td><span class="status-gap">✗ Unknown</span></td>
+            <td>Manual compaction at task boundaries is a best practice — not consistently applied.</td>
+          </tr>
+          <tr>
+            <td>Conditional rules (.claude/rules/)</td>
+            <td><span class="status-gap">✗ None</span></td>
+            <td>All CLAUDE.md rules load on every turn. File-scoped rules would reduce token cost.</td>
+          </tr>
+          <tr>
+            <td>CLAUDE.local.md</td>
+            <td><span class="status-gap">✗ None</span></td>
+            <td>Good for local paths, ports, dev-machine-specific config — without polluting shared files.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- IMPROVEMENTS -->
+  <section>
+    <h2><span class="icon">🔧</span> Improvements — In Priority Order</h2>
+
+    <!-- 1 -->
+    <div class="item">
+      <div class="item-header">
+        <div class="item-num">1</div>
+        <div class="item-title">Set AUTOCOMPACT threshold to 50%</div>
+        <span class="effort trivial">Trivial</span>
+      </div>
+      <div class="item-bd">
+        <p><strong>What:</strong> Add one environment variable to <code>settings.json</code> so auto-compaction triggers at 50% context usage instead of 95%.</p>
+        <p><strong>Why:</strong> At 95%, the model is already cognitively overloaded when it compacts. At 50%, compaction is a clean, mid-task operation — the summary it produces is far better, and the remaining context stays high-quality for longer sessions.</p>
+        <div class="code-block">{
+  "env": {
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50"
+  }
+}</div>
+        <div class="callout green"><strong>Risk:</strong> None. Purely a quality improvement. Do this first.</div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="item">
+      <div class="item-header">
+        <div class="item-num">2</div>
+        <div class="item-title">Add missing permission wildcards</div>
+        <span class="effort trivial">Trivial</span>
+      </div>
+      <div class="item-bd">
+        <p><strong>What:</strong> Add <code>Bash(git *)</code>, <code>Bash(npm run *)</code>, <code>Bash(node *)</code>, and <code>Bash(npx *)</code> to the <code>allow</code> array in <code>settings.json</code>.</p>
+        <p><strong>Why:</strong> Git is used constantly — committing, branching, promoting to main. Npm and node are used in every Remotion build. Without these, Claude prompts for permission on routine operations that are obviously safe. The leak confirmed: frequent permission prompts mean the config is incomplete.</p>
+        <div class="code-block">"allow": [
+  "Bash(git *)",
+  "Bash(npm run *)",
+  "Bash(node *)",
+  "Bash(npx *)",
+  "Bash(PYTHONIOENCODING=utf-8 nlm *)",
+  "Bash(powershell -Command *)",
+  "Write",
+  "Edit"
+]</div>
+        <div class="callout warn"><strong>Note on Write/Edit:</strong> These currently allow any file. Acceptable for a solo developer trust context, but worth revisiting if scope expands.</div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="item">
+      <div class="item-header">
+        <div class="item-num">3</div>
+        <div class="item-title">Proactive /compact at task boundaries</div>
+        <span class="effort easy">Behavioral</span>
+      </div>
+      <div class="item-bd">
+        <p><strong>What:</strong> Run <code>/compact</code> manually at natural task boundaries — when research is complete, when a feature is done, when switching projects, before a complex multi-step workflow begins.</p>
+        <p><strong>Why:</strong> Auto-compaction is reactive — it fires when the window is nearly full. Manual compaction is proactive — you control when the summary is written, while context is still clean. The source leak confirmed this is the intended usage pattern: the harness supports it, but doesn't enforce it.</p>
+        <div class="callout info"><strong>When to compact:</strong> After a notebook build completes. After a Remotion render. Before starting a new skill. At any "phase boundary" where what came before is settled and what comes next is a fresh problem.</div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="item">
+      <div class="item-header">
+        <div class="item-num">4</div>
+        <div class="item-title">Enable auto mode</div>
+        <span class="effort easy">Easy</span>
+      </div>
+      <div class="item-bd">
+        <p><strong>What:</strong> Switch from <code>skipDangerousModePermissionPrompt: true</code> to launching with <code>--dangerously-skip-permissions</code> replaced by <code>--enable-auto-mode</code>, or configure it in settings.</p>
+        <p><strong>Why:</strong> <code>skipDangerousModePermissionPrompt</code> is a blunt bypass. Auto mode is different: it runs a lightweight LLM classifier in the background that evaluates each tool use for intent, auto-approving safe actions and blocking injections and escalations. You get the same friction-free experience but with an active safety layer. The source leak revealed the classifier is configurable via <code>autoMode.allow</code>, <code>soft_deny</code>, and <code>deny</code> keys in settings.</p>
+        <div class="callout warn"><strong>Note:</strong> Investigate the exact settings.json key for enabling this — the leak revealed the internal keys but the CLI flag is <code>--enable-auto-mode</code> or toggle with <code>Shift+Tab</code> during a session.</div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="item">
+      <div class="item-header">
+        <div class="item-num">5</div>
+        <div class="item-title">Stop hook — autonomous build validation loop</div>
+        <span class="effort medium">Medium</span>
+      </div>
+      <div class="item-bd">
+        <p><strong>What:</strong> Create <code>~/.claude/hooks/hooks.json</code> and add a Stop hook that runs a validation script after each Claude turn.</p>
+        <p><strong>Why:</strong> The Stop hook fires right before Claude finalizes a response. If your validation script exits with code <code>0</code>, Claude stops. If it exits with code <code>2</code>, the <code>stderr</code> output is automatically injected back into the conversation and Claude continues — fixing, retrying, iterating until the check passes. This is a zero-plugin autonomous loop, directly supported by the harness.</p>
+        <p>For this project, the most useful validation targets are:</p>
+        <ul>
+          <li><strong>Remotion:</strong> TypeScript compile check after scene edits</li>
+          <li><strong>promote.sh:</strong> 99 structural tests before any merge to main</li>
+          <li><strong>BYG:</strong> audio file existence check after narration generation</li>
+        </ul>
+        <div class="code-block">// hooks/hooks.json skeleton
+{
+  "hooks": [
+    {
+      "event": "Stop",
+      "command": "bash ~/.claude/hooks/validate.sh",
+      "description": "Run build validation after each turn"
+    }
+  ]
+}</div>
+        <div class="callout info"><strong>Implementation note:</strong> The validation script needs to be context-aware — it should only run the relevant check for the current project. A simple approach: check which project directory is active and dispatch accordingly.</div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="item">
+      <div class="item-header">
+        <div class="item-num">6</div>
+        <div class="item-title">PreCompact hook — state snapshot</div>
+        <span class="effort medium">Medium</span>
+      </div>
+      <div class="item-bd">
+        <p><strong>What:</strong> Add a <code>PreCompact</code> hook that saves a structured snapshot of session state before auto-compaction runs.</p>
+        <p><strong>Why:</strong> When auto-compaction fires, the model forgets what files it was editing, what tasks are pending, and what decisions were made. A PreCompact hook can write a state file — active files, current task, recent decisions — before the summary is written. A <code>SessionStart</code> hook then restores this state at the beginning of the next session, so Claude never has to ask "what were we doing?"</p>
+        <p>This would complement (and potentially simplify) the existing startup skill and handoff.md system.</p>
+        <div class="callout warn"><strong>Design consideration:</strong> The startup skill already provides session continuity via handoff.md and session-log.md. The PreCompact hook adds finer-grained automatic snapshots between sessions. These are complementary, not redundant — the hook captures in-progress state; the startup skill provides narrative context.</div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="item">
+      <div class="item-header">
+        <div class="item-num">7</div>
+        <div class="item-title">Conditional rules — .claude/rules/ directory</div>
+        <span class="effort medium">Medium</span>
+      </div>
+      <div class="item-bd">
+        <p><strong>What:</strong> Create a <code>.claude/rules/</code> directory with YAML-frontmattered rule files. Each file specifies a glob pattern — the rules only load when Claude is editing files that match.</p>
+        <p><strong>Why:</strong> Currently all CLAUDE.md content is injected on every turn, regardless of what Claude is working on. Remotion-specific rules load during a NotebookLM session; BYG rules load during a bar-chart-race session. Conditional rules eliminate this token waste — the right rules load at the right moment.</p>
+        <div class="code-block">---
+# .claude/rules/remotion.md
+globs: ["Projects/Remotion/**"]
+---
+
+Always use `useCurrentFrame()` not direct frame variables.
+Never use CSS transitions — use Remotion's `interpolate()`.
+Check `start-studio.js` before touching composition registry.</div>
+        <div class="callout info"><strong>Candidates for extraction:</strong> Remotion gotchas, BYG audio rules (Edge TTS only), nlm CLI syntax reminders, Playwright MCP patterns.</div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="item">
+      <div class="item-header">
+        <div class="item-num">8</div>
+        <div class="item-title">CLAUDE.local.md — private developer config</div>
+        <span class="effort easy">Easy</span>
+      </div>
+      <div class="item-bd">
+        <p><strong>What:</strong> Create a gitignored <code>CLAUDE.local.md</code> at the project root for machine-specific configuration.</p>
+        <p><strong>Why:</strong> Local ports, file paths, dev credentials, and machine-specific shortcuts currently either go into CLAUDE.md (polluting shared config) or stay undocumented. <code>CLAUDE.local.md</code> loads at higher priority than <code>CLAUDE.md</code> and is gitignored by default — the right place for things that are true on this machine but shouldn't travel with the repo.</p>
+        <div class="callout green"><strong>Good candidates:</strong> Remotion Studio port (3000), ticket board URL (localhost:3010), local NLM binary path, any Windows-specific path overrides.</div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="item">
+      <div class="item-header">
+        <div class="item-num">9</div>
+        <div class="item-title">Agent frontmatter in skill files</div>
+        <span class="effort medium">Medium</span>
+      </div>
+      <div class="item-bd">
+        <p><strong>What:</strong> Add YAML frontmatter to agent/skill markdown files to structurally constrain them using properties like <code>tools</code>, <code>disallowedTools</code>, <code>model</code>, <code>maxTurns</code>, and <code>effort</code>.</p>
+        <p><strong>Why:</strong> The source leak revealed that Claude Code's agent system natively supports frontmatter-based constraints. Currently skills define their behavior entirely in prose — effective, but the model interprets rather than enforces. Frontmatter makes constraints structural: a read-only research agent literally cannot call Edit; a quick lookup agent cannot exceed N turns; a cost-sensitive scan can be pinned to Haiku.</p>
+        <ul>
+          <li><strong>High-value candidates:</strong> The Explore subagent (read-only, should never Edit), dialog-maker subagents (no file writes), NLM operator agents (constrained to specific commands)</li>
+          <li><strong>Model routing:</strong> Pin fast/cheap tasks to Haiku, complex reasoning to Sonnet/Opus — currently everything runs on the session model</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="item">
+      <div class="item-header">
+        <div class="item-num">10</div>
+        <div class="item-title">MAX_THINKING_TOKENS override</div>
+        <span class="effort trivial">Trivial</span>
+      </div>
+      <div class="item-bd">
+        <p><strong>What:</strong> Add <code>MAX_THINKING_TOKENS: "10000"</code> to the <code>env</code> block in settings.json.</p>
+        <p><strong>Why:</strong> The default is 31,999 thinking tokens per request. For most tasks in this workflow — web app tweaks, Remotion edits, notebook operations — that's excessive. Dropping to 10,000 reduces hidden thinking costs by ~70% with no perceptible quality difference. Reserve extended thinking for genuinely complex planning tasks, which can override this locally.</p>
+        <div class="code-block">"env": {
+  "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
+  "MAX_THINKING_TOKENS": "10000"
+}</div>
+        <div class="callout warn"><strong>Watch for:</strong> Any task where planning quality visibly degrades. If that happens, remove the override and evaluate whether per-task overrides are the right approach instead.</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ROADMAP SUMMARY -->
+  <section>
+    <h2><span class="icon">🗺️</span> Suggested Order</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p style="margin-bottom:16px;">Grouped by effort and risk. Items 1–2 can be done in a single settings.json edit. Item 3 is behavioral. Items 4–10 each need a dedicated session.</p>
+        <div style="display:grid; grid-template-columns: auto 1fr auto; gap: 0; font-size:.9rem;">
+          <div style="padding:10px 16px; border-bottom:1px solid var(--border); color:var(--muted); font-size:.78rem; font-weight:600; text-transform:uppercase; letter-spacing:.06em;">#</div>
+          <div style="padding:10px 16px; border-bottom:1px solid var(--border); color:var(--muted); font-size:.78rem; font-weight:600; text-transform:uppercase; letter-spacing:.06em;">Item</div>
+          <div style="padding:10px 16px; border-bottom:1px solid var(--border); color:var(--muted); font-size:.78rem; font-weight:600; text-transform:uppercase; letter-spacing:.06em;">Effort</div>
+
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); font-family:var(--mono); color:var(--accent); font-size:.85rem;">1</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text);">AUTOCOMPACT threshold → 50%</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--green); font-size:.82rem; font-weight:600;">1 line</div>
+
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); font-family:var(--mono); color:var(--accent); font-size:.85rem;">2</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text);">Add git / npm / node permission wildcards</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--green); font-size:.82rem; font-weight:600;">5 min</div>
+
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); font-family:var(--mono); color:var(--accent); font-size:.85rem;">3</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text);">Start using /compact at task boundaries</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--accent); font-size:.82rem; font-weight:600;">Behavioral</div>
+
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); font-family:var(--mono); color:var(--accent); font-size:.85rem;">4</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text);">Enable auto mode</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--accent); font-size:.82rem; font-weight:600;">15 min</div>
+
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); font-family:var(--mono); color:var(--accent); font-size:.85rem;">5</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text);">Stop hook — build validation loop</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--yellow); font-size:.82rem; font-weight:600;">1 session</div>
+
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); font-family:var(--mono); color:var(--accent); font-size:.85rem;">6</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text);">PreCompact hook — session state snapshot</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--yellow); font-size:.82rem; font-weight:600;">1 session</div>
+
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); font-family:var(--mono); color:var(--accent); font-size:.85rem;">7</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text);">Conditional rules (.claude/rules/)</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--yellow); font-size:.82rem; font-weight:600;">1 session</div>
+
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); font-family:var(--mono); color:var(--accent); font-size:.85rem;">8</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text);">CLAUDE.local.md — private config</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--accent); font-size:.82rem; font-weight:600;">30 min</div>
+
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); font-family:var(--mono); color:var(--accent); font-size:.85rem;">9</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text);">Agent frontmatter in skill files</div>
+          <div style="padding:10px 16px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--yellow); font-size:.82rem; font-weight:600;">Ongoing</div>
+
+          <div style="padding:10px 16px; font-family:var(--mono); color:var(--accent); font-size:.85rem;">10</div>
+          <div style="padding:10px 16px; color:var(--text);">MAX_THINKING_TOKENS override</div>
+          <div style="padding:10px 16px; color:var(--green); font-size:.82rem; font-weight:600;">1 line</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT NOT TO DO -->
+  <section>
+    <h2><span class="icon">⚠️</span> What the Leak Says Not to Do</h2>
+    <div class="card">
+      <div class="card-bd">
+        <p><strong>"STRICTLY ENFORCED" in all caps</strong> — The source code shows that CLAUDE.md is wrapped in an XML <code>&lt;context&gt;</code> tag alongside a hidden system disclaimer: "this context may or may not be relevant to your tasks." Shouting in all caps doesn't override this framing. Write instructions as architecture, not demands.</p>
+        <p><strong>Starting fresh sessions for ongoing work</strong> — Long sessions accumulate structured memory: file lists, task specs, workflow state. Wiping this by starting fresh is a real cost. Use <code>/resume</code> or fork instead.</p>
+        <p><strong>Using CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</strong> — Not a real environment variable. Agent spawning works natively through the Agent tool. Don't add it.</p>
+        <p><strong>Building custom TDD plugins</strong> — The Stop hook handles this natively. Exit code 2 feeds stderr back to the model. No plugin needed.</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /container -->
+</body>
+</html>

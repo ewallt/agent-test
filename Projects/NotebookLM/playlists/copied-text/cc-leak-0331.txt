@@ -1,0 +1,54 @@
+key: cc-leak-0331
+
+=== SOURCE 1: Community Best Practices (Cliffnotes + Fuller) ===
+
+Cliffnotes:
+- Have your dos and don'ts in Claude.md but not too much stuff
+- Let Claude run on its own via auto mode (so you don't have to accept everything)
+- Make use of parallel agents (it's free because it uses the same context)
+- Use /compact instead of letting it compact so you retain full control over context
+- Use MCPs without worry because it doesn't cloud the context until it's actually used
+- Use hooks to supercharge your Claude Code experience
+
+Fuller breakdown:
+
+Context Injection and Project Architecture
+The system automatically loads a claude.md file into every conversational turn. Developers have a 40,000-character allowance in this file to define architectural patterns, repository-specific practices, and team coding standards. Utilizing this configuration ensures the agent operates with a persistent, strict understanding of the target architecture without requiring repeated prompt instructions.
+
+Parallel Execution and State Isolation
+The harness is explicitly designed for concurrent execution, with sub-agents sharing prompt caches to drastically reduce the cost and latency of spinning up parallel processes. To prevent operational conflicts during simultaneous execution, the system avoids relying on a single agent. Instead, it employs distinct execution models, including inheriting parent context via forks, using separate panes communicating via file-based mailboxes, and assigning isolated Git worktrees so each agent operates within its own branch.
+
+Token Optimization and State Compaction
+Anthropic manages the context window through a multi-tiered compaction strategy rather than simple truncation. This includes micro-compacting time-based tool results, collapsing and summarizing conversation spans, and extracting key context into persistent session memory. Developers should proactively use the /compact command to force state saves at critical junctures to prevent the system from auto-compacting and dropping vital context. Furthermore, large file reads are truncated to an 8KB preview sent to the model, necessitating precise context targeting rather than loading massive files directly into the prompt.
+
+Session Continuity
+Long-running sessions accumulate structured session memory, which includes task specifications, file lists, workflow state errors, and learnings. Because of this accumulated structural knowledge, developers are advised against starting fresh sessions. Resuming or forking existing sessions preserves the momentum and logical state of the codebase.
+
+Tooling and Concurrency Rules
+The system utilizes 66 built-in tools partitioned into two strict execution categories. Concurrent tools handle read-only operations and scale horizontally. Serialized tools handle mutating operations, such as file edits or bash command execution, and are strictly queued to run sequentially to ensure thread safety during automated modifications.
+
+Lifecycle Hooks
+The architecture exposes an event-driven hook system triggered at various stages, such as pre-tool use, post-tool use, user prompt submit, and session boundaries. These hooks span five execution types (command, prompt, agent, HTTP, function). This enables the attachment of automated side-effects to agent actions, such as executing a script to regenerate documentation immediately after a mutating agent completes a commit.
+
+Permissions and Execution Control
+Frequent manual permission prompts indicate a failure of configuration. Task boundaries should be pre-configured via settings.json. Alternatively, developers should utilize the "Auto" permission mode, which runs a lightweight LLM classifier to evaluate and auto-approve safe actions while appropriately blocking dangerous ones. Additionally, the streaming architecture makes interruptions computationally cheap; execution should be halted immediately upon detecting logical drift, as the system is designed to recover seamlessly from abrupt stops without token penalties.
+
+=== SOURCE 2: Video Summary — Claude Code: 8 Strategic Insights & Actions ===
+
+The video details how to transition from treating Claude Code as a simple chatbot to managing it as a sophisticated agentic runtime.
+
+1. Shift to an Agentic Mindset [01:46]: Recognize that the tool is a full agent runtime—including a multi-agent coordinator and permission engine—rather than just a terminal-based chatbot.
+
+2. Master the Command Service [02:41]: Beyond basic prompts, utilize the 85+ slash commands. Key operational commands include /init for project setup, /plan for architecting changes before execution, and /compact to manage context window costs.
+
+3. Optimize claude.md as Operating Context [04:45]: Treat this file as an onboarding manual for the agent. Instead of general documentation, include strict architectural rules, project conventions (e.g., "Always use TypeScript strict mode"), and decision logic.
+
+4. Configure Wildcard Permissions [06:08]: To reduce friction and allow the agent to operate autonomously, set wildcard rules in your settings.json for recurring tasks like Git commands or file edits within specific directories.
+
+5. Utilize Task Decomposition [07:07]: The underlying architecture is built for parallel and sequential sub-agent coordination. Break complex refactoring or feature requests into discrete search, plan, execute, and verify phases.
+
+6. Leverage MCP as an Extension Layer [08:21]: Use the Model Context Protocol (MCP) to integrate Claude Code with external databases, APIs, and documentation systems, turning it into a central integration hub.
+
+7. Monitor Feature Flags [09:21]: The source code contains internal flags for experimental features like "voice mode" and "coordinator mode," signaling that more complex agentic capabilities are imminent.
+
+8. Design the Operating Environment [10:29]: Treat the tool as infrastructure. Optimize results and reduce token consumption by actively managing context via /summary and /resume commands and tuning routing settings.

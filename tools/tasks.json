@@ -11,7 +11,7 @@
             {
               "id": "byg-1",
               "title": "BYG publish pipeline",
-              "notes": "Define and build the end-to-end publish pipeline for BYG — covering local, dev, and main levels, all file types (TSX, HTML, MP4), and all testing involved.",
+              "notes": "Define and build the end-to-end publish pipeline for BYG \u00e2\u20ac\u201d covering local, dev, and main levels, all file types (TSX, HTML, MP4), and all testing involved.",
               "priority": 3,
               "status": "pending"
             },
@@ -24,7 +24,7 @@
             },
             {
               "id": "byg-3",
-              "title": "Illustration 03 — render, deploy, and update web app",
+              "title": "Illustration 03 \u00e2\u20ac\u201d render, deploy, and update web app",
               "notes": "WhiteHatBlackHat: timing fixed, narrations complete. Remaining: render to MP4, write wrapper HTML, deploy to byg-dev, update behold-your-god.html.",
               "priority": 2,
               "status": "in-progress"
@@ -44,14 +44,14 @@
             {
               "id": "bcr-1",
               "title": "Wire up Tallest Buildings",
-              "notes": "Data files exist in data/tallest-buildings/ — needs wiring into data/index.ts",
+              "notes": "Data files exist in data/tallest-buildings/ \u00e2\u20ac\u201d needs wiring into data/index.ts",
               "priority": 3,
               "status": "pending"
             },
             {
               "id": "bcr-2",
               "title": "UsCities pacing fix",
-              "notes": "Simultaneous engine goes too fast — only 13 decennial periods (~10s total). Fix: source annual data or increase frame counts significantly.",
+              "notes": "Simultaneous engine goes too fast \u00e2\u20ac\u201d only 13 decennial periods (~10s total). Fix: source annual data or increase frame counts significantly.",
               "priority": 3,
               "status": "pending"
             },
@@ -78,7 +78,7 @@
             {
               "id": "sns-1",
               "title": "Upgrade Britain1940 to per-bullet audio",
-              "notes": "Currently uses per-slide architecture (one MP3 per slide). BattleOfAtlantic already uses the newer per-bullet pattern — Britain1940 needs to match it.",
+              "notes": "Currently uses per-slide architecture (one MP3 per slide). BattleOfAtlantic already uses the newer per-bullet pattern \u00e2\u20ac\u201d Britain1940 needs to match it.",
               "priority": 4,
               "status": "pending"
             },
@@ -106,13 +106,13 @@
             {
               "id": "sns-6",
               "title": "Deploy behold-your-god.html v1.1 to gh-pages",
-              "notes": "Superseded — v2.0 deployed 2026-03-28 with The Arc tab, Illustration 02 live, same-tab navigation.",
+              "notes": "Superseded \u00e2\u20ac\u201d v2.0 deployed 2026-03-28 with The Arc tab, Illustration 02 live, same-tab navigation.",
               "priority": 1,
               "status": "done"
             },
             {
               "id": "sns-7",
-              "title": "Build Illustration 00 video — The King They Made and Killed",
+              "title": "Build Illustration 00 video \u00e2\u20ac\u201d The King They Made and Killed",
               "notes": "Notes ready at Projects/BYG/illustrations/00-king-they-made-and-killed/notes.md. Copy NuclearPlant.tsx as template, adapt for 5 bullet beats.",
               "priority": 2,
               "status": "pending"
@@ -120,13 +120,13 @@
             {
               "id": "sns-8",
               "title": "Edge TTS: free ElevenLabs replacement for BYG narration",
-              "notes": "Replaced ElevenLabs (10K char/month limit) with Microsoft Edge TTS (free, no key, comparable quality). Voice: en-GB-RyanNeural.\n\na. [DONE] POC implemented — slide-4.mp3 for GodNotCriminal generated successfully using edge-tts Python package + generate-god-not-criminal-audio-edge.mjs script.\nb. [DONE] Documentation written — Projects/BYG/documents/edge-tts-guide.html (covers setup, usage, voice options, troubleshooting, how to add to new compositions).\nc. [DONE] byg-edge-tts skill created (~/.claude/skills/byg-edge-tts/). remotion-narrated-slides skill updated to note BYG uses edge-tts.\nd. [DONE] byg-project-doc.html updated — edge-tts added to reference table and workflow (new Step 4 for audio generation).",
+              "notes": "Replaced ElevenLabs (10K char/month limit) with Microsoft Edge TTS (free, no key, comparable quality). Voice: en-GB-RyanNeural.\n\na. [DONE] POC implemented \u00e2\u20ac\u201d slide-4.mp3 for GodNotCriminal generated successfully using edge-tts Python package + generate-god-not-criminal-audio-edge.mjs script.\nb. [DONE] Documentation written \u00e2\u20ac\u201d Projects/BYG/documents/edge-tts-guide.html (covers setup, usage, voice options, troubleshooting, how to add to new compositions).\nc. [DONE] byg-edge-tts skill created (~/.claude/skills/byg-edge-tts/). remotion-narrated-slides skill updated to note BYG uses edge-tts.\nd. [DONE] byg-project-doc.html updated \u00e2\u20ac\u201d edge-tts added to reference table and workflow (new Step 4 for audio generation).",
               "priority": 2,
               "status": "done"
             },
             {
               "id": "sns-4",
-              "title": "Build BYG Illustrations 03–10 videos",
+              "title": "Build BYG Illustrations 03\u00e2\u20ac\u201c10 videos",
               "notes": "Eight remaining F.T. Wright illustration videos for Behold Your God (02 complete). Update Illustrations tab as each completes.",
               "priority": 3,
               "status": "in-progress"
@@ -140,7 +140,7 @@
             {
               "id": "rem-1",
               "title": "Remotion publish pipeline",
-              "notes": "Define and build the end-to-end publish pipeline for Remotion — covering local, dev, and main levels, all file types, and all testing involved. Applies across bar-chart-race, simple-narrated-slides, and whiteboard-explainer.",
+              "notes": "Define and build the end-to-end publish pipeline for Remotion \u00e2\u20ac\u201d covering local, dev, and main levels, all file types, and all testing involved. Applies across bar-chart-race, simple-narrated-slides, and whiteboard-explainer.",
               "priority": 3,
               "status": "pending"
             }
@@ -174,7 +174,7 @@
             {
               "id": "we-4",
               "title": "Braess's Paradox slide tweaks",
-              "notes": "Narration added. Slides 3 and 5 redesigned (parallel lanes layout). More slide-level tweaks still to come — specific issues not yet documented.",
+              "notes": "Narration added. Slides 3 and 5 redesigned (parallel lanes layout). More slide-level tweaks still to come \u00e2\u20ac\u201d specific issues not yet documented.",
               "priority": 3,
               "status": "pending"
             }
@@ -193,14 +193,14 @@
             {
               "id": "nlm-16",
               "title": "NotebookLM publish pipeline",
-              "notes": "Define and build the end-to-end publish pipeline for NotebookLM — covering local, dev, and main levels, all file types (HTML apps), and all testing involved.",
+              "notes": "Define and build the end-to-end publish pipeline for NotebookLM \u00e2\u20ac\u201d covering local, dev, and main levels, all file types (HTML apps), and all testing involved.",
               "priority": 3,
               "status": "pending"
             },
             {
               "id": "nlm-1",
               "title": "Unified artifact workflow",
-              "notes": "Full session build order: sources → Briefing Doc + app → slideshow manifest → Remotion content → videos. remotion flag + Report 3 skill still to design.",
+              "notes": "Full session build order: sources \u00e2\u2020\u2019 Briefing Doc + app \u00e2\u2020\u2019 slideshow manifest \u00e2\u2020\u2019 Remotion content \u00e2\u2020\u2019 videos. remotion flag + Report 3 skill still to design.",
               "priority": 3,
               "status": "in-progress"
             },
@@ -262,7 +262,7 @@
             },
             {
               "id": "nlm-10",
-              "title": "Claude ↔ NotebookLM round-trip via Google Docs",
+              "title": "Claude \u00e2\u2020\u201d NotebookLM round-trip via Google Docs",
               "notes": "Completed 2026-03-13. Read Double-Entry Bookkeeping manifest via gdrive MCP, Claude augmented (added Slide 6, deepened Slides 3 & 5), uploaded as source 03eca125 to notebook 18b286a4. Loop confirmed end-to-end.",
               "priority": 3,
               "status": "done"
@@ -312,8 +312,15 @@
             {
               "id": "nlm-18",
               "title": "Share self-improving AI notebook and log the run",
-              "notes": "Notebook a87328bb-c642-48fb-b571-8f2245fa8a41 — 'Self-Improving AI — Current Landscape'. 5 videos rendered. Not yet shared publicly or logged in run-log. Also: run was done conversationally — consider formalizing as a task file.",
+              "notes": "Notebook a87328bb-c642-48fb-b571-8f2245fa8a41 \u00e2\u20ac\u201d 'Self-Improving AI \u00e2\u20ac\u201d Current Landscape'. 5 videos rendered. Not yet shared publicly or logged in run-log. Also: run was done conversationally \u00e2\u20ac\u201d consider formalizing as a task file.",
               "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "nlm-19",
+              "title": "Restore notebook sources deleted by Gemini integration",
+              "notes": "The 'Notebooks in Gemini' two-way sync deleted sources from three notebooks when Tom selected a single source in Gemini. WW2 (dc673f24): had 8 sources, now has 1 (Kasserine Pass) + 2 Gemini chats. History Potpourri (b0d9a7b6): had ~18 sources, now has ~2. Big Ideas (1dbe88d0): had multiple sources, now has 1 (Thinking in Systems) + 1 Gemini chat. Local sources available: 6 WW2 files, 13 History Potpourri files, 7 Big Ideas files in Projects/NotebookLM/ephemeral-notebook/sources/. Missing sources will need to be written from general knowledge. Steps: (1) audit each notebook to see what's present, (2) re-upload local files, (3) write and upload any missing ones, (4) delete the Gemini chat sources.",
+              "priority": 2,
               "status": "pending"
             }
           ]
@@ -331,7 +338,7 @@
             {
               "id": "inf-16",
               "title": "Infrastructure publish pipeline",
-              "notes": "Define and build the end-to-end publish pipeline for Infrastructure — covering local, dev, and main levels, all file types (docs, tools, scripts), and all testing involved.",
+              "notes": "Define and build the end-to-end publish pipeline for Infrastructure \u00e2\u20ac\u201d covering local, dev, and main levels, all file types (docs, tools, scripts), and all testing involved.",
               "priority": 3,
               "status": "pending"
             },
@@ -344,7 +351,7 @@
             },
             {
               "id": "inf-2",
-              "title": "Discuss dev→main sync procedure",
+              "title": "Discuss dev\u00e2\u2020\u2019main sync procedure",
               "notes": "Dev is 8+ commits ahead of main with no established promotion cadence. Agree on when and how to promote (manual trigger, promote.sh, cadence).",
               "priority": 2,
               "status": "pending"
@@ -414,14 +421,14 @@
             },
             {
               "id": "inf-13",
-              "title": "Conduct Review 1 — Redundancy and Cleanup",
+              "title": "Conduct Review 1 \u00e2\u20ac\u201d Redundancy and Cleanup",
               "notes": "Audit the repo for redundant files, stale docs, overlapping tooling, and things that exist in two forms. Capture findings as tickets.",
               "priority": 2,
               "status": "pending"
             },
             {
               "id": "inf-14",
-              "title": "Conduct Review 2 — Software Shop Standards",
+              "title": "Conduct Review 2 \u00e2\u20ac\u201d Software Shop Standards",
               "notes": "Assess against a software shop checklist: CI/CD, test coverage, documentation coverage, deployment procedures, monitoring, change management. Capture gaps as tickets.",
               "priority": 2,
               "status": "pending"
@@ -436,7 +443,7 @@
             {
               "id": "inf-17",
               "title": "Test Playwright MCP end-to-end",
-              "notes": "Done 2026-03-29. Confirmed working — Chrome opens, navigates, snapshots, screenshots all verified. Findings documented in documents/playwright-mcp-findings.html.",
+              "notes": "Done 2026-03-29. Confirmed working \u00e2\u20ac\u201d Chrome opens, navigates, snapshots, screenshots all verified. Findings documented in documents/playwright-mcp-findings.html.",
               "priority": 1,
               "status": "done"
             },
@@ -448,11 +455,39 @@
               "status": "pending"
             },
             {
+              "id": "inf-19",
+              "title": "Remove startup skill references from MEMORY.md",
+              "notes": "Startups discontinued per Claude Code best practices (Resume/fork instead of fresh sessions). MEMORY.md still has 'IMPORTANT: invoke startup skill' as its first line. Remove that instruction and any other startup references in MEMORY.md. Also consider archiving the startup skill.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "inf-20",
+              "title": "Video dashboard: file-drop card creation",
+              "notes": "Add a drop zone to the dashboard so dragging/uploading a small metadata file creates a new source_ready card. File format: YAML frontmatter only (title, notebook, focusPrompt). Architectural note: user-created cards can't go in DEFAULT_VIDEOS (hardcoded), so they need a new localStorage key (e.g. video-dashboard-user-cards). Two sources of cards at render time: DEFAULT_VIDEOS + localStorage user cards.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
+              "id": "inf-21",
+              "title": "Video dashboard: card editing",
+              "notes": "Allow inline editing of card fields (title, notebook, notes, artifactId, skipYt, focusPrompt, nlmTitle). nlmTitle is the cryptic name NLM assigns to a generated video \u00e2\u20ac\u201d added by editing the card after NLM creates the video, since NLM doesn't allow renaming. This field is the mapping between the card's display title and what to look for in NLM. Trigger: right-click \u00e2\u2020\u2019 Edit, or double-click title. For DEFAULT_VIDEOS cards, edits persist as localStorage overrides (similar to status overrides). For user-created cards, edits update the user-cards store directly. Design the override merge strategy before building.",
+              "priority": 3,
+              "status": "pending"
+            },
+            {
               "id": "inf-9",
               "title": "Set up Google Docs MCP server (OAuth)",
               "notes": "Done. Token minted, MCP verified working 2026-03-13. mcp__gdrive__search and ReadMcpResourceTool both confirmed. Reference doc: ephemeral-notebook/documents/gdrive-integration.md and nlm-claude-feedback-loop.md.",
               "priority": 3,
               "status": "done"
+            },
+            {
+              "id": "inf-22",
+              "title": "Try out ChatGPT encyclopedia infographic prompt",
+              "notes": "New mode added to chatgpt-image-prompt skill. Test it with a subject (Animal/Plant/Person) to validate the prompt template and module generation.",
+              "priority": 2,
+              "status": "pending"
             }
           ]
         }
