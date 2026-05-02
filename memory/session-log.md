@@ -2,6 +2,69 @@
 
 ---
 
+## 2026-05-01 (Session 2) — Mac Transfer, aip001 Live, Phone Deploy Links
+
+### Mac Transfer — Repo Backup Approach
+- Created `agent-test/claude-backup/` as the transfer mechanism for `~/.claude/` infrastructure
+- `claude-backup/CLAUDE.md`, `claude-backup/memory/` (30+ files), `claude-backup/skills/` (already existed) all committed
+- `Projects/Infrastructure/documents/mac-transfer.md` Steps 3a/3b/3c rewritten: Mac user clones repo, then `cp` commands — no Google Drive needed
+- Mac memory path differs from Windows: `~/.claude/projects/Users-tomew-Documents-agent-test/memory/` (no `C--` prefix)
+- Homebrew was being set up on new MacBook; Xcode tools download triggered (~15 min)
+- Paste issue: terminal showed `bad pattern ^[[200~...` — bracket paste mode chars + curly quotes from chat. Fix: brew.sh copy button
+
+### aip001 — Pushed to gh-pages (Live)
+- Correct Google Doc ID found via Drive search: `1wniQ7q8r-H4pt5ZX8weht_7viCxkN8OunWBI7qeNKLo` (prior ID in project-definition was wrong — returned "Item not found")
+- Google Drive MCP renders escape chars (`\<`, `\#`, `\[`) — must clean before writing .txt; done manually
+- Pushed `prompts/aip001-gear-tab.txt` and updated `prompts/index.html` (new Track 1 section) to gh-pages
+- Updated `project-definition.md`: corrected Doc ID, status → Live
+
+### Phone Deploy
+- Claude on phone now has canvas preview — looks great, but code copy from canvas is broken
+- Workaround: output HTML to chat, copy from there, paste into GitHub web editor
+- pocket-deploy (100+ apps, prior era) established this pattern; still works
+- Link patterns written to `documents/handoff.md`:
+  - Create: `https://github.com/ewallt/claude-code-fun/new/gh-pages?filename=FOLDER/index.html`
+  - Edit: `https://github.com/ewallt/claude-code-fun/edit/gh-pages/FOLDER/index.html`
+  - View: `https://ewallt.github.io/claude-code-fun/FOLDER/`
+
+### Outstanding
+- Git commit on agent-test dev (claude-backup/, mac-transfer.md, project-definition.md uncommitted)
+- Delete Drive doc `1IU_euzYGKmvs3061Nf79lZe1QQpW-uXFPpPDfZAKmmQ` (abandoned CLAUDE.md upload)
+- Medieval Animal Trials tab bug fix; BYG Illustration 03 render/deploy
+
+---
+
+## 2026-05-01 — Prompt Library Design, Gems Deployed, Dashboard Updates
+
+### Gems Deployed to gh-pages
+- Reviewed 3 Gemini-generated HTML files from Downloads: Germany's Castles (newest), Medieval Animal Trials v1 (polished, Playfair Display), Medieval Animal Trials v2 (older, wrong Explorer theme)
+- Deployed all three to `gems/` folder on gh-pages: `germany-castles/`, `medieval-animal-trials-1/`, `medieval-animal-trials-2/`
+- Added "Gems (Gemini)" category to the app gallery dashboard (v1.5)
+- Fixed tab switching bug in Germany's Castles: Tailwind CDN injects after `<style>` block, so `.hidden-tab { display: none }` was overridden by Tailwind's `grid` class — fixed with `!important`
+
+### Prompt Library — Designed and Built
+- Problem discovered: Gemini can't read Google Docs; ChatGPT can't; Blogger doesn't work either. No universal URL-fetch solution across all three AIs.
+- Solution: copy-paste dashboard at GitHub Pages. Tom opens `https://ewallt.github.io/claude-code-fun/prompts/`, hits Copy on any prompt, pastes into whichever AI. Works identically for all three — no URL fetching needed.
+- Copy button fetches the `.txt` file on click and copies content to clipboard (fetch API, same-domain CORS not an issue)
+- Note: Gemini Gems via browser on phone work robustly like desktop; can receive URLs directly — valid secondary option for Gems
+- Built and deployed: `prompts/index.html` (dashboard) + `test-connection.txt` (connection test)
+- Two tracks defined: 001–009 web app prompts, 010–019 NLM workflow prompts
+
+### Documentation Updated
+- `Projects/PromptLibrary/documents/project-definition.md` — full rewrite reflecting the design, two tracks, numbering scheme, current prompt status
+- `Projects/PromptLibrary/CLAUDE.md` — created; includes the problem, the solution, structure, and how to add prompts
+- `documents/overview.md` — updated Prompt Library one-liner
+
+### Earlier This Session (pre-compaction)
+- `ai-workflow-reference.html` deployed to gh-pages
+- `app-types.md` updated: NLM section replaced with task table (Who/Difficulty), web app types given difficulty ratings (1–5)
+- Explorer theme synced: `theme-gear-system.md` updated to `--brand: #7a3e10` (was `#d4a574`)
+- Skills backup wired into shutdown skill Step 7; initial copy made to `claude-backup/skills/`
+- Google Drive MCP confirmed working; `aip001-gear-tab` Google Doc created with full prompt
+- `aip001` not yet pushed to gh-pages — still Google Doc only
+
+---
+
 ## 2026-03-29 (Session 2) — BYG Theme Switcher Reverted
 
 ### BYG Theme Switcher Removed

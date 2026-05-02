@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="app-version" content="prompt-library v1.0 2026-05-01">
+  <title>Prompt Library</title>
+  <style>
+    :root {
+      --app-bg: #0b1020;
+      --card-bg: #111833;
+      --input-bg: #1a2347;
+      --brand: #8bb9ff;
+      --text-body: #e6ecff;
+      --text-card: #e6ecff;
+      --text-muted: #bcc5e3;
+      --border: #26325b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--app-bg);
+      color: var(--text-body);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .site-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--brand);
+      letter-spacing: -0.02em;
+    }
+
+    .site-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .theme-swatches {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      outline: none;
+      padding: 0;
+    }
+
+    .swatch:hover { transform: scale(1.2); }
+    .swatch.active { border-color: var(--text-body); transform: scale(1.15); }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+
+    .track {
+      margin-bottom: 3rem;
+    }
+
+    .track-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .track-title {
+      font-weight: 600;
+      color: var(--brand);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .track-count {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .prompt-row {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .prompt-id {
+      font-size: 0.7rem;
+      font-family: monospace;
+      color: var(--text-muted);
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .prompt-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .prompt-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-card);
+    }
+
+    .prompt-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .copy-btn {
+      background: var(--brand);
+      color: var(--app-bg);
+      border: none;
+      border-radius: 6px;
+      padding: 0.45rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: opacity 0.15s;
+    }
+
+    .copy-btn:hover { opacity: 0.85; }
+
+    .copy-btn.copied {
+      background: #4ade80;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div></div>
+  <div style="text-align:center">
+    <div class="site-title">Prompt Library</div>
+    <div class="site-subtitle">Copy a prompt — paste into any AI</div>
+  </div>
+  <div class="theme-swatches" id="swatches"></div>
+</header>
+
+<main>
+
+  <div class="track">
+    <div class="track-header">
+      <span class="track-title">Test</span>
+      <span class="track-count">1 prompt</span>
+    </div>
+    <div class="prompt-row">
+      <span class="prompt-id">test</span>
+      <div class="prompt-info">
+        <div class="prompt-name">Connection Test</div>
+        <div class="prompt-desc">Confirms the copy-paste workflow is working</div>
+      </div>
+      <button class="copy-btn" onclick="copyPrompt(this, 'test-connection.txt')">Copy</button>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Prompt Library &nbsp;·&nbsp; Copy a prompt, paste into any AI
+</footer>
+
+<script>
+  const THEMES = [
+    { name: 'navy', swatch: '#8bb9ff', vars: { '--app-bg': '#0b1020', '--card-bg': '#111833', '--input-bg': '#1a2347', '--brand': '#8bb9ff', '--text-body': '#e6ecff', '--text-card': '#e6ecff', '--text-muted': '#bcc5e3', '--border': '#26325b' } },
+    { name: 'archives', swatch: '#0f766e', vars: { '--app-bg': '#f5f5f4', '--card-bg': '#e7e5e4', '--input-bg': '#d6d3d1', '--brand': '#0f766e', '--text-body': '#292524', '--text-card': '#0f766e', '--text-muted': '#4a4540', '--border': '#d6d3d1' } },
+    { name: 'explorer', swatch: '#d4a574', vars: { '--app-bg': '#e8dcc8', '--card-bg': '#1a1815', '--input-bg': '#26231f', '--brand': '#7a3e10', '--text-body': '#2c2416', '--text-card': '#faf8f3', '--text-muted': '#a89580', '--border': '#5a5041' } },
+    { name: 'high-command', swatch: '#fef08a', vars: { '--app-bg': '#022c22', '--card-bg': '#064e3b', '--input-bg': '#065f46', '--brand': '#fef08a', '--text-body': '#ecfdf5', '--text-card': '#ecfdf5', '--text-muted': '#81eebb', '--border': '#065f46' } }
+  ];
+
+  const root = document.documentElement;
+  const swatchContainer = document.getElementById('swatches');
+
+  const buttons = THEMES.map((theme, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'swatch' + (i === 0 ? ' active' : '');
+    btn.style.background = theme.swatch;
+    btn.title = theme.name;
+    btn.setAttribute('aria-label', theme.name + ' theme');
+    btn.addEventListener('click', () => {
+      Object.entries(theme.vars).forEach(([k, v]) => root.style.setProperty(k, v));
+      buttons.forEach((b, j) => b.classList.toggle('active', j === i));
+    });
+    swatchContainer.appendChild(btn);
+    return btn;
+  });
+
+  async function copyPrompt(btn, filename) {
+    try {
+      const response = await fetch(filename);
+      const text = await response.text();
+      await navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    } catch (e) {
+      btn.textContent = 'Error';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="app-version" content="chatgpt-images-use-cases v1.0 2026-04-29">
+  <title>ChatGPT Images 2.0 — Use Case Guide</title>
+  <style>
+    :root {
+      --app-bg: #0b1020;
+      --card-bg: #111833;
+      --input-bg: #1a2347;
+      --brand: #8bb9ff;
+      --text-body: #e6ecff;
+      --text-card: #e6ecff;
+      --text-muted: #bcc5e3;
+      --border: #26325b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--app-bg);
+      color: var(--text-body);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .site-title { font-size: 1.35rem; font-weight: 700; color: var(--brand); transition: color 0.3s; }
+    .site-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; transition: color 0.3s; }
+
+    .theme-swatches { display: flex; gap: 8px; align-items: center; }
+    .swatch {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid transparent; cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      outline: none; padding: 0;
+    }
+    .swatch:hover { transform: scale(1.2); }
+    .swatch.active { border-color: var(--text-body); transform: scale(1.15); }
+
+    .tabs {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+    .tabs::-webkit-scrollbar { height: 3px; }
+    .tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .tab-btn {
+      background: none; border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-muted); cursor: pointer;
+      font-size: 0.875rem; font-weight: 500;
+      padding: 0.875rem 1.25rem; white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tab-btn:hover { color: var(--text-body); }
+    .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    .tab-intro {
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 720px;
+      transition: color 0.3s;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.1rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: border-color 0.2s, background-color 0.3s;
+    }
+    .card.top-pick { border-left: 3px solid var(--brand); }
+
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+    .card-title { font-size: 0.95rem; font-weight: 700; color: var(--text-card); line-height: 1.3; transition: color 0.3s; }
+
+    .card-tag {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-family: monospace;
+      white-space: nowrap;
+      flex-shrink: 0;
+      align-self: flex-start;
+      transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      flex: 1;
+      transition: color 0.3s;
+    }
+
+    .card-tip {
+      font-size: 0.79rem;
+      color: var(--brand);
+      font-style: italic;
+      line-height: 1.45;
+      padding-top: 0.35rem;
+      border-top: 1px solid var(--border);
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .card-tip::before { content: "Tip: "; font-weight: 600; font-style: normal; }
+
+    .card-note {
+      display: inline-block;
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      background: var(--input-bg);
+      border-radius: 4px;
+      padding: 2px 7px;
+      align-self: flex-start;
+      transition: color 0.3s, background-color 0.3s;
+    }
+    .card-note.warning { color: #fbbf24; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      border-top: 1px solid var(--border);
+      transition: color 0.3s, border-color 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div></div>
+  <div style="text-align:center">
+    <div class="site-title">ChatGPT Images 2.0</div>
+    <div class="site-subtitle">Use Case Reference Guide</div>
+  </div>
+  <div class="theme-swatches" id="swatches" style="justify-content:flex-end"></div>
+</header>
+
+<div class="tabs" id="tabs"></div>
+
+<main>
+  <div class="tab-intro" id="tab-intro"></div>
+  <div class="card-grid" id="card-grid"></div>
+</main>
+
+<footer>
+  Based on Matt Wolf's ChatGPT Images 2.0 testing &nbsp;·&nbsp; ~40 use cases
+</footer>
+
+<script>
+const TABS_META = {
+  'Creators': 'YouTube-focused use cases — thumbnails, storyboards, and content planning. Best starting point if you make videos.',
+  'Social Media': 'Instagram, LinkedIn, and general social content — carousels, quote cards, and monthly content calendars.',
+  'Branding': 'Brand identity work — mood boards, logos, and packaging. One prompt can generate multiple concepts.',
+  'Marketing': 'Ads, flyers, menus, event materials, and real estate. The URL-reading ability is especially useful here.',
+  'Infographics': 'Visual explainers, diagrams, timelines, and charts. More accurate than most models at getting details right.',
+  'Planning': 'Printable checklists, trackers, itineraries, and schedules. Good for things you want to print and use.',
+  'Apps & Products': 'App store mockups, website heroes, course curriculum, and e-commerce product shots.',
+};
+
+const USE_CASES = [
+  // ── CREATORS ──────────────────────────────────────────────────────────────
+  {
+    tab: 'Creators',
+    title: 'Thumbnail Concept Board',
+    desc: 'Generate 6 thumbnail concepts in a 2×3 grid — different facial expressions, text, and visual metaphors. Good for landing on a direction before designing the real thing.',
+    tip: 'Specify the video topic, ask for 6 concepts in a 2×3 grid, and name the aesthetic (high contrast, blue/purple tech accents, etc.).',
+    note: 'Aspect ratio: squares by default. Follow up: "Now make each 16:9."',
+    topPick: true,
+  },
+  {
+    tab: 'Creators',
+    title: 'A/B/C Thumbnail Test Sheet',
+    desc: 'Three distinct thumbnail options side by side, each with a different concept and hook. Useful for picking a direction before committing to a final design.',
+    tip: 'Include typography requirements and describe the 3 conceptual angles you want tested.',
+    tag: 'ideation',
+  },
+  {
+    tab: 'Creators',
+    title: 'Video Storyboard',
+    desc: 'A 9-frame storyboard for a video intro. Shows scene-by-scene visual flow with brief descriptions. Good for planning before you shoot.',
+    tip: 'Describe each frame\'s intended shot or moment, plus a style direction for the visual aesthetic.',
+    tag: 'planning',
+  },
+
+  // ── SOCIAL MEDIA ──────────────────────────────────────────────────────────
+  {
+    tab: 'Social Media',
+    title: 'Instagram Carousel (7 slides)',
+    desc: 'Full multi-slide carousel from a single prompt — hook, 5 teaching slides, and a CTA. All images generated together, consistent style.',
+    tip: 'Define the topic, specify slide 1 as a hook and the last as a CTA. Let it decide wording and layout.',
+    topPick: true,
+  },
+  {
+    tab: 'Social Media',
+    title: 'Quote Cards',
+    desc: 'One prompt, multiple quote cards. Provide the exact quotes you want used; specify a design aesthetic. Each quote gets its own styled card.',
+    tip: 'Give 3–5 specific quotes and a clear visual direction (e.g. dark, minimal, brand colors).',
+    tag: 'batch',
+  },
+  {
+    tab: 'Social Media',
+    title: 'LinkedIn Carousel',
+    desc: 'Professional-tone carousel for LinkedIn. Specify "professional LinkedIn audience" and it shifts tone, layout, and messaging accordingly.',
+    tip: 'Mention LinkedIn specifically — it noticeably adjusts the aesthetic compared to Instagram.',
+    tag: 'professional',
+  },
+  {
+    tab: 'Social Media',
+    title: '30-Day Content Calendar',
+    desc: 'A full month of post ideas rendered as a visual calendar — promos, behind-the-scenes, customer stories, educational content, community posts.',
+    tip: 'Specify the business type and mix of content categories you want. It fills in the actual post concepts.',
+    topPick: true,
+  },
+
+  // ── BRANDING ──────────────────────────────────────────────────────────────
+  {
+    tab: 'Branding',
+    title: 'Brand Mood Board',
+    desc: 'Colors (with hex codes), logo, typography, icon styles, and brand personality — all in one image. Covers logo mark, monogram, UI style, and personality descriptors.',
+    tip: 'Give a name, audience, and vibe. Let it decide everything else — the output is more cohesive that way.',
+    topPick: true,
+    note: 'May trigger a false content policy warning. Just resubmit the same prompt unchanged.',
+  },
+  {
+    tab: 'Branding',
+    title: 'Logo Exploration Sheet',
+    desc: '8 different logo concepts on one sheet — wordmark, monogram, icon mark, etc. Each with a label explaining the concept direction and a small color palette.',
+    tip: 'Ask for "8 logo concepts" with labels and a color palette. You\'ll get enough variety to pick a direction.',
+    topPick: true,
+  },
+  {
+    tab: 'Branding',
+    title: 'Product Packaging Concept',
+    desc: 'Brand colors, front-of-pack examples, and logo — all generated together. Good starting point for a new CPG brand before investing in real design.',
+    tip: 'Name the product and target market. It generates the brand identity alongside the packaging.',
+  },
+  {
+    tab: 'Branding',
+    title: 'Merch Mockup Sheet',
+    desc: 'Show a phrase or logo on multiple products — t-shirt, hoodie, sticker, mug, hat — all in one image.',
+    tip: 'List the exact products you want mocked up. Specify black/white colorways for apparel.',
+    tag: 'mockup',
+  },
+
+  // ── MARKETING ─────────────────────────────────────────────────────────────
+  {
+    tab: 'Marketing',
+    title: 'Facebook Ad from URL',
+    desc: 'Give it your website URL and it reads the page, pulls your logo and key messaging, and generates a ready-to-use ad image. Accurate to what\'s actually on the site.',
+    tip: 'Just give the URL and ask for an ad "accurate to what the site promotes." It handles the rest.',
+    topPick: true,
+    tag: 'URL-powered',
+  },
+  {
+    tab: 'Marketing',
+    title: 'YouTube Channel Banner',
+    desc: 'Give it your YouTube URL and it reads what the channel is about, then generates a horizontal banner with CTA and channel description. No manual briefing needed.',
+    tip: 'URL + "horizontal banner + subscribe CTA + why people should watch" is enough.',
+    tag: 'URL-powered',
+  },
+  {
+    tab: 'Marketing',
+    title: 'Promotional Flyer',
+    desc: 'Polished one-page flyer for a local business, event, or service. Generates copy, layout, and visuals together.',
+    tip: 'Give the business name, location, and what makes it worth knowing about. It writes the copy.',
+  },
+  {
+    tab: 'Marketing',
+    title: 'Restaurant Menu',
+    desc: 'A print-ready menu with items, descriptions, and pricing. Looks legitimate — the kind you\'d see laminated at a real restaurant.',
+    tip: 'You can let it invent the items or supply real ones. Specify "modern", "upscale", etc. for the aesthetic.',
+    tag: 'printable',
+  },
+  {
+    tab: 'Marketing',
+    title: 'Event Poster',
+    desc: 'Premium event poster with a location backdrop, event name, and description. Uses placeholder text for date/venue if not supplied.',
+    tip: 'Give location, audience, and event vibe. It names the event itself if you don\'t.',
+  },
+  {
+    tab: 'Marketing',
+    title: 'Event Schedule Graphic',
+    desc: 'A printable day-of schedule — time-blocked, designed to be handed to attendees at the door.',
+    tip: 'Supply the time blocks and session names. It handles layout and visual polish.',
+    tag: 'printable',
+  },
+  {
+    tab: 'Marketing',
+    title: 'Real Estate Listing Flyer',
+    desc: 'Give it a Zillow URL and it reads the listing — address, price, details, and actual listing photos — and builds a professional flyer from them.',
+    tip: 'Just paste the Zillow URL. It pulls the actual images from the listing into the flyer.',
+    topPick: true,
+    tag: 'URL-powered',
+  },
+  {
+    tab: 'Marketing',
+    title: 'Product Launch One-Sheet',
+    desc: 'A single-page pitch sheet — logo, tagline, app screenshot mockup, and key value props. Can double as a starting point for a landing page.',
+    tip: 'Describe what the app does and who it\'s for. It generates the logo and copy alongside the layout.',
+  },
+  {
+    tab: 'Marketing',
+    title: 'Sales Pitch One-Pager',
+    desc: 'One-page visual pitch for a service or agency. Tailors tone and messaging when you specify the target audience.',
+    tip: 'Specify the audience explicitly (e.g. "small business owners") — it changes the framing.',
+  },
+
+  // ── INFOGRAPHICS ──────────────────────────────────────────────────────────
+  {
+    tab: 'Infographics',
+    title: 'Concept Explainer',
+    desc: 'Visual breakdown of a complex topic for a non-technical audience. More accurate than most image models at getting details right.',
+    tip: 'If the first output looks too plain, follow up: "Now make it more colorful and infographic-y." Works well.',
+    topPick: true,
+  },
+  {
+    tab: 'Infographics',
+    title: 'Infographic from URL',
+    desc: 'Give it any URL — a GitHub page, news article, tutorial — and it reads the content and turns it into a visual explainer.',
+    tip: 'Just add "turn the information at [URL] into a clear visual explainer" to a standard infographic prompt.',
+    topPick: true,
+    tag: 'URL-powered',
+  },
+  {
+    tab: 'Infographics',
+    title: 'Timeline Graphic',
+    desc: 'Horizontal timeline with labeled milestones. Clean and simple; good for history, evolution of a technology, or project roadmap.',
+    tip: 'Supply the milestones and years. Specify "horizontal timeline" for the layout.',
+    tag: 'timeline',
+  },
+  {
+    tab: 'Infographics',
+    title: 'Mind Map',
+    desc: 'Topic at center, branches with 2 sub-points each. Useful for showing how a concept fans out into related areas.',
+    tip: 'Specify "under each branch add two sub-points" — it fills in the detail, not just the top-level branches.',
+  },
+  {
+    tab: 'Infographics',
+    title: 'Process Flow Diagram',
+    desc: 'Step-by-step workflow with decision branches — good for explaining how a system or process works.',
+    tip: 'Describe the start state and end state. It infers the decision points.',
+    note: 'Tends to default to blue/white. Specify colors if that matters.',
+  },
+  {
+    tab: 'Infographics',
+    title: 'Comparison Chart',
+    desc: 'Side-by-side comparison of tools, options, or products — with strengths, weaknesses, and best-for summaries.',
+    tip: 'Specify the audience ("normal people confused about X") — it calibrates the language accordingly.',
+    tag: 'reference',
+  },
+  {
+    tab: 'Infographics',
+    title: 'Prompt Cheat Sheet',
+    desc: 'A printable reference card — formula, ingredients, common mistakes, examples, and a pre-generation checklist.',
+    tip: 'Works for any topic where a cheat sheet format makes sense. Just specify the subject.',
+    tag: 'printable',
+  },
+  {
+    tab: 'Infographics',
+    title: 'Mini Slide Deck',
+    desc: '5-slide visual presentation on a topic — title, problem, solution, examples, takeaway. Generated as one image you can scroll through.',
+    tip: 'One prompt generates all 5 slides. Specify each slide\'s role, or let it decide the structure.',
+  },
+
+  // ── PLANNING ──────────────────────────────────────────────────────────────
+  {
+    tab: 'Planning',
+    title: 'Travel Itinerary',
+    desc: 'A visual 3-day itinerary with neighborhoods, activities, and food stops — morning, afternoon, and evening. Printable and followable.',
+    tip: 'Let it decide the schedule and stops. Saying "you decide the best neighborhoods and activities" gets better results than over-specifying.',
+    topPick: true,
+    tag: 'printable',
+  },
+  {
+    tab: 'Planning',
+    title: 'Illustrated City Map',
+    desc: 'Simple illustrated map with labeled neighborhoods. Looks nice but landmark placement is still imperfect.',
+    tip: 'Good for a decorative visitor guide map. Don\'t rely on it for accurate geography.',
+    note: 'Landmark placement can be off. Still improving.',
+  },
+  {
+    tab: 'Planning',
+    title: 'Packing Checklist',
+    desc: 'Categorized visual packing list — clothing, gear, toiletries, tech, docs, easy-to-forget items. Printable for repeat trips.',
+    tip: 'Specify the trip type and duration. It adds the "easy to forget" category on its own if you let it.',
+    tag: 'printable',
+  },
+  {
+    tab: 'Planning',
+    title: 'Theme Park Day Plan',
+    desc: 'Time-blocked strategy for a day at a theme park — first rides, lunch window, afternoon pacing, fireworks. Includes tips for avoiding meltdowns.',
+    tip: 'Name the park and audience (families with kids, adults, etc.). It tailors the ride priorities.',
+    tag: 'printable',
+  },
+  {
+    tab: 'Planning',
+    title: 'Wedding Weekend Schedule',
+    desc: 'A guest-facing schedule of events — designed to be printed and handed out. Looks polished enough for a formal event.',
+    tip: 'Supply the event names and times. It handles layout and aesthetic.',
+    tag: 'printable',
+  },
+  {
+    tab: 'Planning',
+    title: 'Weekly Chore Chart',
+    desc: 'Family chore chart with morning/evening tasks, checkboxes, and a reward tracker. Good for keeping kids on track.',
+    tip: 'Specify number of kids and age range. It adjusts the tasks accordingly.',
+    tag: 'printable',
+  },
+  {
+    tab: 'Planning',
+    title: '30-Day Habit Tracker',
+    desc: 'Weekly habit grid with wins, challenges, and monthly reflection sections. Print-and-use format for analog habit tracking.',
+    tip: 'Supply 4–5 specific habits. It builds the full grid with week-by-week breakdowns.',
+    tag: 'printable',
+  },
+  {
+    tab: 'Planning',
+    title: 'Project Planning Board',
+    desc: 'Multi-phase project planner — phases, supplies needed, timeline, budget categories, checklist, and tips. Works for any project type.',
+    tip: 'Name the project and break it into phases. It fills in the detail under each phase.',
+  },
+  {
+    tab: 'Planning',
+    title: 'Messy Notes → Action Plan',
+    desc: 'Paste in disorganized notes or scattered thoughts and it reorganizes them into a structured, printable one-page plan with priorities, next steps, and a daily process.',
+    tip: 'The messier the input, the more impressive the output. Just dump the notes and ask for "a one-page visual plan".',
+    topPick: true,
+  },
+  {
+    tab: 'Planning',
+    title: 'Recipe Card',
+    desc: 'A printable recipe card with an image, ingredients, and instructions. Designed to look good in a recipe binder.',
+    tip: 'Supply the recipe details exactly. It generates the photo alongside the card layout.',
+    tag: 'printable',
+  },
+
+  // ── APPS & PRODUCTS ───────────────────────────────────────────────────────
+  {
+    tab: 'Apps & Products',
+    title: 'App Store Screenshots',
+    desc: 'A set of 5 app store preview images — hero, feature callouts, lifestyle context. You can feed it real screenshots and it will incorporate them.',
+    tip: 'Describe each screen\'s role (hero, feature highlight, etc.). It generates a consistent UI style across all 5.',
+    topPick: true,
+  },
+  {
+    tab: 'Apps & Products',
+    title: 'Website Hero Section',
+    desc: 'A mockup of a website hero — nav, headline, CTA button, app screenshot, trust badges, and social proof.',
+    tip: 'Name the app and its value prop. It writes the headline and CTA copy, not just the layout.',
+  },
+  {
+    tab: 'Apps & Products',
+    title: 'E-Commerce Product Image Set',
+    desc: '6-image product grid: hero shot, lifestyle scene, feature callout, size/context, mood lighting, and packaging. Covers a full product page.',
+    tip: 'Specify the 6 image types. It generates a consistent visual style across all 6.',
+    tag: 'e-commerce',
+  },
+  {
+    tab: 'Apps & Products',
+    title: 'Course Curriculum Graphic',
+    desc: 'Visual module layout for an online course — module names, structure, and a final project callout. Good for course planning or sales page.',
+    tip: 'Name the course and target audience. It decides module names and structure unless you specify them.',
+  },
+  {
+    tab: 'Apps & Products',
+    title: 'Client Onboarding Checklist',
+    desc: 'A visual checklist for onboarding new clients — project kickoff, brand assets, deliverables, feedback process, final delivery.',
+    tip: 'Specify the service type (e.g. "freelance video editor"). It tailors the checklist categories.',
+    tag: 'printable',
+  },
+  {
+    tab: 'Apps & Products',
+    title: 'Comic Page',
+    desc: 'A 6-panel comic strip on any topic. Consistent character style, color, and lettering across all panels. More polished than expected.',
+    tip: 'Write out each panel\'s scene and dialogue. It handles visual style and panel layout.',
+    topPick: true,
+    tag: 'creative',
+  },
+];
+
+// ── THEMES ──────────────────────────────────────────────────────────────────
+const THEMES = [
+  { name: 'navy', swatch: '#8bb9ff',
+    vars: { '--app-bg': '#0b1020', '--card-bg': '#111833', '--input-bg': '#1a2347', '--brand': '#8bb9ff', '--text-body': '#e6ecff', '--text-card': '#e6ecff', '--text-muted': '#bcc5e3', '--border': '#26325b' } },
+  { name: 'archives', swatch: '#0f766e',
+    vars: { '--app-bg': '#f5f5f4', '--card-bg': '#e7e5e4', '--input-bg': '#d6d3d1', '--brand': '#0f766e', '--text-body': '#292524', '--text-card': '#0f766e', '--text-muted': '#4a4540', '--border': '#d6d3d1' } },
+  { name: 'explorer', swatch: '#d4a574',
+    vars: { '--app-bg': '#e8dcc8', '--card-bg': '#1a1815', '--input-bg': '#26231f', '--brand': '#d4a574', '--text-body': '#2c2416', '--text-card': '#faf8f3', '--text-muted': '#a89580', '--border': '#5a5041' } },
+  { name: 'high-command', swatch: '#fef08a',
+    vars: { '--app-bg': '#022c22', '--card-bg': '#064e3b', '--input-bg': '#065f46', '--brand': '#fef08a', '--text-body': '#ecfdf5', '--text-card': '#ecfdf5', '--text-muted': '#81eebb', '--border': '#065f46' } },
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+const CATEGORIES = [...new Set(USE_CASES.map(u => u.tab))];
+let activeTab = CATEGORIES[0];
+
+function renderTabs() {
+  const container = document.getElementById('tabs');
+  const counts = {};
+  CATEGORIES.forEach(c => { counts[c] = USE_CASES.filter(u => u.tab === c).length; });
+  container.innerHTML = CATEGORIES.map(c =>
+    `<button class="tab-btn${c === activeTab ? ' active' : ''}" data-tab="${c}">${c} <span style="opacity:0.55;font-size:0.78em">${counts[c]}</span></button>`
+  ).join('');
+  container.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => { activeTab = btn.dataset.tab; renderTabs(); renderCards(); });
+  });
+}
+
+function renderCards() {
+  const intro = document.getElementById('tab-intro');
+  intro.textContent = TABS_META[activeTab] || '';
+
+  const grid = document.getElementById('card-grid');
+  const list = USE_CASES.filter(u => u.tab === activeTab);
+  grid.innerHTML = list.map(u => `
+    <div class="card${u.topPick ? ' top-pick' : ''}">
+      <div class="card-header">
+        <div class="card-title">${u.title}</div>
+        ${u.tag ? `<span class="card-tag">${u.tag}</span>` : ''}
+      </div>
+      <div class="card-desc">${u.desc}</div>
+      ${u.tip ? `<div class="card-tip">${u.tip}</div>` : ''}
+      ${u.note ? `<span class="card-note${u.note.toLowerCase().includes('still') || u.note.toLowerCase().includes('may') || u.note.toLowerCase().includes('off') ? ' warning' : ''}">${u.note}</span>` : ''}
+    </div>
+  `).join('');
+}
+
+// ── THEME SWATCHES ───────────────────────────────────────────────────────────
+const root = document.documentElement;
+const swatchContainer = document.getElementById('swatches');
+
+const swatchBtns = THEMES.map((theme, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'swatch' + (i === 0 ? ' active' : '');
+  btn.style.background = theme.swatch;
+  btn.title = theme.name;
+  btn.setAttribute('aria-label', theme.name + ' theme');
+  btn.addEventListener('click', () => {
+    Object.entries(theme.vars).forEach(([k, v]) => root.style.setProperty(k, v));
+    swatchBtns.forEach((b, j) => b.classList.toggle('active', j === i));
+  });
+  swatchContainer.appendChild(btn);
+  return btn;
+});
+
+renderTabs();
+renderCards();
+</script>
+</body>
+</html>

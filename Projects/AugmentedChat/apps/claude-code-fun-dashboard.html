@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="app-version" content="claude-code-fun-dashboard v1.5 2026-04-30">
+  <title>Claude Code Fun — App Gallery</title>
+  <style>
+    :root {
+      --app-bg: #0b1020;
+      --card-bg: #111833;
+      --input-bg: #1a2347;
+      --brand: #8bb9ff;
+      --text-body: #e6ecff;
+      --text-card: #e6ecff;
+      --text-muted: #bcc5e3;
+      --border: #26325b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--app-bg);
+      color: var(--text-body);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .site-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--brand);
+      letter-spacing: -0.02em;
+      transition: color 0.3s;
+    }
+
+    .site-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      transition: color 0.3s;
+    }
+
+    .theme-swatches {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      outline: none;
+      padding: 0;
+    }
+
+    .swatch:hover {
+      transform: scale(1.2);
+    }
+
+    .swatch.active {
+      border-color: var(--text-body);
+      transform: scale(1.15);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+
+    .category {
+      margin-bottom: 3rem;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+
+    .category-title {
+      font-weight: 600;
+      color: var(--brand);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      transition: color 0.3s;
+    }
+
+    .category-count {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1rem;
+    }
+
+    a.card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.2s, background-color 0.3s, transform 0.15s;
+    }
+
+    a.card:hover {
+      border-color: var(--brand);
+      transform: translateY(-2px);
+    }
+
+    .card-title {
+      font-size: 0.975rem;
+      font-weight: 600;
+      color: var(--text-card);
+      transition: color 0.3s;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      flex: 1;
+      transition: color 0.3s;
+    }
+
+    .card-footer {
+      margin-top: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-tag {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-family: monospace;
+      transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      border-top: 1px solid var(--border);
+      transition: color 0.3s, border-color 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div></div>
+  <div style="text-align:center">
+    <div class="site-title">Claude Code Fun</div>
+    <div class="site-subtitle">App Gallery</div>
+  </div>
+  <div class="theme-swatches" id="swatches" style="justify-content:flex-end"></div>
+</header>
+
+<main>
+
+  <div class="category">
+    <div class="category-header">
+      <span class="category-title">Gear Tab App</span>
+      <span class="category-count">2 apps</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/sp-restaurants/" target="_blank">
+        <div class="card-title">São Paulo Dining Guide</div>
+        <div class="card-desc">Restaurant guide organized by cuisine — Portuguese, Thai, Indian, Italian — with distance and Uber estimates from Cereijas, Taboão da Serra.</div>
+        <div class="card-footer">
+          <span class="card-tag">gear tab</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/chatgpt-images-use-cases/" target="_blank">
+        <div class="card-title">ChatGPT Images — Use Cases</div>
+        <div class="card-desc">44 use cases from Matt Wolf's ChatGPT Images 2.0 walkthrough — organized into 7 tabs: Creators, Social Media, Branding, Marketing, Infographics, Planning, Apps &amp; Products.</div>
+        <div class="card-footer">
+          <span class="card-tag">gear tab</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="category">
+    <div class="category-header">
+      <span class="category-title">Layered Reader</span>
+      <span class="category-count">2 apps</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/notebooklm/layered-reader-healthy-aging/" target="_blank">
+        <div class="card-title">Healthy Aging</div>
+        <div class="card-desc">Eight sources on brain health, sleep, microplastics, gut microbiome, and more — organized for AI-assisted deep exploration.</div>
+        <div class="card-footer">
+          <span class="card-tag">layered reader</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/notebooklm/lr-modern-art/" target="_blank">
+        <div class="card-title">Movements in Modern Art</div>
+        <div class="card-desc">Impressionism and beyond — painters, movements, and the ideas that shaped modern art, structured for lens-based reading.</div>
+        <div class="card-footer">
+          <span class="card-tag">layered reader</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="category">
+    <div class="category-header">
+      <span class="category-title">Explorer + Quiz</span>
+      <span class="category-count">6 apps</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/behold-your-god/" target="_blank">
+        <div class="card-title">Behold Your God</div>
+        <div class="card-desc">Web companion for the F.T. Wright <em>Behold Your God</em> series — themes, quotes, and navigation across all ten illustrations.</div>
+        <div class="card-footer">
+          <span class="card-tag">explorer</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/drinker-paradox/" target="_blank">
+        <div class="card-title">Drinker Paradox</div>
+        <div class="card-desc">An exploration of the Drinker Paradox — the surprising logical truth that in any bar, there is someone such that if they drink, everyone drinks.</div>
+        <div class="card-footer">
+          <span class="card-tag">explorer</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/braess-paradox/" target="_blank">
+        <div class="card-title">Braess's Paradox</div>
+        <div class="card-desc">Interactive demonstration of how adding a road to a network can slow everyone down — the counterintuitive logic of traffic flow.</div>
+        <div class="card-footer">
+          <span class="card-tag">explorer</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/enlightenment-explorer/" target="_blank">
+        <div class="card-title">Enlightenment Explorer</div>
+        <div class="card-desc">Navigate the ideas, figures, and debates of the Enlightenment — structured for curious readers and theological reflection.</div>
+        <div class="card-footer">
+          <span class="card-tag">explorer</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/bible-role/" target="_blank">
+        <div class="card-title">The Role of the Bible</div>
+        <div class="card-desc">An interactive app exploring the role of the Bible — structured for study, reflection, and guided exploration of scripture's scope and authority.</div>
+        <div class="card-footer">
+          <span class="card-tag">explorer</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/notebooklm/egw-preaching/" target="_blank">
+        <div class="card-title">EGW on Preaching</div>
+        <div class="card-desc">Sermon and preaching resource app drawing from Ellen White source material, organized for study and reference.</div>
+        <div class="card-footer">
+          <span class="card-tag">explorer</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="category">
+    <div class="category-header">
+      <span class="category-title">Slides (Gemini)</span>
+      <span class="category-count">2 apps</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/braess-paradox-slides/" target="_blank">
+        <div class="card-title">Braess's Paradox — Slides</div>
+        <div class="card-desc">Slide-format walkthrough of the Braess's Paradox concept, suitable for presentation or step-by-step self-guided reading.</div>
+        <div class="card-footer">
+          <span class="card-tag">slides</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/philosophy1-slides/" target="_blank">
+        <div class="card-title">Philosophical Revolutions: Enlightenment</div>
+        <div class="card-desc">Slide-format introduction to foundational philosophy — core arguments, thinkers, and questions organized for review.</div>
+        <div class="card-footer">
+          <span class="card-tag">slides</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="category">
+    <div class="category-header">
+      <span class="category-title">Gems (Gemini)</span>
+      <span class="category-count">3 apps</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/gems/germany-castles/" target="_blank">
+        <div class="card-title">Germany's Castles</div>
+        <div class="card-desc">Five-tab explorer covering castle profiles, geography, history, and a glossary — built by a Gemini Gem from structured data.</div>
+        <div class="card-footer">
+          <span class="card-tag">gem</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/gems/medieval-animal-trials-1/" target="_blank">
+        <div class="card-title">Medieval Animal Trials (v1)</div>
+        <div class="card-desc">Data viewer covering the strange legal history of animals put on trial in medieval Europe — polished build with Playfair Display headings.</div>
+        <div class="card-footer">
+          <span class="card-tag">gem</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/gems/medieval-animal-trials-2/" target="_blank">
+        <div class="card-title">Medieval Animal Trials (v2)</div>
+        <div class="card-desc">Earlier build of the animal trials data viewer — same dataset, different layout and theme handling.</div>
+        <div class="card-footer">
+          <span class="card-tag">gem</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="category">
+    <div class="category-header">
+      <span class="category-title">Narrated Videos</span>
+      <span class="category-count">2 apps</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/notebooklm/byg-nuclear-plant/" target="_blank">
+        <div class="card-title">BYG: Nuclear Plant</div>
+        <div class="card-desc">Animated narrated video — Illustration 01. The first completed BYG video, built in Remotion with Edge TTS narration.</div>
+        <div class="card-footer">
+          <span class="card-tag">video</span>
+        </div>
+      </a>
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/notebooklm/byg-god-not-criminal/" target="_blank">
+        <div class="card-title">BYG: God Not Criminal</div>
+        <div class="card-desc">Animated narrated video — Illustration 02. Exploring the character of God through the lens of justice and mercy.</div>
+        <div class="card-footer">
+          <span class="card-tag">video</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="category">
+    <div class="category-header">
+      <span class="category-title">Flashcards</span>
+      <span class="category-count">1 app</span>
+    </div>
+    <div class="card-grid">
+      <a class="card" href="https://ewallt.github.io/claude-code-fun/behold-your-god-flashcards/" target="_blank">
+        <div class="card-title">BYG Flashcards</div>
+        <div class="card-desc">Flashcard study set drawn from the Behold Your God source material — key concepts, characters, and theological themes.</div>
+        <div class="card-footer">
+          <span class="card-tag">flashcards</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  ewallt.github.io/claude-code-fun &nbsp;·&nbsp; Built with Claude Code
+</footer>
+
+<script>
+  const THEMES = [
+    {
+      name: 'navy',
+      swatch: '#8bb9ff',
+      vars: {
+        '--app-bg': '#0b1020', '--card-bg': '#111833', '--input-bg': '#1a2347',
+        '--brand': '#8bb9ff', '--text-body': '#e6ecff', '--text-card': '#e6ecff',
+        '--text-muted': '#bcc5e3', '--border': '#26325b'
+      }
+    },
+    {
+      name: 'archives',
+      swatch: '#0f766e',
+      vars: {
+        '--app-bg': '#f5f5f4', '--card-bg': '#e7e5e4', '--input-bg': '#d6d3d1',
+        '--brand': '#0f766e', '--text-body': '#292524', '--text-card': '#0f766e',
+        '--text-muted': '#4a4540', '--border': '#d6d3d1'
+      }
+    },
+    {
+      name: 'explorer',
+      swatch: '#d4a574',
+      vars: {
+        '--app-bg': '#e8dcc8', '--card-bg': '#1a1815', '--input-bg': '#26231f',
+        '--brand': '#7a3e10', '--text-body': '#2c2416', '--text-card': '#faf8f3',
+        '--text-muted': '#a89580', '--border': '#5a5041'
+      }
+    },
+    {
+      name: 'high-command',
+      swatch: '#fef08a',
+      vars: {
+        '--app-bg': '#022c22', '--card-bg': '#064e3b', '--input-bg': '#065f46',
+        '--brand': '#fef08a', '--text-body': '#ecfdf5', '--text-card': '#ecfdf5',
+        '--text-muted': '#81eebb', '--border': '#065f46'
+      }
+    }
+  ];
+
+  let currentTheme = 0;
+  const root = document.documentElement;
+  const swatchContainer = document.getElementById('swatches');
+
+  const buttons = THEMES.map((theme, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'swatch' + (i === 0 ? ' active' : '');
+    btn.style.background = theme.swatch;
+    btn.title = theme.name;
+    btn.setAttribute('aria-label', theme.name + ' theme');
+    btn.addEventListener('click', () => {
+      currentTheme = i;
+      Object.entries(theme.vars).forEach(([k, v]) => root.style.setProperty(k, v));
+      buttons.forEach((b, j) => b.classList.toggle('active', j === i));
+    });
+    swatchContainer.appendChild(btn);
+    return btn;
+  });
+</script>
+
+</body>
+</html>

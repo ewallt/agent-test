@@ -1,0 +1,23 @@
+{
+  "skill_name": "dialog-maker",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Make a dialog about why imaginary numbers are called imaginary and what they actually represent",
+      "expected_output": "A 5-7 exchange professor-student dialog on imaginary numbers. Prof validates student insights, uses LaTeX for math notation, includes vivid metaphors, each exchange builds on the previous, at least one gentle correction or reframing. Student grows more confident by the end.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "Make a dialog about entropy and the arrow of time",
+      "expected_output": "A 5-7 exchange professor-student dialog on thermodynamic entropy and why time feels directional. Deep, builds naturally from one exchange to the next. Student voice feels like a real curious person, not a question machine.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Make a dialog about what caused the French Revolution",
+      "expected_output": "A 5-7 exchange professor-student dialog on the French Revolution. Should adapt the style to humanities — structured analysis instead of LaTeX math. Prof connects financial crisis, Enlightenment ideas, class tension. Student makes increasingly sophisticated observations.",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+Cognitive Dissonance — Festinger's Discovery
+
+Leon Festinger read a small newspaper advertisement in late 1954 and had an idea that would change the study of human behavior. The ad announced that a woman named Dorothy Martin had received messages from beings on the planet Clarion warning that the world would end by flood on December 21. A group of believers, the Seekers, were gathering at her home in the Chicago suburbs to await rescue by flying saucer. Most social scientists would have moved on. Festinger became convinced he had found a laboratory he couldn't design himself.
+
+Scene 1 — The Clipping
+
+A university office on the north side of Chicago, November 1954. Afternoon light filters through a rain-streaked window. Leon Festinger sits at a desk buried in papers, a broadsheet spread open in front of him. He leans forward, rests one elbow on the desk, and reads. He reads the paragraph twice. His finger taps the page once, slowly. Outside, leaves move against the glass.
+
+SETTING: A cluttered academic office, Chicago, autumn 1954
+SUBJECT: Festinger at his desk, newspaper open
+IN-SCENE MOTION: Festinger's finger taps the column of newsprint; his posture shifts forward
+LIGHTING: Overcast afternoon, diffused gray light, the desk lamp unlit
+NARRATION BEAT: A cult is predicting the end of the world. Festinger does not think this is interesting because the prediction will fail. He thinks it is interesting because of what the believers will do after it fails.
+
+Scene 2 — The Living Room in Lake City
+
+Dorothy Martin's house, a modest frame house in a quiet suburb. The front room has been rearranged: folding chairs set in a circle, a card table pushed against the wall. Seven people, mostly middle-aged, sit with coats still on. They have given away their possessions. Several have quit their jobs. The room is very still. The camera tracks slowly along the circle of faces — calm, expectant, certain.
+
+SETTING: A suburban living room, Illinois, December 1954
+SUBJECT: The Seekers seated in a circle, waiting
+IN-SCENE MOTION: A woman turns a coffee cup in her hands; another smooths a piece of paper on her knee
+LIGHTING: Overhead incandescent light, warm and flat; curtains drawn against the December dark
+NARRATION BEAT: The Seekers have already paid the price. The job is gone. The savings are gone. The social cost is already paid. This is important.
+
+Scene 3 — Midnight, December 21
+
+The clock on the mantle shows 11:58. The room is completely silent. Everyone is watching the clock. Midnight arrives. The second hand moves past twelve. Nothing happens. Nobody speaks. The camera holds on the clock face in a slow push-in, the hands visible and perfectly still at twelve.
+
+SETTING: The same living room, midnight
+SUBJECT: The mantle clock; the faces of the Seekers
+IN-SCENE MOTION: The second hand sweeps; faces remain frozen
+LIGHTING: The overhead light unchanged — no shift, no dimming; the ordinary light makes it worse
+NARRATION BEAT: The prophecy was specific. The time has passed. There is no ambiguity. The flood is not coming.
+
+Scene 4 — 4 A.M.
+
+At 4 a.m., Dorothy Martin announces she has received a new message: the group's faithfulness has caused God to spare the world. She picks up the telephone. She begins calling newspapers. By morning, the Seekers are holding a press conference. The camera tracks alongside Dorothy Martin as she moves through the room, speaking. The people who were silent four hours ago are talking urgently to strangers.
+
+SETTING: The same house, deep into the morning hours
+SUBJECT: Dorothy Martin on the telephone; the Seekers animated around her
+IN-SCENE MOTION: Martin gestures as she speaks; others take notes; the phone is handed from person to person
+LIGHTING: The overhead light still on; the windows beginning to gray at the edges
+NARRATION BEAT: Instead of abandoning belief, they are more committed. They are recruiting. The disconfirmation produced the opposite of what any rational theory would predict.
+
+Scene 5 — The Lab, Two Years Later
+
+Columbia University, 1956. A small room with a pegboard and a row of square wooden pegs. A subject sits down and is told to rotate each peg one quarter-turn clockwise, then back, then forward again, over and over, for one hour. There is no purpose. There is no outcome. It is designed to be as dull as human experience allows. The camera slowly pulls back from the close-up of the subject's hands on the pegs to show the whole bleak room.
+
+SETTING: A psychology lab, a bare room with a pegboard
+SUBJECT: A research subject performing a meaningless repetitive task
+IN-SCENE MOTION: The peg turns, turns back, turns again — steady and mechanical
+LIGHTING: Fluorescent ceiling light, no windows, institutional white walls
+NARRATION BEAT: Festinger and James Carlsmith have designed what will become the most cited forced-compliance experiment in the history of psychology.
+
+Scene 6 — One Dollar or Twenty
+
+After the hour is finished, each subject is asked to tell the next participant that the task was interesting and enjoyable. Half are paid one dollar to lie. Half are paid twenty dollars. When tested afterward, the subjects paid one dollar genuinely believed the task was more interesting than the subjects paid twenty dollars did. The camera holds in a steady medium shot on a subject being handed a single bill, then cuts to another holding a handful of bills — the two reactions subtle but distinct.
+
+SETTING: The same lab, a small payment table
+SUBJECT: Two subjects receiving different payments
+IN-SCENE MOTION: One subject accepts a single bill and folds it carefully; another counts a larger sum
+LIGHTING: The same flat fluorescent light; the money is the only thing that changes
+NARRATION BEAT: Twenty dollars was enough to explain the lie. One dollar was not. The people paid one dollar had to justify themselves to themselves. The justification was: maybe it actually was interesting.
+
+Scene 7 — The Mechanism
+
+A university lecture room in the late 1950s. Festinger stands at a blackboard. He draws a simple diagram — two circles, overlapping. He turns to face the audience. The camera holds in a steady medium shot as he explains what dissonance is: not contradiction itself, but the discomfort produced by the contradiction, and the automatic drive to reduce it — not by changing the action already taken, but by rewriting the belief that conflicts with it.
+
+SETTING: A lecture hall, late 1950s
+SUBJECT: Festinger at the blackboard
+IN-SCENE MOTION: Festinger writes two words on the board, then turns; a student in the front row leans forward
+LIGHTING: Lecture room lighting, harsh from above; the blackboard is the brightest surface
+NARRATION BEAT: The discovery: belief changes to protect behavior, not the reverse. The system defends self-consistency, not truth.
+
+Scene 8 — What He Found
+
+A library at night. A single reading lamp illuminates a copy of When Prophecy Fails, Festinger's 1956 book, lying open on a table. No one is sitting at the table. A hand enters the frame, turns the page, and withdraws. The camera slowly pulls back to reveal an empty reading room — shelves receding into darkness.
+
+SETTING: A library reading room, late evening
+SUBJECT: A copy of Festinger's book, open on a table
+IN-SCENE MOTION: A hand turns a page; the surrounding chairs are empty
+LIGHTING: A single reading lamp; deep shadow beyond its circle
+NARRATION BEAT: Festinger had discovered not a quirk of cult psychology but a property of minds in general — the mechanism by which belief withstands evidence, again and again, in every person and every context, including this one.
+
+Key Takeaway
+Cognitive dissonance revealed something deeply counterintuitive: human beings do not respond to contradictory evidence by updating their beliefs. They respond by updating the evidence. When action and belief conflict, and the action cannot be undone, belief is what changes — through rationalization so automatic and seamless that the person rarely notices it is happening at all.

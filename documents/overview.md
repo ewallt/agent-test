@@ -54,6 +54,10 @@ Custom Google Gemini personas, each with a system prompt and knowledge file.
 Cross-cutting tools, meta-processes, and housekeeping that apply across all projects.
 - `Projects/Infrastructure/documents/project-definition.md`
 
+### 10. Prompt Library
+Universal AI backup: a dashboard at GitHub Pages where Tom copies a prompt and pastes it into any AI (ChatGPT, Gemini, Claude chat). One workflow regardless of which AI is in use. Two tracks: web app builders and NLM workflow steps. Prompts stored as `.txt` files on gh-pages; dashboard at `https://ewallt.github.io/claude-code-fun/prompts/`.
+- `Projects/PromptLibrary/documents/project-definition.md`
+
 ---
 
 ## Key Facts

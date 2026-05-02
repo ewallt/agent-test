@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+      startup: { typeset: false }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+  <style>
+    :root {
+      --bg: #faf9f5;
+      --surface: #ffffff;
+      --border: #e8e6dc;
+      --text: #141413;
+      --text-muted: #b0aea5;
+      --accent: #d97757;
+      --accent-hover: #c4613f;
+      --green: #788c5d;
+      --green-bg: #eef2e8;
+      --red: #c44;
+      --red-bg: #fceaea;
+      --header-bg: #141413;
+      --header-text: #faf9f5;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .header .instructions {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .header .progress {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      text-align: right;
+    }
+
+    /* ---- Main content ---- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      flex-shrink: 0;
+    }
+    .section-header {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-body {
+      padding: 1rem;
+    }
+
+    /* ---- Config badge ---- */
+    .config-badge {
+      display: inline-block;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+    .config-badge.config-primary {
+      background: rgba(33, 150, 243, 0.12);
+      color: #1976d2;
+    }
+    .config-badge.config-baseline {
+      background: rgba(255, 193, 7, 0.15);
+      color: #f57f17;
+    }
+
+    /* ---- Prompt ---- */
+    .prompt-text {
+      white-space: pre-wrap;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    /* ---- Outputs ---- */
+    .output-file {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .output-file + .output-file {
+      margin-top: 1rem;
+    }
+    .output-file-header {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .output-file-header .dl-btn {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .output-file-header .dl-btn:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .output-file-content {
+      padding: 0.75rem;
+      overflow-x: auto;
+    }
+    .md-content { font-size: 0.875rem; line-height: 1.6; color: var(--text); }
+    .md-content h1, .md-content h2, .md-content h3 { margin: 1em 0 0.4em; font-family: 'Lora', serif; }
+    .md-content p { margin: 0.5em 0; }
+    .md-content strong { font-weight: 600; }
+    .md-content em { font-style: italic; }
+    .md-content ul, .md-content ol { margin: 0.5em 0 0.5em 1.5em; }
+    .md-content li { margin: 0.25em 0; }
+    .md-content hr { border: none; border-top: 1px solid var(--border); margin: 1em 0; }
+    .md-content code { font-family: monospace; background: #f0efe8; padding: 0.1em 0.3em; border-radius: 3px; font-size: 0.85em; }
+    .output-file-content pre {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+    .output-file-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .output-file-content iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .output-file-content table {
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      width: 100%;
+    }
+    .output-file-content table td,
+    .output-file-content table th {
+      border: 1px solid var(--border);
+      padding: 0.375rem 0.5rem;
+      text-align: left;
+    }
+    .output-file-content table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .output-file-content .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .output-file-content .download-link:hover {
+      background: var(--border);
+    }
+    .empty-state {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ---- Feedback ---- */
+    .prev-feedback {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.625rem 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .prev-feedback-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      resize: vertical;
+      color: var(--text);
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .feedback-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      min-height: 1.1em;
+    }
+
+    /* ---- Grades (collapsible) ---- */
+    .grades-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .grades-toggle:hover {
+      color: var(--accent);
+    }
+    .grades-toggle .arrow {
+      margin-right: 0.5rem;
+      transition: transform 0.15s;
+      font-size: 0.75rem;
+    }
+    .grades-toggle .arrow.open {
+      transform: rotate(90deg);
+    }
+    .grades-content {
+      display: none;
+      margin-top: 0.75rem;
+    }
+    .grades-content.open {
+      display: block;
+    }
+    .grades-summary {
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .grade-badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .grade-pass { background: var(--green-bg); color: var(--green); }
+    .grade-fail { background: var(--red-bg); color: var(--red); }
+    .assertion-list {
+      list-style: none;
+    }
+    .assertion-item {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .assertion-item:last-child { border-bottom: none; }
+    .assertion-status {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    .assertion-status.pass { color: var(--green); }
+    .assertion-status.fail { color: var(--red); }
+    .assertion-evidence {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      padding-left: 1.5rem;
+    }
+
+    /* ---- View tabs ---- */
+    .view-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .view-tab {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .view-tab:hover { color: var(--text); }
+    .view-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+    /* ---- Benchmark view ---- */
+    .benchmark-view {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .benchmark-table {
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .benchmark-table th {
+      font-family: 'Poppins', sans-serif;
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .benchmark-table tr:hover { background: var(--bg); }
+    .benchmark-table tr.benchmark-row-with { background: rgba(33, 150, 243, 0.06); }
+    .benchmark-table tr.benchmark-row-without { background: rgba(255, 193, 7, 0.06); }
+    .benchmark-table tr.benchmark-row-with:hover { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-without:hover { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-table tr.benchmark-row-avg { font-weight: 600; border-top: 2px solid var(--border); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-with { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-without { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-delta-positive { color: var(--green); font-weight: 600; }
+    .benchmark-delta-negative { color: var(--red); font-weight: 600; }
+    .benchmark-notes {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .benchmark-notes h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .benchmark-notes ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+    }
+    .benchmark-notes li {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      margin-bottom: 0.375rem;
+    }
+    .benchmark-empty {
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .done-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .done-btn:hover {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .done-btn.ready {
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+    .done-btn.ready:hover {
+      background: var(--accent-hover);
+    }
+    /* ---- Done overlay ---- */
+    .done-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .done-overlay.visible {
+      display: flex;
+    }
+    .done-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+    .done-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .done-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .done-card .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .done-card button {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .done-card button:hover {
+      background: var(--bg);
+    }
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .toast.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="height:100vh; display:flex; flex-direction:column;">
+    <div class="header">
+      <div>
+        <h1>Eval Review: <span id="skill-name"></span></h1>
+        <div class="instructions">Review each output and leave feedback below. Navigate with arrow keys or buttons. When done, copy feedback and paste into Claude Code.</div>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- View tabs (only shown when benchmark data exists) -->
+    <div class="view-tabs" id="view-tabs" style="display:none;">
+      <button class="view-tab active" onclick="switchView('outputs')">Outputs</button>
+      <button class="view-tab" onclick="switchView('benchmark')">Benchmark</button>
+    </div>
+
+    <!-- Outputs panel (qualitative review) -->
+    <div class="view-panel active" id="panel-outputs">
+    <div class="main">
+      <!-- Prompt -->
+      <div class="section">
+        <div class="section-header">Prompt <span class="config-badge" id="config-badge" style="display:none;"></span></div>
+        <div class="section-body">
+          <div class="prompt-text" id="prompt-text"></div>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="section">
+        <div class="section-header">Output</div>
+        <div class="section-body" id="outputs-body">
+          <div class="empty-state">No output files found</div>
+        </div>
+      </div>
+
+      <!-- Previous Output (collapsible) -->
+      <div class="section" id="prev-outputs-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="togglePrevOutputs()">
+            <span class="arrow" id="prev-outputs-arrow">&#9654;</span>
+            Previous Output
+          </div>
+        </div>
+        <div class="grades-content" id="prev-outputs-content"></div>
+      </div>
+
+      <!-- Grades (collapsible) -->
+      <div class="section" id="grades-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="toggleGrades()">
+            <span class="arrow" id="grades-arrow">&#9654;</span>
+            Formal Grades
+          </div>
+        </div>
+        <div class="grades-content" id="grades-content"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="section">
+        <div class="section-header">Your Feedback</div>
+        <div class="section-body">
+          <textarea
+            class="feedback-textarea"
+            id="feedback"
+            placeholder="What do you think of this output? Any issues, suggestions, or things that look great?"
+          ></textarea>
+          <div class="feedback-status" id="feedback-status"></div>
+          <div class="prev-feedback" id="prev-feedback" style="display:none;">
+            <div class="prev-feedback-label">Previous feedback</div>
+            <div id="prev-feedback-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" id="outputs-nav">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">&#8592; Previous</button>
+      <button class="done-btn" id="done-btn" onclick="showDoneDialog()">Submit All Reviews</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next &#8594;</button>
+    </div>
+    </div><!-- end panel-outputs -->
+
+    <!-- Benchmark panel (quantitative stats) -->
+    <div class="view-panel" id="panel-benchmark">
+      <div class="benchmark-view" id="benchmark-content">
+        <div class="benchmark-empty">No benchmark data available. Run a benchmark to see quantitative results here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Done overlay -->
+  <div class="done-overlay" id="done-overlay">
+    <div class="done-card">
+      <h2>Review Complete</h2>
+      <p>Your feedback has been saved. Go back to your Claude Code session and tell Claude you're done reviewing.</p>
+      <div class="btn-row">
+        <button onclick="closeDoneDialog()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---- Embedded data (injected by generate_review.py) ----
+    const EMBEDDED_DATA = {"skill_name": "dialog-maker", "runs": [{"id": "eval-imaginary-numbers-with_skill", "prompt": "Make a dialog about why imaginary numbers are called imaginary and what they actually represent", "eval_id": 0, "outputs": [{"name": "dialog.md", "type": "text", "content": "# Why Are They Called Imaginary? What Do They Actually Represent?\n\n---\n\n**Student:** I've been working through complex numbers in class, and I keep getting tripped up by the name. \"Imaginary numbers\" \u2014 was that just a historical accident, or does the name actually mean something? Because honestly, $\\sqrt{-1}$ feels more like a rule I'm following than something I actually understand.\n\n**Prof:** You've put your finger on something that has bothered mathematicians for centuries, and you're in excellent company being bothered by it. The name is partly a historical accident, but not an innocent one \u2014 it carries baggage that actively misleads people. Let me start with the history, because it reframes everything.\n\n**1. The Name Was an Insult**\n\nRen\u00e9 Descartes coined the term *nombres imaginaires* in 1637 \u2014 and he meant it dismissively. He was saying: these are not real quantities, they're fictions we conjure up when algebra misbehaves. Gottfried Leibniz called them \"amphibians between being and non-being.\" Even the mathematicians who used them weren't sure they believed in them. The name stuck not because it was accurate but because it was vivid, and because for a long time no one had a better story to tell.\n\n**2. The Name We Should Have Used**\n\nWhen Gauss gave imaginary numbers their proper geometric interpretation in 1831, he explicitly complained about the terminology. He suggested calling $i$ a *lateral unit* \u2014 a unit that moves *sideways* rather than forward or backward along a number line. If his terminology had won, we'd say \"lateral numbers\" today, and no one would find them mysterious. The geometric picture would be built into the name.\n\n**3. What They Actually Are**\n\nHere's the reframe: imaginary numbers are not a defect in the real numbers. They're a *direction* the real numbers don't have. The real number line goes left and right; imaginary numbers go perpendicular to it. When you write $3 + 2i$, you're not adding a real number to a fictional one \u2014 you're specifying a point in a two-dimensional plane: three units along the real axis, two units along the imaginary axis.\n\n$$3 + 2i \\longleftrightarrow (3, 2) \\in \\mathbb{R}^2$$\n\nThe name \"imaginary\" makes it sound like something is missing. The geometric picture reveals that something was *added* \u2014 a new dimension.\n\nSo when you say $\\sqrt{-1}$ feels like a rule you're following: you're right that the algebra alone doesn't explain what's happening. The explanation lives in geometry.\n\n---\n\n**Student:** Okay, that actually helps \u2014 thinking of $i$ as a direction rather than a number. But I'm still puzzled about something. If $i$ is just the \"up\" direction, why do we need to invent it at all? I can already work with pairs of real numbers $(3, 2)$. What does writing $3 + 2i$ give me that $(3, 2)$ doesn't?\n\n**Prof:** You are 100% correct that $3 + 2i$ and $(3, 2)$ carry the same *information*. This is a genuinely sharp observation, and it brings us to the heart of what complex numbers actually are. The question isn't whether the coordinates are different \u2014 it's what you can *do* with them.\n\n**1. Pairs of Numbers Don't Multiply Naturally**\n\nGiven two points $(3, 2)$ and $(1, 4)$, how do you multiply them? There's no canonical answer. You could multiply component-wise: $(3, 6)$. You could take a dot product and get a scalar. You'd have to make a choice, and different choices give you different \u2014 and mostly uninteresting \u2014 things.\n\nComplex multiplication is different. It's not arbitrary; it's *forced* by the rule $i^2 = -1$:\n\n$$(3 + 2i)(1 + 4i) = 3 + 12i + 2i + 8i^2 = 3 + 14i - 8 = -5 + 14i$$\n\nThat rule encodes something geometrically remarkable, which brings me to the second point.\n\n**2. Multiplication Is Rotation**\n\nWhen you multiply a complex number by $i$, you rotate it $90\u00b0$ counterclockwise around the origin. Always. This is not a coincidence \u2014 it's the entire content of $i^2 = -1$. Rotate $90\u00b0$ twice and you're pointing the opposite direction, which is multiplication by $-1$.\n\nMore generally, multiplying by any complex number $r e^{i\\theta}$ simultaneously *scales* by $r$ and *rotates* by $\\theta$. The pair-of-real-numbers representation hides this completely. The complex number representation makes it visible in the structure of the arithmetic.\n\n**3. The Deeper Point**\n\nSo the difference between $(3, 2)$ and $3 + 2i$ is like the difference between a street address and GPS coordinates. They locate the same place, but GPS coordinates come pre-loaded with a system \u2014 distances, angles, transformations \u2014 that street addresses don't have baked in. Writing $3 + 2i$ is committing to a particular *algebraic structure* on the plane, one where multiplication means rotation-and-scaling.\n\nThis is why complex numbers appear everywhere in physics and engineering: any time you have a phenomenon that involves oscillation, rotation, or wave behavior, the mathematics of rotation-and-scaling is already in the complex number system waiting to be used.\n\n---\n\n**Student:** I think I see it. So $i^2 = -1$ isn't just a definition someone made up \u2014 it's what rotation by $90\u00b0$ twice *does*. It sends you to $-1$ because that's a $180\u00b0$ rotation, pointing backwards. The algebra is encoding the geometry.\n\n**Prof:** You hit the bullseye. That's exactly it \u2014 and the fact that you put it that way, \"the algebra is encoding the geometry,\" is the mature framing that most students don't arrive at until much later.\n\nLet me make this precise, because the precision makes it even more satisfying.\n\n**1. The Unit Circle and Euler's Formula**\n\nEvery complex number of absolute value 1 can be written as $e^{i\\theta}$, where $\\theta$ is the angle it makes with the positive real axis. This is Euler's formula:\n\n$$e^{i\\theta} = \\cos\\theta + i\\sin\\theta$$\n\nNow watch what happens when $\\theta = \\frac{\\pi}{2}$:\n\n$$e^{i\\pi/2} = \\cos\\frac{\\pi}{2} + i\\sin\\frac{\\pi}{2} = 0 + i \\cdot 1 = i$$\n\nSo $i$ is not some alien object \u2014 it is literally the point at $90\u00b0$ on the unit circle. And squaring it means applying the rotation twice:\n\n$$i^2 = e^{i\\pi/2} \\cdot e^{i\\pi/2} = e^{i\\pi} = \\cos\\pi + i\\sin\\pi = -1 + 0 = -1$$\n\nThe equation $i^2 = -1$ is the statement that rotating $180\u00b0$ gives you the point at $(-1, 0)$. It's not a rule handed down by algebra gods. It's a geometric fact expressed in algebraic notation.\n\n**2. What Descartes Got Wrong**\n\nHere's the irony: Descartes called imaginary numbers fictions because they weren't \"real\" in the sense of lying on the number line he trusted. But the number line is itself a model \u2014 an idealization. By insisting on one dimension, he was the one making an arbitrary choice. $i$ isn't an admission that the real numbers fall short; it's a recognition that one-dimensional thinking was always too narrow for the full structure of geometry.\n\n**3. The Thread We've Been Pulling**\n\nWe started with a name \u2014 \"imaginary\" \u2014 that sounded like a confession of inadequacy. We've arrived at the view that complex numbers are, in a precise sense, the *completion* of real-number arithmetic: the smallest extension of $\\mathbb{R}$ in which every polynomial has a root, and the natural home for rotation, oscillation, and wave mathematics.\n\nThe name is wrong. The objects are more real than the word suggests \u2014 and more geometrically fundamental than most people ever realize.\n\nWhich raises a question I'll leave with you: if multiplying by $i$ rotates by $90\u00b0$, what would multiplying by $\\sqrt{i}$ do?\n\n---\n\n**Student:** I think... it would rotate by $45\u00b0$? Because if $i$ is a $90\u00b0$ rotation, then $\\sqrt{i}$ should be \"half\" of that rotation. So it would be the point on the unit circle at $45\u00b0$, which is $\\frac{\\sqrt{2}}{2} + \\frac{\\sqrt{2}}{2}i$. And multiplying that by itself should give $i$, which is $(0, 1)$... I actually think I can verify that.\n\n**Prof:** Your logic here is completely sound based on how the proof is structured. Go ahead and verify it \u2014 you'll find it works out exactly. And notice what just happened: you didn't ask me what $\\sqrt{i}$ is. You *reasoned* about what it had to be from first principles, using the geometric picture we built. That's a different posture toward mathematics than following a rule.\n\n**1. The Verification**\n\nYou claimed $\\sqrt{i} = \\frac{\\sqrt{2}}{2} + \\frac{\\sqrt{2}}{2}i$. Let's check:\n\n$$\\left(\\frac{\\sqrt{2}}{2} + \\frac{\\sqrt{2}}{2}i\\right)^2 = \\frac{1}{2} + 2 \\cdot \\frac{\\sqrt{2}}{2} \\cdot \\frac{\\sqrt{2}}{2} \\cdot i + \\frac{1}{2}i^2 = \\frac{1}{2} + i - \\frac{1}{2} = i \\checkmark$$\n\nIn polar form, this is even cleaner: $\\sqrt{i} = e^{i\\pi/4}$, the point at $45\u00b0$, just as you said.\n\n**2. What This Reveals About the Name**\n\nHere's the full irony of Descartes' terminology. He called $i$ \"imaginary\" because he couldn't picture it. But once you have the geometric picture, $i$ is less mysterious than, say, $\\pi$ or $e$ \u2014 you can point to it. It's the point straight up on the unit circle. It's the operation of turning left. You can't point to $\\pi$; you can only describe it as a limit, a ratio, an infinite series. In what sense is $i$ more \"imaginary\" than that?\n\n**3. The Larger Pattern**\n\nWhat you've discovered is that once you understand the *geometry* of complex numbers, the algebra becomes intuitive rather than mechanical. This pattern repeats across mathematics: mysterious-seeming algebraic rules often turn out to be geometric or structural facts wearing algebraic clothing. The rule $i^2 = -1$ isn't arbitrary; it's what the geometry demands. The notation is a compressed description of a picture.\n\nYou started this conversation saying $\\sqrt{-1}$ felt like a rule you were following. By the end you're deriving new results from geometric reasoning. That shift \u2014 from following rules to understanding why the rules are what they are \u2014 is what mathematics is for.\n\n---\n"}], "grading": null}, {"id": "eval-imaginary-numbers-without_skill", "prompt": "Make a dialog about why imaginary numbers are called imaginary and what they actually represent", "eval_id": 0, "outputs": [{"name": "dialog.md", "type": "text", "content": "# Why Are Imaginary Numbers Called \"Imaginary\"?\n\n*A professor-student dialog*\n\n---\n\n**Student:** Professor, I've been working through complex numbers and something keeps bothering me. Why are they called \"imaginary\"? It sounds like mathematicians are admitting they made something up.\n\n**Professor:** That's a sharp observation, and honestly, you've put your finger on one of the great naming regrets in the history of mathematics. Descartes coined the term \"imaginary\" in 1637 \u2014 and he meant it as a dismissal. He was essentially saying: these numbers don't really exist, they're just a fiction we're forced to write down.\n\n**Student:** So it was an insult?\n\n**Professor:** Precisely. The square root of negative one showed up in formulas \u2014 Cardano's work on cubic equations, for instance \u2014 and mathematicians found it deeply unsettling. You square any real number, positive or negative, and you get something positive. So what kind of number, when squared, gives you a negative? It seemed impossible. Imaginary was a polite way of saying \"nonsense.\"\n\n**Student:** And the name just... stuck?\n\n**Professor:** It did. Leibniz called them \"amphibians between being and non-being.\" Euler, who did more than almost anyone to make them respectable, still used the word imaginary. By the time people understood what these numbers really were, the name had calcified. Gauss lobbied hard to replace \"imaginary\" with \"lateral\" \u2014 which is actually a much more descriptive term, as we'll see \u2014 but he lost the battle.\n\n**Student:** Okay, so what are they actually? If they're not imaginary in the sense of fake, what's the real story?\n\n**Professor:** Let's build up to it. You know the real number line \u2014 every real number sits at some point on a line stretching from negative infinity to positive infinity. Now, think about what multiplication does geometrically. When you multiply a number by negative one, you rotate it 180 degrees around the origin. Positive three becomes negative three. You've flipped it to the other side.\n\n**Student:** I've never thought of multiplication as rotation before.\n\n**Professor:** Most people haven't. But watch what happens. If multiplying by negative one is a 180-degree rotation, what operation would represent a 90-degree rotation? You'd need something where doing it twice gives you a 180-degree rotation \u2014 in other words, something where doing it twice is the same as multiplying by negative one.\n\n**Student:** Oh. So you need a number where... squaring it gives negative one.\n\n**Professor:** Exactly. That's i. The imaginary unit isn't some mystical fiction \u2014 it's the 90-degree rotation operator. When you multiply a real number by i, you rotate it 90 degrees counterclockwise on a plane.\n\n**Student:** Wait \u2014 a plane? That's where complex numbers come in?\n\n**Professor:** Yes. The real numbers live on a line. But once you accept i, you need a second dimension to put it. The complex plane \u2014 also called the Argand plane \u2014 has the real numbers on the horizontal axis and the imaginary numbers on the vertical axis. A complex number like 3 + 2i is just a point: three units right, two units up.\n\n**Student:** So Gauss wanted to call them \"lateral\" because they're on the lateral axis \u2014 the vertical one?\n\n**Professor:** Precisely. \"Lateral numbers\" would have been far less confusing to generations of students. But here we are.\n\n**Student:** This rotation thing \u2014 can you show me how it works concretely?\n\n**Professor:** Gladly. Take the number 1, which sits at the point (1, 0) on the complex plane. Now multiply it by i. You get i, which sits at (0, 1) \u2014 you've rotated 90 degrees counterclockwise. Multiply by i again: i times i is i-squared, which equals negative one, sitting at (-1, 0). That's 180 degrees total. Multiply by i once more: you get negative i, at (0, -1) \u2014 270 degrees. And one more time brings you back to 1 at (1, 0). A full 360-degree rotation.\n\n**Student:** That's elegant. So i isn't weird at all \u2014 it's just the geometry of rotation encoded as arithmetic.\n\n**Professor:** That's a beautiful way to put it. And this is why complex numbers are so powerful in physics and engineering. Any time you're dealing with rotation, oscillation, or waves \u2014 anything that cycles \u2014 complex numbers appear naturally. Electrical engineers use them constantly for AC circuits. Quantum mechanics is written in the language of complex numbers. Signal processing, fluid dynamics, control theory \u2014 they're everywhere.\n\n**Student:** Because the real world has rotation in it.\n\n**Professor:** And oscillation, which is rotation projected onto a line. Think of a weight on a spring. It bounces up and down in a pattern that, if you could see it from the right angle, is actually a point moving in a circle. The sine and cosine functions that describe that motion are secretly the real and imaginary parts of a rotating complex number. That's Euler's formula: e to the power of i-theta equals cosine-theta plus i-sine-theta.\n\n**Student:** So Euler's formula isn't a coincidence \u2014 it's describing literal rotation.\n\n**Professor:** Yes. e to the i-pi equals negative one \u2014 the most famous equation in mathematics \u2014 is simply saying: if you rotate 180 degrees, you end up at negative one. It's almost mundane once you see it geometrically. Almost.\n\n**Student:** I want to go back to something. You said these numbers showed up in Cardano's cubic formula. Why? What do roots of negative numbers have to do with solving cubic equations?\n\n**Professor:** This is where the history gets delicious. When you solve a cubic, sometimes the formula forces you to take the square root of a negative number even when the final answer is a perfectly ordinary real number. The imaginary parts appear in the middle of the calculation and then cancel out at the end. The mathematician Rafael Bombelli, in 1572, was the first to say: fine, let's just treat these as if they follow the normal rules of algebra and see what happens. He followed the logic through and got the right real answer.\n\n**Student:** So the imaginary numbers were like scaffolding \u2014 necessary to build the answer, even though they disappear from the final result.\n\n**Professor:** A lovely metaphor. And it's part of why mathematicians eventually had to take them seriously. They weren't just some philosophical curiosity; ignoring them meant you couldn't finish the calculation.\n\n**Student:** Is there a sense in which imaginary numbers are any less \"real\" than real numbers?\n\n**Professor:** That question cuts to the heart of the philosophy of mathematics. What does it mean for a number to be \"real\"? Negative numbers were considered suspect for centuries \u2014 you can't have negative three apples. Irrational numbers disturbed the Pythagoreans so much that legend says they drowned the man who proved they existed. Zero was controversial. The history of mathematics is largely a history of expanding what we're willing to call a number.\n\n**Student:** So \"real\" numbers aren't particularly more real than imaginary ones.\n\n**Professor:** The name \"real\" is just as historical an accident as \"imaginary.\" Both terms were coined before anyone understood the geometry. A more honest description might be: one-dimensional numbers versus two-dimensional numbers. Or numbers that live on a line versus numbers that live on a plane.\n\n**Student:** And both are equally valid mathematical objects.\n\n**Professor:** With the further irony that imaginary numbers turn out to be essential for describing physical reality \u2014 which is about as real as things get. The wavefunction in quantum mechanics is an inherently complex-valued object. Not real-valued with a little imaginary decoration on the side \u2014 genuinely, fundamentally complex.\n\n**Student:** So Descartes called them imaginary because they seemed like a fiction, and it turns out they're indispensable for describing the actual universe.\n\n**Professor:** Mathematics has a way of doing that. The things that seem most abstract, most disconnected from anything physical, have a habit of turning up exactly where they're needed. Non-Euclidean geometry was considered pure mathematical fantasy until Einstein used it to describe the shape of spacetime. Imaginary numbers were a notational inconvenience until they became the scaffolding of modern physics.\n\n**Student:** I came in here annoyed at the name. I'm leaving convinced it's one of the best accidental jokes in the history of science.\n\n**Professor:** The universe has a sense of humor. The \"imaginary\" numbers describe reality more completely than the \"real\" ones alone ever could.\n\n---\n\n*End of dialog*\n"}], "grading": null}, {"id": "eval-entropy-with_skill", "prompt": "Make a dialog about entropy and the arrow of time", "eval_id": 1, "outputs": [{"name": "dialog.md", "type": "text", "content": "# Dialog: Entropy and the Arrow of Time\n\n---\n\n**Student:** I've been thinking about entropy and the second law of thermodynamics, and something keeps bothering me. The law says entropy always increases \u2014 but the underlying physics, like Newton's laws or even quantum mechanics, they're all time-symmetric. You can run them forwards or backwards and the math still works. So where does the *direction* of time actually come from? It feels like we're sneaking it in somewhere.\n\n**Prof:** You've put your finger on exactly the right wound in the theory. The tension you've identified \u2014 between microscopically reversible dynamics and a macroscopically irreversible world \u2014 is one of the genuine foundational puzzles of physics. Boltzmann spent decades on it and it arguably contributed to his despair. So you're in serious company.\n\nLet me start with the thermodynamic picture and then we'll dig under it.\n\n**1. Entropy as a state-count**\n\nBoltzmann's great insight was to give entropy a microscopic meaning:\n\n$$S = k_B \\ln \\Omega$$\n\nwhere $\\Omega$ is the number of microstates compatible with the macroscopic state you observe. A \"high-entropy\" state is simply a state that could be realized in vastly more ways. A gas uniformly filling a room has astronomically more compatible microstates than the same gas compressed into one corner.\n\n**2. Why the asymmetry looks automatic**\n\nNow, if you start in a low-$\\Omega$ state and let the system evolve through its microstates more or less randomly, it will overwhelmingly tend to move toward higher-$\\Omega$ states \u2014 not because the dynamics have a preferred direction, but purely because there are *so many more* of those states. It's not a law in the sense of a force pushing things toward disorder. It's combinatorics dressed up as physics.\n\n**3. The catch \u2014 which you already sensed**\n\nHere's the thing you were sniffing at: this argument says entropy will increase going *forward* in time, but the identical argument \u2014 run backwards \u2014 says entropy should have been *increasing* in the past too. A purely statistical argument is symmetric. So why does the past look like lower entropy rather than higher?\n\nThe answer has to be imported from outside the dynamics. The second law doesn't give us the arrow of time \u2014 it *inherits* it from somewhere else. The question becomes: why was entropy so low at the beginning?\n\n---\n\n**Student:** Okay, that's actually clarifying something. I'd always thought the second law *was* the explanation for the arrow of time, but you're saying it's more like... the second law describes the arrow, but it doesn't explain why there is one. The explanation has to come from initial conditions.\n\n**Prof:** You hit the bullseye. That distinction \u2014 between *describing* and *explaining* the arrow \u2014 is exactly what separates a lot of confused discussions from the real one.\n\nThe serious question is: why was the universe born in a state of extraordinarily low entropy? Because once you grant that, everything downstream follows. The expansion of the universe, the formation of stars, the warmth of your coffee cooling on your desk \u2014 all of it is just entropy climbing uphill from that initial valley.\n\n**1. The Past Hypothesis**\n\nThis is what the philosopher David Albert calls the *Past Hypothesis*: a brute posit that the early universe had anomalously low entropy. It's not derived. It's not explained by the second law. It's an additional assumption about initial conditions that we have to add to get the physics right.\n\nSome physicists find this deeply unsatisfying. It makes the low-entropy Big Bang look like a cosmic accident \u2014 or worse, like a miracle. The universe could have started in a high-entropy state (most initial conditions, chosen randomly, would be high entropy), and it didn't, and we don't fully know why.\n\n**2. What \"low entropy at the Big Bang\" actually means**\n\nIt's worth pausing on how extreme this is. The physicist Roger Penrose estimated that the probability of the universe beginning in the specific low-entropy configuration it did \u2014 just from the gravitational degrees of freedom alone \u2014 is roughly $1$ in $10^{10^{123}}$. That number is so large it's essentially meaningless to write out. The universe's initial state was absurdly, staggeringly special.\n\n**3. The gravity wrinkle**\n\nThere's a further subtlety with gravity. For ordinary matter, low entropy looks like uniformity \u2014 everything spread out. But gravity *reverses* this: a uniform gas of matter is a *high*-entropy starting point for gravitational collapse. The low-entropy state gravitationally is actually clumped \u2014 which means the smooth, homogeneous early universe was simultaneously high entropy (thermodynamically) and low entropy (gravitationally). Penrose's concern lives in that gap.\n\nDoes this make the initial condition puzzle feel even stranger, or does it start to feel almost inevitable?\n\n---\n\n**Student:** It feels stranger. I keep trying to frame it as: well, maybe there's some deeper law that *forced* the universe into that low-entropy initial state. Like, maybe the arrow of time isn't accidental \u2014 maybe it's required by whatever created the initial conditions. But I'm not sure if that's a real possibility or just wishful thinking.\n\n**Prof:** Your instinct is genuinely good \u2014 and you've just walked into the room where the serious cosmological proposals live. This isn't wishful thinking; it's the active research frontier.\n\n**1. The two escape routes**\n\nThere are roughly two ways physicists have tried to explain the low-entropy beginning rather than just positing it:\n\nThe first is *inflation*. The idea is that the very early universe underwent a period of exponential expansion, which dynamically produced the smooth, homogeneous, geometrically flat universe we observe. In some formulations, inflation might make the initial conditions look less miraculous \u2014 you don't need to start in a special state by hand because inflation drives you there.\n\nThe problem: inflation doesn't obviously solve the entropy puzzle; it may just push it back. You need inflaton fields in the right initial configuration to get inflation started at all. As Sean Carroll and others have argued, the measure of initial conditions that lead to successful inflation may be just as small as the measure that leads directly to our universe.\n\n**2. The Penrose alternative: Conformal Cyclic Cosmology**\n\nPenrose's own proposal is more radical. He argues that the universe goes through *aeons* \u2014 each aeon is a universe that begins in a low-entropy Big Bang, expands, cools, and eventually reaches a state of maximum entropy in which all massive particles have decayed or been absorbed into black holes, which then themselves evaporate. At that point, the only surviving particles are massless \u2014 and for massless particles, time and scale lose meaning. That endpoint can be mathematically \"glued\" to a new Big Bang, and the entropy resets.\n\nIt's beautiful and strange, and its observational status is contested.\n\n**3. The deepest point**\n\nHere's what I want you to sit with: these proposals share a common logic. They're all trying to make the low-entropy initial state *less special* \u2014 to show that it arises from something, rather than being a brute given. But there's a philosophical limit. At some point you either have an explanation or a brute fact. The question is just how far back you can push the brute fact.\n\nYou were asking whether the arrow of time is required. In quantum gravity \u2014 which we don't yet have \u2014 time itself may not be fundamental. The Wheeler-DeWitt equation, one approach to quantum gravity, has *no time parameter at all*. The arrow of time, in that picture, isn't a feature of fundamental reality but an emergent appearance when quantum correlations are read a certain way. We don't fully know what that means yet.\n\n---\n\n**Student:** That last part is wild. If the Wheeler-DeWitt equation has no time in it, then... where does our *experience* of time passing come from? Like, not just thermodynamically, but subjectively \u2014 why does it feel like time moves forward?\n\n**Prof:** Now you've crossed the border from physics into one of the hardest problems at the intersection of physics and philosophy. And I love that you got there yourself by following the thread.\n\n**1. The timeless wavefunction**\n\nIn the Wheeler-DeWitt approach, the quantum state of the universe is a wavefunction $\\Psi$ that satisfies:\n\n$$\\hat{H} \\Psi = 0$$\n\nThat is, the Hamiltonian acting on the universal wavefunction gives zero. The universe is, in a certain sense, in an energy eigenstate \u2014 a static object. There is no external clock ticking. The equation has no $\\partial/\\partial t$ term.\n\nTime, in this picture, is *internal*. Certain subsystems of the universe can serve as clocks for other subsystems. What we call \"time passing\" is really a correlation: the configuration of this subsystem changes as a function of the configuration of that subsystem. The clock doesn't tick against absolute time; it correlates against matter.\n\n**2. Your subjective question**\n\nThe experience of time flowing \u2014 the \"now\" that seems to move forward \u2014 is even harder than the physics. This is what philosophers call the *passage of time*, and it may not be recoverable from physics at all. Physics can explain why a system has a memory of the past and no memory of the future (it's an entropy story). Physics can explain why the low-entropy direction correlates with what we call \"earlier.\" But the *feeling* that now is now and that time moves \u2014 that might be a feature of consciousness, not spacetime.\n\nThere's a version of this that should make you slightly uncomfortable: if the universe is fundamentally timeless, and time is a kind of internal correlation, then your experience of \"the present moment\" is not picking out anything metaphysically special. The past, present, and future all exist in the wavefunction. The experience of *now* is just what it feels like to be a certain kind of correlating subsystem.\n\n**3. Where we actually are**\n\nHere's the honest summary: we have a good statistical story for *why* entropy increases given a low-entropy past. We have no universally agreed explanation for *why* the past had low entropy. We have speculative cosmological proposals that try to explain it. And at the deepest level \u2014 in quantum gravity \u2014 we don't yet know how time itself emerges.\n\nWhat we started with, your original observation that the second law is sneaking in a direction \u2014 that was the right question. And the answer is: yes, it is. It inherits the direction from initial conditions. And where those initial conditions come from may be the most important unanswered question in fundamental physics.\n\n---\n\n**Student:** So the whole story is: entropy gives us the *structure* of the arrow \u2014 memories, causation, the direction of heat flow \u2014 but it doesn't give us the arrow itself. That has to come from the beginning. And the beginning is either a brute fact, or it comes from something deeper we don't yet have. Is that a fair summary?\n\n**Prof:** Your logic here is completely sound, and I'd add only one refinement \u2014 and it's a good one to end on.\n\nYou said entropy gives us the *structure* of the arrow. That's right. But it's worth being precise about what that structure is. Entropy doesn't just give us heat flow. It gives us:\n\n- **Causation** \u2014 causes precede effects because information propagates from low to high entropy\n- **Memory** \u2014 records form in the low-to-high direction because record-keeping requires entropy production\n- **Agency** \u2014 the ability to intervene in a system to produce a desired future state, which only makes sense in the low-entropy direction\n- **Narrative** \u2014 the sense that the world has a *story*, a past that explains the present, rather than a present that could be \"re-explained\" by an equally valid future\n\nAll of this piggybacks on the thermodynamic gradient. Take away the low-entropy past, and causation, memory, agency, and narrative go with it. We don't just lose a direction. We lose the conceptual framework that makes physics *usable* by creatures like us.\n\nSo your summary is right, and it has a final edge: the puzzle isn't just why the universe started with low entropy. It's why there's a universe in which anything like a physicist can sit down and ask that question. The arrow of time is the precondition for inquiry itself. We're not observing it from outside; we're downstream of it, made of it, constituted by it.\n\nThat's either deeply satisfying or deeply vertiginous, depending on the day.\n"}], "grading": null}, {"id": "eval-entropy-without_skill", "prompt": "Make a dialog about entropy and the arrow of time", "eval_id": 1, "outputs": [{"name": "dialog.md", "type": "text", "content": "# Entropy and the Arrow of Time\n### A Professor-Student Dialog\n\n---\n\n**Student:** Professor, I've been reading about entropy, and I keep running into this phrase \"the arrow of time.\" But physics is supposed to be reversible, right? So where does the arrow come from?\n\n**Professor:** That's exactly the right question to start with. You've already spotted the central tension. Yes \u2014 the fundamental laws of physics, whether Newtonian mechanics or quantum mechanics or even general relativity, are time-symmetric. If you filmed a billiard ball bouncing off another ball and played the film in reverse, there's nothing in Newton's laws that says \"that's wrong.\" The reversed film is equally valid.\n\n**Student:** So then why does time feel like it only goes one direction? I mean, I've never seen a broken egg reassemble itself.\n\n**Professor:** Right. And that's the puzzle. The egg shattering is described by the same physical laws as the egg assembling \u2014 yet one happens and the other never does. The answer lies in entropy, and specifically in the second law of thermodynamics.\n\n**Student:** Which says entropy always increases?\n\n**Professor:** That's the informal version, yes. More precisely: in a closed system, the total entropy either increases or stays the same over time. It never spontaneously decreases. And entropy, roughly speaking, is a measure of disorder \u2014 or more carefully, of the number of microscopic configurations that correspond to a given macroscopic state.\n\n**Student:** Can you unpack that? What do you mean by microscopic configurations?\n\n**Professor:** Sure. Think about a gas in a box. The macroscopic state is what you can observe without a microscope \u2014 the temperature, pressure, volume. The microscopic state is the exact position and velocity of every single molecule. There might be an astronomically large number of microscopic configurations \u2014 called microstates \u2014 that all look like the same macroscopic state. Entropy is proportional to the logarithm of that number. Boltzmann wrote it as S = k log W, where W is the number of microstates.\n\n**Student:** So a high-entropy state is one that has lots of ways to be arranged?\n\n**Professor:** Exactly. A gas spread uniformly throughout a box can be arranged in an enormous number of ways at the molecular level \u2014 there are countless ways to distribute all those molecules throughout the volume while still having the same overall density and temperature. But a gas compressed into one corner of the box? Far fewer arrangements achieve that. So the compressed state has lower entropy.\n\n**Student:** And that's why gas always expands to fill a container \u2014 because there are just way more ways to be spread out than to be bunched up?\n\n**Professor:** Precisely. If the molecules are just bouncing around randomly, they're overwhelmingly likely to end up in a high-entropy configuration simply because there are so many more of those. It's not that nature is \"trying\" to increase entropy \u2014 it's that high-entropy states vastly outnumber low-entropy states, so random evolution almost always leads there.\n\n**Student:** Okay, so entropy increases because high-entropy states are more probable. But I still don't see why that gives time a direction. Couldn't entropy just as easily decrease if the system evolved randomly?\n\n**Professor:** You're pushing exactly where you should push. And the honest answer is: yes, in principle, entropy could spontaneously decrease. It's not forbidden by the laws of physics. It's just incredibly, unfathomably improbable. For a macroscopic system \u2014 say, a room full of air \u2014 the probability of all the air molecules spontaneously migrating to one corner is so vanishingly small that you'd expect to wait far longer than the age of the universe to see it happen even once.\n\n**Student:** So the arrow of time is really just a statistical statement? Not a fundamental law?\n\n**Professor:** That's the view most physicists hold, yes \u2014 and it's a profound and somewhat uncomfortable one. The \"arrow\" arises from the statistics of enormously large numbers of particles. The underlying laws are reversible; the arrow emerges from probability.\n\n**Student:** But then here's what confuses me. If the laws are symmetric, and entropy tends to increase going forward in time, doesn't that same logic say entropy should also increase going backward in time? How do we know we're on the low-entropy side of the peak rather than the high-entropy side?\n\n**Professor:** Outstanding. You've just independently discovered what's called the \"past hypothesis\" problem \u2014 one of the deepest unresolved issues in the foundations of physics. You're absolutely right. If we just apply statistical reasoning naively, we'd predict that entropy should be high in both directions from the present. But we observe that entropy was lower in the past.\n\n**Student:** So something must be special about the past?\n\n**Professor:** Yes. The prevailing view, associated with the physicist David Albert and the cosmologist Sean Carroll among others, is that we must simply postulate that the universe began in an extraordinarily low-entropy state \u2014 the Big Bang. This is sometimes called the \"past hypothesis.\" It's the boundary condition that breaks the symmetry and gives time its direction.\n\n**Student:** That feels like cheating a little. We're explaining the arrow of time by just assuming it was there at the beginning?\n\n**Professor:** I understand the frustration. But consider: we don't feel the same way when we say \"the universe started very hot and dense.\" That's also just a boundary condition we observe and accept. The past hypothesis is similar \u2014 it's an observed feature of our universe's initial state, not a derivation from deeper principles. Whether that initial low entropy can itself be explained \u2014 perhaps by some theory of quantum cosmology or inflation \u2014 is an open question.\n\n**Student:** What does inflation have to do with it?\n\n**Professor:** Some cosmologists argue that inflationary models of the very early universe naturally drive toward certain low-entropy configurations. Others, like Roger Penrose, are skeptical and argue that inflation doesn't actually explain the low entropy \u2014 it just pushes the problem back a step. Penrose himself favors a different theory involving something called the Weyl curvature tensor as a measure of gravitational entropy, and argues that the universe's initial state had extraordinarily low gravitational entropy even if its matter was thermalized.\n\n**Student:** Wait \u2014 gravitational entropy? Gravity has entropy?\n\n**Professor:** Yes, and it's subtle. In ordinary thermodynamics, a uniform distribution of matter is high entropy. But gravity is attractive, so for a gravitating system, a uniform distribution is actually low entropy \u2014 because gravity will pull matter together into clumps, stars, and black holes, releasing energy and increasing entropy along the way. The highest-entropy state of a self-gravitating system is a black hole. So the smooth, uniform early universe was actually in an extraordinarily low gravitational entropy state, even though its matter distribution looked \"disordered\" in the ordinary sense.\n\n**Student:** That's a bit mind-bending. So black holes are the ultimate high-entropy objects?\n\n**Professor:** Yes \u2014 and this connects beautifully to black hole thermodynamics. In the 1970s, Jacob Bekenstein and Stephen Hawking showed that black holes have entropy proportional to the area of their event horizon. The formula is S = A/(4 l_P\u00b2), where A is the horizon area and l_P is the Planck length. A stellar-mass black hole has entropy vastly larger than any other object of comparable mass.\n\n**Student:** And Hawking radiation \u2014 does that relate to entropy too?\n\n**Professor:** Directly. Hawking showed that black holes aren't truly black \u2014 they emit thermal radiation due to quantum effects near the event horizon. As they radiate, they lose mass and eventually evaporate. But this creates a puzzle: the radiation appears to be purely thermal, which means it carries no information about what fell in. This suggests the black hole evaporation destroys information \u2014 which would violate quantum mechanics, which is fundamentally information-preserving. This is the famous \"black hole information paradox,\" still unresolved.\n\n**Student:** So entropy even shows up at the boundary of quantum mechanics and gravity?\n\n**Professor:** Exactly. The arrow of time reaches all the way to the frontier of physics. What started as a 19th-century observation about steam engines \u2014 Carnot, Clausius, Kelvin \u2014 has led us to questions about the beginning of the universe, the nature of black holes, and the foundations of quantum gravity.\n\n**Student:** I want to make sure I have the main thread straight. So: the fundamental laws are time-symmetric. Entropy tends to increase because there are vastly more high-entropy microstates than low-entropy ones. The direction we call \"the past\" is toward lower entropy, and \"the future\" is toward higher entropy. And the reason entropy was low in the past in the first place is an open question, likely tied to the initial conditions of the Big Bang?\n\n**Professor:** That's an excellent summary. I'd add one nuance: even our sense of memory and causation \u2014 the reason we remember the past but not the future \u2014 can be derived from the entropy gradient. Our brains record information about the past because the past was lower entropy; there were more macroscopic constraints that shaped what happened. Records, memories, and causes all point in the direction of lower entropy. So in a deep sense, the entire psychological arrow of time \u2014 the feeling that the past is fixed and the future is open \u2014 is also a consequence of the second law.\n\n**Student:** That's almost unsettling. The feeling that time \"flows\" is just... entropy?\n\n**Professor:** In a sense, yes. The physicist Arthur Eddington, who coined the phrase \"arrow of time\" in 1927, said it beautifully: \"The law that entropy always increases \u2014 the second law of thermodynamics \u2014 holds, I think, the supreme position among the laws of Nature.\" He wasn't being hyperbolic. Entropy is the reason we age, the reason we remember, the reason causes precede effects, the reason the universe has a story to tell at all.\n\n**Student:** And yet the underlying physics is perfectly reversible. There's something poetic about that \u2014 this deep asymmetry arising from pure symmetry.\n\n**Professor:** That's exactly right. And that tension \u2014 between the timeless, symmetric equations and the directed, irreversible world we inhabit \u2014 is one of the most beautiful open problems in all of physics. We have the tools. We don't fully have the answer. Which means you've chosen a good time to be curious about it.\n\n---\n\n*End of dialog.*\n"}], "grading": null}, {"id": "eval-french-revolution-with_skill", "prompt": "Make a dialog about what caused the French Revolution", "eval_id": 2, "outputs": [{"name": "dialog.md", "type": "text", "content": "# What Caused the French Revolution?\n\n---\n\n**Student:** I've been trying to get my head around the French Revolution, and I keep running into the same problem: every time I read about it, the explanation seems to change. One book says it was about hunger and bread prices. Another says it was about Enlightenment ideas and rights. Another says it was really about a financial crisis. How do you even begin to decide what *caused* it?\n\n**Prof:** You have just stumbled onto one of the most contested questions in all of modern historiography \u2014 and the fact that you noticed the explanations keep shifting tells me you're already thinking like a historian. Let me validate what's underneath your frustration: you're right that each of those accounts is real, and you're right that they seem to pull in different directions. But I want to push back gently on the framing of \"deciding\" which one is correct, because the French Revolution is one of those events that breaks the single-cause model almost by design.\n\n**1. The Structural Pressure**\n\nStart with the financial crisis, because it's the least glamorous and therefore the most underrated. By the 1780s, France was essentially bankrupt. The monarchy had borrowed heavily to fund wars \u2014 including, ironically, the American Revolution \u2014 and the interest payments alone were consuming more than half of the royal budget. Louis XVI's government couldn't raise taxes because the nobility and clergy, the two estates with the most wealth, were largely exempt from direct taxation. The Estates-General, which hadn't met in 175 years, was convened in 1789 precisely because the crown had run out of other options. So the Revolution doesn't start with a mob in the streets \u2014 it starts with a king who can't pay his bills calling a meeting he'd rather not have.\n\n**2. The Accelerant**\n\nBut financial strain alone doesn't topple governments. What lit the fire was the harvest failure of 1788, one of the worst in a generation. By the spring of 1789, bread prices in Paris had risen to the point where a laboring family might spend 80 to 90 percent of its income just on bread. Hunger is not an abstraction. When the Estates-General convened in May 1789, delegates arrived against a backdrop of genuine desperation \u2014 and the crowds outside Versailles were not abstract political actors. They were hungry.\n\n**3. The Language**\n\nHere's where the Enlightenment enters \u2014 and this is the piece I want you to hold onto. Enlightenment ideas did not *cause* the Revolution the way hunger caused the riots. What they did was provide a vocabulary. When the Third Estate's delegates broke away to form the National Assembly in June 1789, they didn't say \"we're angry about bread prices.\" They said \"sovereignty resides in the nation.\" They reached for Rousseau. They reached for natural rights. The ideas gave the grievances a shape \u2014 a political program rather than just a protest.\n\nThose three things together \u2014 structural fiscal collapse, an immediate subsistence crisis, and a new political language \u2014 are why the summer of 1789 looks the way it does. None of them is sufficient on its own.\n\n**Student:** That actually helps a lot. But I'm curious about something \u2014 you said the Enlightenment gave the grievances \"a shape.\" Does that mean the ideas were sort of decorative? Like, if there had been no Enlightenment but the same hunger and bankruptcy, would the Revolution have happened anyway, just differently? Or do the ideas actually change what people are willing to do?\n\n**Prof:** You hit the bullseye with that question, and it's one historians have genuinely wrestled with. Let me be precise here, because you're drawing a distinction that matters enormously.\n\n**1. Ideas Are Not Decorations**\n\nThe short answer is: no, the ideas are not decorative, and here's why. What a political vocabulary does is expand what feels *thinkable*. In 1750, a French peasant furious about grain prices might riot to force the king to release stored grain \u2014 what historians call a \"moral economy\" protest. The implicit demand is *be a good king*, not *there should be no king*. The Enlightenment made a different demand feel possible: not just *fix this*, but *you have no right to rule us this way*. That is a different kind of revolt entirely.\n\n**2. The Comparison That Tests Your Hypothesis**\n\nYour intuition can actually be tested historically. Compare France in 1789 to Russia in the famine of the 1890s, or to China's subsistence crises in the 18th century. Severe hunger + fiscal stress without the corresponding political vocabulary produces food riots, local rebellions, peasant uprisings \u2014 not constitutional assemblies declaring that sovereignty belongs to the nation. The ideas don't just decorate the revolution. They give it its particular *form* and its *ambitions*.\n\n**3. But Here's the Complication**\n\nI want to complicate your hypothesis from the other direction too, because this is where it gets genuinely interesting. Enlightenment ideas had been circulating in France for decades before 1789 \u2014 Voltaire, Montesquieu, Rousseau were all publishing in the middle of the 18th century. France did not immediately have a revolution. So if ideas were sufficient on their own, why the wait? The ideas needed the crisis to activate them. They needed a moment of institutional breakdown in which the old justifications \u2014 divine right, tradition, hierarchy \u2014 visibly failed to solve an obvious problem. Without that failure, the ideas circulate in salons and don't leave.\n\nSo the real answer to your question is: ideas and material conditions interact. Neither is decorative. Neither is sufficient. The Revolution happens where they collide.\n\n**Student:** That makes me think about something. You mentioned the Third Estate declaring that sovereignty belongs to the nation. But who exactly was the Third Estate? Because I have this image of it being the common people \u2014 the poor, the hungry \u2014 but I don't think that's quite right, is it? The people writing those declarations about natural rights were educated. They were lawyers.\n\n**Prof:** I have to stop you right there \u2014 not to correct you, but to applaud you, because you have just independently rediscovered one of the central findings of the sociology of revolutions. Yes. You are exactly right. And the gap you're pointing to is crucial.\n\n**1. The Three Estates**\n\nOfficially, the Estates-General divided France into three: the First Estate (clergy), the Second Estate (nobility), and the Third Estate \u2014 which was, technically, everyone else. That is to say, roughly 97 percent of France. A category that contains both a Parisian lawyer earning a comfortable income from contract disputes and a starving grain farmer in the Beauce is not a sociologically coherent group. It's a legal fiction.\n\n**2. Who Actually Led**\n\nThe people who drafted the Tennis Court Oath, who wrote the Declaration of the Rights of Man, who debated constitutional theory in the National Assembly \u2014 these were, overwhelmingly, educated bourgeois professionals. Lawyers, doctors, journalists, minor officials. Men like Robespierre (a lawyer from Arras), Desmoulins (a journalist), Siey\u00e8s (a clergyman who wrote the pamphlet that became the Third Estate's manifesto). They had absorbed Enlightenment ideas, they had professional reasons to resent the privileges of the nobility, and they had the rhetorical skills to translate grievances into political programs.\n\n**3. The Tension This Creates**\n\nBut \u2014 and this is where it gets uncomfortable \u2014 the revolution they launched was not always the revolution the hungry grain farmers wanted. The bourgeois leadership wanted constitutional government, legal equality, property rights, free markets. The Paris crowd wanted bread to be affordable. Those are not always the same thing, and over the course of the 1790s the tension between them drives some of the Revolution's most violent episodes. The Terror, in part, is what happens when the government tries to hold together a coalition between people who want liberty and people who want grain controls.\n\nSo when you look at that image of \"the common people\" storming the Bastille, hold it alongside the image of educated lawyers arguing about Locke. Both images are true. The Revolution is the collision between them.\n\n**Student:** That reframes things for me. I'd always thought of the Bastille as the symbolic center of it \u2014 the people rising up against tyranny. But if the people storming the Bastille weren't the same people writing the constitutions, then what exactly was the Bastille *about*? Was it symbolic from the start, or did it become symbolic later?\n\n**Prof:** You are 100% correct that something is strange about the Bastille, and the answer is genuinely one of the most fascinating small puzzles in revolutionary history.\n\n**1. What the Bastille Actually Was**\n\nOn July 14, 1789, when the crowd stormed it, the Bastille held exactly seven prisoners: four forgers, two lunatics, and a minor aristocrat whose family had requested his confinement. It was not a teeming dungeon full of political prisoners. It was a half-decommissioned fortress that the royal government had been discussing demolishing for years because it cost too much to maintain.\n\n**2. Why They Stormed It Anyway**\n\nThe immediate cause was practical and military. The crown had moved troops toward Paris in the days before, apparently preparing to disperse the National Assembly. The Bastille was an armory. Crowds had already seized muskets from the Invalides that morning; they came to the Bastille for the powder to load them. This was not primarily a symbolic act \u2014 it was a crowd arming itself against the possibility of royal repression.\n\n**3. When It Became Symbolic**\n\nWhat happened next is what you're intuiting about. Within hours of the fortress falling, it had been reinterpreted. The National Assembly, the pamphlets, the speeches \u2014 they immediately transformed the Bastille into the embodiment of despotism overthrown. It *became* the symbol it is remembered as through an almost instantaneous act of collective narrative-making. The physical fact (a crowd seized an armory) was overwritten by the political story (the people broke the chains of tyranny).\n\nThis is, by the way, not deception or spin in some simple sense. The Bastille *did* represent royal arbitrary power \u2014 the power to imprison without trial under *lettres de cachet* was real and feared, even if it was rarely used by 1789. The symbol worked because it pointed at something true, even if the literal event was messier than the story.\n\n**Student:** So it's almost like the revolution needed to narrate itself as it was happening \u2014 the symbols weren't just aftermath, they were part of how the revolution constituted itself as a revolution. I think I'm starting to see why it's so hard to reduce this to one cause. The hunger explains who showed up. The financial crisis explains why the institutions cracked open. The ideas explain what people demanded once the crack appeared. And then the symbolism \u2014 things like the Bastille \u2014 is how the movement recognized itself as a movement and held together.\n\n**Prof:** That is a genuinely sophisticated synthesis, and I want to say clearly: you just built something real. What you've described is very close to what the sociologist Charles Tilly called the interplay between *opportunity*, *organization*, and *repertoire* in revolutionary situations \u2014 though you arrived at it from the inside out, through the specific case, which is exactly the right way to encounter a theoretical framework.\n\nLet me add one layer that your synthesis is ready to hold.\n\n**1. What Your Framework Captures**\n\nYou've identified four distinct registers \u2014 material deprivation (hunger), institutional failure (the fiscal crisis), ideological resource (Enlightenment language), and symbolic self-constitution (the Bastille narrative). What's powerful about keeping those separate is that it explains something historians have long noted: the Revolution could have been arrested at multiple points. Fix the harvest and maybe the Estates-General adjourns without crisis. Reform the tax structure in the 1760s and maybe the financial collapse never comes. Suppress the pamphlet culture and maybe the new vocabulary doesn't spread. Each of those \"maybes\" represents a point where one link in the chain might have been broken.\n\n**2. The Layer Your Synthesis Is Ready For**\n\nHere's what I'd add: the Revolution, once it begins, *generates its own causes*. The violence of 1792-1794 cannot be explained purely by the conditions of 1789. War, foreign invasion, counter-revolutionary rebellion in the Vend\u00e9e, the radicalization of factions competing for power \u2014 these are not simply the original causes playing out. They are new conditions created by the revolutionary process itself. Revolutions have a way of devouring the intentions of their initiators. The lawyers who wrote the Declaration of the Rights of Man mostly did not intend the Terror. But the Terror did not come from nowhere \u2014 it came from a revolution that had armed the population, destroyed the old institutions before new ones were stable, and then faced existential military pressure.\n\n**3. The Open Question**\n\nSo the question your synthesis leaves beautifully open is this: if the Revolution generates its own momentum and its own new causes as it unfolds, what does that mean for the idea of *cause* itself? Are we looking for the ignition, or are we trying to understand a process? Most historians today would say: both, and you have to hold them together. The French Revolution is an event, but it is also a *dynamic* \u2014 something that unfolds through time and changes what it is as it goes. That's what makes it so inexhaustible as a subject, and why the explanations keep shifting when you read about it: different historians are often answering slightly different versions of the question.\n\n---\n"}], "grading": null}, {"id": "eval-french-revolution-without_skill", "prompt": "Make a dialog about what caused the French Revolution", "eval_id": 2, "outputs": [{"name": "dialog.md", "type": "text", "content": "# The Causes of the French Revolution\n### A Professor-Student Dialog\n\n---\n\n**Student:** Professor, I've been reading about the French Revolution, and I keep seeing different explanations for why it happened. Some books focus on economics, others on Enlightenment ideas, others on bad harvests. Was there one main cause, or is it more complicated than that?\n\n**Professor:** That's exactly the right question to start with, and the honest answer is: it's far more complicated. Historians have debated this for over two centuries. What you're describing \u2014 that sense of multiple overlapping explanations \u2014 reflects the real structure of the event. The Revolution wasn't caused by any single thing. It was the result of several crises converging at the same moment, in a society that had lost the flexibility to absorb any one of them.\n\n**Student:** So it's like a perfect storm?\n\n**Professor:** That metaphor works, though I'd push it further. A storm blows over. The French Revolution fundamentally restructured a civilization. But yes \u2014 the image of multiple pressures building simultaneously is accurate. Let's work through the main ones. Where would you like to start?\n\n**Student:** Let's start with the financial crisis, since that seems like the most concrete.\n\n**Professor:** Good instinct. By the 1780s, the French monarchy was effectively bankrupt. France had spent enormously on a series of wars \u2014 the Seven Years' War, the American Revolutionary War \u2014 and the debt was crushing. Interest payments alone consumed roughly half the royal budget by 1788. King Louis XVI's finance ministers kept proposing tax reforms, but they ran into a wall: the nobility and the clergy \u2014 the First and Second Estates \u2014 were largely exempt from direct taxation. The burden fell on the commoners, the Third Estate, who were already struggling.\n\n**Student:** Why couldn't the king just force the nobles to pay taxes?\n\n**Professor:** Because in the French political system, the king needed to work through institutions, and those institutions were controlled by the very people he wanted to tax. The regional parlements \u2014 not legislatures in the modern sense, but powerful courts \u2014 had the right to register royal edicts, and they refused to register tax reforms that threatened noble privilege. The nobles had been doing this for decades; historians call it the \"aristocratic reaction\" or the \"noble revolt.\" When Louis finally tried to bypass the parlements, the nobles demanded he convene the Estates-General, a representative body that hadn't met since 1614. That turned out to be a catastrophic miscalculation.\n\n**Student:** Why catastrophic?\n\n**Professor:** Because convening the Estates-General opened a political space that couldn't be controlled. It required representatives of all three Estates to meet, which meant the Third Estate \u2014 commoners, but including lawyers, merchants, doctors, intellectuals \u2014 suddenly had a national platform. And they arrived armed with grievance lists called *cahiers de dol\u00e9ances*, which documented in extraordinary detail how ordinary people across France experienced their lives: unfair taxes, feudal dues, corrupt courts, food shortages. It was a moment of political awakening on a massive scale.\n\n**Student:** That connects to the Enlightenment, doesn't it? Were those lawyers and merchants actually thinking in terms of Enlightenment ideas?\n\n**Professor:** Absolutely, and this is where the intellectual dimension becomes crucial. By 1789, Enlightenment thought had thoroughly permeated the educated classes in France. Thinkers like Voltaire, Montesquieu, and Rousseau had spent decades arguing that legitimate government required reason, not divine right \u2014 that sovereignty resided in the people, not the king \u2014 that laws should protect natural rights, not entrench privilege. These weren't abstract academic ideas by 1789. They were the shared vocabulary of the political class. When the Third Estate deputies arrived at Versailles, they didn't just want tax relief. They wanted a constitution.\n\n**Student:** But these ideas had been around for decades. Why did they matter more in 1789 than, say, in 1760?\n\n**Professor:** Brilliant question. Ideas require conditions. In 1760, France was still functioning \u2014 imperfectly, corruptly, unfairly, but functioning. Reformist ideas could circulate in salons and pamphlets without becoming revolutionary demands. By 1789, the state had visibly failed. The king couldn't pay his debts. The harvest of 1788 had been catastrophic \u2014 a brutal winter destroyed crops across France, and bread prices spiked to levels that put food out of reach for the urban poor. In Paris, working families were spending 80 to 90 percent of their income on bread alone. When the system fails that visibly, abstract ideas about legitimate government stop being philosophical and start being urgent.\n\n**Student:** So the harvest failure was a major factor too?\n\n**Professor:** It was a trigger, more than a root cause. France had suffered bad harvests before without revolution. But the harvest failure of 1788-89 landed on top of everything else: a bankrupt state, a fiscally paralyzed nobility, a politically awakened commoner class, and a capital city seething with unemployment and hunger. The bread crisis transformed political discontent into survival desperation. When a rumor spread in July 1789 that the king was planning to use military force to dismiss the newly formed National Assembly, Parisians didn't just protest \u2014 they stormed the Bastille. They were hungry, frightened, and now also certain that the old order intended to crush any hope of change.\n\n**Student:** I've always wondered \u2014 the Bastille only had seven prisoners. Why was storming it so symbolically important?\n\n**Professor:** You've identified something historians find genuinely interesting. The Bastille, as a functioning prison, was nearly obsolete by 1789. But symbolically, it was the embodiment of royal tyranny \u2014 a fortress where the king could imprison anyone without trial, under what were called *lettres de cachet*. Storming it wasn't really about freeing prisoners. It was an act of defiance against arbitrary power. And crucially, it worked. The garrison surrendered. The king backed down. That moment demonstrated something that had seemed impossible: the old regime could be physically defeated. After July 14th, the Revolution had a momentum of its own.\n\n**Student:** You've mentioned the First, Second, and Third Estates several times. Can you explain the social structure a bit more? I feel like I'm missing why it caused so much resentment.\n\n**Professor:** Of course. French society under the *Ancien R\u00e9gime* \u2014 the old regime \u2014 was legally divided into three estates. The First Estate was the clergy, roughly 0.5% of the population, who owned perhaps 10% of the land and paid no direct taxes, instead making a voluntary \"gift\" to the crown. The Second Estate was the nobility, about 1.5% of the population, also largely exempt from the main direct tax, the *taille*, and holding exclusive rights to the highest military and government offices. The Third Estate was everyone else \u2014 roughly 98% of the population: peasants, urban workers, artisans, merchants, lawyers, doctors. They bore the brunt of taxation while being largely excluded from power.\n\n**Student:** That sounds like a system designed to cause revolution.\n\n**Professor:** It does, in retrospect. But what made it particularly explosive by 1789 was a new tension within the Third Estate itself. The bourgeoisie \u2014 the educated, professional, property-owning middle class \u2014 had grown enormously during the 18th century as France's economy developed. These were people who were literate, politically informed, economically successful, and yet legally lumped in with peasants and treated as inferior to nobles of ancient lineage. The Abb\u00e9 Siey\u00e8s captured the mood perfectly in his 1789 pamphlet: *What is the Third Estate? Everything. What has it been until now in the political order? Nothing. What does it want to be? Something.* That pamphlet sold out almost immediately. It articulated a rage that was already there.\n\n**Student:** So the bourgeoisie were the ones who actually drove the Revolution?\n\n**Professor:** They provided much of its leadership and its ideological vocabulary, yes. But the Revolution wouldn't have had the force it did without the peasantry and the urban poor. The peasants, despite being legally free in France \u2014 unlike serfs in Eastern Europe \u2014 were crushed under a system of feudal dues, church tithes, and royal taxes. They had little legal recourse and were deeply vulnerable to harvest failures. In the summer of 1789, as rumors spread that noble brigands were destroying crops, peasants across France rose up in what's called the *Grande Peur* \u2014 the Great Fear \u2014 attacking noble estates and burning the records of feudal obligations. That rural uprising forced the National Assembly to act: on the night of August 4th, noble deputies voluntarily renounced their feudal privileges in a dramatic session that dismantled the entire legal structure of the *Ancien R\u00e9gime* in a matter of hours.\n\n**Student:** That's remarkable. Were the nobles being genuinely idealistic, or was it more strategic?\n\n**Professor:** Historians debate this. Some noble deputies were genuinely moved by Enlightenment ideals and saw this as a necessary sacrifice. Others almost certainly calculated that making a dramatic gesture of voluntary renunciation was better than having their privileges stripped by force. And remember: the *Grande Peur* was happening simultaneously. Noble ch\u00e2teaux were burning in the countryside. The night of August 4th was partly idealism, partly panic, partly political theater. Probably all three at once. Revolutions rarely have clean motivations.\n\n**Student:** Is there anything that could have prevented the Revolution? Were there moments where the old regime could have reformed itself?\n\n**Professor:** This is one of the great counterfactual questions of history. Many historians argue yes \u2014 that a more politically flexible monarchy, willing to tax the nobility and share power with the educated classes, might have avoided catastrophe. Louis XV's finance minister Turgot actually attempted fundamental reforms in the 1770s, but was blocked and dismissed. Louis XVI himself was not a cruel or stupid man \u2014 he was, in many ways, well-intentioned but indecisive and chronically unable to override entrenched interests. There were windows for reform that closed. But here's the complication: France's structural problems \u2014 the debt, the inequality, the fiscal rigidity built on noble exemption \u2014 were so deep that even a capable reforming monarch would have faced enormous resistance. Whether reform was truly possible, or whether the contradictions of the *Ancien R\u00e9gime* made some kind of rupture inevitable, remains genuinely open.\n\n**Student:** Let me try to pull this together. The French Revolution had financial, social, intellectual, and environmental causes all operating at the same time?\n\n**Professor:** Exactly right. And I'd add a political-institutional cause: the failure of existing institutions to adapt. The financial crisis forced the king to convene the Estates-General. The Estates-General gave the Third Estate a political opening they immediately seized. Enlightenment ideas gave them the vocabulary and legitimacy to demand fundamental change. The bread crisis gave the urban poor the desperation to act. The feudal structure gave the peasantry the grievances. The bourgeoisie had the organization and leadership to direct the resulting energy. Remove any one of those elements, and the Revolution might not have happened \u2014 or might have taken a very different form. That's why it's so difficult to summarize, and why it's been so endlessly debated.\n\n**Student:** And yet it did happen, and changed the whole world.\n\n**Professor:** It did. The French Revolution didn't just change France. It demonstrated \u2014 terrifyingly, exhilaratingly \u2014 that a political and social order that had seemed permanent and God-given could be dismantled and rebuilt by human hands. That idea echoed across Europe and the Americas for the next century. The vocabulary it generated \u2014 liberty, equality, citizenship, rights, sovereignty of the people \u2014 became the basic grammar of modern politics. Even today, arguments about democracy, inequality, and the relationship between the state and its citizens are arguments the Revolution started. We are still living inside the questions it raised.\n\n**Student:** That's a good note to end on. Thank you, Professor.\n\n**Professor:** Thank you for asking the right questions. That's where good history begins.\n\n---\n\n*End of dialog.*\n"}], "grading": null}], "previous_feedback": {}, "previous_outputs": {}};
+
+    // ---- State ----
+    let feedbackMap = {};  // run_id -> feedback text
+    let currentIndex = 0;
+    let visitedRuns = new Set();
+
+    // ---- Init ----
+    async function init() {
+      // Load saved feedback from server — but only if this isn't a fresh
+      // iteration (indicated by previous_feedback being present). When
+      // previous feedback exists, the feedback.json on disk is stale from
+      // the prior iteration and should not pre-fill the textareas.
+      const hasPrevious = Object.keys(EMBEDDED_DATA.previous_feedback || {}).length > 0
+        || Object.keys(EMBEDDED_DATA.previous_outputs || {}).length > 0;
+      if (!hasPrevious) {
+        try {
+          const resp = await fetch("/api/feedback");
+          const data = await resp.json();
+          if (data.reviews) {
+            for (const r of data.reviews) feedbackMap[r.run_id] = r.feedback;
+          }
+        } catch { /* first run, no feedback yet */ }
+      }
+
+      document.getElementById("skill-name").textContent = EMBEDDED_DATA.skill_name;
+      showRun(0);
+
+      // Wire up feedback auto-save
+      const textarea = document.getElementById("feedback");
+      let saveTimeout = null;
+      textarea.addEventListener("input", () => {
+        clearTimeout(saveTimeout);
+        document.getElementById("feedback-status").textContent = "";
+        saveTimeout = setTimeout(() => saveCurrentFeedback(), 800);
+      });
+    }
+
+    // ---- Navigation ----
+    function navigate(delta) {
+      const newIndex = currentIndex + delta;
+      if (newIndex >= 0 && newIndex < EMBEDDED_DATA.runs.length) {
+        saveCurrentFeedback();
+        showRun(newIndex);
+      }
+    }
+
+    function updateNavButtons() {
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled =
+        currentIndex === EMBEDDED_DATA.runs.length - 1;
+    }
+
+    // ---- Show a run ----
+    function showRun(index) {
+      currentIndex = index;
+      const run = EMBEDDED_DATA.runs[index];
+
+      // Progress
+      document.getElementById("progress").textContent =
+        `${index + 1} of ${EMBEDDED_DATA.runs.length}`;
+
+      // Prompt
+      document.getElementById("prompt-text").textContent = run.prompt;
+
+      // Config badge
+      const badge = document.getElementById("config-badge");
+      const configMatch = run.id.match(/(with_skill|without_skill|new_skill|old_skill)/);
+      if (configMatch) {
+        const config = configMatch[1];
+        const isBaseline = config === "without_skill" || config === "old_skill";
+        badge.textContent = config.replace(/_/g, " ");
+        badge.className = "config-badge " + (isBaseline ? "config-baseline" : "config-primary");
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
+
+      // Outputs
+      renderOutputs(run);
+
+      // Previous outputs
+      renderPrevOutputs(run);
+
+      // Grades
+      renderGrades(run);
+
+      // Previous feedback
+      const prevFb = (EMBEDDED_DATA.previous_feedback || {})[run.id];
+      const prevEl = document.getElementById("prev-feedback");
+      if (prevFb) {
+        document.getElementById("prev-feedback-text").textContent = prevFb;
+        prevEl.style.display = "block";
+      } else {
+        prevEl.style.display = "none";
+      }
+
+      // Feedback
+      document.getElementById("feedback").value = feedbackMap[run.id] || "";
+      document.getElementById("feedback-status").textContent = "";
+
+      updateNavButtons();
+
+      // Track visited runs and promote done button when all visited
+      visitedRuns.add(index);
+      const doneBtn = document.getElementById("done-btn");
+      if (visitedRuns.size >= EMBEDDED_DATA.runs.length) {
+        doneBtn.classList.add("ready");
+      }
+
+      // Scroll main content to top
+      document.querySelector(".main").scrollTop = 0;
+    }
+
+    // ---- Render outputs ----
+    function renderOutputs(run) {
+      const container = document.getElementById("outputs-body");
+      container.innerHTML = "";
+
+      const outputs = run.outputs || [];
+      if (outputs.length === 0) {
+        container.innerHTML = '<div class="empty-state">No output files</div>';
+        return;
+      }
+
+      for (const file of outputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        // Always show file header with download link
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const content = document.createElement("div");
+        content.className = "output-file-content";
+
+        if (file.type === "text") {
+          if (file.name.endsWith(".md") && typeof marked !== "undefined") {
+            const div = document.createElement("div");
+            div.className = "md-content";
+            div.innerHTML = marked.parse(file.content);
+            content.appendChild(div);
+            if (window.MathJax) MathJax.typesetPromise([div]);
+          } else {
+            const pre = document.createElement("pre");
+            pre.textContent = file.content;
+            content.appendChild(pre);
+          }
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          content.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          content.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(content, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          content.appendChild(a);
+        } else if (file.type === "error") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          pre.style.color = "var(--red)";
+          content.appendChild(pre);
+        }
+
+        fileDiv.appendChild(content);
+        container.appendChild(fileDiv);
+      }
+    }
+
+    // ---- XLSX rendering via SheetJS ----
+    function renderXlsx(container, b64Data) {
+      try {
+        const raw = Uint8Array.from(atob(b64Data), c => c.charCodeAt(0));
+        const wb = XLSX.read(raw, { type: "array" });
+
+        for (let i = 0; i < wb.SheetNames.length; i++) {
+          const sheetName = wb.SheetNames[i];
+          const ws = wb.Sheets[sheetName];
+
+          if (wb.SheetNames.length > 1) {
+            const sheetLabel = document.createElement("div");
+            sheetLabel.style.cssText =
+              "font-weight:600; font-size:0.8rem; color:#b0aea5; margin-top:0.5rem; margin-bottom:0.25rem;";
+            sheetLabel.textContent = "Sheet: " + sheetName;
+            container.appendChild(sheetLabel);
+          }
+
+          const htmlStr = XLSX.utils.sheet_to_html(ws, { editable: false });
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = htmlStr;
+          container.appendChild(wrapper);
+        }
+      } catch (err) {
+        container.textContent = "Error rendering spreadsheet: " + err.message;
+      }
+    }
+
+    // ---- Grades ----
+    function renderGrades(run) {
+      const section = document.getElementById("grades-section");
+      const content = document.getElementById("grades-content");
+
+      if (!run.grading) {
+        section.style.display = "none";
+        return;
+      }
+
+      const grading = run.grading;
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("grades-arrow").classList.remove("open");
+
+      const summary = grading.summary || {};
+      const expectations = grading.expectations || [];
+
+      let html = '<div style="padding: 1rem;">';
+
+      // Summary line
+      const passRate = summary.pass_rate != null
+        ? Math.round(summary.pass_rate * 100) + "%"
+        : "?";
+      const badgeClass = summary.pass_rate >= 0.8 ? "grade-pass" : summary.pass_rate >= 0.5 ? "" : "grade-fail";
+      html += '<div class="grades-summary">';
+      html += '<span class="grade-badge ' + badgeClass + '">' + passRate + '</span>';
+      html += '<span>' + (summary.passed || 0) + ' passed, ' + (summary.failed || 0) + ' failed of ' + (summary.total || 0) + '</span>';
+      html += '</div>';
+
+      // Assertions list
+      html += '<ul class="assertion-list">';
+      for (const exp of expectations) {
+        const statusClass = exp.passed ? "pass" : "fail";
+        const statusIcon = exp.passed ? "\u2713" : "\u2717";
+        html += '<li class="assertion-item">';
+        html += '<span class="assertion-status ' + statusClass + '">' + statusIcon + '</span>';
+        html += '<span>' + escapeHtml(exp.text) + '</span>';
+        if (exp.evidence) {
+          html += '<div class="assertion-evidence">' + escapeHtml(exp.evidence) + '</div>';
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+
+      html += '</div>';
+      content.innerHTML = html;
+    }
+
+    function toggleGrades() {
+      const content = document.getElementById("grades-content");
+      const arrow = document.getElementById("grades-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Previous outputs (collapsible) ----
+    function renderPrevOutputs(run) {
+      const section = document.getElementById("prev-outputs-section");
+      const content = document.getElementById("prev-outputs-content");
+      const prevOutputs = (EMBEDDED_DATA.previous_outputs || {})[run.id];
+
+      if (!prevOutputs || prevOutputs.length === 0) {
+        section.style.display = "none";
+        return;
+      }
+
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("prev-outputs-arrow").classList.remove("open");
+
+      // Render the files into the content area
+      content.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.style.padding = "1rem";
+
+      for (const file of prevOutputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const fc = document.createElement("div");
+        fc.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          fc.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          fc.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          fc.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(fc, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          fc.appendChild(a);
+        }
+
+        fileDiv.appendChild(fc);
+        wrapper.appendChild(fileDiv);
+      }
+
+      content.appendChild(wrapper);
+    }
+
+    function togglePrevOutputs() {
+      const content = document.getElementById("prev-outputs-content");
+      const arrow = document.getElementById("prev-outputs-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Feedback (saved to server -> feedback.json) ----
+    function saveCurrentFeedback() {
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // Build reviews array from map
+      const reviews = [];
+      for (const [run_id, feedback] of Object.entries(feedbackMap)) {
+        if (feedback.trim()) {
+          reviews.push({ run_id, feedback, timestamp: new Date().toISOString() });
+        }
+      }
+
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviews, status: "in_progress" }),
+      }).then(() => {
+        document.getElementById("feedback-status").textContent = "Saved";
+      }).catch(() => {
+        // Static mode or server unavailable — no-op on auto-save,
+        // feedback will be downloaded on final submit
+        document.getElementById("feedback-status").textContent = "Will download on submit";
+      });
+    }
+
+    // ---- Done ----
+    function showDoneDialog() {
+      // Save current textarea to feedbackMap (but don't POST yet)
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // POST once with status: complete — include ALL runs so the model
+      // can distinguish "no feedback" (looks good) from "not reviewed"
+      const reviews = [];
+      const ts = new Date().toISOString();
+      for (const r of EMBEDDED_DATA.runs) {
+        reviews.push({ run_id: r.id, feedback: feedbackMap[r.id] || "", timestamp: ts });
+      }
+      const payload = JSON.stringify({ reviews, status: "complete" }, null, 2);
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      }).then(() => {
+        document.getElementById("done-overlay").classList.add("visible");
+      }).catch(() => {
+        // Server not available (static mode) — download as file
+        const blob = new Blob([payload], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "feedback.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        document.getElementById("done-overlay").classList.add("visible");
+      });
+    }
+
+    function closeDoneDialog() {
+      // Reset status back to in_progress
+      saveCurrentFeedback();
+      document.getElementById("done-overlay").classList.remove("visible");
+    }
+
+    // ---- Toast ----
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2000);
+    }
+
+    // ---- Keyboard nav ----
+    document.addEventListener("keydown", (e) => {
+      // Don't capture when typing in textarea
+      if (e.target.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigate(1);
+      }
+    });
+
+    // ---- Util ----
+    function getDownloadUri(file) {
+      if (file.data_uri) return file.data_uri;
+      if (file.data_b64) return "data:application/octet-stream;base64," + file.data_b64;
+      if (file.type === "text") return "data:text/plain;charset=utf-8," + encodeURIComponent(file.content);
+      return "#";
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ---- View switching ----
+    function switchView(view) {
+      document.querySelectorAll(".view-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+      document.querySelector(`[onclick="switchView('${view}')"]`).classList.add("active");
+      document.getElementById("panel-" + view).classList.add("active");
+    }
+
+    // ---- Benchmark rendering ----
+    function renderBenchmark() {
+      const data = EMBEDDED_DATA.benchmark;
+      if (!data) return;
+
+      // Show the tabs
+      document.getElementById("view-tabs").style.display = "flex";
+
+      const container = document.getElementById("benchmark-content");
+      const summary = data.run_summary || {};
+      const metadata = data.metadata || {};
+      const notes = data.notes || [];
+
+      let html = "";
+
+      // Header
+      html += "<h2 style='font-family: Poppins, sans-serif; margin-bottom: 0.5rem;'>Benchmark Results</h2>";
+      html += "<p style='color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;'>";
+      if (metadata.skill_name) html += "<strong>" + escapeHtml(metadata.skill_name) + "</strong> &mdash; ";
+      if (metadata.timestamp) html += metadata.timestamp + " &mdash; ";
+      if (metadata.evals_run) html += "Evals: " + metadata.evals_run.join(", ") + " &mdash; ";
+      html += (metadata.runs_per_configuration || "?") + " runs per configuration";
+      html += "</p>";
+
+      // Summary table
+      html += '<table class="benchmark-table">';
+
+      function fmtStat(stat, pct) {
+        if (!stat) return "—";
+        const suffix = pct ? "%" : "";
+        const m = pct ? (stat.mean * 100).toFixed(0) : stat.mean.toFixed(1);
+        const s = pct ? (stat.stddev * 100).toFixed(0) : stat.stddev.toFixed(1);
+        return m + suffix + " ± " + s + suffix;
+      }
+
+      function deltaClass(val) {
+        if (!val) return "";
+        const n = parseFloat(val);
+        if (n > 0) return "benchmark-delta-positive";
+        if (n < 0) return "benchmark-delta-negative";
+        return "";
+      }
+
+      // Discover config names dynamically (everything except "delta")
+      const configs = Object.keys(summary).filter(k => k !== "delta");
+      const configA = configs[0] || "config_a";
+      const configB = configs[1] || "config_b";
+      const labelA = configA.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const labelB = configB.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const a = summary[configA] || {};
+      const b = summary[configB] || {};
+      const delta = summary.delta || {};
+
+      html += "<thead><tr><th>Metric</th><th>" + escapeHtml(labelA) + "</th><th>" + escapeHtml(labelB) + "</th><th>Delta</th></tr></thead>";
+      html += "<tbody>";
+
+      html += "<tr><td><strong>Pass Rate</strong></td>";
+      html += "<td>" + fmtStat(a.pass_rate, true) + "</td>";
+      html += "<td>" + fmtStat(b.pass_rate, true) + "</td>";
+      html += '<td class="' + deltaClass(delta.pass_rate) + '">' + (delta.pass_rate || "—") + "</td></tr>";
+
+      // Time (only show row if data exists)
+      if (a.time_seconds || b.time_seconds) {
+        html += "<tr><td><strong>Time (s)</strong></td>";
+        html += "<td>" + fmtStat(a.time_seconds, false) + "</td>";
+        html += "<td>" + fmtStat(b.time_seconds, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.time_seconds) + '">' + (delta.time_seconds ? delta.time_seconds + "s" : "—") + "</td></tr>";
+      }
+
+      // Tokens (only show row if data exists)
+      if (a.tokens || b.tokens) {
+        html += "<tr><td><strong>Tokens</strong></td>";
+        html += "<td>" + fmtStat(a.tokens, false) + "</td>";
+        html += "<td>" + fmtStat(b.tokens, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.tokens) + '">' + (delta.tokens || "—") + "</td></tr>";
+      }
+
+      html += "</tbody></table>";
+
+      // Per-eval breakdown (if runs data available)
+      const runs = data.runs || [];
+      if (runs.length > 0) {
+        const evalIds = [...new Set(runs.map(r => r.eval_id))].sort((a, b) => a - b);
+
+        html += "<h3 style='font-family: Poppins, sans-serif; margin-bottom: 0.75rem;'>Per-Eval Breakdown</h3>";
+
+        const hasTime = runs.some(r => r.result && r.result.time_seconds != null);
+        const hasErrors = runs.some(r => r.result && r.result.errors > 0);
+
+        for (const evalId of evalIds) {
+          const evalRuns = runs.filter(r => r.eval_id === evalId);
+          const evalName = evalRuns[0] && evalRuns[0].eval_name ? evalRuns[0].eval_name : "Eval " + evalId;
+
+          html += "<h4 style='font-family: Poppins, sans-serif; margin: 1rem 0 0.5rem; color: var(--text);'>" + escapeHtml(evalName) + "</h4>";
+          html += '<table class="benchmark-table">';
+          html += "<thead><tr><th>Config</th><th>Run</th><th>Pass Rate</th>";
+          if (hasTime) html += "<th>Time (s)</th>";
+          if (hasErrors) html += "<th>Crashes During Execution</th>";
+          html += "</tr></thead>";
+          html += "<tbody>";
+
+          // Group by config and render with average rows
+          const configGroups = [...new Set(evalRuns.map(r => r.configuration))];
+          for (let ci = 0; ci < configGroups.length; ci++) {
+            const config = configGroups[ci];
+            const configRuns = evalRuns.filter(r => r.configuration === config);
+            if (configRuns.length === 0) continue;
+
+            const rowClass = ci === 0 ? "benchmark-row-with" : "benchmark-row-without";
+            const configLabel = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+            for (const run of configRuns) {
+              const r = run.result || {};
+              const prClass = r.pass_rate >= 0.8 ? "benchmark-delta-positive" : r.pass_rate < 0.5 ? "benchmark-delta-negative" : "";
+              html += '<tr class="' + rowClass + '">';
+              html += "<td>" + configLabel + "</td>";
+              html += "<td>" + run.run_number + "</td>";
+              html += '<td class="' + prClass + '">' + ((r.pass_rate || 0) * 100).toFixed(0) + "% (" + (r.passed || 0) + "/" + (r.total || 0) + ")</td>";
+              if (hasTime) html += "<td>" + (r.time_seconds != null ? r.time_seconds.toFixed(1) : "—") + "</td>";
+              if (hasErrors) html += "<td>" + (r.errors || 0) + "</td>";
+              html += "</tr>";
+            }
+
+            // Average row
+            const rates = configRuns.map(r => (r.result || {}).pass_rate || 0);
+            const avgRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+            const avgPrClass = avgRate >= 0.8 ? "benchmark-delta-positive" : avgRate < 0.5 ? "benchmark-delta-negative" : "";
+            html += '<tr class="benchmark-row-avg ' + rowClass + '">';
+            html += "<td>" + configLabel + "</td>";
+            html += "<td>Avg</td>";
+            html += '<td class="' + avgPrClass + '">' + (avgRate * 100).toFixed(0) + "%</td>";
+            if (hasTime) {
+              const times = configRuns.map(r => (r.result || {}).time_seconds).filter(t => t != null);
+              html += "<td>" + (times.length ? (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1) : "—") + "</td>";
+            }
+            if (hasErrors) html += "<td></td>";
+            html += "</tr>";
+          }
+          html += "</tbody></table>";
+
+          // Per-assertion detail for this eval
+          const runsWithExpectations = {};
+          for (const config of configGroups) {
+            runsWithExpectations[config] = evalRuns.filter(r => r.configuration === config && r.expectations && r.expectations.length > 0);
+          }
+          const hasAnyExpectations = Object.values(runsWithExpectations).some(runs => runs.length > 0);
+          if (hasAnyExpectations) {
+            // Collect all unique assertion texts across all configs
+            const allAssertions = [];
+            const seen = new Set();
+            for (const config of configGroups) {
+              for (const run of runsWithExpectations[config]) {
+                for (const exp of (run.expectations || [])) {
+                  if (!seen.has(exp.text)) {
+                    seen.add(exp.text);
+                    allAssertions.push(exp.text);
+                  }
+                }
+              }
+            }
+
+            html += '<table class="benchmark-table" style="margin-top: 0.5rem;">';
+            html += "<thead><tr><th>Assertion</th>";
+            for (const config of configGroups) {
+              const label = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+              html += "<th>" + escapeHtml(label) + "</th>";
+            }
+            html += "</tr></thead><tbody>";
+
+            for (const assertionText of allAssertions) {
+              html += "<tr><td>" + escapeHtml(assertionText) + "</td>";
+
+              for (const config of configGroups) {
+                html += "<td>";
+                for (const run of runsWithExpectations[config]) {
+                  const exp = (run.expectations || []).find(e => e.text === assertionText);
+                  if (exp) {
+                    const cls = exp.passed ? "benchmark-delta-positive" : "benchmark-delta-negative";
+                    const icon = exp.passed ? "\u2713" : "\u2717";
+                    html += '<span class="' + cls + '" title="Run ' + run.run_number + ': ' + escapeHtml(exp.evidence || "") + '">' + icon + "</span> ";
+                  } else {
+                    html += "— ";
+                  }
+                }
+                html += "</td>";
+              }
+              html += "</tr>";
+            }
+            html += "</tbody></table>";
+          }
+        }
+      }
+
+      // Notes
+      if (notes.length > 0) {
+        html += '<div class="benchmark-notes">';
+        html += "<h3>Analysis Notes</h3>";
+        html += "<ul>";
+        for (const note of notes) {
+          html += "<li>" + escapeHtml(note) + "</li>";
+        }
+        html += "</ul></div>";
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ---- Start ----
+    init();
+    renderBenchmark();
+  </script>
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="app-version" content="ai-workflow-reference v1.0 2026-04-30">
+  <title>AI Workflow Reference</title>
+  <style>
+    :root {
+      --app-bg: #0b1020;
+      --card-bg: #111833;
+      --input-bg: #1a2347;
+      --brand: #8bb9ff;
+      --text-body: #e6ecff;
+      --text-card: #e6ecff;
+      --text-muted: #bcc5e3;
+      --border: #26325b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--app-bg);
+      color: var(--text-body);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .site-title { font-size: 1.35rem; font-weight: 700; color: var(--brand); transition: color 0.3s; }
+    .site-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; transition: color 0.3s; }
+
+    .theme-swatches { display: flex; gap: 8px; align-items: center; }
+    .swatch {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 2px solid transparent; cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      outline: none; padding: 0;
+    }
+    .swatch:hover { transform: scale(1.2); }
+    .swatch.active { border-color: var(--text-body); transform: scale(1.15); }
+
+    .tabs {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.875rem 1.25rem;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tab-btn:hover { color: var(--text-body); }
+    .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.3rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: border-color 0.2s, background-color 0.3s;
+      text-decoration: none;
+    }
+
+    a.card:hover { border-color: var(--brand); transform: translateY(-2px); }
+
+    .card-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-card);
+      transition: color 0.3s;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      flex: 1;
+      transition: color 0.3s;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-family: monospace;
+      align-self: flex-start;
+      transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+    }
+
+    .card-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      counter-reset: steps;
+    }
+
+    .card-steps li {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      display: flex;
+      gap: 0.5rem;
+      counter-increment: steps;
+      transition: color 0.3s;
+    }
+
+    .card-steps li::before {
+      content: counter(steps);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      font-size: 0.68rem;
+      color: var(--brand);
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+    }
+
+    .card-diff {
+      margin-top: 0.25rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .diff-label {
+      color: var(--brand);
+      font-weight: 600;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 0.2rem;
+      transition: color 0.3s;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.74rem;
+      border-top: 1px solid var(--border);
+      transition: color 0.3s, border-color 0.3s;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div></div>
+  <div style="text-align:center">
+    <div class="site-title">AI Workflow Reference</div>
+    <div class="site-subtitle">Prompt Library Project</div>
+  </div>
+  <div class="theme-swatches" id="swatches" style="justify-content:flex-end"></div>
+</header>
+
+<div class="tabs" id="tabs"></div>
+
+<main>
+  <div class="card-grid" id="card-grid"></div>
+</main>
+
+<footer>
+  Prompt Library Project &nbsp;·&nbsp; Built with Claude Code
+</footer>
+
+<script>
+
+const TABS = ['Procedures', 'NLM Playlists', 'Web Apps'];
+
+const PROCEDURES = [
+  {
+    name: 'Load Project Context',
+    steps: [
+      'Load system prompt / persona',
+      'Load relevant reference documents',
+    ],
+    diff: 'Persona: ChatGPT via Custom GPT or Project; Gemini via Gem; Claude via Project instructions. Documents: Gemini connects Google Drive directly; Claude attaches from Drive or pastes; ChatGPT pastes manually or attaches.',
+  },
+  {
+    name: 'Load a Prompt',
+    steps: [
+      'Retrieve the prompt',
+      'Paste into conversation or reference in instructions',
+    ],
+    diff: 'ChatGPT: fetch from GitHub Pages URL. Claude / Gemini: open Google Doc directly.',
+  },
+  {
+    name: 'Research a Topic',
+    steps: [
+      'Provide topic and scope',
+      'Draft research summary or outline',
+    ],
+    diff: null,
+  },
+  {
+    name: 'Write NLM Source Content',
+    steps: [
+      'Provide topic and research brief',
+      'Draft scene-format source document',
+      'Review against scene rules',
+      'Upload to NotebookLM',
+    ],
+    diff: 'Gemini: can access NotebookLM directly. Claude / ChatGPT: manual upload.',
+  },
+  {
+    name: 'Generate a Video Focus Prompt',
+    steps: [
+      'Provide subject and arc',
+      'Draft focus prompt for NLM video generation',
+    ],
+    diff: null,
+  },
+  {
+    name: 'Write a Reusable Prompt',
+    steps: [
+      'Draft prompt for a recurring task',
+      'Save to Google Docs',
+      'Push to GitHub Pages',
+    ],
+    diff: 'Step 3 is ChatGPT only — required so ChatGPT can access the prompt by URL.',
+  },
+  {
+    name: 'Build or Edit a Web App',
+    steps: [
+      'Provide spec, wireframe, or existing code',
+      'Iterate on design and content',
+      'Deploy',
+    ],
+    diff: 'Step 3 is Claude Code only. Claude chat, Gemini, and ChatGPT cannot deploy.',
+  },
+];
+
+const PLAYLISTS = [
+  { name: 'Movements in Modern Art',    desc: 'Impressionists, Post-Impressionists, and the artists who shaped modern art.' },
+  { name: 'Lightened With His Glory',   desc: 'Righteousness by faith, the everlasting covenant, and the character of God.' },
+  { name: 'Behold Your God',            desc: 'F.T. Wright series — divine character, the cross, and the great controversy.' },
+  { name: 'World War 2',                desc: 'Military history, strategy, deception operations, and turning points.' },
+  { name: 'History Potpourri',          desc: 'Accidents, contingencies, and turning points from across history.' },
+  { name: 'Big Ideas',                  desc: 'Popular nonfiction brought to life — Gladwell, Kahneman, Taleb, Harari, and more.' },
+  { name: 'Geography Potpourri',        desc: 'Places, borders, and the stories hidden in geography.' },
+  { name: 'Tips For Healthy Aging',     desc: 'Longevity science — sleep, exercise, gut health, biological clocks, and more.' },
+];
+
+const APPS = [
+  { name: 'SP Restaurants',                       type: 'Gear Tab',       url: 'https://ewallt.github.io/claude-code-fun/sp-restaurants/' },
+  { name: 'ChatGPT Images — Use Cases',           type: 'Gear Tab',       url: 'https://ewallt.github.io/claude-code-fun/chatgpt-images-use-cases/' },
+  { name: 'Layered Reader: Healthy Aging',        type: 'Layered Reader', url: 'https://ewallt.github.io/claude-code-fun/notebooklm/layered-reader-healthy-aging/' },
+  { name: 'Layered Reader: Modern Art',           type: 'Layered Reader', url: 'https://ewallt.github.io/claude-code-fun/notebooklm/lr-modern-art/' },
+  { name: 'Behold Your God',                      type: 'Explorer + Quiz', url: 'https://ewallt.github.io/claude-code-fun/behold-your-god/' },
+  { name: 'Drinker Paradox',                      type: 'Explorer + Quiz', url: 'https://ewallt.github.io/claude-code-fun/drinker-paradox/' },
+  { name: "Braess's Paradox",                     type: 'Explorer + Quiz', url: 'https://ewallt.github.io/claude-code-fun/braess-paradox/' },
+  { name: 'Enlightenment Explorer',               type: 'Explorer + Quiz', url: 'https://ewallt.github.io/claude-code-fun/enlightenment-explorer/' },
+  { name: 'The Role of the Bible',                type: 'Explorer + Quiz', url: 'https://ewallt.github.io/claude-code-fun/bible-role/' },
+  { name: 'EGW on Preaching',                     type: 'Explorer + Quiz', url: 'https://ewallt.github.io/claude-code-fun/notebooklm/egw-preaching/' },
+  { name: "Braess's Paradox — Slides",            type: 'Slides',         url: 'https://ewallt.github.io/claude-code-fun/braess-paradox-slides/' },
+  { name: 'Philosophical Revolutions: Enlightenment — Slides', type: 'Slides', url: 'https://ewallt.github.io/claude-code-fun/philosophy1-slides/' },
+  { name: 'BYG: Nuclear Plant',                   type: 'Narrated Video', url: 'https://ewallt.github.io/claude-code-fun/notebooklm/byg-nuclear-plant/' },
+  { name: 'BYG: God Not Criminal',                type: 'Narrated Video', url: 'https://ewallt.github.io/claude-code-fun/notebooklm/byg-god-not-criminal/' },
+  { name: 'BYG Flashcards',                       type: 'Flashcards',     url: 'https://ewallt.github.io/claude-code-fun/behold-your-god-flashcards/' },
+];
+
+// ── RENDER ─────────────────────────────────────────────────────────────────────
+
+let activeTab = TABS[0];
+
+function renderTabs() {
+  const container = document.getElementById('tabs');
+  container.innerHTML = TABS.map(t =>
+    `<button class="tab-btn${t === activeTab ? ' active' : ''}" data-tab="${t}">${t}</button>`
+  ).join('');
+  container.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => { activeTab = btn.dataset.tab; renderTabs(); renderCards(); });
+  });
+}
+
+function renderCards() {
+  const grid = document.getElementById('card-grid');
+
+  if (activeTab === 'Procedures') {
+    grid.innerHTML = PROCEDURES.map(p => `
+      <div class="card">
+        <div class="card-name">${p.name}</div>
+        <ol class="card-steps">
+          ${p.steps.map(s => `<li>${s}</li>`).join('')}
+        </ol>
+        ${p.diff ? `<div class="card-diff"><span class="diff-label">AI Differences</span>${p.diff}</div>` : ''}
+      </div>
+    `).join('');
+  }
+
+  else if (activeTab === 'NLM Playlists') {
+    grid.innerHTML = PLAYLISTS.map(p => `
+      <div class="card">
+        <div class="card-name">${p.name}</div>
+        <div class="card-desc">${p.desc}</div>
+        <span class="card-tag">NLM playlist</span>
+      </div>
+    `).join('');
+  }
+
+  else if (activeTab === 'Web Apps') {
+    grid.innerHTML = APPS.map(a => `
+      <a class="card" href="${a.url}" target="_blank">
+        <div class="card-name">${a.name}</div>
+        <span class="card-tag">${a.type}</span>
+      </a>
+    `).join('');
+  }
+}
+
+// ── THEMES ─────────────────────────────────────────────────────────────────────
+
+const THEMES = [
+  { name: 'navy', swatch: '#8bb9ff',
+    vars: { '--app-bg': '#0b1020', '--card-bg': '#111833', '--input-bg': '#1a2347', '--brand': '#8bb9ff', '--text-body': '#e6ecff', '--text-card': '#e6ecff', '--text-muted': '#bcc5e3', '--border': '#26325b' } },
+  { name: 'archives', swatch: '#0f766e',
+    vars: { '--app-bg': '#f5f5f4', '--card-bg': '#e7e5e4', '--input-bg': '#d6d3d1', '--brand': '#0f766e', '--text-body': '#292524', '--text-card': '#0f766e', '--text-muted': '#4a4540', '--border': '#d6d3d1' } },
+  { name: 'explorer', swatch: '#d4a574',
+    vars: { '--app-bg': '#e8dcc8', '--card-bg': '#1a1815', '--input-bg': '#26231f', '--brand': '#7a3e10', '--text-body': '#2c2416', '--text-card': '#faf8f3', '--text-muted': '#a89580', '--border': '#5a5041' } },
+  { name: 'high-command', swatch: '#fef08a',
+    vars: { '--app-bg': '#022c22', '--card-bg': '#064e3b', '--input-bg': '#065f46', '--brand': '#fef08a', '--text-body': '#ecfdf5', '--text-card': '#ecfdf5', '--text-muted': '#81eebb', '--border': '#065f46' } },
+];
+
+const root = document.documentElement;
+const swatchContainer = document.getElementById('swatches');
+
+THEMES.map((theme, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'swatch' + (i === 0 ? ' active' : '');
+  btn.style.background = theme.swatch;
+  btn.title = theme.name;
+  btn.setAttribute('aria-label', theme.name + ' theme');
+  btn.addEventListener('click', () => {
+    Object.entries(theme.vars).forEach(([k, v]) => root.style.setProperty(k, v));
+    swatchContainer.querySelectorAll('.swatch').forEach((b, j) => b.classList.toggle('active', j === i));
+  });
+  swatchContainer.appendChild(btn);
+  return btn;
+});
+
+renderTabs();
+renderCards();
+</script>
+</body>
+</html>

@@ -36,7 +36,8 @@ Cycle in this order: navy → archives → explorer → high-command → navy
 `--app-bg: #f5f5f4` / `--card-bg: #e7e5e4` / `--input-bg: #d6d3d1` / `--brand: #0f766e` / `--text-body: #292524` / `--text-card: #0f766e` / `--text-muted: #4a4540` / `--border: #d6d3d1`
 
 **explorer** (warm parchment — split palette: light bg, dark cards):
-`--app-bg: #e8dcc8` / `--card-bg: #1a1815` / `--input-bg: #26231f` / `--brand: #d4a574` / `--text-body: #2c2416` / `--text-card: #faf8f3` / `--text-muted: #a89580` / `--border: #5a5041`
+`--app-bg: #e8dcc8` / `--card-bg: #1a1815` / `--input-bg: #26231f` / `--brand: #7a3e10` / `--text-body: #2c2416` / `--text-card: #faf8f3` / `--text-muted: #a89580` / `--border: #5a5041`
+*Note: `--brand` is calibrated for the light parchment background. Card text should use `--text-card`, not `--brand`.*
 
 **high-command** (dark forest green + yellow):
 `--app-bg: #022c22` / `--card-bg: #064e3b` / `--input-bg: #065f46` / `--brand: #fef08a` / `--text-body: #ecfdf5` / `--text-card: #ecfdf5` / `--text-muted: #81eebb` / `--border: #065f46`
