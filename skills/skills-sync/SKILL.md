@@ -3,7 +3,8 @@ name: skills-sync
 description: >
   Reference for the shared skills sync system. Use when Tom asks about how skills are
   synced across agents, wants to add a skill to other agents, needs to understand the
-  canonical skills location, or asks how to run a sync.
+  canonical skills location, asks how to run a sync, or needs Claude to coordinate
+  skill work with another agent.
 ---
 
 ## Concept
@@ -11,7 +12,8 @@ description: >
 `agent-test/skills/` is the canonical source of truth for all skills across all AI agents.
 Git is the sync mechanism. A sync script distributes skills to each agent's local directory.
 
-This replaces the old `claude-backup/skills/` folder.
+Claude is the orchestrator: when a skill is created or updated by another agent, Claude
+pulls it into the canonical location, syncs it, and manages any cross-agent coordination.
 
 ---
 
@@ -32,6 +34,8 @@ This replaces the old `claude-backup/skills/` folder.
 bash /Users/tom/Documents/agent-test/skills/sync.sh          # all agents
 bash /Users/tom/Documents/agent-test/skills/sync.sh claude   # Claude only
 bash /Users/tom/Documents/agent-test/skills/sync.sh agents   # Antigravity only
+bash /Users/tom/Documents/agent-test/skills/sync.sh codex    # Codex only
+bash /Users/tom/Documents/agent-test/skills/sync.sh gemini   # Gemini CLI only
 ```
 
 The script:
@@ -84,3 +88,57 @@ The sync script automatically replaces Windows paths with Mac equivalents in `SK
 - `C:/Users/tomew/Documents/agent-test` → `/Users/tom/Documents/agent-test`
 
 If a skill has other hardcoded paths that need substitution, update the `substitute_paths()` function in `sync.sh`.
+
+---
+
+## Claude as Orchestrator
+
+Claude manages all cross-agent skill coordination. Tom does not need to brief other agents directly.
+
+### When another agent creates a skill
+
+1. Read the skill from the agent's skills directory
+2. Copy it to canonical: `cp -r <agent-skills-path>/<skill> agent-test/skills/`
+3. Review and clean up if needed (paths, formatting)
+4. Add `AGENTS.txt` if it should be shared beyond the originating agent
+5. Run `bash skills/sync.sh`
+6. Commit to git
+
+### When a skill needs to be updated across agents
+
+1. Make the edit in `agent-test/skills/<skill-name>/SKILL.md`
+2. Run `bash skills/sync.sh`
+3. Commit to git
+4. If another agent needs to be informed of the change, send a message via the protocol below
+
+### Briefing another agent on a skill
+
+When Tom wants another agent to use a new or updated skill, write a message explaining:
+- What the skill does and when to trigger it
+- Any path or environment differences relevant to that agent
+- Whether it replaces an existing behavior
+
+---
+
+## Inter-Agent Communication Protocol
+
+Claude communicates with other agents via files in `~/Documents/gemini-test/`.
+
+| Direction | File |
+|---|---|
+| Claude → Antigravity/Gemini | `/Users/tom/Documents/gemini-test/for-antigravity.txt` |
+| Antigravity/Gemini → Claude | `/Users/tom/Documents/gemini-test/for-claude.txt` |
+| Claude → Codex | `/Users/tom/Documents/gemini-test/for-codex.txt` |
+| Codex → Claude | `/Users/tom/Documents/gemini-test/for-claude.codex-test.txt` |
+
+**Message format:**
+```
+FROM: Claude
+DATE: YYYY-MM-DD HH:MM
+---
+[message body]
+```
+
+**Shorthands:** `wm` = write message to Antigravity, `rm` = read message from Antigravity.
+
+Tom relays messages between agents — write the message, then tell Tom it's ready to send.
